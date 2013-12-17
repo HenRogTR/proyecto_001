@@ -5,7 +5,7 @@
 --%>
 
 
-<div id="rightSub2" class="ocultar">
+<div id="rightSub2">
     <div>
         <h3 class="titulo">IMPORTADORA YUCRA S.A.C.</h3>
         <div class="articles" style="font-size: 12px;padding: 10px;text-align: justify;">
