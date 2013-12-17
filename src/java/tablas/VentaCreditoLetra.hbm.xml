@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 17/12/2013 10:15:59 AM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="tablas.VentaCreditoLetra" table="venta_credito_letra" catalog="proyecto_001">
+        <id name="codVentaCreditoLetra" type="java.lang.Integer">
+            <column name="cod_venta_credito_letra" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="ventaCredito" class="tablas.VentaCredito" fetch="select">
+            <column name="venta_credito_cod_venta_credito" not-null="true" />
+        </many-to-one>
+        <property name="moneda" type="java.lang.Integer">
+            <column name="moneda" />
+        </property>
+        <property name="numeroLetra" type="java.lang.Integer">
+            <column name="numero_letra" />
+        </property>
+        <property name="detalleLetra" type="string">
+            <column name="detalle_letra" length="45" />
+        </property>
+        <property name="fechaVencimiento" type="timestamp">
+            <column name="fecha_vencimiento" length="19" />
+        </property>
+        <property name="monto" type="java.lang.Double">
+            <column name="monto" precision="10" />
+        </property>
+        <property name="interes" type="java.lang.Double">
+            <column name="interes" precision="10" />
+        </property>
+        <property name="fechaPago" type="timestamp">
+            <column name="fecha_pago" length="19" />
+        </property>
+        <property name="totalPago" type="java.lang.Double">
+            <column name="total_pago" precision="10" />
+        </property>
+        <property name="registro" type="string">
+            <column name="registro" length="65535" not-null="true" />
+        </property>
+        <set name="cobranzaDetalles" table="cobranza_detalle" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="venta_credito_letra_cod_venta_credito_letra" not-null="true" />
+            </key>
+            <one-to-many class="tablas.CobranzaDetalle" />
+        </set>
+    </class>
+</hibernate-mapping>

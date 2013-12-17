@@ -1,0 +1,88 @@
+/* 
+    Document   : cobranzaImprimir
+    Created on : 07/06/2013, 12:19:03 AM
+    Author     : Henrri
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+body {
+    font-size:9px;
+    font-family:Arial;
+    text-align:center;
+    /*padding:30px 0;*/
+    line-height:15px;
+    background: #222;
+    letter-spacing: 4px;
+}
+#documento {
+    width:980px;
+    margin:0 auto;	
+    text-align:left;
+}
+#contenido {
+    font-size:9px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 16px;
+    background: #fff;
+}
+#dCabecera{
+    height: 140px;
+}
+#dCuerpo{
+    /*height: 480px;*/
+    overflow: hidden;
+}
+#dPie{
+    height: 50px;
+}
+th,td{
+    /*border: 1px solid #000;*/
+    vertical-align: top;
+}
+table{
+    width: 100%;
+}
+div{
+    /*background-color: #cccccc;*/
+}
+
+th,td{
+    padding: 0px;
+}
+
+
+
+
+.tabla-imprimir{
+    width: 100%;
+    text-align: left;
+}
+.top3 th{
+    border-top: 3px solid #000;
+    /*border-top-style: double;*/
+    /*border: 3px solid #000;*/
+}
+.top2 th{
+    border-top: 2px solid #000;
+    /*border-top-style: double;*/
+    /*border: 3px solid #000;*/
+}
+.top2 td{
+    border-top: 2px solid #000;
+    /*border-top-style: double;*/
+    /*border: 3px solid #000;*/
+}
+
+.bottom2 th{
+    border-bottom: 2px solid #000;
+    /*border-top-style: double;*/
+}
+.bottom1 th{
+    border-bottom: 1px solid #000;
+    /*border-top-style: double;*/
+}
+td,th{
+    vertical-align: top;
+}

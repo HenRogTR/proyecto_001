@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 17/12/2013 10:15:59 AM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="tablas.PNatural" table="p_natural" catalog="proyecto_001">
+        <id name="codNatural" type="java.lang.Integer">
+            <column name="cod_natural" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="persona" class="tablas.Persona" fetch="select">
+            <column name="persona_cod_persona" not-null="true" />
+        </many-to-one>
+        <property name="codModular" type="string">
+            <column name="cod_modular" length="45" />
+        </property>
+        <property name="cargo" type="string">
+            <column name="cargo" length="45" />
+        </property>
+        <property name="carben" type="string">
+            <column name="carben" length="45" />
+        </property>
+        <property name="apePaterno" type="string">
+            <column name="ape_paterno" length="45" not-null="true" />
+        </property>
+        <property name="apeMaterno" type="string">
+            <column name="ape_materno" length="45" not-null="true" />
+        </property>
+        <property name="sexo" type="java.lang.Boolean">
+            <column name="sexo" />
+        </property>
+        <property name="estadoCivil" type="string">
+            <column name="estado_civil" length="45" />
+        </property>
+        <property name="detalle" type="string">
+            <column name="detalle" length="65535" />
+        </property>
+        <property name="registro" type="string">
+            <column name="registro" length="65535" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

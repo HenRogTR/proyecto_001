@@ -1,0 +1,34 @@
+/* 
+    Document   : cobranzaImprimir
+    Created on : 07/06/2013, 12:19:03 AM
+    Author     : Henrri
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+body{
+    width: 450px;
+    font-size: 9px;
+    font-family:Century Gothic, sans-serif;
+    letter-spacing: 4px;
+}
+#dCabecera{
+    height: 60px;
+}
+#dCuerpo{
+    height: 240px;
+    overflow: hidden;
+}
+#dPie{
+    height: 50px;
+}
+th,td{
+    /*border: 1px solid #000;*/
+}
+table{
+    width: 100%;
+}
+div{
+    background-color: #cccccc;
+}
+

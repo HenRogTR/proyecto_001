@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/proyecto_001?zeroDateTimeBehavior=convertToNull</property>
+    <property name="hibernate.connection.username">root</property>
+    <property name="hibernate.connection.password">Admin</property>
+    <property name="hibernate.current_session_context_class">thread</property>
+    <mapping resource="tablas/VentaCreditoLetra.hbm.xml"/>
+    <mapping resource="tablas/CompraSerieNumero.hbm.xml"/>
+    <mapping resource="tablas/Cobranza.hbm.xml"/>
+    <mapping resource="tablas/Marca.hbm.xml"/>
+    <mapping resource="tablas/Compra.hbm.xml"/>
+    <mapping resource="tablas/PNatural.hbm.xml"/>
+    <mapping resource="tablas/Persona.hbm.xml"/>
+    <mapping resource="tablas/OtrosCC.hbm.xml"/>
+    <mapping resource="tablas/DocumentoNotificacion.hbm.xml"/>
+    <mapping resource="tablas/CobranzaDetalle.hbm.xml"/>
+    <mapping resource="tablas/Zona.hbm.xml"/>
+    <mapping resource="tablas/KardexArticuloProducto.hbm.xml"/>
+    <mapping resource="tablas/Familia.hbm.xml"/>
+    <mapping resource="tablas/ArticuloProducto.hbm.xml"/>
+    <mapping resource="tablas/VentaCredito.hbm.xml"/>
+    <mapping resource="tablas/Personal.hbm.xml"/>
+    <mapping resource="tablas/Cargo.hbm.xml"/>
+    <mapping resource="tablas/Area.hbm.xml"/>
+    <mapping resource="tablas/EmpresaConvenio.hbm.xml"/>
+    <mapping resource="tablas/TipoDocumento.hbm.xml"/>
+    <mapping resource="tablas/KardexSerieNumero.hbm.xml"/>
+    <mapping resource="tablas/VentasDetalle.hbm.xml"/>
+    <mapping resource="tablas/ComprobantePago.hbm.xml"/>
+    <mapping resource="tablas/CompraDetalle.hbm.xml"/>
+    <mapping resource="tablas/VentasSerieNumero.hbm.xml"/>
+    <mapping resource="tablas/DatosCliente.hbm.xml"/>
+    <mapping resource="tablas/Proveedor.hbm.xml"/>
+    <mapping resource="tablas/DetalleDescripcion.hbm.xml"/>
+    <mapping resource="tablas/Almacen.hbm.xml"/>
+    <mapping resource="tablas/PrecioVenta.hbm.xml"/>
+    <mapping resource="tablas/ComprobantePagoDetalle.hbm.xml"/>
+    <mapping resource="tablas/Ventas.hbm.xml"/>
+    <mapping resource="tablas/EstadoDocumento.hbm.xml"/>
+    <mapping resource="tablas/Usuario.hbm.xml"/>
+    <mapping resource="tablas/TramiteDocumentario.hbm.xml"/>
+    <mapping resource="tablas/DatosExtras.hbm.xml"/>
+  </session-factory>
+</hibernate-configuration>

@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 17/12/2013 10:15:59 AM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="tablas.DatosCliente" table="datos_cliente" catalog="proyecto_001">
+        <id name="codDatosCliente" type="java.lang.Integer">
+            <column name="cod_datos_cliente" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="empresaConvenio" class="tablas.EmpresaConvenio" fetch="select">
+            <column name="empresa_convenio_cod_empresa_convenio" not-null="true" />
+        </many-to-one>
+        <many-to-one name="persona" class="tablas.Persona" fetch="select">
+            <column name="persona_cod_persona" not-null="true" />
+        </many-to-one>
+        <property name="tipoCliente" type="java.lang.Integer">
+            <column name="tipo_cliente" />
+        </property>
+        <property name="centroTrabajo" type="string">
+            <column name="centro_trabajo" length="65535" />
+        </property>
+        <property name="telefono" type="string">
+            <column name="telefono" length="45" />
+        </property>
+        <property name="tipo" type="int">
+            <column name="tipo" not-null="true" />
+        </property>
+        <property name="condicion" type="java.lang.Integer">
+            <column name="condicion" />
+        </property>
+        <property name="creditoMax" type="double">
+            <column name="credito_max" precision="10" not-null="true" />
+        </property>
+        <property name="saldoFavor" type="double">
+            <column name="saldo_favor" precision="10" not-null="true" />
+        </property>
+        <property name="observaciones" type="string">
+            <column name="observaciones" length="65535" />
+        </property>
+        <property name="codCobrador" type="int">
+            <column name="cod_cobrador" not-null="true" />
+        </property>
+        <property name="registro" type="string">
+            <column name="registro" length="65535" not-null="true" />
+        </property>
+        <set name="documentoNotificacions" table="documento_notificacion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="datos_cliente_cod_datos_cliente" not-null="true" />
+            </key>
+            <one-to-many class="tablas.DocumentoNotificacion" />
+        </set>
+    </class>
+</hibernate-mapping>

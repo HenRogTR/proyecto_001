@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 17/12/2013 10:15:59 AM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="tablas.DocumentoNotificacion" table="documento_notificacion" catalog="proyecto_001">
+        <id name="codDocumentoNotificacion" type="java.lang.Integer">
+            <column name="cod_documento_notificacion" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="datosCliente" class="tablas.DatosCliente" fetch="select">
+            <column name="datos_cliente_cod_datos_cliente" not-null="true" />
+        </many-to-one>
+        <property name="fech1" type="date">
+            <column name="fech1" length="10" />
+        </property>
+        <property name="fech2" type="date">
+            <column name="fech2" length="10" />
+        </property>
+        <property name="fech3" type="date">
+            <column name="fech3" length="10" />
+        </property>
+        <property name="varchar1" type="string">
+            <column name="varchar1" length="45" />
+        </property>
+        <property name="varchar2" type="string">
+            <column name="varchar2" length="45" />
+        </property>
+        <property name="text1" type="string">
+            <column name="text1" length="65535" />
+        </property>
+        <property name="text2" type="string">
+            <column name="text2" length="65535" />
+        </property>
+        <property name="text3" type="string">
+            <column name="text3" length="65535" />
+        </property>
+        <property name="registro" type="string">
+            <column name="registro" length="65535" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

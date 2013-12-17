@@ -1,0 +1,41 @@
+/* 
+        Blue Dream
+        Written by Teylor Feliz  http://www.admixweb.com
+*/
+* {margin:0; padding:0; outline:0}
+/*body {font:12px Verdana,Arial; margin:1px; text-align: left}
+#tablewrapper {width:980px; margin:0 auto}
+#tableheader {height:55px}*/
+/*.search {padding:3px; border:1px solid #c6d5e1; background:#fff}*/
+/*#tableheader select {float:left; font-size:12px; width:125px; padding:2px 4px 4px}*/
+/*#tableheader input {float:left; font-size:12px; width:225px; padding:2px 4px 4px; margin-left:6px}*/
+/*.tinytable {  border-left:1px solid #c6d5e1; border-top:1px solid #c6d5e1; border-bottom:none}*/
+.tinytable {  border-left:2px solid #3366ff; border-top:2px solid #3366ff; border-bottom:none}
+/*.tinytable th h3 {text-align:center; font-size:11px; padding:6px 8px 8px;  border-right:none; border:1px solid #fff; color:#cfdce7; background:url(images/header-bg.gif); }*/
+.tinytable .cabe {text-align:center; font-size:11px; padding:6px 8px 8px;  border-right:none; border:1px solid #fff; color:#cfdce7; background:url(images/header-bg.gif); }
+.tinytable th    {padding:1px 2px 2px; text-align:left; font-size:11px;  border-right:1px solid #3366ff;border-bottom:1px solid #3366ff;}
+.tinytable td {padding:1px 2px 2px; border-bottom:1px solid #3366ff; border-right:1px solid #3366ff}
+.tinytable .head h3 {background:url(images/sort.gif) 7px center no-repeat; cursor:pointer; padding-left:18px}
+.tinytable .desc, .sortable .asc {background:url(images/header-selected-bg.gif)}/*
+.tinytable .desc h3 {background:url(images/desc.gif) 7px center no-repeat; cursor:pointer; padding-left:18px}
+.tinytable .asc h3 {background:url(images/asc.gif) 7px  center no-repeat; cursor:pointer; padding-left:18px}*/
+.tinytable .head:hover, .tinytable .desc:hover, .tinytable .asc:hover {color:#fff}
+.tinytable .evenrow td {background:#fff}
+.tinytable .oddrow td {background:#ecf2f6}
+.tinytable td.evenselected {background:#ecf2f6}
+.tinytable td.oddselected {background:#dce6ee}
+.tinytable tfoot {background:#fff; font-weight:bold}
+.tinytable tfoot td {padding:6px 8px 8px}
+.tinytable input {float:left; font-size:12px; width:225px; padding:1px 2px 2px; margin-left:6px}
+.tinytable input.tamanio {width: 100px}
+.lectura {background: #dce6ee;}
+/*.negrita {font:bold 13px "Trebuchet MS"; }*/
+.tinytable textarea {float:left; font-size:12px; width:225px; padding:1px 2px 2px; margin-left:6px}
+.tinytable label {float:left; font-size:12px;  padding:1px 2px 2px; margin-left:2px; font-weight: bold}
+.tinytable label.descrip {float:right; font-size:12px; padding:1px 2px 2px; margin-left:6px;background: #c0402a}
+.tinytable label.detalle{width: 150px; font-size: 13px}
+.tinytable label.tamanio {font-size:12px;width: auto;}
+/*.tinytable label.negrita {font-size:12px;width: auto; font-weight: bold}*/
+.tinytable select {float:left; font-size:12px; padding:1px 2px 2px; margin-left:6px}
+.tinytable th {background: #ccccff}
+.anchotdth{width: 40px}

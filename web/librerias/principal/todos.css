@@ -1,0 +1,17 @@
+/* 
+    Document   : todos
+    Created on : 22/08/2013, 05:32:30 PM
+    Author     : Henrri
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/*css principal*/
+@import "principal.css?v13.10.30";
+
+/*@import "mega_muebles.css?v13.10.30";*/
+/*css iconos*/
+@import "../../librerias/botonesIconos/sexybuttons-min.css";
+/*css ui*/
+@import "../../librerias/jquery-ui/jquery-ui-1.10.3.custom/css/smoothness/jquery-ui-1.10.3.custom.min.css";
+

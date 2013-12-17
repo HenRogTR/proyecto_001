@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 17/12/2013 10:15:59 AM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="tablas.Zona" table="zona" catalog="proyecto_001">
+        <id name="codZona" type="java.lang.Integer">
+            <column name="cod_zona" />
+            <generator class="identity" />
+        </id>
+        <property name="zona" type="string">
+            <column name="zona" length="45" not-null="true" />
+        </property>
+        <property name="descripcion" type="string">
+            <column name="descripcion" length="65535" />
+        </property>
+        <property name="registro" type="string">
+            <column name="registro" length="65535" not-null="true" />
+        </property>
+        <set name="personas" table="persona" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="zona_cod_zona" not-null="true" />
+            </key>
+            <one-to-many class="tablas.Persona" />
+        </set>
+    </class>
+</hibernate-mapping>

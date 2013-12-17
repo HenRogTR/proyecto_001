@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 17/12/2013 10:15:59 AM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="tablas.Ventas" table="ventas" catalog="proyecto_001">
+        <id name="codVentas" type="java.lang.Integer">
+            <column name="cod_ventas" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="persona" class="tablas.Persona" fetch="select">
+            <column name="persona_cod_persona" not-null="true" />
+        </many-to-one>
+        <property name="itemCantidad" type="java.lang.Integer">
+            <column name="item_cantidad" />
+        </property>
+        <property name="docSerieNumero" type="string">
+            <column name="doc_serie_numero" length="45" />
+        </property>
+        <property name="tipo" type="string">
+            <column name="tipo" length="45" not-null="true" />
+        </property>
+        <property name="fecha" type="timestamp">
+            <column name="fecha" length="19" />
+        </property>
+        <property name="moneda" type="string">
+            <column name="moneda" length="45" />
+        </property>
+        <property name="subTotal" type="double">
+            <column name="sub_total" precision="10" not-null="true" />
+        </property>
+        <property name="descuento" type="double">
+            <column name="descuento" precision="10" not-null="true" />
+        </property>
+        <property name="total" type="double">
+            <column name="total" precision="10" not-null="true" />
+        </property>
+        <property name="valorIgv" type="double">
+            <column name="valor_igv" precision="10" not-null="true" />
+        </property>
+        <property name="neto" type="double">
+            <column name="neto" precision="10" not-null="true" />
+        </property>
+        <property name="son" type="string">
+            <column name="son" length="65535" not-null="true" />
+        </property>
+        <property name="personaCodVendedor" type="int">
+            <column name="persona_cod_vendedor" not-null="true" />
+        </property>
+        <property name="estado" type="java.lang.Boolean">
+            <column name="estado" />
+        </property>
+        <property name="observacion" type="string">
+            <column name="observacion" length="65535" />
+        </property>
+        <property name="cliente" type="string">
+            <column name="cliente" length="65535" />
+        </property>
+        <property name="identificacion" type="string">
+            <column name="identificacion" length="65535" />
+        </property>
+        <property name="direccion" type="string">
+            <column name="direccion" length="65535" />
+        </property>
+        <property name="docSerieNumeroGuia" type="string">
+            <column name="doc_serie_numero_guia" length="45" />
+        </property>
+        <property name="direccion2" type="string">
+            <column name="direccion2" length="65535" />
+        </property>
+        <property name="direccion3" type="string">
+            <column name="direccion3" length="65535" />
+        </property>
+        <property name="registro" type="string">
+            <column name="registro" length="65535" not-null="true" />
+        </property>
+        <set name="ventasDetalles" table="ventas_detalle" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ventas_cod_ventas" not-null="true" />
+            </key>
+            <one-to-many class="tablas.VentasDetalle" />
+        </set>
+        <set name="ventaCreditos" table="venta_credito" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ventas_cod_ventas" not-null="true" />
+            </key>
+            <one-to-many class="tablas.VentaCredito" />
+        </set>
+        <set name="tramiteDocumentarios" table="tramite_documentario" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ventas_cod_ventas" not-null="true" />
+            </key>
+            <one-to-many class="tablas.TramiteDocumentario" />
+        </set>
+    </class>
+</hibernate-mapping>

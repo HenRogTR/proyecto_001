@@ -1,0 +1,210 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 17/12/2013 10:15:59 AM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="tablas.Usuario" table="usuario" catalog="proyecto_001">
+        <id name="codUsuario" type="java.lang.Integer">
+            <column name="cod_usuario" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="persona" class="tablas.Persona" fetch="select">
+            <column name="persona_cod_persona" not-null="true" />
+        </many-to-one>
+        <property name="usuario" type="string">
+            <column name="usuario" length="45" not-null="true" unique="true" />
+        </property>
+        <property name="contrasenia" type="string">
+            <column name="contrasenia" length="100" not-null="true" />
+        </property>
+        <property name="ip" type="string">
+            <column name="ip" length="45" not-null="true" />
+        </property>
+        <property name="estado" type="java.lang.Boolean">
+            <column name="estado" />
+        </property>
+        <property name="p1" type="java.lang.Boolean">
+            <column name="p1" />
+        </property>
+        <property name="p2" type="java.lang.Boolean">
+            <column name="p2" />
+        </property>
+        <property name="p3" type="java.lang.Boolean">
+            <column name="p3" />
+        </property>
+        <property name="p4" type="java.lang.Boolean">
+            <column name="p4" />
+        </property>
+        <property name="p5" type="java.lang.Boolean">
+            <column name="p5" />
+        </property>
+        <property name="p6" type="java.lang.Boolean">
+            <column name="p6" />
+        </property>
+        <property name="p7" type="java.lang.Boolean">
+            <column name="p7" />
+        </property>
+        <property name="p8" type="java.lang.Boolean">
+            <column name="p8" />
+        </property>
+        <property name="p9" type="java.lang.Boolean">
+            <column name="p9" />
+        </property>
+        <property name="p10" type="java.lang.Boolean">
+            <column name="p10" />
+        </property>
+        <property name="p11" type="java.lang.Boolean">
+            <column name="p11" />
+        </property>
+        <property name="p12" type="java.lang.Boolean">
+            <column name="p12" />
+        </property>
+        <property name="p13" type="java.lang.Boolean">
+            <column name="p13" />
+        </property>
+        <property name="p14" type="java.lang.Boolean">
+            <column name="p14" />
+        </property>
+        <property name="p15" type="java.lang.Boolean">
+            <column name="p15" />
+        </property>
+        <property name="p16" type="java.lang.Boolean">
+            <column name="p16" />
+        </property>
+        <property name="p17" type="java.lang.Boolean">
+            <column name="p17" />
+        </property>
+        <property name="p18" type="java.lang.Boolean">
+            <column name="p18" />
+        </property>
+        <property name="p19" type="java.lang.Boolean">
+            <column name="p19" />
+        </property>
+        <property name="p20" type="java.lang.Boolean">
+            <column name="p20" />
+        </property>
+        <property name="p21" type="java.lang.Boolean">
+            <column name="p21" />
+        </property>
+        <property name="p22" type="java.lang.Boolean">
+            <column name="p22" />
+        </property>
+        <property name="p23" type="java.lang.Boolean">
+            <column name="p23" />
+        </property>
+        <property name="p24" type="java.lang.Boolean">
+            <column name="p24" />
+        </property>
+        <property name="p25" type="java.lang.Boolean">
+            <column name="p25" />
+        </property>
+        <property name="p26" type="java.lang.Boolean">
+            <column name="p26" />
+        </property>
+        <property name="p27" type="java.lang.Boolean">
+            <column name="p27" />
+        </property>
+        <property name="p28" type="java.lang.Boolean">
+            <column name="p28" />
+        </property>
+        <property name="p29" type="java.lang.Boolean">
+            <column name="p29" />
+        </property>
+        <property name="p30" type="java.lang.Boolean">
+            <column name="p30" />
+        </property>
+        <property name="p31" type="java.lang.Boolean">
+            <column name="p31" />
+        </property>
+        <property name="p32" type="java.lang.Boolean">
+            <column name="p32" />
+        </property>
+        <property name="p33" type="java.lang.Boolean">
+            <column name="p33" />
+        </property>
+        <property name="p34" type="java.lang.Boolean">
+            <column name="p34" />
+        </property>
+        <property name="p35" type="java.lang.Boolean">
+            <column name="p35" />
+        </property>
+        <property name="p36" type="java.lang.Boolean">
+            <column name="p36" />
+        </property>
+        <property name="p37" type="java.lang.Boolean">
+            <column name="p37" />
+        </property>
+        <property name="p38" type="java.lang.Boolean">
+            <column name="p38" />
+        </property>
+        <property name="p39" type="java.lang.Boolean">
+            <column name="p39" />
+        </property>
+        <property name="p40" type="java.lang.Boolean">
+            <column name="p40" />
+        </property>
+        <property name="p41" type="java.lang.Boolean">
+            <column name="p41" />
+        </property>
+        <property name="p42" type="java.lang.Boolean">
+            <column name="p42" />
+        </property>
+        <property name="p43" type="java.lang.Boolean">
+            <column name="p43" />
+        </property>
+        <property name="p44" type="java.lang.Boolean">
+            <column name="p44" />
+        </property>
+        <property name="p45" type="java.lang.Boolean">
+            <column name="p45" />
+        </property>
+        <property name="p46" type="java.lang.Boolean">
+            <column name="p46" />
+        </property>
+        <property name="p47" type="java.lang.Boolean">
+            <column name="p47" />
+        </property>
+        <property name="p48" type="java.lang.Boolean">
+            <column name="p48" />
+        </property>
+        <property name="p49" type="java.lang.Boolean">
+            <column name="p49" />
+        </property>
+        <property name="p50" type="java.lang.Boolean">
+            <column name="p50" />
+        </property>
+        <property name="p51" type="java.lang.Boolean">
+            <column name="p51" />
+        </property>
+        <property name="p52" type="java.lang.Boolean">
+            <column name="p52" />
+        </property>
+        <property name="p53" type="java.lang.Boolean">
+            <column name="p53" />
+        </property>
+        <property name="p54" type="java.lang.Boolean">
+            <column name="p54" />
+        </property>
+        <property name="p55" type="java.lang.Boolean">
+            <column name="p55" />
+        </property>
+        <property name="p56" type="java.lang.Boolean">
+            <column name="p56" />
+        </property>
+        <property name="p57" type="java.lang.Boolean">
+            <column name="p57" />
+        </property>
+        <property name="p58" type="java.lang.Boolean">
+            <column name="p58" />
+        </property>
+        <property name="p59" type="java.lang.Boolean">
+            <column name="p59" />
+        </property>
+        <property name="p60" type="java.lang.Boolean">
+            <column name="p60" />
+        </property>
+        <property name="registro" type="string">
+            <column name="registro" length="65535" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

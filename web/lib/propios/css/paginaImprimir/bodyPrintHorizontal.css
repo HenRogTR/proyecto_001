@@ -1,0 +1,67 @@
+/* 
+    Document   : bodyPrint
+    Created on : 25/03/2013, 09:44:26 AM
+    Author     : Henrri
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+root { 
+    display: block;
+}
+
+body {
+    font-size:12px;
+    font-family:Arial,Verdana,Sans-serif;
+    text-align:center;
+    /*padding:30px 0;*/
+    line-height:15px;
+    background: #222;
+}
+#documento {
+    width:1000px;
+    margin:0 auto;	
+    text-align:left;
+}
+#contenido {
+    font-size:12px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 16px;
+    background: #fff;
+}
+
+.tabla-imprimir{
+    width: 100%;
+    text-align: left;
+}
+.top3 th{
+    border-top: 3px solid #000;
+    /*border-top-style: double;*/
+    /*border: 3px solid #000;*/
+}
+.top2 th{
+    border-top: 2px solid #000;
+    /*border-top-style: double;*/
+    /*border: 3px solid #000;*/
+}
+.top2 td{
+    border-top: 2px solid #000;
+    /*border-top-style: double;*/
+    /*border: 3px solid #000;*/
+}
+
+.bottom2 th{
+    border-bottom: 2px solid #000;
+    /*border-top-style: double;*/
+}
+td{
+    vertical-align: top;
+}
+th{
+    vertical-align: top;
+}
+tr:hover td
+{
+    background: #d0dafd;
+}

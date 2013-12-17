@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 17/12/2013 10:15:59 AM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="tablas.Familia" table="familia" catalog="proyecto_001">
+        <id name="codFamilia" type="java.lang.Integer">
+            <column name="cod_familia" />
+            <generator class="identity" />
+        </id>
+        <property name="familia" type="string">
+            <column name="familia" length="45" />
+        </property>
+        <property name="observacion" type="string">
+            <column name="observacion" length="65535" />
+        </property>
+        <property name="registro" type="string">
+            <column name="registro" length="65535" not-null="true" />
+        </property>
+        <set name="articuloProductos" table="articulo_producto" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="familia_cod_familia" not-null="true" />
+            </key>
+            <one-to-many class="tablas.ArticuloProducto" />
+        </set>
+    </class>
+</hibernate-mapping>

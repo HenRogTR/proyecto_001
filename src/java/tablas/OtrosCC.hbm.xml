@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 17/12/2013 10:15:59 AM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="tablas.OtrosCC" table="otros_c_c" catalog="proyecto_001">
+        <id name="codOtrosCC" type="java.lang.Integer">
+            <column name="cod_otros_c_c" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="empresaConvenio" class="tablas.EmpresaConvenio" fetch="select">
+            <column name="empresa_convenio_cod_empresa_convenio" not-null="true" />
+        </many-to-one>
+        <property name="tipo" type="string">
+            <column name="tipo" length="45" not-null="true" />
+        </property>
+        <property name="registro" type="string">
+            <column name="registro" length="65535" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

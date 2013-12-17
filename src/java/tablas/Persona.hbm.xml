@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 17/12/2013 10:15:59 AM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="tablas.Persona" table="persona" catalog="proyecto_001">
+        <id name="codPersona" type="java.lang.Integer">
+            <column name="cod_persona" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="zona" class="tablas.Zona" fetch="select">
+            <column name="zona_cod_zona" not-null="true" />
+        </many-to-one>
+        <property name="nombres" type="string">
+            <column name="nombres" length="65535" not-null="true" />
+        </property>
+        <property name="nombresC" type="string">
+            <column name="nombresC" length="65535" not-null="true" />
+        </property>
+        <property name="direccion" type="string">
+            <column name="direccion" length="65535" not-null="true" />
+        </property>
+        <property name="dniPasaporte" type="string">
+            <column name="dni_pasaporte" length="15" not-null="true" />
+        </property>
+        <property name="telefono1" type="string">
+            <column name="telefono1" length="45" />
+        </property>
+        <property name="telefono2" type="string">
+            <column name="telefono2" length="45" />
+        </property>
+        <property name="ruc" type="string">
+            <column name="ruc" length="15" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="100" />
+        </property>
+        <property name="foto" type="string">
+            <column name="foto" length="100" />
+        </property>
+        <property name="estado" type="java.lang.Boolean">
+            <column name="estado" />
+        </property>
+        <property name="fechaNacimiento" type="date">
+            <column name="fecha_nacimiento" length="10" />
+        </property>
+        <property name="paginaWeb" type="string">
+            <column name="pagina_web" length="65535" />
+        </property>
+        <property name="observaciones" type="string">
+            <column name="observaciones" length="65535" />
+        </property>
+        <property name="logo" type="string">
+            <column name="logo" length="65535" />
+        </property>
+        <property name="registro" type="string">
+            <column name="registro" length="65535" not-null="true" />
+        </property>
+        <set name="PNaturals" table="p_natural" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="persona_cod_persona" not-null="true" />
+            </key>
+            <one-to-many class="tablas.PNatural" />
+        </set>
+        <set name="usuarios" table="usuario" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="persona_cod_persona" not-null="true" />
+            </key>
+            <one-to-many class="tablas.Usuario" />
+        </set>
+        <set name="cobranzas" table="cobranza" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="persona_cod_persona" not-null="true" />
+            </key>
+            <one-to-many class="tablas.Cobranza" />
+        </set>
+        <set name="ventases" table="ventas" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="persona_cod_persona" not-null="true" />
+            </key>
+            <one-to-many class="tablas.Ventas" />
+        </set>
+        <set name="personals" table="personal" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="persona_cod_persona" not-null="true" />
+            </key>
+            <one-to-many class="tablas.Personal" />
+        </set>
+        <set name="datosClientes" table="datos_cliente" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="persona_cod_persona" not-null="true" />
+            </key>
+            <one-to-many class="tablas.DatosCliente" />
+        </set>
+    </class>
+</hibernate-mapping>

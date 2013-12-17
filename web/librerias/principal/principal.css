@@ -1,0 +1,238 @@
+/* 
+    Document   : principal
+    Created on : 20/08/2013, 10:18:18 AM
+    Author     : Henrri
+    Description:
+        Contiene todos los estilos que se aplicaran para todas las paginas.
+*/
+
+root {display: block;}
+body {
+    font-size: 70%;
+    font-family: "Trebuchet MS", "Arial", "Helvetica", "Verdana", "sans-serif";
+    background: #333; 
+    color: #444;  
+}
+#wrap {
+    padding: 5px 5px 3px 5px; 
+    width:1024px; 
+    margin:1px auto; 
+    background: #fff;
+}
+#header {
+    background: #FE7B09 url(images/cabeceraLogo.jpg) repeat-x;
+    background-position: 0% 50%;
+    height: 70px;
+    width: 1024px
+}
+#right {
+    margin-bottom: 10px; 
+    float: right; 
+    width: 860px;
+    padding: 0 0 10px 10px; 
+    margin-top: 5px;
+}
+#left {
+    float: left;
+    width: 150px; 
+    margin-bottom: 10px; 
+    margin-top: 5px;
+}
+#footer { 
+    font-size: 11px; 
+    text-align: center; 
+    border-top: 1px solid #ccc; 
+    padding: 10px 5px; 
+}
+.horaCabecera{
+    font-size: 24px;
+    font-weight: bold;
+    float: right;
+    margin-top: 25px;
+    margin-right: 25px;
+    color: #333;
+}
+.titulo  { 
+    padding-left: 10px; 
+    color: #fff; 
+    background: #FE7B09 url(images/bg.jpg) repeat-x; 
+    font-size: 1.2em; 
+    height: 24px; 
+    line-height: 24px; 
+}
+.login{
+    font-size: 14px;
+    box-shadow: 0px 0px 0px 4px #f2f5f7;
+    width: 300px;
+    height: 25px;
+    padding: 0 10px 0 10px;
+    margin: 0 auto;
+    color: #444;
+    border: 1px solid #bec2c4;
+    margin-bottom:  10px;
+}
+.login:focus{
+    box-shadow: 0px 0px 0px 4px #e0f1fc;
+    border:1px solid #7dc6dd;
+}
+.acceso{
+    text-align: center;
+    border: 10px;
+}
+.ocultar{display: none;}
+.alerta{
+    font-size: 10px;
+    color: red;
+}
+.reporte-tabla-1{
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 12px;
+    text-align: left;
+    border-collapse: collapse;
+}
+.reporte-tabla-1 thead tr th{
+    /*font-size: 12px;*/
+    text-align: center;
+}
+.reporte-tabla-1 tfoot tr th{text-align: right;}
+.reporte-tabla-1 th{
+    padding: 4px;
+    font-weight: normal;
+    color: #fff;
+    background: #6583E0;
+    border: 1px solid #fff;
+}
+.reporte-tabla-1 tbody tr th{
+    text-align: right;
+    padding-right: 8px;
+}
+.reporte-tabla-1 td{
+    padding: 4px;
+    background: #F1F1F7;
+    border-top: 1px solid #fff;
+    color: #000;
+    border: 1px solid #fff;
+}
+.reporte-tabla-2{
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 11px;
+    text-align: left;
+    border-collapse: collapse;
+}
+.reporte-tabla-2 th{
+    padding-right: 2px;
+    padding-left: 2px;
+    padding-bottom: 1px;
+    padding-top: 1px;
+    font-weight: normal;
+    color: #fff;
+    background: #b9c9fe url(table-images/bg.jpg) ;
+    border: 1px solid #3366ff;
+}
+.reporte-tabla-2 td{
+    padding-right: 2px;
+    padding-left: 2px;
+    padding-bottom: 1px;
+    padding-top: 1px;
+    background: #F1F1F7;
+    border-top: 1px solid #fff;
+    color: #000;
+    border: 1px solid #3366ff;
+}
+tbody tr:hover td{background: #d0dafd;}
+td,th{
+    text-align: left;
+    vertical-align: top;
+}
+.espaciado5{
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 5px;
+    word-spacing:5px;
+}
+input.error, textarea.error, select.error{
+    border: 1px solid red;
+    background-color: #ffcccc
+}
+label.error{
+    width: auto;
+    max-width: 250px;
+    background-color: #ffdddd;
+    padding: 2px 12px;
+    color:#bb0f05;
+    margin-left: 5px;
+    margin-top: 0px;
+    position: absolute;
+    border: 1px solid #BC1010;
+    opacity: 0.7
+}
+label.error:before{
+    content: '';
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 8px solid #BC1010;
+    border-left: 8px solid transparent;
+    left: -16px;
+    position: absolute;
+    top: 2px;
+    opacity: 0.7
+}
+.medio{vertical-align: middle !important;}
+.centrado{text-align: center !important;}
+.derecha{text-align: right !important;}
+.izquierda{text-align: left !important;}
+.anchoTotal{width: 100%;}
+.altoTotal{height: 100%;}
+.contenedorEntrada{padding-right: 10px !important;}
+
+.ancho40px{width: 40px;}
+.ancho60px{width: 60px;}
+.ancho80px{width: 80px;}
+.ancho120px{width: 120px;}
+.ancho140px{width: 140px;}
+.ancho160px{width: 160px;}
+.ancho200px{width: 200px;}
+.ancho240px{width: 240px;}
+.ancho280px{width: 280px;}
+.ancho320px{width: 320px;}
+.ancho360px{width: 360px;}
+.ancho400px{width: 400px;}
+
+.alto40px{height: 40px;}
+.alto60px{height: 60px;}
+.alto80px{height: 80px;}
+.alto120px{height: 120px;}
+.alto140px{height: 140px;}
+.alto160px{height: 160px;}
+.alto200px{height: 200px;}
+.alto240px{height: 240px;}
+.alto280px{height: 280px;}
+.alto320px{height: 320px;}
+.alto360px{height: 360px;}
+.alto400px{height: 400px;}
+
+.documentoEncontrado{background: #ccc !important;}
+
+.entrada{
+    padding: 2px 0px 2px 0px;
+    border: 1px solid #F1F1F7;
+    border-radius:5px;
+    font-size: 14px !important;
+}
+.entrada:focus{
+    box-shadow:0 0 15px #036;
+    background: silver;
+}
+.entrada2:focus{
+    box-shadow:0 0 15px #036;
+    background: silver;
+}
+.placeholder { color: #999999}
+
+.tdFondoTh{
+    background: #6583E0 !important;
+}
+
+.finalVenta{
+    border-top: 3px solid #3366ff !important;
+}

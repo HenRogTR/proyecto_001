@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 17/12/2013 10:15:59 AM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="tablas.Cobranza" table="cobranza" catalog="proyecto_001">
+        <id name="codCobranza" type="java.lang.Integer">
+            <column name="cod_cobranza" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="persona" class="tablas.Persona" fetch="select">
+            <column name="persona_cod_persona" not-null="true" />
+        </many-to-one>
+        <property name="fechaCobranza" type="timestamp">
+            <column name="fecha_cobranza" length="19" />
+        </property>
+        <property name="docSerieNumero" type="string">
+            <column name="doc_serie_numero" length="45" not-null="true" />
+        </property>
+        <property name="saldoAnterior" type="double">
+            <column name="saldo_anterior" precision="10" not-null="true" />
+        </property>
+        <property name="importe" type="double">
+            <column name="importe" precision="10" scale="4" not-null="true" />
+        </property>
+        <property name="saldo" type="double">
+            <column name="saldo" precision="10" not-null="true" />
+        </property>
+        <property name="observacion" type="string">
+            <column name="observacion" length="65535" />
+        </property>
+        <property name="registro" type="string">
+            <column name="registro" length="65535" not-null="true" />
+        </property>
+        <set name="cobranzaDetalles" table="cobranza_detalle" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="cobranza_cod_cobranza" not-null="true" />
+            </key>
+            <one-to-many class="tablas.CobranzaDetalle" />
+        </set>
+    </class>
+</hibernate-mapping>

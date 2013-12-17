@@ -1,0 +1,72 @@
+/* 
+    Document   : contratoCompraVenta
+    Created on : 11/06/2013, 06:52:58 PM
+    Author     : Henrri
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+root { 
+    display: block;
+}
+th,td{
+    padding: 0px;
+}
+
+root { 
+    display: block;
+}
+
+body {
+    font-size:9px;
+    font-family:"Times New Roman", Times, serif;
+    text-align:center;
+    /*padding:30px 0;*/
+    line-height:17px;
+    background: #222;
+    letter-spacing: 3px;
+}
+#documento {
+    width:700px;
+    margin:0 auto;	
+    text-align:left;
+}
+#contenido {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 16px;
+    background: #fff;
+}
+#dCabecera{
+    height: 60px;
+    padding-left: 60px;
+    padding-right: 40px;
+}
+#dCuerpo{
+    /*height: 680px;*/
+    overflow: hidden;
+    padding-left: 60px;
+    padding-right: 40px;
+}
+#dPie{
+    margin-top: 50px;
+    height: 80px;
+    padding-left: 60px;
+    padding-right: 40px;
+}
+th,td{
+    /*border: 1px solid #000;*/
+    vertical-align: top;
+}
+table{
+    width: 100%;
+}
+div{
+    /*background-color: #cccccc;*/
+}
+
+th,td{
+    padding: 0px;
+}
+
+

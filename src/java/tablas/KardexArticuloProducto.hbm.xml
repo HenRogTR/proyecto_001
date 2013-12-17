@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 17/12/2013 10:15:59 AM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="tablas.KardexArticuloProducto" table="kardex_articulo_producto" catalog="proyecto_001">
+        <id name="codKardexArticuloProducto" type="java.lang.Integer">
+            <column name="cod_kardex_articulo_producto" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="articuloProducto" class="tablas.ArticuloProducto" fetch="select">
+            <column name="articulo_producto_cod_articulo_producto" not-null="true" />
+        </many-to-one>
+        <many-to-one name="almacen" class="tablas.Almacen" fetch="select">
+            <column name="almacen_cod_almacen" not-null="true" />
+        </many-to-one>
+        <property name="codOperacion" type="int">
+            <column name="cod_operacion" not-null="true" />
+        </property>
+        <property name="codOperacionDetalle" type="int">
+            <column name="cod_operacion_detalle" not-null="true" />
+        </property>
+        <property name="tipoOperacion" type="int">
+            <column name="tipo_operacion" not-null="true" />
+        </property>
+        <property name="detalle" type="string">
+            <column name="detalle" length="250" />
+        </property>
+        <property name="entrada" type="java.lang.Integer">
+            <column name="entrada" />
+        </property>
+        <property name="salida" type="java.lang.Integer">
+            <column name="salida" />
+        </property>
+        <property name="stock" type="java.lang.Integer">
+            <column name="stock" />
+        </property>
+        <property name="precio" type="java.lang.Double">
+            <column name="precio" precision="10" scale="4" />
+        </property>
+        <property name="precioPonderado" type="java.lang.Double">
+            <column name="precio_ponderado" precision="10" scale="4" />
+        </property>
+        <property name="total" type="java.lang.Double">
+            <column name="total" precision="10" scale="4" />
+        </property>
+        <property name="observacion" type="string">
+            <column name="observacion" length="65535" />
+        </property>
+        <property name="registro" type="string">
+            <column name="registro" length="65535" not-null="true" />
+        </property>
+        <set name="kardexSerieNumeros" table="kardex_serie_numero" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="kardex_articulo_producto_cod_kardex_articulo_producto" not-null="true" />
+            </key>
+            <one-to-many class="tablas.KardexSerieNumero" />
+        </set>
+    </class>
+</hibernate-mapping>
