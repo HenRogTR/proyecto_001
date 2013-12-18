@@ -22,11 +22,9 @@
         <!--cambios-->
         <%@include file="../principal/inclusiones.jsp" %>
         <!--propio-->
-        <script>
-            function fPaginaActual() {
-            }
-            ;
-        </script>
+        <script type="text/javascript" src="../librerias/articuloProducto/articuloProductoKardex.js"></script>
+        <script type="text/javascript" src="../librerias/plugin/mask/jquery.mask.min.js"></script>
+
     </head>
     <body>
         <input type="hidden" name="paginaActualPermiso" id="permisoPaginaP7" value="" title="KARDEX ARTICULO PRODUCTO"/>
@@ -36,22 +34,44 @@
             </div>
             <div id="right">
                 <div id="rightSub1" class="ocultar">
-                    <h3 class="titulo">MOVIMIENTO DE PRODUCTOS</h3>
+                    <h3 class="titulo">
+                        MOVIMIENTO DE PRODUCTOS
+                    </h3>
                     <table class="reporte-tabla-1 anchoTotal">
-                        <!--<thead>-->
+                        <thead>
                             <tr>
-                                <th class="ancho60px medio">CÓDIGO</th>
-                                <td class="ancho120px contenedorEntrada"><input type="search" name="codArticuloProducto" id="codArticuloProducto" value="" class="anchoTotal entrada derecha"/></td>
-                                <th class="ancho60px" rowspan="2">DESCRIPCIÓN</th>
-                                <td class="contenedorEntrada" rowspan="2"><textarea name="descripcion" id="descripcion" class="anchoTotal entrada mayuscula izquierda" style="height: 50px;"></textarea></td>
-                            </tr>
-                            <tr>
-                                <th>ALMACÉN</th>
-                                <td class="contenedorEntrada">
+                                <th class="ancho60px medio">BUSCAR</th>
+                                <td class="ancho80px contenedorEntrada"><input type="search" name="codArticuloProducto" id="codArticuloProducto" value="" class="anchoTotal entrada derecha" placeholder="Código"/></td>
+                                <td class="contenedorEntrada"><textarea name="descripcion" id="descripcion" class="anchoTotal entrada mayuscula izquierda" style="height: 18px;" placeholder="Descripción"></textarea></td>
+                                <th class="ancho60px">ALMACÉN</th>
+                                <td class="contenedorEntrada ancho120px">
                                     <select name="codAlmacen" id="codAlmacen" class="anchoTotal entrada"></select>
                                 </td>
                             </tr>
-                        <!--</thead>-->
+                        </thead>
+                    </table>
+                    <table class="reporte-tabla-2 anchoTotal" style="margin-top: 10px;">
+                        <thead>
+                            <tr>
+                                <th class="ancho60px derecha">CÓDIGO</th>
+                                <td class="ancho80px">0000000</td>
+                                <th class="ancho80px derecha">DESCRIPCIÓN</th>
+                                <td>DESCRIPCIÓN DEL ARTÍCULO</td>
+                            </tr>
+                            <tr>
+                                <th>Fecha hora</th>
+                                <th>Documento</th>
+                                <th>Detalles</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            
+                        </tfoot>
+                        <tbody>
+                            
+                        </tbody>
                     </table>
                 </div>
                 <%@include file="../principal/div2.jsp" %>
