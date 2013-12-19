@@ -66,9 +66,9 @@
     <td><%=new cManejoFechas().registroAFechaHora(objKAP.getRegistro())%></td>
     <td><%=docSerieNumero%></td>
     <td><%=objKAP.getDetalle()%></td>
-    <td class="derecha"><%=objKAP.getEntrada()%></td>
-    <td class="derecha"><%=objKAP.getSalida()%></td>
-    <td class="derecha"><%=objKAP.getStock()%></td>
+    <td class="derecha kap_entrada"><%=objKAP.getEntrada()%></td>
+    <td class="derecha kap_salida"><%=objKAP.getSalida()%></td>
+    <td class="derecha kap_kardex"><span id="kap_<%=objKAP.getCodKardexArticuloProducto()%>" class="codKardexArticuloProducto"><%=objKAP.getStock()%></span></td>
     <td class="derecha"><%=objcOtros.agregarCerosNumeroFormato(objKAP.getPrecio(), 2)%></td>
     <td class="derecha"><%=objcOtros.agregarCerosNumeroFormato(objKAP.getPrecioPonderado(), 2)%></td>
     <td class="derecha"><%=objcOtros.agregarCerosNumeroFormato(objKAP.getTotal(), 2)%></td>

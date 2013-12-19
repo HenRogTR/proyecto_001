@@ -37,7 +37,7 @@
                 overflow-x: hidden;
             }
             /* IE 6 doesn't support max-height
-     * we use height instead, but this forces the menu to always be this tall
+            * we use height instead, but this forces the menu to always be this tall
             */
             * html .ui-autocomplete {
                 height: 300px;
@@ -63,6 +63,11 @@
                     <h3 class="titulo">
                         MOVIMIENTO DE PRODUCTOS
                     </h3>
+                    <div>
+                        <input type="text" name="codKardexArticuloProducto" id="codKardexArticuloProducto" value="" />
+                        <input type="text" name="codOperacion" id="codOperacion" value="" />
+                        <input type="text" name="codOperacionDetalle" id="codOperacionDetalle" value="" />
+                    </div>
                     <table class="reporte-tabla-1 anchoTotal">
                         <thead>
                             <tr>

@@ -107,6 +107,11 @@ function APKardex(codArticuloProducto) {
             },
             success: function(ajaxResponse, textStatus) {
                 $('#tbArticuloProductoKardex').empty().append(ajaxResponse);
+                $('.kap_kardex').bind('click', function(event) {
+                    var codKAP = $(this).find('.codKardexArticuloProducto').attr('id');
+                    $('#codKardexArticuloProducto').val(codKAP.substring(4, codKAP.length));
+                    fKAPSNStock();
+                });
                 $('#descripcion').val('');
                 $('#codArticuloProducto').val('').focus();
             },
@@ -152,6 +157,15 @@ function articuloProductoMarcado(event, ui) {
     $("#codArticuloProducto").val(articuloProducto.codArticuloProducto);
     $("#descripcion").val(articuloProducto.descripcion);
     event.preventDefault();
+}
+;
+
+function fKAPSNStock() {
+    fDLibreAbrir();
+    setTimeout(function() {
+        fDLibreEditar(450, 450, 'Kardex', 'varios');
+    }, 1000);
+    
 }
 ;
 

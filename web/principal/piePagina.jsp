@@ -47,3 +47,8 @@
             <strong><label id="lProcesandoPeticion">¡Procesando petición!</label> Espere por favor...</strong></p>
     </div>
 </div>
+
+<!--div libre-->
+<div id="dLibre" style="text-align: center; vertical-align: middle;">
+    <img src="../imagenes/loading_1.gif" style="height: 50px;"/>
+</div>

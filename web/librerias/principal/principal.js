@@ -163,7 +163,25 @@ $(function() {
             $(this).dialog("close");
         }
     });
+
+    $('#dLibre').dialog({
+        autoOpen: false,
+        modal: true,
+        resizable: true,
+        height: 155,
+        width: 150,
+        close: function() {
+            fDLibreReiniciar();
+            $(this).dialog('close');
+        },
+        buttons: {
+            Aceptar: function() {
+                $(this).dialog('close');
+            }
+        }
+    });
 });
+
 
 function fComprobarSesion(valor) {
     var data = 'accionUsuario=sesionComprobar';
@@ -533,3 +551,40 @@ function fRedireccionarEspera(direccion, tiempo) {
 function  fEspererarGif() {
     return '<div class="esperando"><img alt="not found" src="../imagenes/loading.gif" style="height: 11px;"></div>';
 }
+;
+
+function fDLibreAbrir() {
+    var $dLibre = $('#dLibre').dialog('open');
+}
+;
+
+function fDLibreCerrar() {
+    var $dLibre = $('#dLibre').dialog('close');
+}
+;
+
+/**
+ * 
+ * @param {type} alto
+ * @param {type} ancho
+ * @param {type} titulo
+ * @param {type} contenido
+ * @returns {undefined}
+ */
+function fDLibreEditar(alto, ancho, titulo, contenido) {
+    var $dLibre = $('#dLibre');
+    $dLibre.empty().append(contenido);
+    $dLibre.dialog('option', 'height', alto);
+    $dLibre.dialog('option', 'width', ancho);
+    $dLibre.dialog('option', 'title', titulo);
+}
+;
+
+function fDLibreReiniciar() {
+    var $dLibre = $('#dLibre');
+    $dLibre.empty().append('<img src="../imagenes/loading_1.gif" style="height: 50px;"/>');
+    $dLibre.dialog('option', 'height', 155);
+    $dLibre.dialog('option', 'width', 150);
+    $dLibre.dialog('option', 'title', '');
+}
+;
