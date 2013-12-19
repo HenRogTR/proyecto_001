@@ -1,40 +1,33 @@
 <%-- 
-    Document   : kardexArticuloProducto
-    Created on : 21/12/2012, 09:46:31 PM
+    Document   : kardexArticuloProductoNuevo
+    Created on : 17/12/2013, 11:16:29 AM
     Author     : Henrri
 --%>
 
 <%@page import="tablas.Almacen"%>
-<%@page import="java.util.List"%>
+<%@page import="java.util.Iterator"%>
 <%@page import="compraClases.cAlmacen"%>
-<%@page import="tablas.Usuario"%>
+<%@page import="java.util.List"%>
+<%@page import="utilitarios.cManejoFechas"%>
 <%
-    Usuario objUsuario = (Usuario) session.getAttribute("usuario");
-    if (objUsuario == null) {
-        session.removeAttribute("direccion");
-        session.setAttribute("direccion", "");
-        response.sendRedirect("../");
-    } else {
-
+    cManejoFechas objcManejoFechas = new cManejoFechas();
 %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Kardex de Artículos/Producto</title>
-        <!--stilo inicio-->
-        <link rel="stylesheet" type="text/css" href="../lib/propios/css/inicio/style.css" />
-        <!--js query-->
-        <script type="text/javascript" src="../lib/jquery/jquery-1.8.1.min.js"></script>
-        <!--css js ui-->
-        <link rel="stylesheet" type="text/css" href="../lib/jquery-ui/jquery-ui-1.10.0.custom/css/smoothness/jquery-ui-1.10.0.custom.min.css">
-        <script type="text/javascript" src="../lib/jquery-ui/jquery-ui-1.9.0/jquery-ui-git.js"></script>
-        <!--css frm-->
-        <link rel="stylesheet" type="text/css" href="../lib/propios/css/tablas/tablas-reportes.css" />
-        <!--css iconos-->
-        <link rel="stylesheet" type="text/css" href="../lib/botones/sexybuttons.css">
-        <!--js css propio-->
+        <title></title>
+        <!--todos-->
+        <script type="text/javascript" src="../librerias/jquery/jquery-1.9.0-min.js" ></script>
+        <script type="text/javascript" src="../librerias/jquery/jquery.timer-min.js" ></script>
+        <script type="text/javascript" src="../librerias/jquery-ui/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.min.js" ></script>
+        <link rel="stylesheet" type="text/css" href="../librerias/principal/todos.css" media="all"/>
+        <!--cambios-->
+        <%@include file="../principal/inclusiones.jsp" %>
+        <!--propio-->
+        <script type="text/javascript" src="../librerias/articuloProducto/articuloProductoKardex.js"></script>
+        <script type="text/javascript" src="../librerias/plugin/mask/jquery.mask.min.js"></script>
         <style>            
             .ui-autocomplete {
                 width: 500px;
@@ -50,74 +43,102 @@
                 height: 300px;
             }
         </style>
-        <script type="text/javascript" src="../lib/articulo-producto/articulo.producto-kardex.js"></script>
     </head>
     <body>
+        <%
+            int codArticuloProducto = 0;
+            try {
+                codArticuloProducto = (Integer) session.getAttribute("codArticuloProductoKardex");
+            } catch (Exception e) {
+
+            }
+        %>
+        <input type="hidden" name="paginaActualPermiso" id="permisoPaginaP7" value="" title="KARDEX ARTICULO PRODUCTO"/>
         <div id="wrap">
-
             <div id="header">
-                <%@include file="../cabecera.jsp" %>
+                <label class="horaCabecera"><%=objcManejoFechas.fechaCabecera()%></label>
             </div>
-
-            <div id="left"> 
-                <%@include file="../menu2.jsp" %>
-            </div>
-
             <div id="right">
-                <%
-                    session.removeAttribute("accion");
-                %>
-                <h3 class="titulo">MOVIMIENTO DE PRODUCTOS</h3>
-                <br>
-                <label class="tamanio">Código: </label> <input type="text" name="codArticuloProducto" id="codArticuloProducto" value="" placeholder="Código" style="width: 80px;text-align: right;"/>
-                <input type="text" id="descripcion" name="descripcion" class="search" placeholder="Buscar producto" style="width: 480px"/>
-                <label class="tamanio">Almacén</label>
-                <select id="codAlmacen">
-                    <option value="">Seleccione</option>
-                    <%
-                        cAlmacen objcAlmacen = new cAlmacen();
-                        List lAlmacen = objcAlmacen.leer();
-                        for (int i = 0; i < lAlmacen.size(); i++) {
-                            Almacen objAlmacen = (Almacen) lAlmacen.get(i);
-                    %>
-                    <option value="<%=objAlmacen.getCodAlmacen()%>" <%if(objAlmacen.getCodAlmacen()==1){%>selected=""<%} %> ><%=objAlmacen.getAlmacen()%></option>
-                    <%
-                        }
-                    %>
-                </select>
-                <br>
-                <br>
-                <table class="reporte-tabla-1" style="width: 100%;">
-                    <thead>
-                        <tr>
-                            <th colspan="9"><label id="arti">COD: </label></th>
-                        </tr>
-                        <tr style="font-size: 9px; background: #999999">
-                            <th style="width: 110px">Fecha y hora</th>
-                            <th style="width: 100px">Documento</th>
-                            <th>Detalles</th>
-                            <th style="width: 30px">Entrada</th>
-                            <th style="width: 30px">Salida</th>
-                            <th style="width: 30px">Stock</th>
-                            <th style="width: 65px">Precio</th>
-                            <th style="width: 65px">P. Ponderado</th>
-                            <th style="width: 65px">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody style="font-size:  10px" id="kardexArticuloProducto">
-                    </tbody>
-                </table>
+                <div id="rightSub1" class="ocultar">
+                    <h3 class="titulo">
+                        MOVIMIENTO DE PRODUCTOS
+                    </h3>
+                    <table class="reporte-tabla-1 anchoTotal">
+                        <thead>
+                            <tr>
+                                <th class="ancho60px medio">BUSCAR</th>
+                                <td class="ancho120px contenedorEntrada medio"><input type="search" name="codArticuloProducto" id="codArticuloProducto" value="<%=codArticuloProducto == 0 ? "" : codArticuloProducto%>" class="anchoTotal entrada derecha" placeholder="Código"/></td>
+                                <td class="contenedorEntrada"><textarea name="descripcion" id="descripcion" class="anchoTotal entrada mayuscula izquierda" style="height: 35px;" placeholder="Descripción"></textarea></td>
+                                <th class="ancho60px medio">ALMACÉN</th>
+                                <td class="contenedorEntrada ancho120px medio">
+                                    <%
+                                        List almacenList = new cAlmacen().leer();
+                                    %>
+                                    <select name="codAlmacen" id="codAlmacen" class="anchoTotal entrada">
+                                        <%
+                                            for (Iterator it = almacenList.iterator(); it.hasNext();) {
+                                                Almacen objAlmacen = (Almacen) it.next();
+                                        %>
+                                        <option value="<%=objAlmacen.getCodAlmacen()%>"><%=objAlmacen.getAlmacen()%></option>
+                                        <%
+                                            }
+                                        %>
+                                    </select>
+                                </td>
+                            </tr>
+                        </thead>
+                    </table>
+                    <table class="reporte-tabla-1 anchoTotal" style="margin-top: 10px; font-size: 10px;">
+                        <thead>
+                            <tr>
+                                <th colspan="2">CÓDIGO/DESCRIPCIÓN</th>
+                                <td colspan="7"><div class="vaciar" id="codDescripcion"></div></td>
+                            </tr>
+                            <tr>
+                                <th style="width: 110px">Fecha y hora</th>
+                                <th style="width: 100px">Documento</th>
+                                <th>Detalles</th>
+                                <th style="width: 30px">Entrada</th>
+                                <th style="width: 30px">Salida</th>
+                                <th style="width: 30px">Stock</th>
+                                <th style="width: 65px">Precio</th>
+                                <th style="width: 65px">P. Ponderado</th>
+                                <th style="width: 65px">Total</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+
+                        </tfoot>
+                        <tbody id="tbArticuloProductoKardex" class="vaciar">
+                            <!--                            <tr>
+                                                            <td>26/04/2013 13:36:50</td>
+                                                            <td>F-001-029861</td>
+                                                            <td>C/Crédito E.H. INVERSIONES SAC</td>
+                                                            <td class="derecha">20</td>
+                                                            <td class="derecha">0</td>
+                                                            <td class="derecha">20</td>
+                                                            <td class="derecha">310.00</td>
+                                                            <td class="derecha">310.00</td>
+                                                            <td class="derecha">6200.00</td>
+                                                        </tr>-->
+                        </tbody>
+                    </table>
+                </div>
+                <%@include file="../principal/div2.jsp" %>
             </div>
-
-            <div style="clear: both;"> </div>
-
+            <div id="left">
+                <div class="acceso">
+                    <h3 class="titulo">INICIE SESIÓN</h3>                    
+                    <button class="sexybutton" id="bAccesoAbrir"><span><span><img src="../librerias/botonesIconos/images/icons/silk/key_go.png">Ejecutar SICCI</span></span></button>
+                </div>
+                <div id="menu" class="ocultar">
+                    <%@include file="../principal/menu.jsp" %>
+                </div>
+            </div>
+            <div style="clear: both;"></div>
             <div id="footer">
-                <%@include file="../piePagina.jsp" %>
+                <%@include file="../principal/piePagina.jsp" %>
             </div>
         </div>
     </body>
 </html>
-
-<%
-    }
-%>

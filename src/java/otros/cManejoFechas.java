@@ -69,7 +69,7 @@ public class cManejoFechas {
      * @return dd/mm/aaaa hh:mm:ss
      */
     // </editor-fold>
-    public String regsitroAFechaHora(String registro) {
+    public String registroAFechaHora(String registro) {
         return registro.substring(7, 9) + "/" + registro.substring(5, 7) + "/"
                 + registro.substring(1, 5) + " " + registro.substring(9, 11) + ":"
                 + registro.substring(11, 13) + ":" + registro.substring(13, 15);

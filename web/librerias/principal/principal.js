@@ -529,3 +529,7 @@ function fRedireccionarEspera(direccion, tiempo) {
     }, tiempo);
 }
 ;
+
+function  fEspererarGif() {
+    return '<div class="esperando"><img alt="not found" src="../imagenes/loading.gif" style="height: 11px;"></div>';
+}

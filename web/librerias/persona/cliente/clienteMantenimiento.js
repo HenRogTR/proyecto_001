@@ -95,7 +95,7 @@ $(function() {
                 text: 'Editar',
                 click: function() {
                     if (fDNValidar()) {
-                        fDNEditar()
+                        fDNEditar();
                     }
                 }
             },

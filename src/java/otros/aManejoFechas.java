@@ -21,7 +21,7 @@ public class aManejoFechas {
         cManejoFechas objcManejoFechas=new cManejoFechas();
         System.out.println(objcManejoFechas.caracterADate("15/12/2012").toLocaleString());
         
-        System.out.println(objcManejoFechas.regsitroAFechaHora("1201304121110371"));
+        System.out.println(objcManejoFechas.registroAFechaHora("1201304121110371"));
         Integer a=0;
         int b=0;
         if(a.equals(b)){
