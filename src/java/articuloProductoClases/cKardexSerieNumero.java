@@ -71,13 +71,14 @@ public class cKardexSerieNumero {
 //        from KardexSerieNumero a where a.codKardexSerieNumero=1 and substring(registro,1,1)=1setError(null);
         try {
             sesion = HibernateUtil.getSessionFactory().openSession();
-            Query q = sesion.createQuery("from KardexSerieNumero a "
-                    + "where a.kardexArticuloProducto.codKardexArticuloProducto=:cod "
-                    + "and substring(registro,1,1)=1")
+            Query q = sesion.createQuery("from KardexSerieNumero ksn "
+                    + "where ksn.kardexArticuloProducto.codKardexArticuloProducto=:cod "
+                    + "and substring(ksn.registro,1,1)=1")
                     .setParameter("cod", codKardexArticuloProducto);
             return (List) q.list();
         } catch (Exception e) {
             setError(e.getMessage());
+            e.printStackTrace();
         }
         return null;
     }

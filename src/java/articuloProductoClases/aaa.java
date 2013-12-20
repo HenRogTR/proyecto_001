@@ -6,6 +6,7 @@
 package articuloProductoClases;
 
 import java.util.Iterator;
+import java.util.List;
 import tablas.ArticuloProducto;
 import utilitarios.cOtros;
 
@@ -24,19 +25,7 @@ public class aaa {
         cOtros objcOtros = new cOtros();
         cArticuloProducto objcArticuloProducto = new cArticuloProducto();
 
-        int cant = 0;
-        for (Iterator it = objcArticuloProducto.leer_admin().iterator(); it.hasNext();) {
-            ArticuloProducto obj = (ArticuloProducto) it.next();
-            if (obj.getDescripcion().length() > cant) {
-                System.out.println(obj.getCodArticuloProducto() + " (" + obj.getDescripcion().length() + ") " + obj.getDescripcion());
-                cant = obj.getDescripcion().length();
-            }
-        }
+        List KSNList = new cKardexSerieNumero().leer_por_codKardexArticuloProducto(1);
+        System.out.println(KSNList);
     }
-
-    public Boolean est() {
-        Boolean esta = false;
-        return esta;
-    }
-
 }

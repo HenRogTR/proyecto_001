@@ -38,61 +38,125 @@
                 <div id="rightSub1" class="ocultar">
                     <h3 class="titulo">MANTENIMIENTO DE COMPRAS</h3>
                     <table class="reporte-tabla-1">
-                        <thead>
-                            <tr>
-                                <th colspan="5" class="centrado">
-                                    <button class="sexybutton" id="bPrimero"><span><span><span class="first">Primero</span></span></span></button>
-                                    <button class="sexybutton" id="bAnterior"><span><span><span class="prev">Anterior</span></span></span></button>
-                                    <button class="sexybutton" id="bSiguiente"><span><span><span class="next">Siguiente</span></span></span></button>
-                                    <button class="sexybutton" id="bUltimo"><span><span><span class="last">Último</span></span></span></button>
-                                </th>
-                                <th class="centrado">                                                
-                                    <button class="sexybutton sexyicononly sexysimple sexysmall sexypropio" id="bImprimir"><span class="print"></span></button>
-                                    <button class="sexybutton sexyicononly sexysimple sexysmall sexypropio" id="bEditar"><span class="edit"></span></button>
-                                    <button class="sexybutton sexyicononly sexysimple sexysmall sexypropio" id="bAnular"><span class="delete"></span></button>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th>COD. OPERACIÓN</th>
-                                <td><span id="lCodCompra" class="vaciar"></span></td>
-                                <th>DET. REGISTRO</th>
-                                <td colspan="3"><span id="lRegistroDetalle" class="vaciar"></span></td>
-                            </tr>
-                            <tr>
-                                <th class="ancho120px">DOCUMENTO</th>
-                                <td class="ancho140px"><span id="" class="vaciar"></span></td>
-                                <th class="ancho140px">TIPO DE COMPRA</th>
-                                <td class="ancho120px"><span id="" class="vaciar"></span></td>
-                                <th class="ancho140px">MONEDA</th>
-                                <td class="ancho120px"><span id="" class="vaciar"></span></td>
-                            </tr>
-                            <tr>
-                                <th>RUC</th>
-                                <td><span id="" class="vaciar"></span></td>
-                                <th>RAZON SOCIAL</th>
-                                <td colspan="3"><span id="" class="vaciar"></span></td>
-                            </tr>
-                            <tr>
-                                <th>DIRECCIÓN</th>
-                                <td colspan="5"><span id="" class="vaciar"></span></td>
-                            </tr>
-                            <tr>
-                                <th>F. FACTURA</th>
-                                <td><span id="" class="vaciar"></span></td>
-                                <th>F. VENCIMIENTO</th>
-                                <td><span id="" class="vaciar"></span></td>
-                                <th>F. LLEGADA</th>
-                                <td><span id="" class="vaciar"></span></td>
-                            </tr>
-                            <tr>
-                                <th colspan="6">
-                                    
-                                </th>
-                            </tr>
-                        </tbody>
+                        <tr>
+                            <th class="ancho80px"><span>BUSCAR</span></th>
+                            <td class="ancho120px contenedorEntrada"><input type="search" name="codCompraBuscar" id="codCompraBuscar" value="" class="entrada anchoTotal derecha"/></td>
+                            <td class="ancho160px contenedorEntrada"><input type="text" name="docSerieNumeroBuscar" id="docSerieNumeroBuscar" value="" class="entrada anchoTotal"/></td>
+                        </tr>
                     </table>
+                    <div>
+                        <table class="reporte-tabla-1 anchoTotal" style="margin-top: 10px;">
+                            <thead>
+                                <tr>
+                                    <th colspan="5" class="centrado">
+                                        <button class="sexybutton" id="bPrimero"><span><span><span class="first">Primero</span></span></span></button>
+                                        <button class="sexybutton" id="bAnterior"><span><span><span class="prev">Anterior</span></span></span></button>
+                                        <button class="sexybutton" id="bSiguiente"><span><span><span class="next">Siguiente</span></span></span></button>
+                                        <button class="sexybutton" id="bUltimo"><span><span><span class="last">Último</span></span></span></button>
+                                    </th>
+                                    <th class="centrado">                                                
+                                        <button class="sexybutton sexyicononly sexysimple sexysmall sexypropio" id="bImprimir"><span class="print"></span></button>
+                                        <button class="sexybutton sexyicononly sexysimple sexysmall sexypropio" id="bEditar"><span class="edit"></span></button>
+                                        <button class="sexybutton sexyicononly sexysimple sexysmall sexypropio" id="bAnular"><span class="delete"></span></button>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>COD. OPERACIÓN</th>
+                                    <td><span id="lCodCompra" class="vaciar"></span></td>
+                                    <th>DET. REGISTRO</th>
+                                    <td colspan="3"><span id="lRegistroDetalle" class="vaciar"></span></td>
+                                </tr>
+                                <tr>
+                                    <th class="ancho120px">DOCUMENTO</th>
+                                    <td><span id="" class="vaciar"></span></td>
+                                    <th class="ancho140px">TIPO DE COMPRA</th>
+                                    <td class="ancho120px"><span id="" class="vaciar"></span></td>
+                                    <th class="ancho140px">MONEDA</th>
+                                    <td class="ancho120px"><span id="" class="vaciar"></span></td>
+                                </tr>
+                                <tr>
+                                    <th>RUC</th>
+                                    <td><span id="" class="vaciar"></span></td>
+                                    <th>RAZON SOCIAL</th>
+                                    <td colspan="3"><span id="" class="vaciar"></span></td>
+                                </tr>
+                                <tr>
+                                    <th>DIRECCIÓN</th>
+                                    <td colspan="5"><span id="" class="vaciar"></span></td>
+                                </tr>
+                                <tr>
+                                    <th>F. FACTURA</th>
+                                    <td><span id="" class="vaciar"></span></td>
+                                    <th>F. VENCIMIENTO</th>
+                                    <td><span id="" class="vaciar"></span></td>
+                                    <th>F. LLEGADA</th>
+                                    <td><span id="" class="vaciar"></span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div style="padding: 5px;" class="tdFondoTh">
+                            <table class="reporte-tabla-1 anchoTotal" style="font-size: 10px;">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 22px;"><label>Item</label></th>
+                                        <th style="width: 28px;"><label>Cant.</label></th>
+                                        <th style="width: 55px;"><label>U. Medida</label></th>
+                                        <th><label>Descripción</label></th>
+                                        <th style="width: 65px;"><label>P. Unitario</label></th>
+                                        <th style="width: 65px;"><label>P. Total</label></th>
+
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="2"><label>Son</label></th>
+                                        <td colspan="2" rowspan="2"><label id="lSon"></label></td>
+                                        <th><label>Sub total</label></th>
+                                        <td class="derecha"><label id="lSubTotal"></label></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><label></label></td>
+                                        <th><label>Descuento</label></th>
+                                        <td class="derecha"><label id="lDescuento"></label></td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="2" rowspan="3">Observa-<br> ciones</th>
+                                        <td colspan="2" rowspan="4"><label style="text-align: justify;" id="lObservacion"></label></td>
+                                        <th><label>Total</label></th>
+                                        <td class="derecha"><label id="lTotal"></label></td>
+                                    </tr>
+                                    <tr>
+                                        <th><label>IGV</label></th>
+                                        <td class="derecha"><label id="lMontoIgv"></label></td>
+                                    </tr>
+                                    <tr>
+                                        <th><label>Neto</label></th>
+                                        <td class="derecha"><label id="lNeto"></label></td>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    <tr>
+                                        <td class="derecha"><span>1</span></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="derecha"><span>2</span></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
                 <div id="rightSub2" class="ocultar">
                     <div>

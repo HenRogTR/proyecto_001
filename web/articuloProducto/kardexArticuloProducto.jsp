@@ -64,6 +64,8 @@
                         MOVIMIENTO DE PRODUCTOS
                     </h3>
                     <div>
+                        <input type="text" name="codArticuloProducto" id="codArticuloProducto" value="<%=codArticuloProducto == 0 ? "" : codArticuloProducto%>"/>
+                        <input type="text" name="usarSerieNumero" id="usarSerieNumero" value="" />
                         <input type="text" name="codKardexArticuloProducto" id="codKardexArticuloProducto" value="" />
                         <input type="text" name="codOperacion" id="codOperacion" value="" />
                         <input type="text" name="codOperacionDetalle" id="codOperacionDetalle" value="" />
@@ -72,8 +74,8 @@
                         <thead>
                             <tr>
                                 <th class="ancho60px medio">BUSCAR</th>
-                                <td class="ancho120px contenedorEntrada medio"><input type="search" name="codArticuloProducto" id="codArticuloProducto" value="<%=codArticuloProducto == 0 ? "" : codArticuloProducto%>" class="anchoTotal entrada derecha" placeholder="Código"/></td>
-                                <td class="contenedorEntrada"><textarea name="descripcion" id="descripcion" class="anchoTotal entrada mayuscula izquierda" style="height: 35px;" placeholder="Descripción"></textarea></td>
+                                <td class="ancho120px contenedorEntrada medio"><input type="search" name="codArticuloProductoBuscar" id="codArticuloProductoBuscar" value="" class="anchoTotal entrada derecha" placeholder="Código"/></td>
+                                <td class="contenedorEntrada"><textarea name="descripcionBuscar" id="descripcionBuscar" class="anchoTotal entrada mayuscula izquierda" style="height: 35px;" placeholder="Descripción"></textarea></td>
                                 <th class="ancho60px medio">ALMACÉN</th>
                                 <td class="contenedorEntrada ancho120px medio">
                                     <%

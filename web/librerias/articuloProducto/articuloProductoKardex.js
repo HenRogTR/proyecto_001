@@ -5,7 +5,7 @@
  */
 
 $(document).ready(function() {
-    $('#codArticuloProducto')
+    $('#codArticuloProductoBuscar')
             .mask('#', {maxlength: false})
             .keypress(function(event) {
                 var key = event.charCode ? event.charCode : (event.keyCode ? event.keyCode : 0);
@@ -23,7 +23,7 @@ $(document).ready(function() {
  * @returns {undefined}
  */
 $(function() {
-    $("#descripcion").autocomplete({
+    $("#descripcionBuscar").autocomplete({
         source: "autocompletado/articuloProductoDescripcionBuscar.jsp", /* este es el formulario que realiza la busqueda */
         minLength: 3, /* le decimos que espere hasta que haya 2 caracteres escritos */
         select: articuloProductoSeleccionado, /* esta es la rutina que extrae la informacion del registro seleccionado */
@@ -38,7 +38,7 @@ $(function() {
  */
 function fAPLeer(codArticuloProducto) {
     var data = {codArticuloProducto: codArticuloProducto};
-    var url = 'ajax/ap.jsp';
+    var url = 'ajax/kap/ap.jsp';
     try {
         $.ajax({
             type: 'post',
@@ -65,6 +65,7 @@ function fAPLeer(codArticuloProducto) {
                 } else {
                     var apItem = apArray[0];
                     $('#codDescripcion').empty().append(apItem.codArticuloProducto + ' / ' + apItem.descripcion);
+                    $('#usarSerieNumero').val(apItem.usarSerieNumero ? '1' : '0');
                     APKardex(apItem.codArticuloProducto);
                 }
             },
@@ -92,7 +93,7 @@ function APKardex(codArticuloProducto) {
         codArticuloProducto: codArticuloProducto,
         codAlmacen: $('#codAlmacen').val()
     };
-    var url = 'ajax/apk.jsp';
+    var url = 'ajax/kap/apk.jsp';
     try {
         $.ajax({
             type: 'post',
@@ -112,8 +113,8 @@ function APKardex(codArticuloProducto) {
                     $('#codKardexArticuloProducto').val(codKAP.substring(4, codKAP.length));
                     fKAPSNStock();
                 });
-                $('#descripcion').val('');
-                $('#codArticuloProducto').val('').focus();
+                $('#descripcionBuscar').val('');
+                $('#codArticuloProductoBuscar').val('').focus();
             },
             statusCode: {
                 404: function() {
@@ -139,7 +140,7 @@ function APKardex(codArticuloProducto) {
 function articuloProductoSeleccionado(event, ui) {
     var articuloProducto = ui.item.value;
     $("#codArticuloProducto").val(articuloProducto.codArticuloProducto);
-    $("#descripcion").val(articuloProducto.descripcion);
+    $("#descripcionBuscar").val(articuloProducto.descripcion);
     fAPLeer(articuloProducto.codArticuloProducto);
     event.preventDefault();
 }
@@ -155,17 +156,50 @@ function articuloProductoSeleccionado(event, ui) {
 function articuloProductoMarcado(event, ui) {
     var articuloProducto = ui.item.value;
     $("#codArticuloProducto").val(articuloProducto.codArticuloProducto);
-    $("#descripcion").val(articuloProducto.descripcion);
+    $("#descripcionBuscar").val(articuloProducto.descripcion);
     event.preventDefault();
 }
 ;
 
 function fKAPSNStock() {
+    if ($('#usarSerieNumero').val() == '0') {
+        fAlerta('El artículo no maneja S/N');
+        return;
+    }
     fDLibreAbrir();
-    setTimeout(function() {
-        fDLibreEditar(450, 450, 'Kardex', 'varios');
-    }, 1000);
-    
+    var data = {codKAP: $('#codKardexArticuloProducto').val()};
+    var url = 'ajax/kap/ksn.jsp';
+    try {
+        $.ajax({
+            type: 'post',
+            url: url,
+            data: data,
+            beforeSend: function() {
+
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                $('#lServidorError').text(errorThrown + '()');
+                $('#dServidorError').dialog('open');
+            },
+            success: function(ajaxResponse, textStatus) {
+                fDLibreEditar(500, 900, 'S/N en stock en actual periodo', ajaxResponse);
+            },
+            statusCode: {
+                404: function() {
+                    $('#lServidorError').text('Página no encontrada().');
+                    $('#dServidorError').dialog('open');
+                }
+            }
+        });
+    }
+    catch (ex) {
+        $('#lServidorError').text(ex);
+        $('#dServidorError').dialog('open');
+    }
+//    setTimeout(function() {
+//
+//    }, 1000);
+
 }
 ;
 

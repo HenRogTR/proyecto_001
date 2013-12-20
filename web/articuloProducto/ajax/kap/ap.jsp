@@ -27,7 +27,7 @@
                 + ",\"familia\" : \"" + objArticuloProducto.getFamilia().getFamilia() + "\" "
                 + ",\"marca\" : \"" + objArticuloProducto.getMarca().getDescripcion() + "\" "
                 + ",\"unidadMedida\" : \"" + objArticuloProducto.getUnidadMedida() + "\" "
-                + ",\"usarSerieNumero\" : \"" + (objArticuloProducto.getUsarSerieNumero() ? "HABILITADO" : "DESABILITADO") + "\""
+                + ",\"usarSerieNumero\" : " + objArticuloProducto.getUsarSerieNumero()
                 + ",\"reintegroTributario\" : \"" + (objArticuloProducto.getReintegroTributario() ? "SI" : "NO") + "\""
                 + ",\"observaciones\" : \"" + objArticuloProducto.getObservaciones() + "\""
                 + ",\"registro\" : \"" + objArticuloProducto.getRegistro() + "\""
