@@ -63,7 +63,7 @@
                     <h3 class="titulo">
                         MOVIMIENTO DE PRODUCTOS
                     </h3>
-                    <div>
+                    <div class="ocultar">
                         <input type="text" name="codArticuloProducto" id="codArticuloProducto" value="<%=codArticuloProducto == 0 ? "" : codArticuloProducto%>"/>
                         <input type="text" name="usarSerieNumero" id="usarSerieNumero" value="" />
                         <input type="text" name="codKardexArticuloProducto" id="codKardexArticuloProducto" value="" />

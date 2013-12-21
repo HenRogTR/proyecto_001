@@ -22,11 +22,22 @@
         <!--cambios-->
         <%@include file="../principal/inclusiones.jsp" %>
         <!--propio-->
-        <script>
-            function fPaginaActual() {
+        <script type="text/javascript" src="../librerias/compra/compraMantenimiento.js"></script>
+        <style>
+            .ui-autocomplete {
+                width: 400px;
+                max-height: 300px;
+                overflow-y: auto;
+                /* prevent horizontal scrollbar */
+                overflow-x: hidden;
             }
-            ;
-        </script>
+            /* IE 6 doesn't support max-height
+            * we use height instead, but this forces the menu to always be this tall
+            */
+            * html .ui-autocomplete {
+                height: 300px;
+            }
+        </style>
     </head>
     <body>
         <input type="hidden" name="paginaActualPermiso" id="permisoPaginaP39" value="" title="MANTENIMIENTO DE COMPRAS"/>
@@ -35,11 +46,21 @@
                 <label class="horaCabecera"><%=objcManejoFechas.fechaCabecera()%></label>
             </div>
             <div id="right">
+                <%
+                    int codCompra = 0;
+                    try {
+                        codCompra = (Integer) session.getAttribute("codCompraMantenimiento");
+                    } catch (Exception e) {
+                    }
+                %>
                 <div id="rightSub1" class="ocultar">
-                    <h3 class="titulo">MANTENIMIENTO DE COMPRAS</h3>
+                    <h3 class="titulo"><a href="../sCompra?accionCompra=r" class="sexybutton"><span><span><span class="add">Nueva compra</span></span></span></a> MANTENIMIENTO DE COMPRAS <a class="sexybutton" href="compraListar.jsp"><span><span><span class="info">Version antigua</span></span></span></a></h3>
+                    <div class="ocultar">
+                        <input type="text" name="codCompra" id="codCompra" value="<%=codCompra%>" />
+                    </div>
                     <table class="reporte-tabla-1">
                         <tr>
-                            <th class="ancho80px"><span>BUSCAR</span></th>
+                            <th class="ancho80px"><button class="sexybutton sexyicononly sexysimple sexysmall sexypropio" id="bEditar"><span class="search"></span></button><span>BUSCAR</span></th>
                             <td class="ancho120px contenedorEntrada"><input type="search" name="codCompraBuscar" id="codCompraBuscar" value="" class="entrada anchoTotal derecha"/></td>
                             <td class="ancho160px contenedorEntrada"><input type="text" name="docSerieNumeroBuscar" id="docSerieNumeroBuscar" value="" class="entrada anchoTotal"/></td>
                         </tr>
@@ -55,7 +76,7 @@
                                         <button class="sexybutton" id="bUltimo"><span><span><span class="last">Último</span></span></span></button>
                                     </th>
                                     <th class="centrado">                                                
-                                        <button class="sexybutton sexyicononly sexysimple sexysmall sexypropio" id="bImprimir"><span class="print"></span></button>
+                                        <a class="sexybutton sexyicononly sexysimple sexysmall sexypropio" id="bImprimir" href="#"><span class="print"></span></a>
                                         <button class="sexybutton sexyicononly sexysimple sexysmall sexypropio" id="bEditar"><span class="edit"></span></button>
                                         <button class="sexybutton sexyicononly sexysimple sexysmall sexypropio" id="bAnular"><span class="delete"></span></button>
                                     </th>
@@ -64,35 +85,35 @@
                             <tbody>
                                 <tr>
                                     <th>COD. OPERACIÓN</th>
-                                    <td><span id="lCodCompra" class="vaciar"></span></td>
+                                    <td><div id="lCodCompra" class="vaciar esperando"></div></td>
                                     <th>DET. REGISTRO</th>
-                                    <td colspan="3"><span id="lRegistroDetalle" class="vaciar"></span></td>
+                                    <td colspan="3"><div id="lRegistro" class="vaciar esperando"></div></td>
                                 </tr>
                                 <tr>
                                     <th class="ancho120px">DOCUMENTO</th>
-                                    <td><span id="" class="vaciar"></span></td>
+                                    <td><div id="lDocSerieNumero" class="vaciar esperando"></div></td>
                                     <th class="ancho140px">TIPO DE COMPRA</th>
-                                    <td class="ancho120px"><span id="" class="vaciar"></span></td>
+                                    <td class="ancho120px"><div id="lTipo" class="vaciar esperando"></div></td>
                                     <th class="ancho140px">MONEDA</th>
-                                    <td class="ancho120px"><span id="" class="vaciar"></span></td>
+                                    <td class="ancho120px"><div id="lMoneda" class="vaciar esperando"></div></td>
                                 </tr>
                                 <tr>
                                     <th>RUC</th>
-                                    <td><span id="" class="vaciar"></span></td>
+                                    <td><div id="lRuc" class="vaciar esperando"></div><div class=></div</td>
                                     <th>RAZON SOCIAL</th>
-                                    <td colspan="3"><span id="" class="vaciar"></span></td>
+                                    <td colspan="3"><div id="lRazonSocial" class="vaciar esperando"></div></td>
                                 </tr>
                                 <tr>
                                     <th>DIRECCIÓN</th>
-                                    <td colspan="5"><span id="" class="vaciar"></span></td>
+                                    <td colspan="5"><div id="lDireccion" class="vaciar esperando"></div></div></td>
                                 </tr>
                                 <tr>
                                     <th>F. FACTURA</th>
-                                    <td><span id="" class="vaciar"></span></td>
+                                    <td><div id="lFechaFactura" class="vaciar esperando"></div></div></td>
                                     <th>F. VENCIMIENTO</th>
-                                    <td><span id="" class="vaciar"></span></td>
+                                    <td><div id="lFechaVencimiento" class="vaciar esperando"></div></div></td>
                                     <th>F. LLEGADA</th>
-                                    <td><span id="" class="vaciar"></span></td>
+                                    <td><div id="lFechaLlegada" class="vaciar esperando"></div></div></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -100,8 +121,9 @@
                             <table class="reporte-tabla-1 anchoTotal" style="font-size: 10px;">
                                 <thead>
                                     <tr>
-                                        <th style="width: 22px;"><label>Item</label></th>
-                                        <th style="width: 28px;"><label>Cant.</label></th>
+                                        <th style="width: 25px;"><label>Item</label></th>                                        
+                                        <th style="width: 50px;">Código</th>
+                                        <th style="width: 30px;"><label>Cant.</label></th>
                                         <th style="width: 55px;"><label>U. Medida</label></th>
                                         <th><label>Descripción</label></th>
                                         <th style="width: 65px;"><label>P. Unitario</label></th>
@@ -112,46 +134,39 @@
                                 <tfoot>
                                     <tr>
                                         <th colspan="2"><label>Son</label></th>
-                                        <td colspan="2" rowspan="2"><label id="lSon"></label></td>
+                                        <td colspan="3" rowspan="2"><div id="lSon" class="vaciar esperando"></div></div></td>
                                         <th><label>Sub total</label></th>
-                                        <td class="derecha"><label id="lSubTotal"></label></td>
+                                        <td class="derecha"><div id="lSubTotal" class="vaciar esperando"></label></div></td>
                                     </tr>
                                     <tr>
                                         <td colspan="2"><label></label></td>
                                         <th><label>Descuento</label></th>
-                                        <td class="derecha"><label id="lDescuento"></label></td>
+                                        <td class="derecha"><div id="lDescuento" class="vaciar esperando"></div></td>
                                     </tr>
                                     <tr>
                                         <th colspan="2" rowspan="3">Observa-<br> ciones</th>
-                                        <td colspan="2" rowspan="4"><label style="text-align: justify;" id="lObservacion"></label></td>
+                                        <td colspan="3" rowspan="4"><div id="lObservacion" class="vaciar esperando" style="text-align: justify;" ></div></div></td>
                                         <th><label>Total</label></th>
-                                        <td class="derecha"><label id="lTotal"></label></td>
+                                        <td class="derecha"><div id="lTotal" class="vaciar esperando"></div></div></td>
                                     </tr>
                                     <tr>
                                         <th><label>IGV</label></th>
-                                        <td class="derecha"><label id="lMontoIgv"></label></td>
+                                        <td class="derecha"><div id="lMontoIgv" class="vaciar esperando"></div></div></td>
                                     </tr>
                                     <tr>
                                         <th><label>Neto</label></th>
-                                        <td class="derecha"><label id="lNeto"></label></td>
+                                        <td class="derecha"><div id="lNeto" class="vaciar esperando"></div></td>
                                     </tr>
                                 </tfoot>
-                                <tbody>
+                                <tbody id="tbCompraDetalle">
                                     <tr>
-                                        <td class="derecha"><span>1</span></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="derecha"><span>2</span></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td class="derecha"><div class="esperando"></div></td>
+                                        <td class="derecha"><div class="esperando"></div></td>
+                                        <td class="derecha"><div class="esperando"></div></td>
+                                        <td class="derecha"><div class="esperando"></div></td>
+                                        <td><div class="esperando"></div></td>
+                                        <td class="derecha"><div class="esperando"></div></td>
+                                        <td class="derecha"><div class="esperando"></div></td>
                                     </tr>
                                 </tbody>
                             </table>

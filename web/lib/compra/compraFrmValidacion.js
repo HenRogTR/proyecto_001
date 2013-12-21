@@ -158,7 +158,7 @@ function mostrarRespuesta(respuesta) {
     $("#botones").removeClass("ocultar");
     if (respuesta) {   //si se realizo exitosamente el registro
         reiniciarCompraFrm();
-        $("#bRegistroExitoVer").attr("href", "../compra/compraListar.jsp?docSerieNumero=" + respuesta);
+        $("#bRegistroExitoVer").attr("href", "../compra/compraMantenimiento.jsp?docSerieNumero=" + respuesta);
         $("#dRegistroExitoso").dialog("open");
     } else {
 //        if (respuesta == "error") {

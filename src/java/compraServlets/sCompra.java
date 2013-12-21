@@ -83,7 +83,7 @@ public class sCompra extends HttpServlet {
                     session.setAttribute("codCompraMantenimiento", codCompra);
                 } catch (NumberFormatException e) {
                 }
-                response.sendRedirect("compra/compraListar.jsp");
+                response.sendRedirect("compra/compraMantenimiento.jsp");
             }
 
             if (accion.equals("r")) {

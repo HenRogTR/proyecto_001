@@ -16,7 +16,7 @@
     } else {
         String accion = (String) session.getAttribute("accionCompra");
         if (accion == null) {
-            response.sendRedirect("../compra/compraListar.jsp");
+            response.sendRedirect("../compra/compraMantenimiento.jsp");
         } else {
             cUtilitarios objUtilitarios = new cUtilitarios();
             String accion2 = objUtilitarios.accion2(accion);

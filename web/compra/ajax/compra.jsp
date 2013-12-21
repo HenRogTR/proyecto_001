@@ -9,8 +9,10 @@
 <%@page import="tablas.Compra"%>
 <%
     int codCompra = 0;
+    String parametro = "";
     try {
         codCompra = Integer.parseInt(request.getParameter("codCompra"));
+        parametro = request.getParameter("parametro").toString();
     } catch (Exception e) {
     };
     Compra objCompra = new Compra();
@@ -25,14 +27,31 @@
             break;
         default://otros numeros
             objCompra = objcCompra.leer_cod(codCompra);
+            while (objCompra == null) {
+                if (parametro.equals("siguiente")) {
+                    Compra objCompra1 = objcCompra.leer_ultimo();
+                    codCompra++;
+                    if (codCompra > objCompra1.getCodCompra()) {//para ver que no haya pasado al final
+                        objCompra = objCompra;
+                    }
+                }
+                if (parametro.equals("anterior")) {
+                    Compra objCompra1 = objcCompra.leer_primero();
+                    codCompra++;
+                    if (codCompra < objCompra1.getCodCompra()) {//para ver que no haya pasado al final
+                        objCompra = objCompra;
+                    }
+                }
+                if (parametro.equals("")) {
+                    break;
+                }
+            }
             break;
     }
-//    out.print(codCompra);
     out.print("[");
     if (objCompra != null) {
         out.print("{"
                 + "\"codCompra\":\"" + objcUtilitarios.agregarCeros_int(objCompra.getCodCompra(), 8) + "\""
-                //                + "\"\":\"" + "\""
                 + ",\"tipo\" : \"" + objCompra.getTipo() + "\""
                 + ",\"item\" : " + objCompra.getItemCantidad()
                 + ",\"docSerieNumero\" : \"" + objCompra.getDocSerieNumero() + "\""

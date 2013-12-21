@@ -103,7 +103,7 @@ function callback_compra(ajaxResponse, textStatus) {
     $('#dMensajeAlertaDiv').empty();
     var compraProcesada = procesarRespuesta(ajaxResponse);
     if (compraProcesada.length == 0) {
-        $('#dMensajeAlertaDiv').append('Compra no encontrada.<br>')
+        $('#dMensajeAlertaDiv').append('Compra no encontrada.<br>');
         $('#dMensajeAlerta').dialog('open');
     } else {
         var compraItem = compraProcesada[0];

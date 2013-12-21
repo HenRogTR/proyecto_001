@@ -12,7 +12,7 @@
     Usuario objUsuario = (Usuario) session.getAttribute("usuario");
     if (objUsuario == null) {
         session.removeAttribute("direccion");
-        session.setAttribute("direccion", "compra/compraListar.jsp");
+        session.setAttribute("direccion", "compra/compraMantenimiento.jsp");
         response.sendRedirect("../");
     } else {
 %>

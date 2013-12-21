@@ -234,3 +234,9 @@ label.error:before{
 .finalVenta{
     border-top: 3px solid #3366ff !important;
 }
+
+.esperando{
+    height: 11px;
+    background: url(images/loading.gif) no-repeat ;
+    background-size:  11px;
+}
