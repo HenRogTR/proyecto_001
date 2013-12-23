@@ -54,7 +54,7 @@
                     }
                 %>
                 <div id="rightSub1" class="ocultar">
-                    <h3 class="titulo"><a href="../sCompra?accionCompra=r" class="sexybutton"><span><span><span class="add">Nueva compra</span></span></span></a> MANTENIMIENTO DE COMPRAS <a class="sexybutton" href="compraListar.jsp"><span><span><span class="info">Version antigua</span></span></span></a></h3>
+                    <h3 class="titulo"><a href="compraRegistrar.jsp" class="sexybutton"><span><span><span class="add">Nueva compra</span></span></span></a> MANTENIMIENTO DE COMPRAS <a class="sexybutton" href="compraListar.jsp"><span><span><span class="info">Version antigua</span></span></span></a></h3>
                     <div class="ocultar">
                         <input type="text" name="codCompra" id="codCompra" value="<%=codCompra%>" />
                     </div>

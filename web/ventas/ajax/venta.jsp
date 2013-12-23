@@ -4,8 +4,6 @@
     Author     : Henrri***
 --%>
 
-
-
 <%@page import="tablas.DatosCliente"%>
 <%@page import="utilitarios.cManejoFechas"%>
 <%@page import="utilitarios.cOtros"%>

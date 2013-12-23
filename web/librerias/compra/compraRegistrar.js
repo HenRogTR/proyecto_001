@@ -175,10 +175,25 @@ $(function() {
         width: 600,
         buttons: {
             Editar: function() {
-                fArticuloProductoEditarPreparar();
+                fAlerta('Función en desarrollo');
+//                fArticuloProductoEditarPreparar();
             },
             Eliminar: function() {
-                fAlerta('Función en desarrollo');
+                var actualEl = $("#itemCantidadAux");//numero de item que esta editando input-hidden
+                var cantidadAP = $("#itemCantidad"); //cantidad de articulo agregados input-hidden
+                if (actualEl.val() == cantidadAP.val()) {
+                    $("#trArticuloProducto" + cantidadAP.val()).remove(); //removemos el ultimo despues de actualizar los datos
+                    cantidadAP.val(parseInt(cantidadAP.val(), 10) - 1);//actualizamos contador de productos que sera 1 menos al actual
+                    $('#lSubTotal').text(fNumeroFormato(fSubTotalCalcular(), 2, false));
+                    $('#lTotal').text(fNumeroFormato(fTotalCalcular(), 2, false)); //asignamos total
+                    $('#lNeto').text(fNumeroFormato(fNetoCalcular(), 2, false)); //asignamos neto
+                    $("#dItemAccionDobleClic").dialog("close");
+                } else {
+                    fAlerta("Para eliminar, tiene que hacerlo desde el último agregado.");
+                    $("#dArticuloProductoAccionClic").dialog("close");
+                }
+//                event.preventDefault();
+//                fAlerta('Función en desarrollo');
             },
             Cerrar: function() {
                 $(this).dialog('close');
@@ -534,6 +549,40 @@ function fArticuloProductoEditarPreparar() {
 ;
 
 function fCompraRegistrar() {
+    var data = $('#formCompraRegistrar').serialize();
+    var url = '../sCompra';
+    try {
+        $.ajax({
+            type: 'post',
+            url: url,
+            data: data,
+            beforeSend: function() {
+
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                $('#lServidorError').text(errorThrown + '()');
+                $('#dServidorError').dialog('open');
+            },
+            success: function(ajaxResponse, textStatus) {
+                $('#trBoton').removeClass('ocultar');
+                if ($.isNumeric(ajaxResponse)) {
+                    $(location).attr('href', '../sCompra?accionCompra=mantenimiento&codCompra=' + ajaxResponse);
+                } else {
+                    fAlerta(ajaxResponse);
+                }
+            },
+            statusCode: {
+                404: function() {
+                    $('#lServidorError').text('Página no encontrada().');
+                    $('#dServidorError').dialog('open');
+                }
+            }
+        });
+    }
+    catch (ex) {
+        $('#lServidorError').text(ex);
+        $('#dServidorError').dialog('open');
+    }
 
 }
 ;

@@ -124,7 +124,7 @@
                                         <th class="centrado medio">
                                             Descripción <button class="sexybutton sexyicononly sexysimple sexysmall sexypropio" type="button" id="bArticuloProductoAgregar"><span class="add"></span></button>
                                             <input type="text" name="itemCantidad" id="itemCantidad" value="0" class="ocultar"/>
-                                            <input type="text" name="itemCantidadAux" id="itemCantidadAux" value="" class="" /> 
+                                            <input type="text" name="itemCantidadAux" id="itemCantidadAux" value="" class="ocultar" /> 
                                         </th>
                                         <th style="width: 60px;">P. Unit.</th>
                                         <th style="width: 60px;">P. Total</th>
@@ -197,10 +197,10 @@
                                                                                 <span id="lPrecioTotal1" class="vaciar">200.00</span>
                                                                             </td>
                                                                         </tr>-->
-                                            </tbody>
-                                        </table>
-                                    </th>
-                                </tr>
+                                </tbody>
+                            </table>
+                            </th>
+                            </tr>
                             </tbody>
                         </table>
                     </form>

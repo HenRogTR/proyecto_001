@@ -14,6 +14,8 @@
         codCompra = Integer.parseInt(request.getParameter("codCompra"));
         parametro = request.getParameter("parametro").toString();
     } catch (Exception e) {
+        out.print("[]");
+        return;
     };
     Compra objCompra = new Compra();
     cCompra objcCompra = new cCompra();
@@ -32,14 +34,14 @@
                     Compra objCompra1 = objcCompra.leer_ultimo();
                     codCompra++;
                     if (codCompra > objCompra1.getCodCompra()) {//para ver que no haya pasado al final
-                        objCompra = objCompra;
+                        objCompra = objCompra1;
                     }
                 }
                 if (parametro.equals("anterior")) {
                     Compra objCompra1 = objcCompra.leer_primero();
                     codCompra++;
                     if (codCompra < objCompra1.getCodCompra()) {//para ver que no haya pasado al final
-                        objCompra = objCompra;
+                        objCompra = objCompra1;
                     }
                 }
                 if (parametro.equals("")) {
