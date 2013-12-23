@@ -14,12 +14,7 @@
         session.setAttribute("direccion", "compra/compraFrm.jsp");
         response.sendRedirect("../");
     } else {
-        String accion = (String) session.getAttribute("accionCompra");
-        if (accion == null) {
-            response.sendRedirect("../compra/compraMantenimiento.jsp");
-        } else {
-            cUtilitarios objUtilitarios = new cUtilitarios();
-            String accion2 = objUtilitarios.accion2(accion);
+
 %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -76,11 +71,12 @@
             <div id="right">                
                 <h3 class="titulo">CENTRO DE COMPRAS <a href="compraRegistrar.jsp">+</a> <label id="tit" style="float: right; margin-right: 130px">DOCUMENTO:</label></h3>
                 <form id="compraFrm" method="post" action="../sCompra">
+                    <input type="text" name="accionCompra" value="r" class="ocultar"/>
                     <br>
                     <table class="reporte-tabla-1" style="width: 100%;">
                         <thead>
                             <tr>
-                                <th colspan="6" style="text-align: center;"><label style="font-weight: bold;"><%=accion.equals("r") ? "R E G I S T R A R" : "E D I T A R"%> &nbsp;&nbsp;&nbsp;&nbsp;C O M P R A</label></th>
+                                <th colspan="6" style="text-align: center;"><label style="font-weight: bold;">R E G I S T R A R &nbsp;&nbsp;&nbsp;&nbsp;C O M P R A</label></th>
                             </tr>
                         </thead>
                         <tfoot id="botones">
@@ -88,7 +84,7 @@
                                 <th colspan="6" style="text-align: center;">
                                     <button id="cancelar" class="sexybutton" type="button"><span><span><span class="cancel">Cancelar</span></span></span></button>&nbsp;&nbsp;
                                     <button id="restaurar" class="sexybutton" type="reset"><span><span><span class="redo">Restaurar</span></span></span></button>&nbsp;&nbsp;
-                                    <button id="accion" class="sexybutton" type="submit"><span><span><span class="save"><%=accion2%></span></span></span></button>
+                                    <button id="accion" class="sexybutton" type="submit"><span><span><span class="save">Registrar</span></span></span></button>
                                 </th>
                             </tr>
                         </tfoot>
@@ -244,8 +240,7 @@
                             </tr>
                         </thead>
                         <tbody id="seriesNumeros">
-                            <%
-                                for (int i = 1; i <= 50; i++) {
+                            <%                                for (int i = 1; i <= 50; i++) {
                             %>
                             <tr id="trSerieNumero<%=i%>" class="ocultar">
                                 <th><%=i%></th>
@@ -365,6 +360,5 @@
     </body>
 </html>
 <%
-        }
     }
 %>

@@ -52,7 +52,7 @@
             </div>
             <div id="right">
                 <div id="rightSub1" class="ocultar">
-                    <h3 class="titulo">REGISTRAR COMPRA</h3>
+                    <h3 class="titulo">REGISTRAR COMPRA<a class="sexybutton"  href="compraFrm.jsp"><span><span><span class="info">Version antigua</span></span></span></a></h3>
                     <form id="formCompraRegistrar" action="../sCompra">
                         <input type="text" name="accionCompra" id="accionCompra" value="registrar" class="ocultar"/>
                         <table class="reporte-tabla-1">
