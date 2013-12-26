@@ -530,6 +530,11 @@ function fAlerta(mensaje) {
 }
 ;
 
+function fAlertaCerrar() {
+    $('#dAlerta').dialog('close');
+}
+;
+
 function fProcesandoPeticion(mensaje) {
     $('#lProcesandoPeticion').text(mensaje);
     $('#dProcesandoPeticion').dialog('open');

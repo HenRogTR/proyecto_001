@@ -138,4 +138,33 @@ public class cVentaCredito {
         }
         return estado;
     }
+    
+    public Boolean actualizar(int codVentaCredito, Date fechaInicial, Double montoLetra, String duracion, Date fechaVencimientoLetra, Double montoInicial,int cantidadLetras) {
+        Boolean estado = false;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            VentaCredito objVC = (VentaCredito) sesion.get(VentaCredito.class, codVentaCredito);
+            objVC.setFechaInicial(fechaInicial);
+            objVC.setMontoLetra(montoLetra);
+            objVC.setDuracion(duracion);
+            objVC.setFechaVencimientoLetra(fechaVencimientoLetra);
+            objVC.setMontoInicial(montoInicial);
+            objVC.setCantidadLetras(cantidadLetras);
+            sesion.update(objVC);
+            sesion.getTransaction().commit();
+            estado = true;
+        } catch (Exception e) {
+            if (trns != null) {
+                trns.rollback();
+            }
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return estado;
+    }
 }

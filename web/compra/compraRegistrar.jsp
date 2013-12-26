@@ -16,7 +16,6 @@
         <title>compra registrar</title>
         <!--todos-->
         <script type="text/javascript" src="../librerias/jquery/jquery-1.9.0-min.js" ></script>
-        <!--<script type="text/javascript" src="../lib/jquery/jquery-1.8.1.min.js"></script>-->
         <script type="text/javascript" src="../librerias/jquery/jquery.timer-min.js" ></script>
         <script type="text/javascript" src="../librerias/jquery-ui/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.min.js" ></script>
         <link rel="stylesheet" type="text/css" href="../librerias/principal/todos.css" media="all"/>

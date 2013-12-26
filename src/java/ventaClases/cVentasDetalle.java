@@ -103,11 +103,8 @@ public class cVentasDetalle {
 
     public List leer_ventas_porCodVentas(int codVentas) {
         setError(null);
-//        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         try {
             sesion = HibernateUtil.getSessionFactory().openSession();
-//            session.beginTransaction();
-//            session.flush();
             Query q = sesion.createQuery("from VentasDetalle v where "
                     + "v.ventas.codVentas=:codVentas and "
                     + "substring(registro,1,1)=1 order by codVentasDetalle asc")

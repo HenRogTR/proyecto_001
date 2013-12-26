@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import otrasTablasClases.cDatosExtras;
 import otros.cUtilitarios;
-import personaClases.cOtrosCC;
 import personaClases.cPersona;
 import tablas.Almacen;
 import tablas.KardexArticuloProducto;

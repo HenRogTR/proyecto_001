@@ -20,7 +20,7 @@
                 for (VentaCreditoLetra objVentaCreditoLetra : objVentaCredito.getVentaCreditoLetras()) {
                     if (objVentaCreditoLetra.getTotalPago() > 0) {
                         estado = "La venta se encuentra con pagos y no se puede editar."
-                                + " Elimine los pagos realizados o reprograme.";
+                                + " Elimine los pagos realizados o elija la opción reprogramar.";
                     }
                 }
             }

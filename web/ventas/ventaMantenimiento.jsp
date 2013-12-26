@@ -22,9 +22,11 @@
         <!--cambios-->
         <%@include file="../principal/inclusiones.jsp" %>
         <!--propio-->
+        <script type="text/javascript" src="../librerias/utilitarios/formatoDecimal.js"></script>
         <script type="text/javascript" src="../librerias/utilitarios/manejoFecha.js"></script>
         <script type="text/javascript" src="../librerias/plugin/mask/jquery.mask.min.js"></script>
         <script type="text/javascript" src="../librerias/venta/ventaMantenimiento.js?v13.12.10"></script>
+        <script type="text/javascript" src="../librerias/jquery-ui/jquery-ui-1.10.3.custom/js/i18n/jquery.ui.datepicker-es-min.js"></script>
         <style>
             .ui-autocomplete {
                 /*width: 400px;*/
@@ -62,7 +64,10 @@
                             codVenta = 0;
                         }
                     %>
-                    <input type="hidden" name="codVenta" id="codVenta" value="<%=codVenta%>" />
+                    <div class="ocultar">
+                        <input type="text" name="codVenta" id="codVenta" value="<%=codVenta%>" />
+                        <input type="text" name="fecha" id="fecha" value="" />
+                    </div>
                     <table class="reporte-tabla-1">
                         <thead>
                             <tr>
@@ -219,6 +224,9 @@
                     </div>
                 </div>
                 <div id="dLetrasCreditoModificar" title="Modificar letras de pago">
+                    <div class="ocultar">
+                        <input type="text" name="codVentaCredito" id="codVentaCredito" value="" />
+                    </div>
                     <table class="reporte-tabla-1" style="width: 100%;font-size: 11px;">
                         <thead>
                             <tr>
@@ -314,6 +322,13 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>              
+                
+                <div id="dVentaCreditoLetraConfirmar" title="Confirmar cambios">
+                    <div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
+                        <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                            <strong>¡Atención!</strong> Esta seguro que desea modificar las letras de crédito.</p>
+                    </div>
                 </div>
                 <!--fin de dialog's-->
             </div>

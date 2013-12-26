@@ -75,9 +75,121 @@ $(document).ready(function() {
 
     $('#docSerieNumeroGuia').mask('S-000-000000');
 
+    //letras de credito
+    //<editor-fold defaultstate="collapsed" desc="#numeroLetras">
+    $('#numeroLetras')
+            .mask('#', {maxlength: false})
+            .blur(function(event) {
+                if (this.value == '') {
+                    this.value = '1';
+                }
+            })
+            .keyup(function(event) {
+                var key = event.charCode ? event.charCode : (event.keyCode ? event.keyCode : 0);
+                if (key == 13) {
+                    return;
+                }
+                $('#auxiliarGenerarLetraCredito').val('0');
+                if ($.isNumeric(this.value) && this.value > 0) {
+                    var resto = parseInt($('#lNetoLetras').text()) - parseInt($('#montoInicial').val());
+                    var num = parseInt(this.value);
+                    $('#lMontoCuota').text(fNumeroFormato(resto / num, 2, false));
+                } else {
+                    $('#lMontoCuota').text($('#lNetoLetras').text());
+                }
+            });
+    //</editor-fold>
+
+    $('#fechaInicio')
+            .mask('00/00/0000')
+            .blur(function() {
+                if (!fValidarFecha(this.value)) {
+                    this.value = '';
+                }
+            });
+    $('#fechaVencimiento')
+            .mask('00/00/0000')
+            .blur(function() {
+                if (!fValidarFecha(this.value)) {
+                    this.value = '';
+                }
+            });
+
+    //<editor-fold defaultstate="collapsed" desc="#montoInicial">
+    $('#montoInicial')
+            .mask('0999999999999.99')
+            .blur(function(event) {
+                if (this.value != '') {
+                    this.value = fNumeroFormato(this.value, 2, false);
+                } else {
+                    this.value = '0.00';
+                }
+            })
+            .keyup(function(event) {
+                var key = event.charCode ? event.charCode : (event.keyCode ? event.keyCode : 0);
+                if (key == 13) {
+                    return;
+                }
+                $('#auxiliarGenerarLetraCredito').val('0');
+                //comprobar que el monto inicial no sobrepase el netoFa
+                if (parseFloat(this.value) > parseFloat($('#lNetoLetras').text())) {
+                    this.value = $('#lNetoLetras').text();
+                    fAlerta('El monto inicial no debe superar el neto de la venta.');
+                    return;
+                }
+                var montoInicial = 0;
+                if ($.isNumeric(this.value)) {
+                    montoInicial = this.value;
+                }
+                if ($('#numeroLetras').val() != '' & $('#numeroLetras').val() > 0) {
+                    var resto = parseInt($('#lNetoLetras').text(), 10) - parseInt(montoInicial, 10);
+                    var num = parseInt($('#numeroLetras').val(), 10);
+                    $('#lMontoCuota').text(fNumeroFormato(resto / num, 2, false));
+                } else {
+                    $('#lMontoCuota').text($('#lNetoLetras').text());
+                }
+            });
+    //</editor-fold>
+
+    $('input[name=periodoLetra]').click(function(event) {
+        $('#auxiliarGenerarLetraCredito').val('0');
+        var cantDias = 0;
+        switch (this.value) {
+            case 'mensual':
+                $('#periodoLetra').val('mensual');
+                cantDias = 30;
+                break;
+            case 'quincenal':
+                $('#periodoLetra').val('quincenal');
+                cantDias = 14;
+                break;
+            case 'semanal':
+                cantDias = 7;
+                $('#periodoLetra').val('semanal');
+                break;
+        }
+        var fecha = $('#fecha').val();
+        var fechaSumado = fSumarDia(fStringADate(fecha), cantDias);
+        $('#fechaInicio').val(fDateAString(fechaSumado));
+        $('#fechaVencimiento').val(fecha);
+    });
+
 });
 
 $(function() {
+
+    $('#fechaInicio')
+            .datepicker({
+                changeMonth: true,
+                changeYear: true,
+                numberOfMonths: 3})
+            .datepicker('option', 'minDate', $('#fecha').val());
+    $('#fechaVencimiento')
+            .datepicker({
+                changeMonth: true,
+                changeYear: true,
+                numberOfMonths: 2})
+            .datepicker('option', 'minDate', $('#fecha').val());
 
 //<editor-fold defaultstate="collapsed" desc="DIALOG'S. Clic en el signo + de la izquierda para mas detalles.">
 
@@ -120,10 +232,9 @@ $(function() {
         width: 800,
         buttons: {
             Modificar: function() {
-                fAlerta('Implementando');
-//                if (fVentaCreditoLetraComprobar()) {
+                if (fVentaCreditoLetraComprobar()) {
 
-//                }
+                }
             },
             Reprogramar: function() {
                 fAlerta('Implementando');
@@ -143,7 +254,7 @@ $(function() {
         buttons: {
             'Modificar letras': function() {
                 if (fLetrasCreditoValidar()) {
-                    fLetrasCreditoGenerar();
+                    $('#dVentaCreditoLetraConfirmar').dialog('open');
                 }
             },
             Aceptar: function() {
@@ -180,6 +291,22 @@ $(function() {
                 }
             },
             Cerrar: function() {
+                $(this).dialog('close');
+            }
+        }
+    });
+
+    $('#dVentaCreditoLetraConfirmar').dialog({
+        autoOpen: false,
+        modal: true,
+        resizable: false,
+        height: 200,
+        width: 400,
+        buttons: {
+            Aceptar: function() {
+                fLetrasCreditoEditar();
+            },
+            Cancelar: function() {
                 $(this).dialog('close');
             }
         }
@@ -262,6 +389,7 @@ function fVentaLeer(codVenta, parametro) {
                     $('#codVenta').val(ventaItem.codVenta);
                     $('#lTipo').append(ventaItem.tipo);
                     $('#lFecha').append(ventaItem.fecha);
+                    $('#fecha').val(ventaItem.fecha);
                     $('#lMoneda').append(ventaItem.moneda);
                     $('#lSubTotal').append(ventaItem.subTotal);
                     $('#lDescuento').append(ventaItem.descuento);
@@ -446,9 +574,10 @@ function fLetrasCreditoValidar() {
 ;
 //</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="fVentaCreditoLetraCargar(). Clic en el signo + de la izquierda para mas detalles.">
 function fVentaCreditoLetraCargar() {
     var data = {codVenta: $('#codVenta').val()};
-    var url = 'ajax/ventaCreditoLetraLeer.jsp';
+    var url = 'ajax/ventaCredito.jsp';
     try {
         $.ajax({
             type: 'post',
@@ -462,7 +591,20 @@ function fVentaCreditoLetraCargar() {
                 $('#dServidorError').dialog('open');
             },
             success: function(ajaxResponse, textStatus) {
-                $('#tbDetalleLetras').empty().append(ajaxResponse);
+                var ventaCreditoArray = procesarRespuesta(ajaxResponse);
+                var VCItem = ventaCreditoArray[0];
+                $('#codVentaCredito').val(VCItem.codVentaCredito);
+                $('#tbDetalleLetras').empty().append(VCItem.ventaCreditoLetra);
+                var periodo = VCItem.duracion;
+                $('input[name=periodoLetra]').prop('checked', false);
+                $('#' + periodo).prop('checked', true);
+                $('#montoInicial').val(VCItem.montoInicial);
+                $('#fechaVencimiento').val(VCItem.fechaInicial);
+                $('#numeroLetras').val(VCItem.cantidadLetras);
+                $('#lMontoCuota').text(VCItem.montoLetra);
+                $('#fechaInicio').val(VCItem.fechaVencimientoLetra);
+                $('#fechaInicio').datepicker('option', 'minDate', $('#fecha').val());
+                $('#fechaVencimiento').datepicker('option', 'minDate', $('#fecha').val());
                 $('#dVentaCreditoLetraOpcion').dialog('close');
                 $('#lNetoLetras').text($('#lNeto').text());
                 $('#dLetrasCreditoModificar').dialog('open');
@@ -481,7 +623,9 @@ function fVentaCreditoLetraCargar() {
     }
 }
 ;
+//</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="fVentaCreditoLetraActual(). Clic en el signo + de la izquierda para mas detalles.">
 function fVentaCreditoLetraActual() {
     var data = {codVenta: $('#codVenta').val()};
     var url = 'ajax/ventaCreditoLetraActual.jsp';
@@ -516,7 +660,9 @@ function fVentaCreditoLetraActual() {
     }
 }
 ;
+//</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="fGuiaRemisionValidar(). Clic en el signo + de la izquierda para mas detalles.">
 function fGuiaRemisionValidar() {
     var est = true;
     var mensaje = '';
@@ -541,7 +687,9 @@ function fGuiaRemisionValidar() {
     return est;
 }
 ;
+//</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="fGuiaRemisionAdjuntar(). Clic en el signo + de la izquierda para mas detalles.">
 function fGuiaRemisionAdjuntar() {
     var data = {
         accionVenta: 'guiaAdjuntar',
@@ -567,6 +715,59 @@ function fGuiaRemisionAdjuntar() {
                 if ($.isNumeric(ajaxResponse)) {
                     $('#docSerieNumeroGuiaAux').val($('#docSerieNumeroGuia').val());
                     fAlerta('Guia adjuntada exitosamente.');
+                } else {
+                    fAlerta(ajaxResponse);
+                }
+            },
+            statusCode: {
+                404: function() {
+                    $('#lServidorError').text('Página no encontrada().');
+                    $('#dServidorError').dialog('open');
+                }
+            }
+        });
+    }
+    catch (ex) {
+        $('#lServidorError').text(ex);
+        $('#dServidorError').dialog('open');
+    }
+}
+;
+//</editor-fold>
+
+function fLetrasCreditoEditar() {
+    var data = {
+        accionVentaCredito: 'editar',
+        codVentaCredito: $('#codVentaCredito').val(),
+        cantidadLetras: $('#numeroLetras').val(),
+        fechaInicioLetras: $('#fechaInicio').val(),
+        montoInicialLetra: $('#montoInicial').val(),
+        fechaVencimientoInicial: $('#fechaVencimiento').val(),
+        periodoLetra: $('input[name=periodoLetra]:checked').val()
+    };
+    var url = '../sVentaCredito';
+    try {
+        $.ajax({
+            type: 'post',
+            url: url,
+            data: data,
+            beforeSend: function() {
+                $('#dVentaCreditoLetraConfirmar').dialog('close');
+                fProcesandoPeticion();
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                $('#lServidorError').text(errorThrown + '()');
+                $('#dServidorError').dialog('open');
+            },
+            success: function(ajaxResponse, textStatus) {
+                fProcesandoPeticionCerrar();
+                if ($.isNumeric(ajaxResponse)) {
+                    $('#dLetrasCreditoModificar').dialog('close');
+                    fAlerta('Cambios realizados con exitos');
+                    setTimeout(function() {
+                        fVentaCreditoLetraActual();
+                    }, 1500);
+                    fAlertaCerrar();
                 } else {
                     fAlerta(ajaxResponse);
                 }

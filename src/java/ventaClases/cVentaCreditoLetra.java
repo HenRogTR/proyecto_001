@@ -94,8 +94,6 @@ public class cVentaCreditoLetra {
         setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
-//            session.beginTransaction();
-//            session.flush();
             Query q = sesion.createQuery("select sum(vcl.monto),sum(vcl.totalPago),(sum(vcl.monto)-sum(vcl.totalPago)) "
                     + "from VentaCreditoLetra vcl where substring(vcl.registro,1,1)=1 "
                     + "and vcl.ventaCredito.ventas.persona.codPersona=:codPersona")
@@ -120,11 +118,11 @@ public class cVentaCreditoLetra {
      */
     public List leer_porCodCliente(int codPersona) {
         setError(null);
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        sesion = HibernateUtil.getSessionFactory().openSession();
         try {
 //            session.beginTransaction();
-            session.flush();
-            Query q = session.createQuery("from VentaCreditoLetra v "
+//            session.flush();
+            Query q = sesion.createQuery("from VentaCreditoLetra v "
                     + "where v.ventaCredito.ventas.persona.codPersona=:codPersona "
                     + "and substring(v.registro,1,1)=1 "
                     + "order by codVentaCreditoLetra asc")

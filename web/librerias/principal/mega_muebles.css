@@ -89,7 +89,7 @@ body {
     border-collapse: collapse;
 }
 .reporte-tabla-1 thead tr th{
-    font-size: 12px;
+    /*font-size: 12px;*/
     text-align: center;
 }
 .reporte-tabla-1 tfoot tr th{text-align: center;}

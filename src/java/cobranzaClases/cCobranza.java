@@ -86,8 +86,8 @@ public class cCobranza {
     }
 
     public Cobranza leer_codCobranza(int codCobranza) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        return (Cobranza) session.get(Cobranza.class, codCobranza);
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        return (Cobranza) sesion.get(Cobranza.class, codCobranza);
     }
 
     /**
@@ -118,10 +118,10 @@ public class cCobranza {
      */
     public List leer_codPersona(int codPersona) {
         setError(null);
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        sesion = HibernateUtil.getSessionFactory().openSession();
         try {
-            session.flush();
-            Query q = session.createQuery("from Cobranza c where substring(registro,1,1)=1 "
+//            session.flush();
+            Query q = sesion.createQuery("from Cobranza c where substring(registro,1,1)=1 "
                     + "and c.persona.codPersona=:codPersona order by codCobranza asc")
                     .setParameter("codPersona", codPersona);
             return q.list();
