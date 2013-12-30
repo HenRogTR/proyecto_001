@@ -22,7 +22,7 @@
         <!--cambios-->
         <%@include file="../principal/inclusiones.jsp" %>
         <!--propio-->
-        <script type="text/javascript" src="../librerias/articuloProducto/articuloProductoMantenimiento.js"></script>
+        <script type="text/javascript" src="../librerias/articuloProducto/articuloProductoMantenimiento.js?v13.12.30"></script>
         <script type="text/javascript" src="../librerias/jquery/jquery.numeric-min.js"></script>
         <style>
             .ui-autocomplete {
@@ -92,7 +92,7 @@
                                         <td colspan="3" id="lDescripcion" class="vaciar"></td>
                                     </tr>
                                     <tr>
-                                        <th>STOCK</th>
+                                        <th>STOCK <button id="bStock" class="sexybutton sexyicononly sexysimple sexysmall sexypropio disabled" disabled=""><span class="info"></span></button></th>
                                         <td id="lStock" class="vaciar"></td>
                                         <th>
                                             PRECIO VENTA

@@ -26,7 +26,7 @@
         <!--cambios-->
         <%@include file="../principal/inclusiones.jsp" %>
         <!--propio-->
-        <script type="text/javascript" src="../librerias/articuloProducto/articuloProductoKardex.js"></script>
+        <script type="text/javascript" src="../librerias/articuloProducto/articuloProductoKardex.js?v13.12.30"></script>
         <script type="text/javascript" src="../librerias/plugin/mask/jquery.mask.min.js"></script>
         <style>            
             .ui-autocomplete {
@@ -75,7 +75,7 @@
                             <tr>
                                 <th class="ancho60px medio">BUSCAR</th>
                                 <td class="ancho120px contenedorEntrada medio"><input type="search" name="codArticuloProductoBuscar" id="codArticuloProductoBuscar" value="" class="anchoTotal entrada derecha" placeholder="Código"/></td>
-                                <td class="contenedorEntrada"><textarea name="descripcionBuscar" id="descripcionBuscar" class="anchoTotal entrada mayuscula izquierda" style="height: 35px;" placeholder="Descripción"></textarea></td>
+                                <td class="contenedorEntrada"><input name="descripcionBuscar" id="descripcionBuscar" class="anchoTotal entrada mayuscula izquierda" placeholder="Descripción"/></td>
                                 <th class="ancho60px medio">ALMACÉN</th>
                                 <td class="contenedorEntrada ancho120px medio">
                                     <%

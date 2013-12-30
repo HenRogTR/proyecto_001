@@ -15,7 +15,7 @@ $(document).ready(function() {
                     }
                     event.preventDefault();//para el caso de ie se ejecuta como enter al boton y se cerraba el dialog.
                 }
-            }); //fin codArticuloProducto
+            }); //fin codArticuloProducto    
 });
 
 /**

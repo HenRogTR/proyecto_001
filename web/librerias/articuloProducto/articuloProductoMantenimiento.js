@@ -91,6 +91,11 @@ $(document).ready(function() {
         select: fAPSeleccionado,
         focus: fAPMarcado
     });
+
+    $('#bStock').click(function(event) {
+        fKAPSNStock();
+        event.preventDefault();
+    });
 });
 
 function fAPSeleccionado(event, ui) {
@@ -140,7 +145,8 @@ function fAPLeer(codAP, parametro) {
                     $('#bPrecioVentaModificar').removeAttr('disabled').removeClass('disabled');
                     $("#lCodReferencia").append(aPItem.codReferencia);
                     $("#lUsarSerieNumero").append(aPItem.usarSerieNumero);
-                    aPItem.usarSerieNumero == 'HABILITADO' ? ($('#lStock').append('<a href="articuloProductoStock.jsp?codArticuloProducto=' + aPItem.codArticuloProducto + '">' + aPItem.stock + '</a>')) : ($('#lStock').append(aPItem.stock));
+                    aPItem.usarSerieNumero == 'HABILITADO' ? ($('#bStock').removeClass('disabled').prop('disabled', false)) : ($('#bStock').addClass('disabled').prop('disabled', true));
+                    $('#lStock').append(aPItem.stock);
                     $("#lReintegroTributario").append(aPItem.reintegroTributario);
                     $("#lFamilia").append(aPItem.familia);
                     $("#lMarca").append(aPItem.marca);
@@ -230,7 +236,7 @@ function fAPIngreso(codArticuloProducto) {
                             + '</tr>'
                             );
                 } else {
-                    for (var idx=0; idx < apIngresoArray.length; idx++) {
+                    for (var idx = 0; idx < apIngresoArray.length; idx++) {
                         var apIngresoItem = apIngresoArray[idx];
                         $('#tbAPCompraResumen').append(
                                 '<tr>' +
@@ -280,7 +286,7 @@ function fAPSalida(codArticuloProducto) {
                             + '</tr>'
                             );
                 } else {
-                    for (var idx=0; idx < apSalidaArray.length; idx++) {
+                    for (var idx = 0; idx < apSalidaArray.length; idx++) {
                         var apSalidaItem = apSalidaArray[idx];
                         $('#tbAPVentaResumen').append(
                                 '<tr>' +
@@ -305,6 +311,44 @@ function fAPSalida(codArticuloProducto) {
     } catch (ex) {
         $('#lErrorServidor').text(ex);
         $('#dErrorServidor').dialog('open');
+    }
+}
+;
+
+function fKAPSNStock() {
+    if ($('#lUsarSerieNumero').text() == 'DESABILITADO') {
+        fAlerta('El artículo no maneja S/N');
+        return;
+    }
+    fDLibreAbrir();
+    var data = {codAP: $('#codArticuloProducto').val()};
+    var url = 'ajax/ap/ksn.jsp';
+    try {
+        $.ajax({
+            type: 'post',
+            url: url,
+            data: data,
+            beforeSend: function() {
+
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                $('#lServidorError').text(errorThrown + '()');
+                $('#dServidorError').dialog('open');
+            },
+            success: function(ajaxResponse, textStatus) {
+                fDLibreEditar(500, 900, 'S/N en stock.', ajaxResponse);
+            },
+            statusCode: {
+                404: function() {
+                    $('#lServidorError').text('Página no encontrada().');
+                    $('#dServidorError').dialog('open');
+                }
+            }
+        });
+    }
+    catch (ex) {
+        $('#lServidorError').text(ex);
+        $('#dServidorError').dialog('open');
     }
 }
 ;
