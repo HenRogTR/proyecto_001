@@ -56,6 +56,10 @@ public class sVentaCredito extends HttpServlet {
         }
         cManejoFechas objcManejoFechas = new cManejoFechas();
         if (accion.equals("editar")) {
+            if (!objUsuario.getP33()) {
+                out.print("No tiene permiso para esta operación. ");
+                return;
+            }
             int codVentaCredito = 0;
             int cantidadLetras = 0;
             Date fechaInicioLetras = null;
@@ -123,7 +127,7 @@ public class sVentaCredito extends HttpServlet {
                 objVentaCreditoLetra.setVentaCredito(objVentaCredito);
                 int a = new cVentaCreditoLetra().crear(objVentaCreditoLetra);
             }
-            
+
             //editar obj VentaCredito
             new cVentaCredito().actualizar(codVentaCredito, fechaInicioLetras, montoLetra, periodoLetra, fechaVencimientoInicial, montoInicialLetra, cantidadLetras);
             out.print(codVentaCredito);

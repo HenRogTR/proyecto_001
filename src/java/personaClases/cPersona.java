@@ -132,7 +132,7 @@ public class cPersona {
         setError(null);
         try {
             sesion = HibernateUtil.getSessionFactory().openSession();
-            Query q = sesion.createQuery("from Persona where dniPasaporte=:dniPasaporte or ruc like :ruc and substring(registro,1,1)=1")
+            Query q = sesion.createQuery("from Persona where dniPasaporte=:dniPasaporte or substring(ruc,3,8) like :ruc and substring(registro,1,1)=1")
                     .setParameter("dniPasaporte", dniPasaporte)
                     .setParameter("ruc", "%" + dniPasaporte + "%");
             return (Persona) q.list().iterator().next();

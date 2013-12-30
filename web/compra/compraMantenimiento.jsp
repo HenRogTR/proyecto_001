@@ -22,7 +22,7 @@
         <!--cambios-->
         <%@include file="../principal/inclusiones.jsp" %>
         <!--propio-->
-        <script type="text/javascript" src="../librerias/compra/compraMantenimiento.js"></script>
+        <script type="text/javascript" src="../librerias/compra/compraMantenimiento.js?v13.12.26"></script>
         <style>
             .ui-autocomplete {
                 width: 400px;

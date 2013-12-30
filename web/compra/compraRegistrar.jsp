@@ -26,7 +26,7 @@
         <script type="text/javascript" src="../librerias/utilitarios/formatoDecimal.js"></script>
         <script type="text/javascript" src="../librerias/jquery-ui/jquery-ui-1.10.3.custom/js/i18n/jquery.ui.datepicker-es-min.js"></script>
         <script type="text/javascript" src="../librerias/plugin/mask/jquery.mask.min.js"></script>
-        <script type="text/javascript" src="../librerias/compra/compraRegistrar.js"></script>
+        <script type="text/javascript" src="../librerias/compra/compraRegistrar.js?v13.12.26"></script>
         <style>
             .ui-autocomplete {
                 width: 400px;

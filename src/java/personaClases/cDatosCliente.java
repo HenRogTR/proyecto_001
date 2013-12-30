@@ -135,7 +135,7 @@ public class cDatosCliente {
         try {
             sesion = HibernateUtil.getSessionFactory().openSession();
             Query q = sesion.createQuery("from DatosCliente dc "
-                    + "where (dc.persona.dniPasaporte=:dniPasaporte or dc.persona.ruc like :ruc) "
+                    + "where (dc.persona.dniPasaporte=:dniPasaporte or substring(dc.persona.ruc,3,8) like :ruc) "
                     + "and substring(dc.registro,1,1)=1")
                     .setParameter("dniPasaporte", dniPasaporte)
                     .setParameter("ruc", "%" + dniPasaporte + "%");
