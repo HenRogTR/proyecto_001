@@ -70,7 +70,7 @@
                     <div id="cliente" class="ocultar">
                         <div id="accordionNatural">
                             <h3>
-                                DATOS PERSONALES/GENERALES
+                                DATOS DE CLIENTES NATURALES/JURÍDICOS
                             </h3>
                             <div>
                                 <table class="reporte-tabla-1">
@@ -87,6 +87,9 @@
                                                 <a class="sexybutton sexyicononly sexysimple sexysmall sexypropio" id="bEditar"><span class="edit"></span></a>
                                                 <button class="sexybutton sexyicononly sexysimple sexysmall sexypropio" id="bEliminar"><span class="delete"></span></button>
                                             </th>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="4" class="centrado"><span style="font-size: 13px; font-weight: bold;">DATOS PERSONALES/GENERALES</span></th>
                                         </tr>
                                         <tr>
                                             <th style="width: 120px;">CÓD. CLIENTE</th>
@@ -202,39 +205,35 @@
                                         <tr class="clienteJuridico">
                                             <th style="height: 60px;">OBSERVACIONES</th>
                                             <td colspan="3" class="lObservacionPersona vaciar"></td>
+                                        </tr>                                        
+                                        <tr class="clienteNatural">
+                                            <th colspan="4" class="centrado"><span style="font-size: 13px; font-weight: bold;">DATOS LABORALES Y OTROS</span></th>
                                         </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <h3>DATOS LABORALES Y OTROS</h3>
-                            <div>
-                                <table class="reporte-tabla-1 clienteNatural">
-                                    <tbody>
-                                        <tr>
+                                        <tr class="clienteNatural">
                                             <th>EMPRESA</th>
                                             <td colspan="3" class="lEmpresa vaciar"></td>
                                         </tr>
-                                        <tr>
-                                            <th style="width: 120px;">TIPO</th>
-                                            <td style="width: 240px;" class="lTipo vaciar"></td>
-                                            <th style="width: 120px;">CONDICIÓN</th>
-                                            <td style="width: 240px;" class="lCondicion vaciar"></td>
+                                        <tr class="clienteNatural">
+                                            <th>TIPO</th>
+                                            <td class="lTipo vaciar"></td>
+                                            <th>CONDICIÓN</th>
+                                            <td class="lCondicion vaciar"></td>
                                         </tr>
-                                        <tr>
+                                        <tr class="clienteNatural">
                                             <th>CENT. DE TRABAJO</th>
                                             <td colspan="3" class="lCentroTrabajo vaciar"></td>
                                         </tr>
-                                        <tr>
+                                        <tr class="clienteNatural">
                                             <th>TELÉFONO 1</th>
                                             <td class="lTelefono1T vaciar"></td>
                                             <th>TELÉFONO 2</th>
                                             <td class="lTelefono2T vaciar"></td>
                                         </tr>
-                                        <tr>
+                                        <tr class="clienteNatural">
                                             <th>GARANTE</th>
                                             <td colspan="3" class="lGarante vaciar"></td>
                                         </tr>
-                                        <tr>
+                                        <tr class="clienteNatural">
                                             <th style="height: 60px;">OBSERVACIONES</th>
                                             <td colspan="3" class="lObservacionLaboral vaciar"></td>
                                         </tr>
@@ -294,7 +293,7 @@
                 <%@include file="../principal/div2.jsp" %>
                 <!--*******Dialog******************************************************************************-->
                 <div id="dClienteBuscar" title="BUSCAR CLIENTE" style="padding: 20px;">
-                    <table class="reporte-tabla-1" style="width: 100%;">
+                    <table class="reporte-tabla-1 anchoTotal">
                         <thead>
                             <tr>
                                 <th style=""><label>APELLIDOS-NOMBRES/RAZÓN SOCIAL</label></th>
@@ -304,15 +303,9 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>
-                                    <input type="text" name="nombresCBuscar" value="" id="nombresCBuscar" style="width: 99%;"/>
-                                </td>
-                                <td>
-                                    <input type="text" name="dniPasaporteRucBuscar" id="dniPasaporteRucBuscar" value="" style="width: 98%;"/>
-                                </td>
-                                <td>
-                                    <input type="text" name="codDatoClienteBuscar" id="codDatoClienteBuscar" value="" />
-                                </td>
+                                <td class="contenedorEntrada"><input type="text" name="nombresCBuscar" id="nombresCBuscar" value="" class="entrada anchoTotal"/></td>
+                                <td class="contenedorEntrada"><input type="text" name="dniPasaporteRucBuscar" id="dniPasaporteRucBuscar" value="" class="entrada anchoTotal"/></td>
+                                <td class="contenedorEntrada"><input type="text" name="codDatoClienteBuscar" id="codDatoClienteBuscar" value="" class="entrada anchoTotal"/></td>
                             </tr>
                         </tbody>
                     </table>

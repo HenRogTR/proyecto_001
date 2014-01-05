@@ -140,8 +140,8 @@
                 <div style='display:none'>
                     <img src='img/basic/x.png' alt='' />
                 </div>
-                <script src="../js/jQuery/jquery.validate.min.js" type="text/javascript"></script>
-                <script src="../js/jQuery/messages_es.js" type="text/javascript"></script>
+                <script src="../librerias/jquery.validate/1.11.1/jquery.validate.min.js" type="text/javascript"></script>
+                <script src="../librerias/jquery.validate/1.11.1/localization/messages_es.js" type="text/javascript"></script>
                 <script type="text/javascript">
                     $(document).ready(function() {
                         $("input,textarea").blur(function() {

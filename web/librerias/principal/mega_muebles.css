@@ -212,14 +212,15 @@ label.error:before{
 .documentoEncontrado{background: #ccc !important;}
 
 .entrada{
-    padding: 2px 0px 2px 0px;
-    border: 1px solid #F1F1F7;
-    border-radius:5px;
-    font-size: 14px !important;
+    padding: 1px 0px 1px 0px;
+    border: 1px solid #009999;
+    border-radius:3px;
+    font-size: 13px !important;
 }
 .entrada:focus{
     box-shadow:0 0 15px #036;
     background: silver;
+    font-size: 14px !important;
 }
 .entrada2:focus{
     box-shadow:0 0 15px #036;

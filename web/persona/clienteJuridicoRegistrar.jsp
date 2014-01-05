@@ -53,30 +53,38 @@
                         <input type="hidden" name="codPersona" id="codPersona" class="limpiar"/>
                         <input type="hidden" name="marcador" id="marcador" class="vaciar"/>
                         <div id="accordion">
-                            <h3>DATOS GENERALES</h3>
+                            <h3>CLIENTE JURÍDICO</h3>
                             <div>
-                                <table class="reporte-tabla-1">                                    
+                                <table class="reporte-tabla-1">
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="4" class="centrado">
+                                                <button class="sexybutton" type="button" id="bCancelar"><span><span><span class="delete">Cancelar</span></span></span></button>
+                                                <button class="sexybutton" type="button" id="bRestaurar"><span><span><span class="redo">Restaurar</span></span></span></button>
+                                                <button class="sexybutton" type="submit"><span><span><span class="save">Registrar</span></span></span></button>
+                                            </th>
+                                        </tr>
+                                    </tfoot>
                                     <tbody>
                                         <tr>
-                                            <th style="width: 120px;">CÓDIGO</th>
-                                            <td style="width: 240px;">AUTOGENERADO</td>
-                                            <th style="width: 120px;">CRÉDITO. MÁX</th>
-                                            <td style="width: 240px;"><input type="text" name="saldoMax" id="saldoMax" placeholder="Ingrese S.M. aprobado" class="limpiar mayuscula" value="5000.00"/></td>
+                                            <th colspan="4" class="centrado"><span style="font-size: 13px; font-weight: bold;">DATOS GENERALES</span></th>
+                                        </tr>
+                                        <tr>
+                                            <th class="ancho120px">CÓDIGO</th>
+                                            <td class="ancho240px">AUTOGENERADO</td>
+                                            <th class="ancho120px">CRÉDITO. MÁX</th>
+                                            <td class="ancho240px contenedorEntrada"><input type="text" name="saldoMax" id="saldoMax" placeholder="Ingrese S.M. aprobado" class="limpiar mayuscula entrada anchoTotal" value="5000.00"/></td>
                                         </tr>
                                         <tr>                                            
                                             <th>RUC</th>
-                                            <td>
-                                                <input type="text" id="ruc" name="ruc" class="limpiar" style="width: 95%;"/>
-                                            </td>
+                                            <td class="contenedorEntrada"><input type="text" id="ruc" name="ruc" class="limpiar entrada anchoTotal"/></td>
                                             <th>I. ACTIVIDADES</th>
-                                            <td>
-                                                <input type="text" name="fechaNacimiento" id="fechaNacimiento" class="limpiar" placeholder="dd/mm/yyyy" style="width: 90%;"/>
-                                            </td>
+                                            <td class="contenedorEntrada"><input type="text" name="fechaNacimiento" id="fechaNacimiento" class="limpiar entrada anchoTotal" placeholder="dd/mm/yyyy" /></td>
                                         </tr>
                                         <tr>
                                             <th>RAZÓN SOCIAL</th>
-                                            <td colspan="3">
-                                                <input type="text" id="nombres" name="nombres" style="width: 95%;"  class="limpiar mayuscula"/>
+                                            <td colspan="3" class="contenedorEntrada">
+                                                <input type="text" id="nombres" name="nombres" class="limpiar mayuscula entrada anchoTotal"/>
                                             </td>
                                         </tr>
                                         <tr>
@@ -88,13 +96,9 @@
                                         </tr>
                                         <tr>
                                             <th>TELÉFONO (1)</th>
-                                            <td>
-                                                <input type="text" name="telefono1P" id="telefono1P" class="limpiar" style="width: 90%;"/>
-                                            </td>
+                                            <td class="contenedorEntrada"><input type="text" name="telefono1P" id="telefono1P" class="limpiar entrada anchoTotal"/></td>
                                             <th>TELÉFONO (2)</th>
-                                            <td>
-                                                <input type="text" name="telefono2P" id="telefono1P" class="limpiar" style="width: 90%;"/>
-                                            </td>
+                                            <td class="contenedorEntrada"><input type="text" name="telefono2P" id="telefono2P" class="limpiar entrada anchoTotal"/></td>
                                         </tr>
                                         <tr>
                                             <th>COBRADOR <button class="sexybutton sexyicononly sexysimple sexysmall sexypropio" id="bCobradorBuscar" type="button"><span class="search"></span></button></th>
@@ -105,14 +109,12 @@
                                         </tr>
                                         <tr>
                                             <th>DIRECCIÓN</th>
-                                            <td colspan="3">
-                                                <input type="text" name="direccion" id="direccion" style="width: 95%" class="limpiar mayuscula"/>
-                                            </td>
+                                            <td colspan="3" class="contenedorEntrada"><input type="text" name="direccion" id="direccion" class="limpiar mayuscula entrada anchoTotal"/></td>
                                         </tr>
                                         <tr>
                                             <th>DIR/ZONA</th>
-                                            <td colspan="3">
-                                                <select name="codZona" id="codZona" class="limpiar" style="width: 35%;">
+                                            <td class="contenedorEntrada">
+                                                <select name="codZona" id="codZona" class="limpiar entrada anchoTotal">
                                                     <option value="">SELECCIONE</option>
                                                     <%
                                                         cZona objcZona = new cZona();
@@ -128,28 +130,21 @@
                                         </tr>
                                         <tr>
                                             <th>E-MAIL</th>
-                                            <td colspan="3">
-                                                <input id="email" name="email" type="text" placeholder="Escriba direccion de correo electrónico" style="width: 95%" class="limpiar mayuscula"/>
+                                            <td colspan="3" class="contenedorEntrada">
+                                                <input id="email" name="email" type="text" placeholder="Escriba direccion de correo electrónico" class="limpiar mayuscula entrada anchoTotal"/>
                                             </td>
                                         </tr>
                                         <tr>
                                             <th>PAGINA WEB</th>
-                                            <td colspan="3">
-                                                <input id="paginaWeb" name="paginaWeb" type="text" placeholder="Escriba página web" style="width: 95%" class="limpiar mayuscula"/>
+                                            <td colspan="3" class="contenedorEntrada">
+                                                <input id="paginaWeb" name="paginaWeb" type="text" placeholder="Escriba página web" class="limpiar mayuscula entrada anchoTotal"/>
                                             </td>
                                         </tr>
                                         <tr>
                                             <th style="height: 60px;">OBSERVACIONES</th>
-                                            <td colspan="3">
-                                                <textarea id="observacionCliente" name="observacionCliente" style="width: 95%;height: 50px" class="limpiar mayuscula"></textarea>
+                                            <td colspan="3" class="contenedorEntrada">
+                                                <textarea id="observacionCliente" name="observacionCliente" class="limpiar mayuscula entrada anchoTotal alto60px"></textarea>
                                             </td>
-                                        </tr>
-                                        <tr>
-                                            <th colspan="4" style="text-align: center;">
-                                                <button class="sexybutton" type="button" id="bCancelar"><span><span><span class="delete">Cancelar</span></span></span></button>
-                                                <button class="sexybutton" type="button" id="bRestaurar"><span><span><span class="redo">Restaurar</span></span></span></button>
-                                                <button class="sexybutton" type="submit"><span><span><span class="save">Registrar</span></span></span></button>
-                                            </th>
                                         </tr>
                                     </tbody>
                                 </table>

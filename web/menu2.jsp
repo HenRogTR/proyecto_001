@@ -20,7 +20,7 @@
     <li id="permiso19"><a href="../reportes/reporteMenu.jsp">Reportes</a></li>
     <li><a href="#">Almacen</a>
         <ul>
-            <li id="permiso3"><a href="../compra/compraMantenimiento.jsp">Movimientos y Compras</a></li>
+            <li id="permiso3"><a href="../compra/compraListar.jsp">Movimientos y Compras</a></li>
             <li id="permiso4"><a href="../sArticuloProducto">Artículos y Productos</a></li>
             <li id="permiso5"><a href="../sProveedor">Proveedores</a></li>
             <li id="permiso6"><a href="#">Actualizacion manual de almacén</a></li>

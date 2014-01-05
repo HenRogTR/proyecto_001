@@ -51,7 +51,7 @@
             </div>
             <div id="right">
                 <div id="rightSub1" class="ocultar">
-                    <h3 class="titulo">REGISTRAR COMPRA<a class="sexybutton"  href="compraFrm.jsp"><span><span><span class="info">Version antigua</span></span></span></a></h3>
+                    <h3 class="titulo">REGISTRAR COMPRA</h3>
                     <form id="formCompraRegistrar" action="../sCompra">
                         <input type="text" name="accionCompra" id="accionCompra" value="registrar" class="ocultar"/>
                         <table class="reporte-tabla-1">
@@ -138,7 +138,7 @@
                                     </tr>
                                     <tr>
                                         <th colspan="2">Observación</th>
-                                        <td colspan="3" rowspan="4" id="lObservacion" class="vaciar"></td>
+                                        <td colspan="3" rowspan="4" id="lObservacion" class="contenedorEntrada"><textarea id="observacion" name="observacion" class="entrada anchoTotal limpiar alto80px"></textarea></td>
                                         <th>Descuento</th>
                                         <td class="contenedorEntrada">
                                             <input type="text" name="descuento" value="0.00" id="descuento" class="limpiar derecha anchoTotal"/>

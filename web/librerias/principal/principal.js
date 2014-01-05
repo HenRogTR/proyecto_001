@@ -13,6 +13,10 @@ $(document).ready(function() {
         $('#dEquipoTrabajo').dialog('open');
         event.preventDefault();
     });
+    $('#novedades').click(function(event) {
+        $('#dNovedades').dialog('open');
+        event.preventDefault();
+    });
 
     $('#bAccesoAbrir').click(function(event) {
         $('#dIniciarSesion').dialog('open');
@@ -63,6 +67,21 @@ $(function() {
         modal: true,
         resizable: true,
         height: 180,
+        width: 600,
+        buttons: {
+            Aceptar: function() {
+                $(this).dialog("close");
+            }
+        },
+        close: function() {
+            $(this).dialog("close");
+        }
+    });
+    $('#dNovedades').dialog({
+        autoOpen: false,
+        modal: true,
+        resizable: true,
+        height: 500,
         width: 600,
         buttons: {
             Aceptar: function() {
@@ -458,6 +477,8 @@ function fUsuarioIngresar() {
                     $('.acceso').addClass('ocultar');
                     $('#menu').removeClass('ocultar');
                     $('.login').val('');
+                    $('#dNovedades').dialog('open');
+                    
                 }
             },
             statusCode: {

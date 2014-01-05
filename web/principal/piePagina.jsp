@@ -7,7 +7,9 @@
 <div class="ui-widget">
     <div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
         <p>
-            <strong><a href="#" id="equipoTrabajo">Equipo de trabajo</a></p></strong>
+            <strong><a href="#" id="equipoTrabajo">Equipo de trabajo</a></strong>
+        </p>
+        <strong><a href="#" id="novedades">Novedades</a></p></strong>
     </div>
 </div>
 <div id="dEquipoTrabajo" title="Equipo de trabajo">
@@ -51,4 +53,20 @@
 <!--div libre-->
 <div id="dLibre" style="text-align: center; vertical-align: middle;">
     <img src="../imagenes/loading_1.gif" style="height: 50px;"/>
+</div>
+
+<div id="dNovedades" title="Novedades" style="font-size: 10px;">
+    <div style="background: #F1F1F7">
+        <h3 class="titulo">31/12/2013</h3>
+        <p>
+            * Mejorar la vista de clientes.<br>
+            * Modificacion de vista de registro de Cliente Natural y Jurídico.<br>
+            * Modificacion de vista de edición de Cliente Natural y Jurídico.<br>
+        </p>
+        <h3 class="titulo">30/12/2013</h3>
+        <p>
+            * La(s) S/N en stock para cada artículo se muestra en un dialogo en la misma página.<br>
+            * Se muestra las novedades para cada actualización.<br>
+        </p>
+    </div>
 </div>
