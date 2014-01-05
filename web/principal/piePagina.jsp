@@ -57,6 +57,12 @@
 
 <div id="dNovedades" title="Novedades" style="font-size: 10px;">
     <div style="background: #F1F1F7">
+        <h3 class="titulo">05/01/2014</h3>
+        <p>
+            * Correccíon de error en búsqueda e impresión de compras.<br>
+            * Mejora de estilo visual en compras.<br>
+            * Se quito la apertura de vista previa de impresion al imprimir compras.<br>
+        </p>
         <h3 class="titulo">31/12/2013</h3>
         <p>
             * Mejorar la vista de clientes.<br>

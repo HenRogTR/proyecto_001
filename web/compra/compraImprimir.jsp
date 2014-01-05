@@ -4,6 +4,8 @@
     Author     : Henrri
 --%>
 
+<%@page import="utilitarios.cOtros"%>
+<%@page import="utilitarios.cManejoFechas"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="tablas.CompraSerieNumero"%>
 <%@page import="otros.cNumeroLetra"%>
@@ -14,10 +16,26 @@
 <%@page import="tablas.Compra"%>
 <%@page import="compraClases.cCompra"%>
 <%
-    String codCompra = request.getParameter("codCompra");
-    if (codCompra != null) {
-        cUtilitarios objcUtilitarios = new cUtilitarios();
-        cNumeroLetra objcNumeroLetra = new cNumeroLetra();
+    int codCompra = 0;
+    Compra objCompra = null;
+    List CDList = null;
+    try {
+        codCompra = Integer.parseInt(request.getParameter("codCompra"));
+        objCompra = new cCompra().leer_cod(codCompra);
+        if (objCompra == null) {
+            out.print("Código de compra erroneo.");
+            return;
+        }
+        CDList = new cCompraDetalle().leer_compraDetalle_codCompra(codCompra);
+    } catch (Exception e) {
+        out.print("Error en parámetros.");
+        return;
+    }
+
+    cUtilitarios objcUtilitarios = new cUtilitarios();
+    cNumeroLetra objcNumeroLetra = new cNumeroLetra();
+    cManejoFechas objcManejoFechas = new cManejoFechas();
+    cOtros objcOtros = new cOtros();
 %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -25,161 +43,128 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><%=objcUtilitarios.fechaHoraActualNumerosLineal()%></title>
-        <link rel="stylesheet" type="text/css" href="../lib/propios/css/paginaImprimir/bodyPrint.css" media="screen"/>
-        <link rel="stylesheet" type="text/css" href="../lib/propios/css/paginaImprimir/bodyPrint.css" media="print"/>
-        <script type="text/javascript" src="../lib/jquery/jquery-1.8.1.min.js"></script>
-        <script>
-            $(document).ready(function() {
-                window.print();
-            });
-        </script>
+        <link rel="stylesheet" type="text/css" href="../librerias/principal/bodyPrint.css" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="../librerias/principal/bodyPrint.css" media="print"/>
     </head>
     <body>        
         <div id="documento">
             <div id="contenido">
-                <%
-                    cCompra objcCompra = new cCompra();
-                    Compra objCompra = objcCompra.leer_cod(Integer.parseInt(codCompra));
-                    if (objCompra != null) {
-
-                %>
-                <table class="tabla-imprimir" >
+                <table class="anchoTotal">
                     <thead>
                         <tr class="bottom2">
-                            <th colspan="6" style="text-align: center;"><label style="font-weight: bold;">D E T A L L E &nbsp;&nbsp;&nbsp;&nbsp;D E &nbsp;&nbsp;&nbsp;&nbsp;C O M P R A</label></th>
+                            <th colspan="6" class="centrado"><span class="espaciado5">DETALLE DE COMPRA</span></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <th style="width: 14%;"><label>Documento</label></th>
-                            <td style="width: 19%;">
-                                <label id="lDocSerieNumero"><%=objCompra.getDocSerieNumero()%></label>
-                                <input type="hidden" name="codCompra" id="codCompra" value="<%=objCompra.getCodCompra()%>" />
-                            </td>
-                            <th style="width: 14%;"><label>Tipo de compra</label></th>
-                            <td style="width: 19%;"><label id="lTipo"><%=objCompra.getTipo()%></label></td>
-                            <th style="width: 14%;"><label>Moneda</label></th>
-                            <td style="width: 20%;"><label id="lMoneda"><%=objCompra.getMoneda()%></label></td>
+                            <th class="ancho100px"><span>Documento</span></th>
+                            <td class="ancho160px"><div><%=objCompra.getDocSerieNumero()%></div></td>
+                            <th class="ancho100px"><span>Tipo de compra</span></th>
+                            <td class="ancho160px"><div><%=objCompra.getTipo()%></div></td>
+                            <th class="ancho100px"><span>Moneda</span></th>
+                            <td><div><%=objCompra.getMoneda()%></div></td>
                         </tr>
                         <tr>
-                            <th><label>RUC</label></th>
-                            <td><label id="lRuc"><%=objCompra != null ? objCompra.getProveedor().getRuc() : ""%></label></td>
-                            <th><label>Razón social</label></th>
-                            <td colspan="3"><label id="lRazonSocial"><%=objCompra != null ? objCompra.getProveedor().getRazonSocial() : ""%></label></td>
+                            <th><span>RUC</span></th>
+                            <td><div><%=objCompra.getProveedor().getRuc()%></div></td>
+                            <th><span>Razón social</span></th>
+                            <td colspan="3"><div><%=objCompra.getProveedor().getRazonSocial()%></div></td>
                         </tr>
                         <tr>
-                            <th><label>Dirección</label></th>
-                            <td colspan="5"><label id="lDireccion"><%=objCompra != null ? objCompra.getProveedor().getDireccion() : ""%></label></td>
+                            <th><span>Dirección</span></th>
+                            <td colspan="5"><div><%=objCompra.getProveedor().getDireccion()%></div></td>
                         </tr>
                         <tr>
-                            <th><label>F. Factura</label></th>
-                            <td><label id="lFechaFactura"><%=objCompra != null ? objcUtilitarios.fechaDateToString(objCompra.getFechaFactura()) : ""%></label></td>
-                            <th><label>F. Vencimiento</label></th>
-                            <td><label id="lFechaVencimiento"><%=objCompra != null ? objcUtilitarios.fechaDateToString(objCompra.getFechaVencimiento()) : ""%></label></td>
-                            <th><label>F. Llegada</label></th>
-                            <td><label id="lFechaLlegada"><%=objCompra != null ? objcUtilitarios.fechaDateToString(objCompra.getFechaLlegada()) : ""%></label></td>
-                        </tr>
-                        <tr class="bottom2">
-                            <th colspan="6" style="text-align: center;"><label style="font-weight: bold;">D E T A L L E &nbsp;&nbsp;&nbsp;&nbsp;D E &nbsp;&nbsp;&nbsp;&nbsp;A R T Í C U L O S &nbsp;&nbsp;&nbsp;&nbsp;C O M P R A D O S</label></th>
-                        </tr>
-                        <tr>
-                            <td colspan="6">
-                                <table class="tabla-imprimir">
-                                    <thead>
-                                        <tr class="bottom2">
-                                            <!--<th style="width: 30px;"><label>Item</label></th>-->
-                                            <th style="width: 25px;"><label>Cod</label></th>
-                                            <th style="width: 28px;"><label>Cant.</label></th>
-                                            <th style="width: 55px;"><label>U. Medida</label></th>
-                                            <th><label>Descripción</label></th>
-                                            <th style="width: 65px;"><label>P. Unitario</label></th>
-                                            <th style="width: 65px;"><label>P. Total</label></th>
-                                        </tr>
-                                    </thead>                                    
-                                    <tfoot>
-                                        <tr class="top2">
-                                            <th colspan="2"><label>Son</label></th>
-                                            <td colspan="2" rowspan="2"><label id="lSon"><%=objcNumeroLetra.importeNumeroALetra(String.valueOf(objcUtilitarios.redondearDecimales(objCompra.getNeto(), 2)), true)%></label></td>
-                                            <th><label>Sub total</label></th>
-                                            <td style="text-align: right;padding-right: 5px;"><label id="lSubTotal"><%=objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(objCompra.getSubTotal(), 2), 2)%></label></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3"><label></label></td>
-                                            <th><label>Descuento</label></th>
-                                            <td style="text-align: right;"><label id="lDescuento"></label></td>
-                                        </tr>
-                                        <tr>
-                                            <th colspan="2" rowspan="3"><label>Observaciones</label></th>
-                                            <td colspan="2" rowspan="4"><label style="text-align: justify;" id="lObservacion"><%=objCompra.getObservacion().replace("\n", "<br>").replace("\r", "  ").replace("/", " - ")%></label></td>
-                                            <th><label>Total</label></th>
-                                            <td  style="text-align: right;padding-right: 5px;"><label id="lTotal"><%=objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(objCompra.getTotal(), 2), 2)%></label></td>
-                                        </tr>
-                                        <tr>
-                                            <!--<td><label></label></td>-->
-                                            <th><label>IGV</label></th>
-                                            <td style="text-align: right;padding-right: 5px;"><label id="lMontoIgv"><%=objcUtilitarios.agregarCerosNumeroFormato(objCompra.getMontoIgv(), 2)%></label></td>
-                                        </tr>
-                                        <tr>
-                                            <th><label>Neto</label></th>
-                                            <td style="text-align: right;padding-right: 5px;"><label id="lNeto"><%=objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(objCompra.getNeto(), 2), 2)%></label></td>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-                                        <%
-                                            List lCDList = new cCompraDetalle().leer_compraDetalle_codCompra(objCompra.getCodCompra());
-                                            for (Iterator it = lCDList.iterator(); it.hasNext();) {
-                                                CompraDetalle objCompraDetalle = (CompraDetalle) it.next();
-                                        %>
-
-                                        <tr class="top3">
-                                            <!--<td style="text-align: right;padding-right: 5px;"></td>-->
-                                            <td><%=objcUtilitarios.agregarCeros_int(objCompraDetalle.getArticuloProducto().getCodArticuloProducto(), 8)%></td>
-                                            <td style="text-align: right;padding-right: 5px;"><%=objCompraDetalle.getCantidad()%></td>
-                                            <td>Unid.</td>
-                                            <td style="padding-left: 8px;"><%=objCompraDetalle.getDescripcion()%></td>
-                                            <td style="text-align: right;padding-right: 5px;"><%=objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(objCompraDetalle.getPrecioUnitario(), 4), 4)%></td>
-                                            <td style="text-align: right;padding-right: 5px;"><%=objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(objCompraDetalle.getPrecioTotal(), 2), 2)%></td>
-                                        </tr>
-                                        <%
-                                            if (objCompraDetalle.getArticuloProducto().getUsarSerieNumero()) {
-                                        %>
-                                        <tr>
-                                            <!--<td></td>-->
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td style="font-size: 10px;">
-                                                <div style="padding-left: 20px;">
-                                                    <b></b>
-                                                    <%
-                                                        for (CompraSerieNumero objCompraSerieNumero : objCompraDetalle.getCompraSerieNumeros()) {
-                                                            out.print(" - " + objCompraSerieNumero.getSerieNumero().replace("\n", "<br>"));
-                                                            if (objCompraSerieNumero.getObservacion().trim() != "") {
-                                                                out.print("<br>" + objCompraSerieNumero.getObservacion().replace("\n", "<br>"));
-                                                            }
-                                                        }
-                                                    %>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <%                                            }
-                                            }
-                                        %>
-
-                                    </tbody>
-                                </table>
-                            </td>
+                            <th><span>F. Factura</span></th>
+                            <td><div><%=objcManejoFechas.DateAString(objCompra.getFechaFactura())%></div></td>
+                            <th><span>F. Vencimiento</span></th>
+                            <td><div><%=objcManejoFechas.DateAString(objCompra.getFechaVencimiento())%></div></td>
+                            <th><span>F. Llegada</span></th>
+                            <td><div><%=objcManejoFechas.DateAString(objCompra.getFechaLlegada())%></div></td>
                         </tr>
                     </tbody>
                 </table>
-                <%
-                    }
-                %>
-
+                <div style="padding: 5px;">
+                    <table class="anchoTotal">
+                        <thead>
+                            <tr>
+                                <th colspan="6" class="centrado"><span class="espaciado5">DETALLE DE ARTÍCULOS COMPRADOS</span></th>
+                            </tr>
+                            <tr class="top2 bottom2">
+                                <th style="width: 60px;"><span>Código</span></th>
+                                <th style="width: 40px;"><span>Cant.</span></th>
+                                <th style="width: 60px;"><span>U. Medida</span></th>
+                                <th><span>Descripción</span></th>
+                                <th style="width: 75px;"><span>P. Unitario</span></th>
+                                <th style="width: 75px;"><span>P. Total</span></th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr class="top2">
+                                <th class="derecha"><span>Son</span></th>
+                                <th></th>
+                                <td colspan="2" rowspan="2"><div ><%=objCompra.getSon()%></div></td>
+                                <th><span>Sub total</span></th>
+                                <td class="derecha"><div style="margin-right: 5px;"><%=objcOtros.agregarCerosNumeroFormato(objCompra.getSubTotal(), 2)%></div></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3"></td>
+                                <th><span>Descuento</span></th>
+                                <td class="derecha"><div></div></td>
+                            </tr>
+                            <tr>
+                                <th colspan="2" rowspan="3"><span>Observaciones</span></th>
+                                <td colspan="2" rowspan="4"><div style="text-align: justify;"><%=objcOtros.replace_comillas_comillasD_barraInvertida(objCompra.getObservacion())%></div></td>
+                                <th><span>Total</span></th>
+                                <td class="derecha"><div style="margin-right: 5px;"><%=objcOtros.agregarCerosNumeroFormato(objCompra.getTotal(), 2)%></div></td>
+                            </tr>
+                            <tr>
+                                <th><span>IGV</span></th>
+                                <td class="derecha"><div style="margin-right: 5px;"><%=objcOtros.agregarCerosNumeroFormato(objCompra.getMontoIgv(), 2)%></div></td>
+                            </tr>
+                            <tr>
+                                <th><span>Neto</span></th>
+                                <td class="derecha"><div style="margin-right: 5px;"><%=objcOtros.agregarCerosNumeroFormato(objCompra.getNeto(), 2)%></div></td>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            <%
+                                for (Iterator it = CDList.iterator(); it.hasNext();) {
+                                    CompraDetalle objCD = (CompraDetalle) it.next();
+                            %>
+                            <tr>
+                                <td><div><%=objcOtros.agregarCeros_int(objCD.getArticuloProducto().getCodArticuloProducto(), 8)%></div></td>
+                                <td class="derecha"><div><%=objCD.getCantidad()%></div></td>
+                                <td class="derecha"><div style="margin-right: 3px;"><%=objCD.getArticuloProducto().getUnidadMedida()%></div></td>
+                                <td class="izquierda">
+                                    <div style="margin-left: 3px;"><%=objCD.getDescripcion()%></div>
+                                    <div style="margin-left: 10px; font-size: 11px;">
+                                        <%
+                                            int cont = 0;
+                                            for (CompraSerieNumero objCSN : objCD.getCompraSerieNumeros()) {
+                                                if (cont++ > 0) {
+                                                    out.print(" \\ ");
+                                                }
+                                                out.print("<span>");
+                                                out.print(objcOtros.replace_comillas_comillasD_barraInvertida(objCSN.getSerieNumero()));
+                                                if (!objCSN.getObservacion().equals("")) {
+                                                    out.print("<br>" + objcOtros.replace_comillas_comillasD_barraInvertida(objCSN.getObservacion()));
+                                                }
+                                                out.print("</span>");
+                                            }
+                                        %>
+                                    </div>
+                                </td>
+                                <td class="derecha"><div style="margin-right: 5px;"><%=objcOtros.agregarCerosNumeroFormato(objCD.getPrecioUnitario(), 2)%></div></td>
+                                <td class="derecha"><div style="margin-right: 5px;"><%=objcOtros.agregarCerosNumeroFormato(objCD.getPrecioTotal(), 2)%></div></td>
+                            </tr>
+                            <%
+                                }
+                            %>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </body>
 </html>
-<%
-    }
-%>

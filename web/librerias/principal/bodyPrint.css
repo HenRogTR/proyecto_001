@@ -1,0 +1,111 @@
+/* 
+    Document    : bodyPrint
+    Created on  : 25/03/2013, 09:44:26 AM
+    Author      : Henrri
+    Description : Purpose of the stylesheet follows.
+*/
+
+root { 
+    display: block;
+}
+tbody tr:hover td{
+    background: #d0dafd;
+}
+body {
+    font-size:12px;
+    font-family:Arial,Verdana,Sans-serif;
+    text-align:center;
+    line-height:15px;
+    background: #222;
+}
+#documento {
+    width:800px;
+    margin:0 auto;	
+    text-align:left;
+}
+#contenido {
+    font-size:12px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 16px;
+    background: #fff;
+}
+
+.tabla-imprimir{
+    width: 100%;
+    text-align: left;
+}
+.top3 th{
+    border-top: 3px solid #000;
+    /*border-top-style: double;*/
+    /*border: 3px solid #000;*/
+}
+.top2 th{
+    border-top: 2px solid #000;
+    /*border-top-style: double;*/
+    /*border: 3px solid #000;*/
+}
+.top1 th{
+    border-top: 1px solid #000;
+    /*border-top-style: double;*/
+    /*border: 3px solid #000;*/
+}
+.top2 td{
+    border-top: 2px solid #000;
+    /*border-top-style: double;*/
+    /*border: 3px solid #000;*/
+}
+
+.bottom2 th{
+    border-bottom: 2px solid #000;
+    /*border-top-style: double;*/
+}
+.bottom1 th{
+    border-bottom: 1px solid #000;
+    /*border-top-style: double;*/
+}
+td,th{
+    vertical-align: top;
+}
+tbody tr:hover td{background: #d0dafd;}
+.espaciado5{
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 5px;
+    word-spacing:5px;
+}
+.medio{vertical-align: middle !important;}
+.centrado{text-align: center !important;}
+.derecha{text-align: right !important;}
+.izquierda{text-align: left !important;}
+.anchoTotal{width: 100%;}
+.altoTotal{height: 100%;}
+.contenedorEntrada{padding-right: 10px !important;}
+
+.ancho40px{width: 40px;}
+.ancho60px{width: 60px;}
+.ancho80px{width: 80px;}
+.ancho100px{width: 100px;}
+.ancho120px{width: 120px;}
+.ancho140px{width: 140px;}
+.ancho160px{width: 160px;}
+.ancho200px{width: 200px;}
+.ancho240px{width: 240px;}
+.ancho280px{width: 280px;}
+.ancho320px{width: 320px;}
+.ancho360px{width: 360px;}
+.ancho400px{width: 400px;}
+
+.alto40px{height: 40px;}
+.alto60px{height: 60px;}
+.alto80px{height: 80px;}
+.alto100px{height: 100px;}
+.alto120px{height: 120px;}
+.alto140px{height: 140px;}
+.alto160px{height: 160px;}
+.alto200px{height: 200px;}
+.alto240px{height: 240px;}
+.alto280px{height: 280px;}
+.alto320px{height: 320px;}
+.alto360px{height: 360px;}
+.alto400px{height: 400px;}

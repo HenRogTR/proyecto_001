@@ -1,5 +1,5 @@
 <%-- 
-    Document   : compraDocNumeroSerieBuscar
+    Document   : compraDocNumeroSerieBuscarAutocompletado
     Created on : 11/12/2012, 07:35:39 AM
     Author     : Henrri
 --%>
@@ -41,7 +41,7 @@
                 + "\"neto\" : \"" + objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(objCompra.getNeto(), 2), 2) + "\" , "
                 + "\"son\" : \"" + objCompra.getSon()+ "\" , "
                 + "\"moneda\" : \"" + objCompra.getMoneda() + "\" , "
-                + "\"observacion\" : \"" + objcUtilitarios.replace_comillas_comillasD_barraInvertida(objCompra.getObservacion().replace("\n", "::").replace("\r", "  ").replace("/", " - ")) + "\" , "
+                + "\"observacion\" : \"" + objcUtilitarios.replace_comillas_comillasD_barraInvertida(objCompra.getObservacion()) + "\" , "
                 + "\"codProveedor\" : " + objCompra.getProveedor().getCodProveedor() + " , "
                 + "\"ruc\" : \"" + objCompra.getProveedor().getRuc() + "\" , "
                 + "\"razonSocial\" : \"" + objcUtilitarios.replace_comillas_comillasD_barraInvertida(objCompra.getProveedor().getRazonSocial()) + "\" , "

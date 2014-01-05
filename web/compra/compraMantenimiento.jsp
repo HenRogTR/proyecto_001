@@ -25,7 +25,7 @@
         <script type="text/javascript" src="../librerias/compra/compraMantenimiento.js?v13.12.26"></script>
         <style>
             .ui-autocomplete {
-                width: 400px;
+                /*width: 300px;*/
                 max-height: 300px;
                 overflow-y: auto;
                 /* prevent horizontal scrollbar */
@@ -121,7 +121,7 @@
                             <table class="reporte-tabla-1 anchoTotal" style="font-size: 10px;">
                                 <thead>
                                     <tr>
-                                        <th style="width: 25px;"><label>Item</label></th>                                        
+                                        <th style="width: 25px;"><label>Item</label></th>
                                         <th style="width: 50px;">Código</th>
                                         <th style="width: 30px;"><label>Cant.</label></th>
                                         <th style="width: 55px;"><label>U. Medida</label></th>
