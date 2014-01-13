@@ -62,6 +62,7 @@ $(function() {
 
     $("#ulMenu").menu();
 
+//<editor-fold defaultstate="collapsed" desc="dialog's. Clic en el signo + de la izquierda para mas detalles.">
     $('#dEquipoTrabajo').dialog({
         autoOpen: false,
         modal: true,
@@ -199,9 +200,11 @@ $(function() {
             }
         }
     });
+//</editor-fold>
+
 });
 
-
+//<editor-fold defaultstate="collapsed" desc="fComprobarSesion(valor). Clic en el signo + de la izquierda para mas detalles.">
 function fComprobarSesion(valor) {
     var data = 'accionUsuario=sesionComprobar';
     try {
@@ -264,7 +267,9 @@ function fComprobarSesion(valor) {
     }
 }
 ;
+//</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="fUsuarioPermiso(callback). Clic en el signo + de la izquierda para mas detalles.">
 function fUsuarioPermiso(callback) {
     var data = 'accionUsuario=permisos';
     try {
@@ -423,7 +428,9 @@ function fUsuarioPermiso(callback) {
     }
 }
 ;
+//</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="fUsuarioIngresar(). Clic en el signo + de la izquierda para mas detalles.">
 function fUsuarioIngresar() {
     var usuario = $('#usuario').val();
     var contrasenia = $('#contrasenia').val();
@@ -447,7 +454,7 @@ function fUsuarioIngresar() {
 
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
-                $('#lServidorError').text(errorThrown + '(Página)');
+                $('#lServidorError').text(errorThrown + '(Página-usuario ingresar)');
                 $('#dServidorError').dialog('open');
             },
             success: function(ajaxResponse, textStatus) {
@@ -478,7 +485,7 @@ function fUsuarioIngresar() {
                     $('#menu').removeClass('ocultar');
                     $('.login').val('');
                     $('#dNovedades').dialog('open');
-                    
+
                 }
             },
             statusCode: {
@@ -495,7 +502,9 @@ function fUsuarioIngresar() {
     }
 }
 ;
+//</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="function fUsuarioCerrarSesion(). Clic en el signo + de la izquierda para mas detalles.">
 function fUsuarioCerrarSesion() {
     var data = 'accionUsuario=sesionCerrar';
     try {
@@ -507,7 +516,7 @@ function fUsuarioCerrarSesion() {
 
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
-                $('#lServidorError').text(errorThrown + '(Página)');
+                $('#lServidorError').text(errorThrown + '(sUsuario-cerrar sesion)');
                 $('#dServidorError').dialog('open');
             },
             success: function(ajaxResponse, textStatus) {
@@ -527,7 +536,9 @@ function fUsuarioCerrarSesion() {
     }
 }
 ;
+//</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="procesarRespuesta(ajaxResponse). Clic en el signo + de la izquierda para mas detalles.">
 function procesarRespuesta(ajaxResponse) {
     var response;
     try {
@@ -538,57 +549,77 @@ function procesarRespuesta(ajaxResponse) {
     return response;
 }
 ;
+//</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="fMensajeAlerta(mensaje). Clic en el signo + de la izquierda para mas detalles.">
 function fMensajeAlerta(mensaje) {
     $('#dMensajeAlertaDiv').empty().append(mensaje);
     $('#dMensajeAlerta').dialog('open');
 }
 ;
+//</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="fAlerta(mensaje). Clic en el signo + de la izquierda para mas detalles.">
 function fAlerta(mensaje) {
     $('#dAlertaDiv').empty().append('<br>' + mensaje);
     $('#dAlerta').dialog('open');
 }
 ;
+//</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="fAlertaCerrar(). Clic en el signo + de la izquierda para mas detalles.">
 function fAlertaCerrar() {
     $('#dAlerta').dialog('close');
 }
 ;
+//</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="fProcesandoPeticion(mensaje). Clic en el signo + de la izquierda para mas detalles.">
 function fProcesandoPeticion(mensaje) {
     $('#lProcesandoPeticion').text(mensaje);
     $('#dProcesandoPeticion').dialog('open');
 }
 ;
+//</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="fProcesandoPeticionCerrar(). Clic en el signo + de la izquierda para mas detalles.">
 function fProcesandoPeticionCerrar() {
     $('#dProcesandoPeticion').dialog('close');
 }
 ;
+//</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="fRedireccionarEspera(direccion, tiempo). Clic en el signo + de la izquierda para mas detalles.">
 function fRedireccionarEspera(direccion, tiempo) {
     setTimeout(function() {
         $(location).attr('href', direccion);
     }, tiempo);
 }
 ;
+//</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="fEspererarGif(). Clic en el signo + de la izquierda para mas detalles.">
 function  fEspererarGif() {
     return '<div class="esperando"><img alt="not found" src="../imagenes/loading.gif" style="height: 11px;"></div>';
 }
 ;
+//</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="fDLibreAbrir(). Clic en el signo + de la izquierda para mas detalles.">
 function fDLibreAbrir() {
     var $dLibre = $('#dLibre').dialog('open');
 }
 ;
+//</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="fDLibreCerrar(). Clic en el signo + de la izquierda para mas detalles.">
 function fDLibreCerrar() {
     var $dLibre = $('#dLibre').dialog('close');
 }
 ;
+//</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="fDLibreEditar(alto, ancho, titulo, contenido). Clic en el signo + de la izquierda para mas detalles.">
 /**
  * 
  * @param {type} alto
@@ -605,7 +636,9 @@ function fDLibreEditar(alto, ancho, titulo, contenido) {
     $dLibre.dialog('option', 'title', titulo);
 }
 ;
+//</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="fDLibreReiniciar(). Clic en el signo + de la izquierda para mas detalles.">
 function fDLibreReiniciar() {
     var $dLibre = $('#dLibre');
     $dLibre.empty().append('<img src="../imagenes/loading_1.gif" style="height: 50px;"/>');
@@ -614,3 +647,51 @@ function fDLibreReiniciar() {
     $dLibre.dialog('option', 'title', '');
 }
 ;
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="fAjax(type, data, url, beforeSend, callback). Clic en el signo + de la izquierda para mas detalles.">
+/**
+ * 
+ * @param {type} type
+ * @param {type} data
+ * @param {type} url
+ * @param {type} beforeSend2
+ * @param {type} callback
+ * @returns {ajaxResponse}
+ */
+function fAjax(type, data, url, beforeSend2, callback) {
+    var ar = null;
+    try {
+        $.ajax({
+            type: type,
+            url: url,
+            data: data,
+            beforeSend: function() {
+                beforeSend2();
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                $('#lServidorError').text(errorThrown + '(' + url + ')');
+                $('#dServidorError').dialog('open');
+            },
+            success: function(ajaxResponse, textStatus) {
+                ar = ajaxResponse;
+            },
+            statusCode: {
+                404: function() {
+                    $('#lServidorError').text('Página no encontrada(' + url + ').');
+                    $('#dServidorError').dialog('open');
+                }
+            },
+            complete: function() {
+                callback();
+            }
+        });
+    }
+    catch (ex) {
+        $('#lServidorError').text(ex);
+        $('#dServidorError').dialog('open');
+    }
+    return ar;
+}
+;
+//</editor-fold>

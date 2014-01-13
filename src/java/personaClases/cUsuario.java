@@ -7,6 +7,7 @@ package personaClases;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import otros.cUtilitarios;
 import tablas.HibernateUtil;
 import tablas.Usuario;
@@ -30,6 +31,7 @@ public class cUsuario {
     }
 
     public Usuario ingresar(String usuario, String contrasenia) {
+        Usuario objUsuario = null;
         setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
@@ -39,12 +41,37 @@ public class cUsuario {
                     + "and contrasenia=:contrasenia")
                     .setParameter("usuario", usuario)
                     .setParameter("contrasenia", new cOtros().md5(contrasenia));
-            return (Usuario) q.list().get(0);
+            objUsuario = (Usuario) q.list().get(0);
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            e.printStackTrace();
             setError(e.getMessage());
+        } finally {
+//            sesion.close();
         }
-        return null;
+        return objUsuario;
+    }
+
+    public Usuario ingresar2(String usuario, String contrasenia) {
+        Usuario objUsuario = null;
+        Transaction trns = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = session.beginTransaction();
+            Query q = session.createQuery("from Usuario "
+                    + "where substring(registro,1,1)=1 "
+                    + "and usuario=:usuario "
+                    + "and contrasenia=:contrasenia")
+                    .setParameter("usuario", usuario)
+                    .setParameter("contrasenia", new cOtros().md5(contrasenia));
+            objUsuario = (Usuario) q.uniqueResult();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        } finally {
+            session.flush();
+//            session.close();
+        }
+        return objUsuario;
     }
 
     public int Crear(Usuario objUsuario) {

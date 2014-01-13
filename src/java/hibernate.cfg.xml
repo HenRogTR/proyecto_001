@@ -8,6 +8,15 @@
     <property name="hibernate.connection.username">root</property>
     <property name="hibernate.connection.password">Admin</property>
     <property name="hibernate.current_session_context_class">thread</property>
+    <!--<property name="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>-->
+    <property name="c3p0.acquire_increment">1</property>
+    <property name="c3p0.idle_test_period">100</property>
+    <!-- seconds -->
+    <property name="c3p0.max_size">400</property>
+    <property name="c3p0.max_statements">50</property>
+    <property name="c3p0.min_size">50</property>
+    <property name="c3p0.timeout">10</property>
+    <!-- seconds -->
     <mapping resource="tablas/VentaCreditoLetra.hbm.xml"/>
     <mapping resource="tablas/CompraSerieNumero.hbm.xml"/>
     <mapping resource="tablas/Cobranza.hbm.xml"/>

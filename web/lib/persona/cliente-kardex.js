@@ -38,7 +38,7 @@ $(document).ready(function() {
         hide: {
             effect: "blind",
             duration: 500
-        },
+        }
     });
     $('#dClienteBuscar').dialog({
         autoOpen: true,

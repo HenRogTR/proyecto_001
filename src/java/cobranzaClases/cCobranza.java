@@ -46,6 +46,7 @@ public class cCobranza {
             if (trns != null) {
                 trns.rollback();
             }
+            e.printStackTrace();
             setError(e.getMessage());
         } finally {
             sesion.flush();
@@ -120,13 +121,15 @@ public class cCobranza {
         setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
-//            session.flush();
+            
             Query q = sesion.createQuery("from Cobranza c where substring(registro,1,1)=1 "
                     + "and c.persona.codPersona=:codPersona order by codCobranza asc")
                     .setParameter("codPersona", codPersona);
             return q.list();
         } catch (Exception e) {
             setError(e.getMessage());
+        }finally{
+            sesion.flush();
         }
         return null;
     }
@@ -551,5 +554,29 @@ public class cCobranza {
             sesion.close();
         }
         return false;
+    }
+
+    /**
+     * ... se cierra la sesion así que no usar otras tablas
+     *
+     * @param codPersona
+     * @return
+     */
+    public List leer_codPersona_SC(int codPersona) {
+        List lCobranza = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            Query q = sesion.createQuery("from Cobranza c where substring(registro,1,1)=1 "
+                    + "and c.persona.codPersona=:codPersona order by codCobranza asc")
+                    .setParameter("codPersona", codPersona);
+            lCobranza = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return lCobranza;
     }
 }

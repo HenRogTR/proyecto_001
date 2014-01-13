@@ -91,6 +91,7 @@ public class cVentaCreditoLetra {
     }
 
     public Object[] leer_resumen(int codPersona) {
+        Object[] resumen = null;
         setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
@@ -98,11 +99,13 @@ public class cVentaCreditoLetra {
                     + "from VentaCreditoLetra vcl where substring(vcl.registro,1,1)=1 "
                     + "and vcl.ventaCredito.ventas.persona.codPersona=:codPersona")
                     .setParameter("codPersona", codPersona);
-            return (Object[]) q.list().iterator().next();
+            resumen = (Object[]) q.list().iterator().next();
+            sesion.flush();
+            sesion.close();
         } catch (Exception e) {
             setError(e.getMessage());
         }
-        return null;
+        return resumen;
     }
 
     public VentaCreditoLetra leer_codVentaCreditoLetra(int codVentaCreditoLetra) {
@@ -135,6 +138,7 @@ public class cVentaCreditoLetra {
     }
 
     public List leer_resumenPagos(int codPersona) {
+        List l = null;
         setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
@@ -146,11 +150,15 @@ public class cVentaCreditoLetra {
                     + "group by year(vcl.fechaVencimiento), month(vcl.fechaVencimiento) "
                     + "order by vcl.fechaVencimiento")
                     .setParameter("codPersona", codPersona);
-            return q.list();
+            l = q.list();
         } catch (Exception e) {
+            e.printStackTrace();
             setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
         }
-        return null;
+        return l;
     }
 
     /**

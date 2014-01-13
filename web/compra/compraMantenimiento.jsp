@@ -62,7 +62,7 @@
                         <tr>
                             <th class="ancho80px"><button class="sexybutton sexyicononly sexysimple sexysmall sexypropio" id="bEditar"><span class="search"></span></button><span>BUSCAR</span></th>
                             <td class="ancho120px contenedorEntrada"><input type="search" name="codCompraBuscar" id="codCompraBuscar" value="" class="entrada anchoTotal derecha"/></td>
-                            <td class="ancho160px contenedorEntrada"><input type="text" name="docSerieNumeroBuscar" id="docSerieNumeroBuscar" value="" class="entrada anchoTotal"/></td>
+                            <td class="ancho160px contenedorEntrada"><input type="search" name="docSerieNumeroBuscar" id="docSerieNumeroBuscar" value="" class="entrada anchoTotal"/></td>
                         </tr>
                     </table>
                     <div>

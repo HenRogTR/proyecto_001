@@ -35,7 +35,7 @@
         <!--propio-->
         <script type="text/javascript" src="../librerias/utilitarios/manejoFecha.js"></script>
         <script type="text/javascript" src="../librerias/utilitarios/formatoDecimal.js"></script>
-        <script type="text/javascript" src="../librerias/cobranza/cobranza.js?v.13.11.27"></script>
+        <script type="text/javascript" src="../librerias/cobranza/cobranza.js?v14.01.11"></script>
         <script type="text/javascript" src="../librerias/plugin/mask/jquery.mask.min.js"></script>
         <script type="text/javascript" src="../librerias/jquery-ui/jquery-ui-1.10.3.custom/js/i18n/jquery.ui.datepicker-es-min.js"></script>
         <style>
@@ -73,7 +73,6 @@
                             }
                         }
                     %>
-                    <!--<h3 class="titulo"><a href="../index.jsp" class="sexybutton"><span><span><span class="home">Inicio</span></span></span></a> MÓDULO COBRANZA <a href="cobranza.jsp" class="sexybutton"><span><span><span class="info">Version antigua</span></span></span></a></h3>-->
                     <h3 class="titulo"><a href="../index.jsp" class="sexybutton"><span><span><span class="home">Inicio</span></span></span></a> MÓDULO COBRANZA</h3>
                     <div class="ocultar">
                         <input type="text" name="codCliente" id="codCliente" value="<%=codCliente%>" />
@@ -395,24 +394,20 @@
                     </div>
                     <!--dalog********************************************************************-->
                     <div id="dClienteBuscar" title="BUSCAR CLIENTE" style="padding: 20px;">
-                        <table class="reporte-tabla-1" style="width: 100%;">
+                        <table class="reporte-tabla-1 anchoTotal" >
                             <thead>
                                 <tr>
-                                    <th style=""><label>APELLIDOS-NOMBRES/RAZÓN SOCIAL</label></th>
-                                    <th style="width: 170px;"><label>DNI-PASAPORTE/RUC</label></th>
-                                    <th style="width: 100px;"><label>COD. CLIENTE</label></th>
+                                    <th class="ancho120px"><label>COD. CLIENTE</label></th>
+                                    <th style=""><label>DNI-PASPORTE/RUC APELLIDOS-NOMBRES/RAZÓN SOCIAL</label></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>
-                                        <input type="text" name="nombresCBuscar" value="" id="nombresCBuscar" style="width: 99%;"/>
+                                    <td class="contenedorEntrada">
+                                        <input type="text" name="codClienteBuscar" id="codClienteBuscar" value="" class="entrada anchoTotal derecha" />
                                     </td>
-                                    <td>
-                                        <input type="text" name="dniPasaporteRucBuscar" id="dniPasaporteRucBuscar" value="" style="width: 98%;"/>
-                                    </td>
-                                    <td>
-                                        <input type="text" name="codClienteBuscar" id="codClienteBuscar" value="" />
+                                    <td class="contenedorEntrada">
+                                        <input type="text" name="dniPasaporteRucNombresCBuscar" id="dniPasaporteRucNombresCBuscar" value="" class="entrada anchoTotal"/>
                                     </td>
                                 </tr>
                             </tbody>

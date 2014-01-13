@@ -121,7 +121,7 @@ $(document).ready(function() {
                 if (key == 13) {
                     if (!isNaN($(this).val()) & $(this).val() > 0) {
                         fClienteLeer(parseInt($(this).val(), 10), '');
-                        $("#dClienteBuscar").dialog('close');
+//                        $("#dClienteBuscar").dialog('close');
                         $(this).val('');
                     }
                     e.preventDefault();
@@ -252,40 +252,32 @@ $(function() {
         }
     });
 
-    $('#dniPasaporteRucBuscar').autocomplete({
-        source: "autocompletado/datoClienteDniPasaporteRuc.jsp",
+    $('#dniPasaporteRucNombresCBuscar').autocomplete({
+        source: 'autocompletado/dniPasaporteRucNombresCBuscar.jsp',
         minLength: 4,
-        focus: datoClienteMarcado,
-        select: datoClienteSeleccionado
-    });
-
-    $('#nombresCBuscar').autocomplete({
-        source: "autocompletado/datoClienteNombresC.jsp",
-        minLength: 3,
-        focus: datoClienteMarcado,
-        select: datoClienteSeleccionado
-
+        focus: clienteMarcado,
+        select: clienteSeleccionado
     });
 });
 //</editor-fold>
 
-//<editor-fold defaultstate="collapsed" desc="function datoClienteSeleccionado(event, ui). Clic en el signo + de la izquierda para mas detalles.">
-function datoClienteSeleccionado(event, ui) {
-    var personaDato = ui.item.value;
-    $('#dniPasaporteRucBuscar').val('');
-    $('#nombresCBuscar').val('');
-    fClienteLeer(parseInt(personaDato.codDatoCliente, 10), '');
-    $('#dClienteBuscar').dialog('close');
+//<editor-fold defaultstate="collapsed" desc="function clienteMarcado(event, ui). Clic en el signo + de la izquierda para mas detalles.">
+function clienteMarcado(event, ui) {
+    var cliente = ui.item.value;
+    $('#codClienteBuscar').val(cliente.codCliente);
+    $('#dniPasaporteRucNombresCBuscar').val(cliente.nombresC);
     event.preventDefault();
 }
 ;
 //</editor-fold>
 
-//<editor-fold defaultstate="collapsed" desc="function datoClienteMarcado(event, ui). Clic en el signo + de la izquierda para mas detalles.">
-function datoClienteMarcado(event, ui) {
-    var personaDato = ui.item.value;
-    $('#rucRazonSocialBuscar').val(personaDato.dniPasaporte + " " + personaDato.ruc);
-    $('#nombresCBuscar').val(personaDato.nombresC);
+//<editor-fold defaultstate="collapsed" desc="function clienteSeleccionado(event, ui). Clic en el signo + de la izquierda para mas detalles.">
+function clienteSeleccionado(event, ui) {
+    var cliente = ui.item.value;
+    $('#codClienteBuscar').val('');
+    $('#dniPasaporteRucNombresCBuscar').val('');
+    fClienteLeer(parseInt(cliente.codCliente, 10), '');
+//    $('#dClienteBuscar').dialog('close');
     event.preventDefault();
 }
 ;

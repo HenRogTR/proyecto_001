@@ -35,21 +35,24 @@ public class cDatosCliente {
 
     //***************************************************
     public DatosCliente leer_codPersona(int codPersona) {
+        DatosCliente objCliente = null;
         setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
             Query q = sesion.createQuery("from DatosCliente d where substring(registro,1,1)=1 and d.persona.codPersona=:codPersona")
                     .setParameter("codPersona", codPersona);
-            return (DatosCliente) q.list().iterator().next();
+            objCliente = (DatosCliente) q.list().iterator().next();
         } catch (Exception e) {
             setError("Error en consulta datos clientes: " + e.getMessage());
+        } finally {
+            sesion.flush();
         }
-        return null;
+        return objCliente;
     }
 
     public DatosCliente leer_cod(int codCliente) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        return (DatosCliente) session.get(DatosCliente.class, codCliente);
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        return (DatosCliente) sesion.get(DatosCliente.class, codCliente);
     }
 
     public DatosCliente leer_primero() {
@@ -177,6 +180,34 @@ public class cDatosCliente {
             System.out.println(e.getMessage());
         }
         return null;
+    }
+
+    /**
+     *
+     * @param term
+     * @return Una lista de obejtos con 5 elementos [0]=codCliente,
+     * [1]=codPersona, [2]=dniPasaporte [3]=ruc, [4]=nombresC
+     */
+    public List leer_dniPasaporteRucNombresC_ordenado_CS(String term) {
+        List clienteList = null;
+        Transaction trns = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = session.beginTransaction();
+            Query q = session.createQuery("select dc.codDatosCliente, p.codPersona, p.dniPasaporte, p.ruc, p.nombresC "
+                    + "from Persona p, DatosCliente dc "
+                    + "where p=dc.persona "
+                    + "and (dc.persona.dniPasaporte like :term or dc.persona.ruc like :term or dc.persona.nombresC like :term ) "
+                    + "order by dc.persona.nombresC, dc.persona.dniPasaporte asc, dc.persona.ruc asc")
+                    .setParameter("term", "%" + term + "%");
+            clienteList = q.list();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        } finally {
+            session.flush();
+            session.close();
+        }
+        return clienteList;
     }
 
     //***************************************************
@@ -587,6 +618,5 @@ public class cDatosCliente {
         }
         return "";
     }
-    
-    
+
 }

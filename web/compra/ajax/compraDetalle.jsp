@@ -4,6 +4,7 @@
     Author     : Henrri
 --%>
 
+<%@page import="tablas.HibernateUtil"%>
 <%@page import="compraClases.cCompraDetalle"%>
 <%@page import="tablas.CompraSerieNumero"%>
 <%@page import="utilitarios.cOtros"%>
@@ -17,7 +18,7 @@
         codCompra = Integer.parseInt(request.getParameter("codCompra"));
         CDList = new cCompraDetalle().leer_compraDetalle_codCompra(codCompra);
     } catch (Exception e) {
-        
+
     }
     if (CDList != null) {
         cOtros objcOtros = new cOtros();

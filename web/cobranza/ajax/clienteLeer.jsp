@@ -4,6 +4,7 @@
     Author     : Henrri - N
 --%>
 
+<%@page import="tablas.HibernateUtil"%>
 <%@page import="utilitarios.cOtros"%>
 <%@page import="personaClases.cDatosCliente"%>
 <%@page import="tablas.DatosCliente"%>
@@ -31,4 +32,5 @@
     } catch (Exception e) {
     }
     out.print("]");
+    HibernateUtil.getSessionFactory().close();
 %>

@@ -89,7 +89,6 @@ body {
     border-collapse: collapse;
 }
 .reporte-tabla-1 thead tr th{
-    /*font-size: 12px;*/
     text-align: center;
 }
 .reporte-tabla-1 tfoot tr th{text-align: right;}
@@ -116,6 +115,9 @@ body {
     font-size: 11px;
     text-align: left;
     border-collapse: collapse;
+}
+.reporte-tabla-2 thead tr th{
+    text-align: center;
 }
 .reporte-tabla-2 th{
     padding-right: 2px;
@@ -181,7 +183,7 @@ label.error:before{
 .izquierda{text-align: left !important;}
 .anchoTotal{width: 100%;}
 .altoTotal{height: 100%;}
-.contenedorEntrada{padding-right: 10px !important;}
+.contenedorEntrada{padding-right: 15px !important;}
 
 .ancho40px{width: 40px;}
 .ancho60px{width: 60px;}
@@ -212,7 +214,7 @@ label.error:before{
 .documentoEncontrado{background: #ccc !important;}
 
 .entrada{
-    padding: 1px 0px 1px 0px;
+    padding: 1px 4px 1px 4px;
     border: 1px solid #b9c9fe;
     border-radius:3px;
     font-size: 13px !important;

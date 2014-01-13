@@ -5,6 +5,7 @@
 package personaServlets;
 
 import personaClases.cUsuario;
+import tablas.Usuario;
 
 /**
  *
@@ -17,7 +18,10 @@ public class aPrueba {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        cUsuario objcUsuario=new cUsuario();
+        Usuario objUsuario = new cUsuario().ingresar2("admin", "1234");
         
+        System.out.println(objUsuario);
+//        objUsuario = new cUsuario().leer_cod(objUsuario.getCodUsuario());
+//        System.out.println(objUsuario);
     }
 }

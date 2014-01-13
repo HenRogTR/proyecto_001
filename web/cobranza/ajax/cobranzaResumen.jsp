@@ -2,7 +2,8 @@
     Document   : cobranzaResumen
     Created on : 05/10/2013, 12:29:46 PM
     Author     : Henrri
---%><%@page import="utilitarios.cManejoFechas"%>
+--%><%@page import="tablas.DatosCliente"%>
+<%@page import="utilitarios.cManejoFechas"%>
 <%@page import="utilitarios.cOtros"%>
 <%@page import="tablas.Cobranza"%>
 <%@page import="java.util.Iterator"%>
@@ -14,7 +15,8 @@
 
 [
 <%
-    List l = new cCobranza().leer_codPersona(1);
+    List l = new cCobranza().leer_codPersona_SC(1);
+    
     List lCobranza = new cCobranza().leer_codPersona(new cDatosCliente().leer_cod(Integer.parseInt(request.getParameter("codCliente"))).getPersona().getCodPersona());
     if (lCobranza != null) {
         cOtros objcOtros = new cOtros();

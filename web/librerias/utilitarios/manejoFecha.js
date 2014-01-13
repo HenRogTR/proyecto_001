@@ -61,7 +61,7 @@ function fSumarMes(value, nMes) {
  * @param {integer} nAnio
  * @returns {Date}
  */
-function fSumarAño(value, nAnio) {
+function fSumarAnio(ovalue, nAnio) {
     var adata = fDateAString(value).split('/');
     var dd = parseInt(adata[0], 10);
     var mm = parseInt(adata[1], 10);

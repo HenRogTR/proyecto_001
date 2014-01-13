@@ -14,6 +14,17 @@ import java.util.Date;
  */
 public class cManejoFechas {
 
+    public String meses[] = {"Enero", "Febrero", "Marzo", "Abril", "Mayo",
+        "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre",
+        "Diciembre"};
+
+    public String mesesCorto[] = {"Ene", "Feb", "Mar", "Abr", "May",
+        "Jun", "Jul", "Ago", "Sep", "Oct", "Nov",
+        "Dic"};
+
+    public String diaSemana[] = {"Domingo", "Lunes", "Martes", "Miércoles",
+        "Jueves", "Viernes", "Sábado"};
+
     /**
      * Obtiene un String con la fecha actual del servidor.
      *
@@ -119,5 +130,9 @@ public class cManejoFechas {
                 + registro.substring(1, 5) + " " + registro.substring(9, 11) + ":"
                 + registro.substring(11, 13) + ":" + registro.substring(13, 15);
 //        return fecha;
+    }
+
+    public String mesNombreCorto(Date fecha) {
+        return mesesCorto[fecha.getMonth()];
     }
 }

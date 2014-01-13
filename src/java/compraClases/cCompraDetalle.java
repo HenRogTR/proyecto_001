@@ -36,9 +36,9 @@ public class cCompraDetalle {
 
     //*********************************************************************
     /**
-     * 
+     *
      * @param codArticuloProducto
-     * @return 
+     * @return
      */
     public List leer_ultimoDiez(int codArticuloProducto) {
         setError(null);
@@ -57,7 +57,7 @@ public class cCompraDetalle {
         return null;
     }
     //*********************************************************************
-    
+
     public int Crear(CompraDetalle objCompraDetalle) {
         setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
@@ -105,17 +105,21 @@ public class cCompraDetalle {
     }
 
     public List leer_compraDetalle_codCompra(int codCompra) {
+        List list = null;
         setError(null);
         try {
             sesion = HibernateUtil.getSessionFactory().openSession();
             Query q = sesion.createQuery("from CompraDetalle a where substring(registro,1,1)=1 and "
                     + "a.compra.codCompra=:codCompra")
                     .setParameter("codCompra", codCompra);
-            return (List) q.list();
+            list = (List) q.list();
         } catch (Exception e) {
             setError(e.getMessage());
+            e.printStackTrace();
+        } finally {
+//            sesion.close();
         }
-        return null;
+        return list;
     }
 //    public List leer_compraDetalle_codCompra(int codCompra) {
 //        List l=new ArrayList();
@@ -181,7 +185,7 @@ public class cCompraDetalle {
         }
         return false;
     }
-    
+
     public boolean actualizar_descripcion(int codCompraDetalle, String descripcion) {
         setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();

@@ -167,7 +167,7 @@ public class sUsuario extends HttpServlet {
                 response.sendRedirect("persona/usuarioMantenimiento.jsp");
             }
             if (accion.equals("permisos")) {
-                objUsuario = new cUsuario().leer_cod(objUsuario.getCodUsuario());
+//                objUsuario = new cUsuario().leer_cod(objUsuario.getCodUsuario());
                 session.setAttribute("usuario", objUsuario);
                 out.print("[{");
                 out.print("\"usuario\":\"" + objUsuario.getUsuario() + "\"");
