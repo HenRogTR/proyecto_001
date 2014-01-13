@@ -98,16 +98,51 @@ public class cCobranza {
      * @return objeto cobranza en caso haya coincidencia
      */
     public Cobranza leer_docSerieNumero(String docSerieNumero) {
-        setError(null);
+        Cobranza obj = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
         try {
-            sesion = HibernateUtil.getSessionFactory().openSession();
             Query q = sesion.createQuery("from Cobranza where (substring(registro,1,1)=1 or substring(registro,1,1)=0) and docSerieNumero=:docSerieNumero")
-                    .setParameter("docSerieNumero", docSerieNumero);
-            return (Cobranza) q.list().iterator().next();
+                    .setParameter("docSerieNumero", docSerieNumero)
+                    .setMaxResults(1);
+            obj = (Cobranza) q.list().get(0);
         } catch (Exception e) {
             setError(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
         }
-        return null;
+        return obj;
+    }
+
+    /**
+     * Permite ver si una cobranza se encuentra registrada.
+     *
+     * @param docSerieNumero
+     * @return True si esta registrdo o False si no esta.
+     */
+    public Boolean siExiste_SC(String docSerieNumero) {
+        Boolean est = false;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Cobranza obj = (Cobranza) sesion.createQuery("from Cobranza where (substring(registro,1,1)=1 or substring(registro,1,1)=0) and docSerieNumero=:docSerieNumero")
+                    .setParameter("docSerieNumero", docSerieNumero)
+                    .setMaxResults(1) //solo un registro
+                    .list() //casteamos lis
+                    .get(0);            //la primera poscion
+            if (obj != null) {
+                est = true;
+            }
+        } catch (Exception e) {
+            setError(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return est;
     }
 
     /**
@@ -121,14 +156,14 @@ public class cCobranza {
         setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
-            
+
             Query q = sesion.createQuery("from Cobranza c where substring(registro,1,1)=1 "
                     + "and c.persona.codPersona=:codPersona order by codCobranza asc")
                     .setParameter("codPersona", codPersona);
             return q.list();
         } catch (Exception e) {
             setError(e.getMessage());
-        }finally{
+        } finally {
             sesion.flush();
         }
         return null;

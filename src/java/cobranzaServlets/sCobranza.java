@@ -123,12 +123,12 @@ public class sCobranza extends HttpServlet {
                             tipo = request.getParameter("docRecDesc").toString();
                             serie = request.getParameter("serie").toString();
                         }
-                        ComprobantePago objCP = new cComprobantePago().leer_tipoSerie(tipo, serie);
+                        ComprobantePago objCP = new cComprobantePago().leer_tipoSerie_SC(tipo, serie);
                         if (objCP == null) {
                             out.print("Serie no encontrada");
                             return;
                         }
-                        objCPD = objcComprobantePagoDetalle.leer_disponible(objCP.getCodComprobantePago());
+                        objCPD = objcComprobantePagoDetalle.leer_disponible_SC(objCP.getCodComprobantePago());
                         if (objCPD == null) {
                             out.print("No hay documentos disponibles para esta serie. Genere nuevos.");
                             return;
@@ -136,25 +136,25 @@ public class sCobranza extends HttpServlet {
                         docSerieNumero = objCPD.getDocSerieNumero();
                         //comprobar que no se repita;
                         int marca = 0;
-                        while (marca == 0) {
-                            Cobranza tem = new cCobranza().leer_docSerieNumero(objCPD.getDocSerieNumero());
-                            if (tem == null) {
-                                marca = 1;
-                            } else {
+                        while (marca == 0) { //hasta encontrar uno libre
+                            Boolean tem = new cCobranza().siExiste_SC(objCPD.getDocSerieNumero());  //comprobamos si el obtenido no este registrado o marcado con check
+                            if (tem) {  // si esta usado se busca el siguiente no usado
                                 objCPD = new cComprobantePagoDetalle().leer_disponible_siguiente(objCP.getCodComprobantePago(), objCPD.getCodComprobantePagoDetalle() + 1);
-                                if (objCPD == null) {
+                                if (objCPD == null) {   // si en caso no hay ninguno se termina en bucle
                                     out.print("No hay documentos disponibles para esta serie. Genere nuevos.");
                                     return;
                                 }
+                            } else {
+                                marca = 1;
                             }
                         }
                         docSerieNumero = objCPD.getDocSerieNumero();
                     }
                 }
-//                if (true) {
-//                    out.print(docSerieNumero);
-//                    return;
-//                }
+                if (true) {
+                    out.print(docSerieNumero);
+                    return;
+                }
                 if (tipoPago.equals("anticipo")) {
                     if (saldoFavorUsar.equals("0") & !tipoCobro.equals("manual")) {//que no sea un saldo a favor y que no sea manual
                         objcComprobantePagoDetalle.actualizar_estado(objCPD.getCodComprobantePagoDetalle(), true);

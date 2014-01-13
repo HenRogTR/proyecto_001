@@ -32,6 +32,7 @@ public class cVentaCreditoLetra {
 
     public cVentaCreditoLetra() {
         this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
+        this.error = null;
     }
 
     public int crear(VentaCreditoLetra objVentaCreditoLetra) {
@@ -676,20 +677,25 @@ public class cVentaCreditoLetra {
      * @return
      */
     public VentaCreditoLetra leer_letraVencidaAntigua(int codPersona) {
-        setError(null);
+        VentaCreditoLetra objVCL = null;
+        Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
+            trns = sesion.beginTransaction();
             Query q = sesion.createQuery("from VentaCreditoLetra v "
                     + "where v.ventaCredito.ventas.persona.codPersona=:codPersona "
                     + "and v.monto-v.totalPago>0 "
                     + "and substring(v.registro,1,1)=1 "
                     + "order by v.fechaVencimiento asc")
                     .setParameter("codPersona", codPersona);
-            return (VentaCreditoLetra) q.list().get(0);
+            objVCL = (VentaCreditoLetra) q.list().get(0);
         } catch (Exception e) {
             setError(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
         }
-        return null;
+        return objVCL;
     }
 
     /**

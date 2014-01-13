@@ -7,6 +7,7 @@ package otrasTablasClases;
 import java.util.Iterator;
 import java.util.List;
 import org.hibernate.Query;
+import org.hibernate.Transaction;
 import org.hibernate.classic.Session;
 import otros.cUtilitarios;
 import tablas.ComprobantePagoDetalle;
@@ -31,6 +32,7 @@ public class cComprobantePagoDetalle {
 
     public cComprobantePagoDetalle() {
         this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
+        this.error = null;
     }
 
     public int Crear(ComprobantePagoDetalle objComprobantePagoDetalle) {
@@ -175,20 +177,55 @@ public class cComprobantePagoDetalle {
     }
 
     public ComprobantePagoDetalle leer_disponible(int codComprobantePago) {
-        setError(null);
+        ComprobantePagoDetalle obj = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
         try {
-            sesion = HibernateUtil.getSessionFactory().openSession();
+            trns = sesion.beginTransaction();
             Query q = sesion.createQuery("from ComprobantePagoDetalle cpd "
                     + "where substring(cpd.registro,1,1)=1 "
                     + "and cpd.comprobantePago.codComprobantePago=:codComprobantePago "
                     + "and cpd.estado=0 "
                     + "order by cpd.docSerieNumero asc")
-                    .setParameter("codComprobantePago", codComprobantePago);
-            return (ComprobantePagoDetalle) q.list().iterator().next();
-        } catch (Exception e) {
+                    .setParameter("codComprobantePago", codComprobantePago)
+                    .setMaxResults(1);
+            obj = (ComprobantePagoDetalle) q.list().get(0);
+        } catch (RuntimeException e) {
             setError(e.getMessage());
-            return null;
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
         }
+        return obj;
+    }
+
+    /**
+     * Se cierra la sesion Hibernate
+     *
+     * @param codComprobantePago
+     * @return
+     */
+    public ComprobantePagoDetalle leer_disponible_SC(int codComprobantePago) {
+        ComprobantePagoDetalle obj = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("from ComprobantePagoDetalle cpd "
+                    + "where substring(cpd.registro,1,1)=1 "
+                    + "and cpd.comprobantePago.codComprobantePago=:codComprobantePago "
+                    + "and cpd.estado=0 "
+                    + "order by cpd.docSerieNumero asc")
+                    .setParameter("codComprobantePago", codComprobantePago)
+                    .setMaxResults(1);
+            obj = (ComprobantePagoDetalle) q.list().get(0);
+        } catch (RuntimeException e) {
+            setError(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
+        }
+        return obj;
     }
 
     public ComprobantePagoDetalle leer_disponible_siguiente(int codComprobantePago, int codComprobantePagoDetalle) {

@@ -31,6 +31,7 @@ public class cComprobantePago {
 
     public cComprobantePago() {
         this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
+        this.sesion = null;
     }
 
     public int Crear(ComprobantePago objComprobantePago) {
@@ -99,8 +100,16 @@ public class cComprobantePago {
         return estado;
     }
 
-    public ComprobantePago leer_tipoSerie(String tipo, String serie) {
-        setError(null);
+    /**
+     * Se cierra la sesion Hibernate
+     *
+     * @param tipo
+     * @param serie
+     * @return
+     */
+    public ComprobantePago leer_tipoSerie_SC(String tipo, String serie) {
+        ComprobantePago obj = null;
+        Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
             Query q = sesion.createQuery("from ComprobantePago cp "
@@ -109,10 +118,14 @@ public class cComprobantePago {
                     .setParameter("tipo", tipo)
                     .setParameter("serie", serie)
                     .setMaxResults(1);
-            return (ComprobantePago) q.list().iterator().next();
+            obj = (ComprobantePago) q.list().get(0);
         } catch (Exception e) {
             setError(e.getMessage());
-            return null;
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
+            sesion.close();
         }
+        return obj;
     }
 }
