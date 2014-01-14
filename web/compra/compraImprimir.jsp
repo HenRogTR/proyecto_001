@@ -33,7 +33,6 @@
     }
 
     cUtilitarios objcUtilitarios = new cUtilitarios();
-    cNumeroLetra objcNumeroLetra = new cNumeroLetra();
     cManejoFechas objcManejoFechas = new cManejoFechas();
     cOtros objcOtros = new cOtros();
 %>

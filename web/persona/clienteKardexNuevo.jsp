@@ -33,7 +33,7 @@
             </div>
             <div id="right" style="width: 1024px;">
                 <div id="rightSub1" class="ocultar">
-                    <h3 class="titulo"><a href="../index.jsp" class="sexybutton"><span><span><span class="home">Inicio</span></span></span></a> KARDEX DE CLIENTES</h3>
+                    <h3 class="titulo"><a href="../index.jsp" class="sexybutton"><span><span><span class="home">Inicio</span></span></span></a> KARDEX DE CLIENTES <button class="sexybutton sexyicononly sexysimple sexypropio sexysmall" id="bClienteBuscar" type="button"><span class="search"></span></button></h3>
                     <!--Inicio de div general-->
                     <div>
                         <div><!--Inicio div superior-->
@@ -149,7 +149,7 @@
                                         </tr>
                                     </thead>
                                 </table>
-                                <div id="dCobranza" style="width: 100%;height: 150px; overflow: auto;">
+                                <div id="dCobranza" style="width: 100%;height: 200px; overflow: auto;">
 
                                 </div>
                             </div><!--Fin div derecho-->

@@ -277,7 +277,6 @@ function clienteSeleccionado(event, ui) {
     $('#codClienteBuscar').val('');
     $('#dniPasaporteRucNombresCBuscar').val('');
     fClienteLeer(parseInt(cliente.codCliente, 10), '');
-//    $('#dClienteBuscar').dialog('close');
     event.preventDefault();
 }
 ;
@@ -285,6 +284,7 @@ function clienteSeleccionado(event, ui) {
 
 //<editor-fold defaultstate="collapsed" desc="function fClienteLeer(codCliente). Clic en el signo + de la izquierda para mas detalles.">
 function fClienteLeer(codCliente) {
+    $('#dClienteBuscar').dialog('close');
     var data = {codCliente: codCliente};
     var url = 'ajax/clienteLeer.jsp';
     try {

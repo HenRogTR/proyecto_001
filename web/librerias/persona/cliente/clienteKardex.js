@@ -17,9 +17,35 @@ $(document).ready(function() {
                     e.preventDefault();
                 }
             });
+
+    $('#bClienteBuscar').click(function(event) {
+        $('#dClienteBuscar').dialog('open');
+        event.preventDefault();
+    });
 });
 
 $(function() {
+    $('#dClienteBuscar').dialog({
+        autoOpen: false,
+        modal: true,
+        resizable: true,
+        height: 180,
+        width: 800,
+        buttons: {
+            Aceptar: function() {
+                $(this).dialog('close');
+            }
+        },
+        close: function() {
+            $(this).dialog('close');
+        }
+    });
+    $('#dniPasaporteRucNombresCBuscar').autocomplete({
+        source: 'autocompletado/kardexCliente/dniPasaporteRucNombresCBuscar.jsp',
+        minLength: 4,
+        focus: clienteMarcado,
+        select: clienteSeleccionado
+    });
 });
 
 function fPaginaActual() {
@@ -36,7 +62,7 @@ function fClienteKardex(codCliente) {
 
 function fVenta(codCliente) {
     var data = {codCliente: codCliente};
-    var url = 'ajax/cliente/ventaCliente.jsp';
+    var url = 'ajax/clienteKardex/ventaCliente.jsp';
     try {
         $.ajax({
             type: 'post',
@@ -76,7 +102,7 @@ function fVenta(codCliente) {
 
 function fVentaDetalle(codVenta) {
     var data = {codVenta: codVenta};
-    var url = 'ajax/cliente/ventaDetalle.jsp';
+    var url = 'ajax/clienteKardex/ventaDetalle.jsp';
     try {
         $.ajax({
             type: 'post',
@@ -109,7 +135,7 @@ function fVentaDetalle(codVenta) {
 
 function fVentaCreditoLetra(codVenta) {
     var data = {codVenta: codVenta};
-    var url = 'ajax/cliente/ventaCreditoLetra.jsp';
+    var url = 'ajax/clienteKardex/ventaCreditoLetra.jsp';
     try {
         $.ajax({
             type: 'post',
@@ -143,7 +169,7 @@ function fVentaCreditoLetra(codVenta) {
 //<editor-fold defaultstate="collapsed" desc="function fDeudaResumen(codCliente). Clic en el signo + de la izquierda para mas detalles.">
 function fDeudaResumen(codCliente) {
     var data = {codCliente: codCliente};
-    var url = 'ajax/cliente/deudaResumenLeer.jsp';
+    var url = 'ajax/clienteKardex/deudaResumenLeer.jsp';
     try {
         $.ajax({
             type: 'post',
@@ -180,7 +206,7 @@ function fDeudaResumen(codCliente) {
 
 function fCobranza(codCliente) {
     var data = {codCliente: codCliente};
-    var url = 'ajax/cliente/cobranzaCliente.jsp';
+    var url = 'ajax/clienteKardex/cobranzaCliente.jsp';
     try {
         $.ajax({
             type: 'post',
@@ -213,7 +239,7 @@ function fCobranza(codCliente) {
 
 function fVentaCreditoLetraResumenMensual(codCliente) {
     var data = {codCliente: codCliente};
-    var url = 'ajax/cliente/ventaCreditoLetraResumenMensualCliente.jsp';
+    var url = 'ajax/clienteKardex/ventaCreditoLetraResumenMensualCliente.jsp';
     try {
         $.ajax({
             type: 'post',
@@ -243,3 +269,24 @@ function fVentaCreditoLetraResumenMensual(codCliente) {
     }
 }
 ;
+
+//<editor-fold defaultstate="collapsed" desc="function clienteMarcado(event, ui). Clic en el signo + de la izquierda para mas detalles.">
+function clienteMarcado(event, ui) {
+    var cliente = ui.item.value;
+    $('#codClienteBuscar').val(cliente.codCliente);
+    $('#dniPasaporteRucNombresCBuscar').val(cliente.nombresC);
+    event.preventDefault();
+}
+;
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="function clienteSeleccionado(event, ui). Clic en el signo + de la izquierda para mas detalles.">
+function clienteSeleccionado(event, ui) {
+    var cliente = ui.item.value;
+    $('#codClienteBuscar').val('');
+    $('#dniPasaporteRucNombresCBuscar').val('');
+    fClienteKardex(parseInt(cliente.codCliente, 10), '');
+    event.preventDefault();
+}
+;
+//</editor-fold>

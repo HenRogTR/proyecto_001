@@ -71,7 +71,7 @@ public class cOtros {
         if (texto.length() >= anchoTotal - 2) {
             tex = texto;
         } else {
-            for (int i = 0; i < (anchoTotal-texto.length()  )/2; i++) {
+            for (int i = 0; i < (anchoTotal - texto.length()) / 2; i++) {
 //            System.out.println("aquiii");
                 tex = " " + tex;
             }

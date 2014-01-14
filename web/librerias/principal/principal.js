@@ -56,6 +56,18 @@ $(document).ready(function() {
     $.timer(tiempo, function() {
         fComprobarSesion(false);
     });
+
+
+    $.ui.autocomplete.prototype._renderItem = function(ul, item) {
+    //  var term = this.term.split(' ').join('|');
+        var term = this.term;
+        var re = new RegExp("(" + term + ")", "gi");
+        var t = item.label.replace(re, "<strong>$1</strong>");
+        return $("<li></li>")
+                .data("item.autocomplete", item)
+                .append("<a>" + t + "</a>")
+                .appendTo(ul);
+    };
 });
 
 $(function() {

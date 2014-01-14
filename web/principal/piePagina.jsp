@@ -57,6 +57,11 @@
 
 <div id="dNovedades" title="Novedades" style="font-size: 10px;">
     <div style="background: #F1F1F7">
+        <h3 class="titulo">14/01/2014</h3>
+        <p>
+            * Resaltar la coincidencia en el autocompletado.<br>
+            * Correción del modulo de cobranza.<br>
+        </p>
         <h3 class="titulo">05/01/2014</h3>
         <p>
             * Correccíon de error en búsqueda e impresión de compras.<br>
