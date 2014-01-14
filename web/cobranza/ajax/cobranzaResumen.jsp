@@ -15,8 +15,7 @@
 
 [
 <%
-    List l = new cCobranza().leer_codPersona_SC(1);
-    
+    List l = new cCobranza().leer_codPersona_SC(1);    
     List lCobranza = new cCobranza().leer_codPersona(new cDatosCliente().leer_cod(Integer.parseInt(request.getParameter("codCliente"))).getPersona().getCodPersona());
     if (lCobranza != null) {
         cOtros objcOtros = new cOtros();

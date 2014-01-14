@@ -651,10 +651,12 @@ public class cVentaCreditoLetra {
      * @param codVentas
      * @return
      */
-    public Double leer_deudaCliente_codCliente_codVentas(int codPersona, int codVentas) {
-        setError(null);
+    public Double leer_deudaCliente_codCliente_codVentas_SC(int codPersona, int codVentas) {
+        Double deuda = 0.0;
+        Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
+            trns = sesion.beginTransaction();
             Query q = sesion.createQuery("select sum(monto-totalPago) from VentaCreditoLetra v "
                     + "where v.ventaCredito.ventas.persona.codPersona=:codPersona "
                     + "and v.monto-v.totalPago>0 "
@@ -663,11 +665,15 @@ public class cVentaCreditoLetra {
                     + "order by v.fechaVencimiento asc")
                     .setParameter("codPersona", codPersona)
                     .setParameter("codVentas", codVentas);
-            return (Double) q.list().iterator().next();
+            deuda = (Double) q.list().iterator().next();
         } catch (Exception e) {
+            e.printStackTrace();
             setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
         }
-        return 0.00;
+        return deuda;
     }
 
     /**
@@ -705,10 +711,12 @@ public class cVentaCreditoLetra {
      * @param codPersona
      * @return
      */
-    public VentaCreditoLetra leer_letraVencidaAntigua_codVentas(int codPersona, int codVentas) {
-        setError(null);
+    public VentaCreditoLetra leer_letraVencidaAntigua_codVenta(int codPersona, int codVentas) {
+        VentaCreditoLetra obj = null;
+        Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
+            trns = sesion.beginTransaction();
             Query q = sesion.createQuery("from VentaCreditoLetra v "
                     + "where v.ventaCredito.ventas.persona.codPersona=:codPersona "
                     + "and v.monto-v.totalPago>0 "
@@ -717,11 +725,14 @@ public class cVentaCreditoLetra {
                     + "order by v.fechaVencimiento asc")
                     .setParameter("codPersona", codPersona)
                     .setParameter("codVentas", codVentas);
-            return (VentaCreditoLetra) q.list().get(0);
+            obj = (VentaCreditoLetra) q.list().get(0);
         } catch (Exception e) {
+            e.printStackTrace();
             setError(e.getMessage());
+        } finally {
+            sesion.flush();
         }
-        return null;
+        return obj;
     }
 
     /**
@@ -1074,20 +1085,27 @@ public class cVentaCreditoLetra {
     }
 
     public boolean actualizar_totalPago(int codVentaCreditoLetra, Double montoAmortizar, Date fechaPago) {
-        setError(null);
+        boolean est = false;
+        Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
-        sesion.getTransaction().begin();
-        VentaCreditoLetra obj = (VentaCreditoLetra) sesion.get(VentaCreditoLetra.class, codVentaCreditoLetra);
-        obj.setTotalPago(obj.getTotalPago() + montoAmortizar);
-        obj.setFechaPago(fechaPago);
         try {
+            trns = sesion.beginTransaction();
+            VentaCreditoLetra obj = (VentaCreditoLetra) sesion.get(VentaCreditoLetra.class, codVentaCreditoLetra);
+            obj.setTotalPago(obj.getTotalPago() + montoAmortizar);
+            obj.setFechaPago(fechaPago);
             sesion.update(obj);
             sesion.getTransaction().commit();
-            return true;
+            est = true;
         } catch (Exception e) {
-            sesion.getTransaction().rollback();
+            if (trns != null) {
+                trns.rollback();
+            }
             setError("VentaCreditoLetra_actualizar_registro: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
+            sesion.close();
         }
-        return false;
+        return est;
     }
 }

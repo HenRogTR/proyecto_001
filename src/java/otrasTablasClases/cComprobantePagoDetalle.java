@@ -138,21 +138,35 @@ public class cComprobantePagoDetalle {
         return false;
     }
 
-    public boolean actualizar_estado(int codComprobantePagoDetalle, Boolean estado) {
-        setError(null);
+    /**
+     * 
+     * @param codComprobantePagoDetalle
+     * @param estado
+     * @return 
+     */
+    public boolean actualizar_estado(int codComprobantePagoDetalle, boolean estado) {
+        boolean est = false;
         sesion = HibernateUtil.getSessionFactory().openSession();
-        sesion.getTransaction().begin();
-        ComprobantePagoDetalle obj = (ComprobantePagoDetalle) sesion.get(ComprobantePagoDetalle.class, codComprobantePagoDetalle);
-        obj.setEstado(estado);
+        Transaction trns = null;
         try {
+            trns = sesion.beginTransaction();
+            ComprobantePagoDetalle obj = (ComprobantePagoDetalle) sesion.get(ComprobantePagoDetalle.class, codComprobantePagoDetalle);
+            obj.setEstado(estado);
             sesion.update(obj);
             sesion.getTransaction().commit();
-            return true;
+            est = true;
         } catch (Exception e) {
-            sesion.getTransaction().rollback();
+            if (trns != null) {
+                trns.rollback();
+            }
+            e.printStackTrace();
+            System.out.println(e.getMessage());
             setError("Tabla_actualizar_registro: " + e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
         }
-        return false;
+        return est;
     }
 
     public boolean generar(List lista) {

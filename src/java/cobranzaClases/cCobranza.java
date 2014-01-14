@@ -34,7 +34,7 @@ public class cCobranza {
         this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
     }
 
-    public int Crear(Cobranza objCobranza) {
+    public int crear(Cobranza objCobranza) {
         int cod = 0;
         Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
@@ -65,25 +65,6 @@ public class cCobranza {
             setError(e.getMessage());
         }
         return null;
-    }
-
-    public List leer_prueba() {
-        List user = null;
-        Transaction trns = null;
-//       sesion = HibernateUtil.getSessionFactory().getCurrentSession();
-        try {
-            trns = sesion.beginTransaction();
-            String queryString = "from Cobranza where substring(registro,1,1)=1";
-            Query query = sesion.createQuery(queryString);
-
-            user = query.list();
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        } finally {
-            sesion.flush();
-//            session.close();
-        }
-        return user;
     }
 
     public Cobranza leer_codCobranza(int codCobranza) {
@@ -153,20 +134,22 @@ public class cCobranza {
      * @return Array con pagos de un cliente
      */
     public List leer_codPersona(int codPersona) {
-        setError(null);
+        List cobranzaList = null;
+        Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
 
             Query q = sesion.createQuery("from Cobranza c where substring(registro,1,1)=1 "
                     + "and c.persona.codPersona=:codPersona order by codCobranza asc")
                     .setParameter("codPersona", codPersona);
-            return q.list();
+            cobranzaList = q.list();
         } catch (Exception e) {
+            e.printStackTrace();
             setError(e.getMessage());
         } finally {
             sesion.flush();
         }
-        return null;
+        return cobranzaList;
     }
 
     /**
@@ -548,12 +531,12 @@ public class cCobranza {
             trns = sesion.beginTransaction();
             sesion.update(obj);
             sesion.getTransaction().commit();
-            return true;
+            est = true;
         } catch (Exception e) {
             if (trns != null) {
-                setError(e.getMessage());
                 trns.rollback();
             }
+            setError(e.getMessage());
         } finally {
             sesion.flush();
             sesion.close();
@@ -570,25 +553,29 @@ public class cCobranza {
      * @return
      */
     public boolean actualizar_observacion_saldo(int codCobranza, String obsevacion, double importe, double saldo) {
-        setError(null);
+        boolean est = false;
+        Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
-        sesion.getTransaction().begin();
-        Cobranza obj = (Cobranza) sesion.get(Cobranza.class, codCobranza);
-        obj.setObservacion(obsevacion);
-        obj.setImporte(importe);
-        obj.setSaldo(saldo);
         try {
+            trns = sesion.beginTransaction();
+            Cobranza obj = (Cobranza) sesion.get(Cobranza.class, codCobranza);
+            obj.setObservacion(obsevacion);
+            obj.setImporte(importe);
+            obj.setSaldo(saldo);
             sesion.update(obj);
             sesion.getTransaction().commit();
-            return true;
+            est = true;
         } catch (Exception e) {
-            sesion.getTransaction().rollback();
+            if (trns != null) {
+                trns.rollback();
+            }
+            e.printStackTrace();
             setError("Tabla_actualizar_registro: " + e.getMessage());
         } finally {
             sesion.flush();
             sesion.close();
         }
-        return false;
+        return est;
     }
 
     /**

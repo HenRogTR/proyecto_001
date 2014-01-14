@@ -7,6 +7,7 @@ package cobranzaClases;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import otros.cUtilitarios;
 import tablas.CobranzaDetalle;
 import tablas.HibernateUtil;
@@ -30,23 +31,30 @@ public class cCobranzaDetalle {
 
     public cCobranzaDetalle() {
         this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
+        this.error = null;
     }
 
     //**************************************************************************
-    public boolean Crear(CobranzaDetalle objCobranzaDetalle) {
-        setError(null);
+    public boolean crear(CobranzaDetalle objCobranzaDetalle) {
+        boolean est = false;
+        Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
-        sesion.getTransaction().begin();
         try {
+            trns = sesion.beginTransaction();
             sesion.save(objCobranzaDetalle);
             sesion.getTransaction().commit();
-            return true;
+            est = true;
         } catch (Exception e) {
-            sesion.getTransaction().rollback();
+            if (trns != null) {
+                trns.rollback();
+            }
+            System.out.println(e.getMessage());
             e.printStackTrace();
-            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
         }
-        return false;
+        return est;
     }
 
     public List leer() {
@@ -88,21 +96,28 @@ public class cCobranzaDetalle {
     }
 
     public boolean actualizar_registro(int codCobranzaDetalle, String estado, String user) {
+        boolean est = false;
         cUtilitarios objUtilitarios = new cUtilitarios();
-        setError(null);
+        Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
-        sesion.getTransaction().begin();
-        CobranzaDetalle obj = (CobranzaDetalle) sesion.get(CobranzaDetalle.class, codCobranzaDetalle);
-        obj.setRegistro(objUtilitarios.registro(estado, user));
         try {
+            trns = sesion.beginTransaction();
+            sesion.getTransaction().begin();
+            CobranzaDetalle obj = (CobranzaDetalle) sesion.get(CobranzaDetalle.class, codCobranzaDetalle);
+            obj.setRegistro(objUtilitarios.registro(estado, user));
             sesion.update(obj);
             sesion.getTransaction().commit();
-            return true;
-        } catch (Exception e) {
-            sesion.getTransaction().rollback();
-            setError("CobranzaDetalle_actualizar_registro: " + e.getMessage());
+            est = true;
+        } catch (RuntimeException e) {
+            if (trns != null) {
+                trns.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
+            sesion.close();
         }
-        return false;
+        return est;
     }
     //**************************************************************************
 }

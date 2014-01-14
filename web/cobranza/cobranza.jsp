@@ -35,7 +35,7 @@
         <!--propio-->
         <script type="text/javascript" src="../librerias/utilitarios/manejoFecha.js"></script>
         <script type="text/javascript" src="../librerias/utilitarios/formatoDecimal.js"></script>
-        <script type="text/javascript" src="../librerias/cobranza/cobranza.js?v14.01.11"></script>
+        <script type="text/javascript" src="../librerias/cobranza/cobranza.js?v14.01.14"></script>
         <script type="text/javascript" src="../librerias/plugin/mask/jquery.mask.min.js"></script>
         <script type="text/javascript" src="../librerias/jquery-ui/jquery-ui-1.10.3.custom/js/i18n/jquery.ui.datepicker-es-min.js"></script>
         <style>
@@ -325,7 +325,7 @@
                                                     String tipoRecCaja = "";
                                                 %>
                                                 <div id="dCaja" style="font-size: 12px; font-weight: bold;">
-                                                    <select name="docRecCaja" id="docRecCaja">
+                                                    <select name="docRecCaja" id="docRecCaja" class="entrada" style="padding: 0px;">
                                                         <%
                                                             List DatosExtrasList = new cDatosExtras().leer_documentoCaja();
                                                             int cont1 = 0;
@@ -339,9 +339,7 @@
                                                         <%
                                                             }
                                                         %>
-                                                    </select>
-                                                    -
-                                                    <select name="serieSelect" id="serieSelect" style="padding: 0px;">
+                                                    </select><span>-</span><select name="serieSelect" id="serieSelect" style="padding: 0px;" class="entrada">
                                                         <%
                                                             List comPagoList = new cComprobantePago().leer_serieGenerada(tipoRecCaja);
                                                             for (Iterator it = comPagoList.iterator(); it.hasNext();) {
@@ -351,14 +349,14 @@
                                                         <%
                                                             }
                                                         %>
-                                                    </select>
-                                                    -XXXXXX
+                                                    </select><span>-XXXXXX</span>
                                                 </div>
                                                 <div id="dDescuento" class="ocultar" style="font-size: 12px; font-weight: bold;">                                                    
-                                                    <select name="docRecDesc" id="docRecDesc">
-                                                        
+                                                    <select name="docRecDesc" id="docRecDesc" class="entrada" style="padding: 0px;">
+
                                                     </select>
-                                                    - <input type="text" name="serie" id="serie" value="" class="ancho40px entrada" style=" font-size: 18px;" /> -XXXXXX
+                                                    <span>-</span>
+                                                    <input type="text" name="serie" id="serie" value="" class="ancho40px entrada" style=" font-size: 18px;" /><span>-XXXXXX</span>
                                                 </div>
                                                 <div id="dManual" class="ocultar contenedorEntrada" style="font-size: 12px;font-weight: bold;">
                                                     <input type="text" name="docSerieNumero" id="docSerieNumero" class="anchoTotal limpiar entrada mayuscula"/>
@@ -366,7 +364,7 @@
                                             </div>
                                         </td>
                                         <td class="contenedorEntrada ancho80px">
-                                            <input type="text" name="fechaCobranza" id="fechaCobranza" value="<%=objcManejoFechas.DateAString(new Date())%>" class="anchoTotal" style="font-size: 16px;" />
+                                            <input type="text" name="fechaCobranza" id="fechaCobranza" value="<%=objcManejoFechas.DateAString(new Date())%>" class="anchoTotal entrada" style="font-size: 16px;" />
                                             <input type="hidden" name="auxFecha" id="auxFecha" value="<%=objcManejoFechas.DateAString(new Date())%>" />
                                         </td>
                                         <td class="contenedorEntrada ancho120px">

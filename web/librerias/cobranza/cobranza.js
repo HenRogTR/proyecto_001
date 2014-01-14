@@ -718,7 +718,7 @@ function fEliminarCobranza() {
                     fAlerta('Se ha eliminado con exito');
                     fClienteLeer($('#codCliente').val());
                 } else {
-                    fAlerta('Error al eliminar');
+                    fAlerta('Error: ' + ajaxResponse);
                 }
             },
             statusCode: {

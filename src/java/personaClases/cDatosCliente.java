@@ -31,18 +31,21 @@ public class cDatosCliente {
 
     public cDatosCliente() {
         this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
+        this.error = null;
     }
 
     //***************************************************
     public DatosCliente leer_codPersona(int codPersona) {
         DatosCliente objCliente = null;
-        setError(null);
+        Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
+            trns = sesion.beginTransaction();
             Query q = sesion.createQuery("from DatosCliente d where substring(registro,1,1)=1 and d.persona.codPersona=:codPersona")
                     .setParameter("codPersona", codPersona);
             objCliente = (DatosCliente) q.list().iterator().next();
         } catch (Exception e) {
+            e.printStackTrace();
             setError("Error en consulta datos clientes: " + e.getMessage());
         } finally {
             sesion.flush();
@@ -533,15 +536,14 @@ public class cDatosCliente {
     }
 
     public boolean actualizar_saldoFavor(int codDatosCliente, Double saldoFavor) {
-        setError(null);
-        Boolean estado = false;
+        boolean estado = false;
         Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
             trns = sesion.beginTransaction();
             DatosCliente obj = (DatosCliente) sesion.get(DatosCliente.class, codDatosCliente);
             Double tem = obj.getSaldoFavor();
-            System.out.println(obj.getSaldoFavor() + "******************" + saldoFavor);
+            System.out.println("SA actual" + obj.getSaldoFavor() + "******************" + saldoFavor);
             obj.setSaldoFavor(tem + saldoFavor);
             sesion.update(obj);
             sesion.getTransaction().commit();

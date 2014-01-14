@@ -167,7 +167,7 @@ public class sCobranza extends HttpServlet {
                         objCobranza.setSaldo(montoAmortizar);
                         objCobranza.setObservacion("Anticipo");
                         objCobranza.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
-                        int codCobranza = new cCobranza().Crear(objCobranza);
+                        int codCobranza = new cCobranza().crear(objCobranza);
                         if (codCobranza != 0) {
                             out.print(codCliente);
                         }
@@ -193,7 +193,7 @@ public class sCobranza extends HttpServlet {
                             objcComprobantePagoDetalle.actualizar_estado(objCPD.getCodComprobantePagoDetalle(), true);
                         }
 
-                        int codCobranza = new cCobranza().Crear(objCobranza);
+                        int codCobranza = new cCobranza().crear(objCobranza);
                         objCobranza.setCodCobranza(codCobranza);
                         Double montoAmortizarAux = montoAmortizar;
                         while (montoAmortizarAux > 0) {
@@ -211,7 +211,7 @@ public class sCobranza extends HttpServlet {
                                 observacion += objVentaCreditoLetra.getDetalleLetra() + " " + objVentaCreditoLetra.getVentaCredito().getVentas().getDocSerieNumero() + " " + objcOtros.agregarCerosNumeroFormato(objcOtros.redondearDecimales(deudaLetra, 2), 2) + "\n";
                                 objCobranzaDetalle.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
                                 objCobranzaDetalle.setVentaCreditoLetra(objVentaCreditoLetra);
-                                new cCobranzaDetalle().Crear(objCobranzaDetalle);//creamos el detalle de la cobranza
+                                new cCobranzaDetalle().crear(objCobranzaDetalle);//creamos el detalle de la cobranza
                                 new cVentaCreditoLetra().actualizar_totalPago(objVentaCreditoLetra.getCodVentaCreditoLetra(), deudaLetra, fechaCobranza);
                                 montoAmortizarAux -= deudaLetra;//quitamos el moto
                             } else {
@@ -222,7 +222,7 @@ public class sCobranza extends HttpServlet {
                                 observacion += objVentaCreditoLetra.getDetalleLetra() + " " + objVentaCreditoLetra.getVentaCredito().getVentas().getDocSerieNumero() + " " + objcOtros.agregarCerosNumeroFormato(objcOtros.redondearDecimales(montoAmortizarAux, 2), 2) + "\n";
                                 objCobranzaDetalle.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
                                 objCobranzaDetalle.setVentaCreditoLetra(objVentaCreditoLetra);
-                                new cCobranzaDetalle().Crear(objCobranzaDetalle);//creamos el detalle de la cobranza
+                                new cCobranzaDetalle().crear(objCobranzaDetalle);//creamos el detalle de la cobranza
                                 new cVentaCreditoLetra().actualizar_totalPago(objVentaCreditoLetra.getCodVentaCreditoLetra(), montoAmortizarAux, fechaCobranza);
                                 montoAmortizarAux = 0.00;//no queda saldo
                             }
@@ -261,19 +261,19 @@ public class sCobranza extends HttpServlet {
                         objCobranza.setObservacion("");
                         objCobranza.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
 
-                        Double deudaClientePorVenta = new cVentaCreditoLetra().leer_deudaCliente_codCliente_codVentas(objCliente.getPersona().getCodPersona(), codVenta);
-                        if (deudaClientePorVenta == 0.0) {
+                        Double deudaClientePorVenta = new cVentaCreditoLetra().leer_deudaCliente_codCliente_codVentas_SC(objCliente.getPersona().getCodPersona(), codVenta);
+                        if (deudaClientePorVenta == 0) {
                             out.print("El cliente no tiene deuda alguna, ingrese como anticipo");
                             return;
                         }
                         if (saldoFavorUsar.equals("0") & !tipoCobro.equals("manual")) {
                             objcComprobantePagoDetalle.actualizar_estado(objCPD.getCodComprobantePagoDetalle(), true);
                         }
-                        int codCobranza = new cCobranza().Crear(objCobranza);
+                        int codCobranza = new cCobranza().crear(objCobranza);
                         objCobranza.setCodCobranza(codCobranza);
                         Double montoAmortizarAux = montoAmortizar;
                         while (montoAmortizarAux > 0) {
-                            VentaCreditoLetra objVentaCreditoLetra = new cVentaCreditoLetra().leer_letraVencidaAntigua_codVentas(objCliente.getPersona().getCodPersona(), codVenta);//letra actual
+                            VentaCreditoLetra objVentaCreditoLetra = new cVentaCreditoLetra().leer_letraVencidaAntigua_codVenta(objCliente.getPersona().getCodPersona(), codVenta);//letra actual
                             if (objVentaCreditoLetra == null) {//en caso ya no hayan letras por pagar
                                 break;
                             }
@@ -287,7 +287,7 @@ public class sCobranza extends HttpServlet {
                                 observacion += objVentaCreditoLetra.getDetalleLetra() + " " + objVentaCreditoLetra.getVentaCredito().getVentas().getDocSerieNumero() + " " + objcOtros.agregarCerosNumeroFormato(objcOtros.redondearDecimales(deudaLetra, 2), 2) + "\n";
                                 objCobranzaDetalle.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
                                 objCobranzaDetalle.setVentaCreditoLetra(objVentaCreditoLetra);
-                                new cCobranzaDetalle().Crear(objCobranzaDetalle);//creamos el detalle de la cobranza
+                                new cCobranzaDetalle().crear(objCobranzaDetalle);//creamos el detalle de la cobranza
                                 new cVentaCreditoLetra().actualizar_totalPago(objVentaCreditoLetra.getCodVentaCreditoLetra(), deudaLetra, fechaCobranza);
                                 montoAmortizarAux -= deudaLetra;//quitamos el moto
                             } else {
@@ -298,7 +298,7 @@ public class sCobranza extends HttpServlet {
                                 observacion += objVentaCreditoLetra.getDetalleLetra() + " " + objVentaCreditoLetra.getVentaCredito().getVentas().getDocSerieNumero() + " " + objcOtros.agregarCerosNumeroFormato(objcOtros.redondearDecimales(montoAmortizarAux, 2), 2) + "\n";
                                 objCobranzaDetalle.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
                                 objCobranzaDetalle.setVentaCreditoLetra(objVentaCreditoLetra);
-                                new cCobranzaDetalle().Crear(objCobranzaDetalle);//creamos el detalle de la cobranza
+                                new cCobranzaDetalle().crear(objCobranzaDetalle);//creamos el detalle de la cobranza
                                 new cVentaCreditoLetra().actualizar_totalPago(objVentaCreditoLetra.getCodVentaCreditoLetra(), montoAmortizarAux, fechaCobranza);
                                 montoAmortizarAux = 0.00;//no queda saldo
                             }
@@ -339,13 +339,16 @@ public class sCobranza extends HttpServlet {
             cCobranza objcCobranza = new cCobranza();
             cCobranzaDetalle objcCobranzaDetalle = new cCobranzaDetalle();
             cVentaCreditoLetra objcVentaCreditoLetra = new cVentaCreditoLetra();
-            cDatosCliente objcDatosCliente = new cDatosCliente();
             int codCobranza = 0;
             try {
                 codCobranza = Integer.parseInt(request.getParameter("codCobranza"));
                 objCobranza = new cCobranza().leer_codCobranza(codCobranza);
                 if (objCobranza == null) {
                     out.print("No hay cobranza con ese parametro");
+                    return;
+                }
+                if (objCobranza.getRegistro().substring(0, 1).equals("0")) {
+                    out.print("El recibo y/o ticket se encuentra eliminado. Verifique o actualice");
                     return;
                 }
             } catch (NumberFormatException e) {
@@ -358,11 +361,13 @@ public class sCobranza extends HttpServlet {
                     objcCobranzaDetalle.actualizar_registro(objCobranzaDetalle.getCodCobranzaDetalle(), "0", objUsuario.getCodUsuario().toString());
                 }
             }
-            DatosCliente objDatosCliente = objCobranza.getPersona().getDatosClientes().iterator().next();
+//            DatosCliente objDatosCliente = objCobranza.getPersona().getDatosClientes().iterator().next();// se lee a la persona
+            DatosCliente objCliente = new cDatosCliente().leer_codPersona(objCobranza.getPersona().getCodPersona());// se lee a la persona
+            System.out.println("Saldo actual= " + objCliente.getSaldoFavor());
             if (objCobranza.getDocSerieNumero().substring(0, 1).equals("X")) {//si en caso se uso el saldo a favor
-                objcDatosCliente.actualizar_saldoFavor((new cDatosCliente().leer_cod(objDatosCliente.getCodDatosCliente())).getCodDatosCliente(), objCobranza.getImporte());
+                new cDatosCliente().actualizar_saldoFavor(objCliente.getCodDatosCliente(), objCobranza.getImporte());
             } else {
-                objcDatosCliente.actualizar_saldoFavor((new cDatosCliente().leer_cod(objDatosCliente.getCodDatosCliente())).getCodDatosCliente(), -objCobranza.getSaldo());
+                new cDatosCliente().actualizar_saldoFavor(objCliente.getCodDatosCliente(), -objCobranza.getSaldo());
             }
             objcCobranza.actualizar_importe_saldo_registro(codCobranza, new cUtilitarios().registro("0", objUsuario.getCodUsuario().toString()));// de la cobranza
             out.print(codCobranza);
