@@ -39,7 +39,6 @@ import otrasTablasClases.cComprobantePagoDetalle;
 import otrasTablasClases.cDatosExtras;
 import otros.cUtilitarios;
 import personaClases.cDatosCliente;
-import personaClases.cPersona;
 import tablas.Cobranza;
 import tablas.CobranzaDetalle;
 import tablas.ComprobantePago;
@@ -139,7 +138,7 @@ public class sCobranza extends HttpServlet {
                         while (marca == 0) { //hasta encontrar uno libre
                             Boolean tem = new cCobranza().siExiste_SC(objCPD.getDocSerieNumero());  //comprobamos si el obtenido no este registrado o marcado con check
                             if (tem) {  // si esta usado se busca el siguiente no usado
-                                objCPD = new cComprobantePagoDetalle().leer_disponible_siguiente(objCP.getCodComprobantePago(), objCPD.getCodComprobantePagoDetalle() + 1);
+                                objCPD = new cComprobantePagoDetalle().leer_disponible_siguiente_SC(objCP.getCodComprobantePago(), objCPD.getCodComprobantePagoDetalle() + 1);
                                 if (objCPD == null) {   // si en caso no hay ninguno se termina en bucle
                                     out.print("No hay documentos disponibles para esta serie. Genere nuevos.");
                                     return;
@@ -150,10 +149,6 @@ public class sCobranza extends HttpServlet {
                         }
                         docSerieNumero = objCPD.getDocSerieNumero();
                     }
-                }
-                if (true) {
-                    out.print(docSerieNumero);
-                    return;
                 }
                 if (tipoPago.equals("anticipo")) {
                     if (saldoFavorUsar.equals("0") & !tipoCobro.equals("manual")) {//que no sea un saldo a favor y que no sea manual

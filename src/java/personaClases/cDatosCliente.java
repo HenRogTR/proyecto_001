@@ -551,6 +551,7 @@ public class cDatosCliente {
                 trns.rollback();
             }
             setError(e.getMessage());
+            e.printStackTrace();
             System.out.println("***************************" + e.getMessage());
         } finally {
             sesion.flush();
