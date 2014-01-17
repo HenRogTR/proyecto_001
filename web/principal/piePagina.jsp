@@ -59,6 +59,11 @@
 
 <div id="dNovedades" title="Novedades" style="font-size: 10px;">
     <div style="background: #F1F1F7">
+        <h3 class="titulo">17/01/2014</h3>
+        <p>
+            * Actualización y mejora de kardex de cliente.<br>
+            * Otras correcciones.<br>
+        </p>
         <h3 class="titulo">14/01/2014</h3>
         <p>
             * Resaltar la coincidencia en el autocompletado.<br>
