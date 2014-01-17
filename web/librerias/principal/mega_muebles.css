@@ -242,4 +242,11 @@ label.error:before{
     height: 11px;
     background: url(images/loading.gif) no-repeat ;
     background-size:  11px;
+    color: transparent;
+}
+.sinSubrayado{
+    text-decoration:none
+}
+.sinSubrayado:hover{
+    text-decoration: underline ; color:black;
 }

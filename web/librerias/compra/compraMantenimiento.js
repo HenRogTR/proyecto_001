@@ -57,8 +57,10 @@ function fCompra(codCompra, parametro) {
             beforeSend: function() {
                 fProcesandoPeticionCerrar();
                 $('.vaciar').addClass('esperando');
-                $('#tbCompraDetalle').find('tr').addClass('ocultar').append(
-                        '<tr>' +
+                var $tbCompraDetalle = $('#tbCompraDetalle');
+                $tbCompraDetalle.find('tr').addClass('ocultar');
+                $tbCompraDetalle.append(
+                        '<tr class="temp">' +
                         '<td class="derecha"><div class="esperando"></div></td>' +
                         '<td class="derecha"><div class="esperando"></div></td>' +
                         '<td class="derecha"><div class="esperando"></div></td>' +
@@ -78,6 +80,10 @@ function fCompra(codCompra, parametro) {
                 var tamanio = CArray.length;
                 if (tamanio == 0) {
                     $('.vaciar').removeClass('esperando');
+                    var $tbCompraDetalle = $('#tbCompraDetalle');
+                    $tbCompraDetalle.find('tr').removeClass('ocultar');
+                    $tbCompraDetalle.find('.temp').remove();
+                    $('#codCompraBuscar').val('');
                     fAlerta('Código <strong>' + codCompra + '</strong> no encontrado.');
                 } else {
                     var CItem = CArray[0];

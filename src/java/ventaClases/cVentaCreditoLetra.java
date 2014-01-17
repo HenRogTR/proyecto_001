@@ -140,11 +140,10 @@ public class cVentaCreditoLetra {
 
     public List leer_resumenPagos(int codPersona) {
         List l = null;
-        setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
             Query q = sesion.createQuery("select month(vcl.fechaVencimiento), year(vcl.fechaVencimiento), "
-                    + "sum(vcl.monto), sum(interes), sum(vcl.totalPago),sum(vcl.monto)-sum(vcl.totalPago), vcl.fechaVencimiento "
+                    + "sum(vcl.monto), sum(interes), sum(vcl.totalPago), sum(vcl.monto)-sum(vcl.totalPago), vcl.fechaVencimiento "
                     + "from VentaCreditoLetra vcl "
                     + "where substring(vcl.registro,1,1)=1 "
                     + "and vcl.ventaCredito.ventas.persona.codPersona=:codPersona "

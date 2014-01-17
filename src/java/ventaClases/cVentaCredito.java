@@ -82,6 +82,59 @@ public class cVentaCredito {
         return objVentaCredito;
     }
 
+    /**
+     * Retorna los detalles de una venta aun estando eliminada ademas la
+     * conexion se cierra.
+     *
+     * @param codVenta
+     * @return
+     */
+    public VentaCredito leer_codVenta_01(int codVenta) {
+        VentaCredito objVC = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("from VentaCredito vc "
+                    + "where (substring(vc.registro,1,1)=1 or substring(vc.registro,1,1)=0) "
+                    + "and vc.ventas.codVentas=:a").
+                    setParameter("a", codVenta);
+            objVC = (VentaCredito) q.list().get(0);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
+        }
+        return objVC;
+    }
+    
+    /**
+     * Retorna los detalles de una venta aun estando eliminada ademas la
+     * conexion se cierra.
+     *
+     * @param codVenta
+     * @return
+     */
+    public VentaCredito leer_codVenta_01_SC(int codVenta) {
+        VentaCredito objVC = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("from VentaCredito vc "
+                    + "where (substring(vc.registro,1,1)=1 or substring(vc.registro,1,1)=0) "
+                    + "and vc.ventas.codVentas=:a").
+                    setParameter("a", codVenta);
+            objVC = (VentaCredito) q.list().get(0);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return objVC;
+    }
+
     public List leer_admin() {
         setError(null);
         try {
@@ -138,8 +191,8 @@ public class cVentaCredito {
         }
         return estado;
     }
-    
-    public Boolean actualizar(int codVentaCredito, Date fechaInicial, Double montoLetra, String duracion, Date fechaVencimientoLetra, Double montoInicial,int cantidadLetras) {
+
+    public Boolean actualizar(int codVentaCredito, Date fechaInicial, Double montoLetra, String duracion, Date fechaVencimientoLetra, Double montoInicial, int cantidadLetras) {
         Boolean estado = false;
         Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();

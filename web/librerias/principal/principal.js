@@ -59,8 +59,7 @@ $(document).ready(function() {
 
 
     $.ui.autocomplete.prototype._renderItem = function(ul, item) {
-    //  var term = this.term.split(' ').join('|');
-        var term = this.term;
+        var term = this.term.split(' ').join('|');
         var re = new RegExp("(" + term + ")", "gi");
         var t = item.label.replace(re, "<strong>$1</strong>");
         return $("<li></li>")
@@ -641,8 +640,9 @@ function fDLibreCerrar() {
  * @returns {undefined}
  */
 function fDLibreEditar(alto, ancho, titulo, contenido) {
+    var $dLibreSub = $('#dLibreSub');
     var $dLibre = $('#dLibre');
-    $dLibre.empty().append(contenido);
+    $dLibreSub.empty().append(contenido);
     $dLibre.dialog('option', 'height', alto);
     $dLibre.dialog('option', 'width', ancho);
     $dLibre.dialog('option', 'title', titulo);
@@ -652,8 +652,9 @@ function fDLibreEditar(alto, ancho, titulo, contenido) {
 
 //<editor-fold defaultstate="collapsed" desc="fDLibreReiniciar(). Clic en el signo + de la izquierda para mas detalles.">
 function fDLibreReiniciar() {
+    var $dLibreSub = $('#dLibreSub');
     var $dLibre = $('#dLibre');
-    $dLibre.empty().append('<img src="../imagenes/loading_1.gif" style="height: 50px;"/>');
+    $dLibreSub.empty().append('<img src="../imagenes/loading_1.gif" style="height: 50px;"/>');
     $dLibre.dialog('option', 'height', 155);
     $dLibre.dialog('option', 'width', 150);
     $dLibre.dialog('option', 'title', '');

@@ -11,7 +11,7 @@ $(document).ready(function() {
                 var key = e.charCode ? e.charCode : (e.keyCode ? e.keyCode : 0);
                 if (key == 13) {
                     if (!isNaN(this.value) & this.value > 0) {
-                        fClienteKardex(this.value);
+                        fCliente(parseInt(this.value, 10));
                         this.value = '';
                     }
                     e.preventDefault();
@@ -21,6 +21,22 @@ $(document).ready(function() {
     $('#bClienteBuscar').click(function(event) {
         $('#dClienteBuscar').dialog('open');
         event.preventDefault();
+    });
+    $('#bClienteInfo').click(function(event) {
+        var codCliente = $('#codCliente').val();
+        if ($.isNumeric(codCliente)) {
+            $(this).attr('href', '../sDatoCliente?accionDatoCliente=mantenimiento&codDatoCliente=' + parseInt(codCliente, 10)).attr('target', '_blank');
+        } else {
+            event.preventDefault();
+        }
+    });
+    $('#bVCLRM').click(function(event) {
+        var codCliente = $('#codCliente').val();
+        if ($.isNumeric(codCliente)) {
+            $(this).attr('target', '_blank').attr('href', 'reporte/vclrm.jsp?codCliente=' + parseInt(codCliente, 10));
+        } else {
+            event.preventDefault();
+        }
     });
 });
 
@@ -52,9 +68,63 @@ function fPaginaActual() {
 }
 ;
 
+function fCliente(codCliente) {
+    var data = {codCliente: codCliente};
+    var url = 'ajax/clienteKardex/cliente.jsp';
+    try {
+        $.ajax({
+            type: 'post',
+            url: url,
+            data: data,
+            beforeSend: function() {
+
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                $('#lServidorError').text(errorThrown + '()');
+                $('#dServidorError').dialog('open');
+            },
+            success: function(ajaxResponse, textStatus) {
+                if ($.trim(ajaxResponse) == '') {
+                    fAlerta('Cliente no encontrado');
+                    var $dVenta = $('#dVenta');
+                    $dVenta.find('table').removeClass('ocultar');
+                    $dVenta.find('.temp').remove();
+                    var $dVCLRM = $('#dVentaCreditoLetraResumenMensual');
+                    $dVCLRM.find('table').removeClass('ocultar');
+                    $dVCLRM.find('.temp').remove();
+                    var $dVCL = $('#dVentaCreditoLetra');
+                    $dVCL.find('table').removeClass('ocultar');
+                    $dVCL.find('.temp').remove();
+                    var $dVD = $('#dVentaDetalle');
+                    $dVD.find('table').removeClass('ocultar');
+                    $dVD.find('.temp').remove();
+                    var $dCobranza = $('#dCobranza');
+                    $dCobranza.find('table').removeClass('ocultar');
+                    $dCobranza.find('.temp').remove();
+                } else {
+                    $('#codCliente').val(codCliente);
+                    $('#lNombresC').text(ajaxResponse);
+                    fClienteKardex(codCliente);
+                }
+            },
+            statusCode: {
+                404: function() {
+                    $('#lServidorError').text('Página no encontrada().');
+                    $('#dServidorError').dialog('open');
+                }
+            }
+        });
+    }
+    catch (ex) {
+        $('#lServidorError').text(ex);
+        $('#dServidorError').dialog('open');
+    }
+}
+;
+
 function fClienteKardex(codCliente) {
-    fVenta(parseInt(codCliente, 10));
-    fDeudaResumen(parseInt(codCliente, 10));
+    fVenta(codCliente);
+    fDeudaResumen(codCliente);
     fCobranza(codCliente);
     fVentaCreditoLetraResumenMensual(codCliente);
 }
@@ -69,25 +139,41 @@ function fVenta(codCliente) {
             url: url,
             data: data,
             beforeSend: function() {
-
+                fAntesEnvioTodo();
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
-                $('#lServidorError').text(errorThrown + '()');
+                $('#lServidorError').text(errorThrown + '(' + url + ')');
                 $('#dServidorError').dialog('open');
             },
             success: function(ajaxResponse, textStatus) {
-                $('#dVenta').empty().append(ajaxResponse);
-                $('.tr_venta').bind('click', function(event) {
-                    var id = $(this).attr('id');
+                if ($.trim(ajaxResponse) != '') {
+                    $('#dVenta').empty().append(ajaxResponse);
+                    $('.tr_venta').bind('click', function(event) {
+                        var id = $(this).attr('id');
+                        var tam = id.length;
+                        var codVenta = id.substring(9, tam);
+                        fVentaCreditoLetra(codVenta);
+                        fVentaDetalle(codVenta);
+                    });
+                    $('.tr_venta').bind('dblclick', function(event) {
+                        fDLibreEditar('300', '400', 'S/N en venta', $(this).find('.info_serieNumero').attr('title'));
+                        fDLibreAbrir();
+                    });
+                    var $primero = $('#dVenta').find('.primero');
+                    var id = $primero.attr('id');
                     var tam = id.length;
                     var codVenta = id.substring(9, tam);
                     fVentaCreditoLetra(codVenta);
                     fVentaDetalle(codVenta);
-                });
+                } else {
+                    $('#dVenta').empty();
+                    $('#dVentaCreditoLetra').empty();
+                    $('#dVentaDetalle').empty();
+                }
             },
             statusCode: {
                 404: function() {
-                    $('#lServidorError').text('Página no encontrada().');
+                    $('#lServidorError').text('Página no encontrada(' + url + ').');
                     $('#dServidorError').dialog('open');
                 }
             }
@@ -109,7 +195,7 @@ function fVentaDetalle(codVenta) {
             url: url,
             data: data,
             beforeSend: function() {
-
+                fAntesEnvioVentaDetalle();
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
                 $('#lServidorError').text(errorThrown + '()');
@@ -142,7 +228,7 @@ function fVentaCreditoLetra(codVenta) {
             url: url,
             data: data,
             beforeSend: function() {
-
+                fAntesEnvioVentaCreditoLetra();
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
                 $('#lServidorError').text(errorThrown + '()');
@@ -184,9 +270,9 @@ function fDeudaResumen(codCliente) {
             },
             success: function(ajaxResponse, textStatus) {
                 var DRItem = procesarRespuesta(ajaxResponse)[0];
-                $('#lTotal').text(DRItem.mTotal);
-                $('#lAmortizado').text(DRItem.mAmortizado);
-                $('#lSaldo').text(DRItem.mSaldo);
+                $('#lTotal').removeClass('esperando').text(DRItem.mTotal);
+                $('#lAmortizado').removeClass('esperando').text(DRItem.mAmortizado);
+                $('#lSaldo').removeClass('esperando').text(DRItem.mSaldo);
             },
             statusCode: {
                 404: function() {
@@ -221,6 +307,27 @@ function fCobranza(codCliente) {
             },
             success: function(ajaxResponse, textStatus) {
                 $('#dCobranza').empty().append(ajaxResponse);
+                if ($.trim(ajaxResponse) != '') {
+                    $('.tr_cobranza').bind('click', function(event) {
+                        $('#tCobranzaDetalle').empty().append(
+                                '<tr>' +
+                                '<td>' +
+                                $(this).find('.info_cobranzaDetalle').attr('title') +
+                                '</td>' +
+                                '</tr>'
+                                );
+                    });
+                    var $primero = $('#dCobranza').find('tr');
+                    $('#tCobranzaDetalle').empty().append(
+                            '<tr>' +
+                            '<td>' +
+                            $primero.find('.info_cobranzaDetalle').attr('title') +
+                            '</td>' +
+                            '</tr>'
+                            );
+                } else {
+                    $('#tCobranzaDetalle').empty();
+                }
             },
             statusCode: {
                 404: function() {
@@ -285,8 +392,102 @@ function clienteSeleccionado(event, ui) {
     var cliente = ui.item.value;
     $('#codClienteBuscar').val('');
     $('#dniPasaporteRucNombresCBuscar').val('');
-    fClienteKardex(parseInt(cliente.codCliente, 10), '');
+    fCliente(parseInt(cliente.codCliente, 10), '');
     event.preventDefault();
 }
 ;
 //</editor-fold>
+
+function fAntesEnvioTodo() {
+    $('.vaciar').addClass('esperando');
+    var $dVenta = $('#dVenta');
+    $dVenta.find('table').addClass('ocultar');
+    $dVenta.append(
+            '<table class="reporte-tabla-2 anchoTotal temp" style="font-size: 9px;">' +
+            '<tr>' +
+            '<td class="derecha" style="width: 80px;"><div class="esperando"></div></td>' +
+            '<td class="derecha" style="width: 80px;"><div class="esperando"></div></td>' +
+            '<td class="derecha" style="width: 60px;"><div class="esperando"></div></td>' +
+            '<td class="derecha" style="width: 60px;"><div class="esperando"></div></td>' +
+            '<td style="width: 60px;"><div class="esperando"></div></td>' +
+            '<td class="derecha" style="width: 60px;"><div class="esperando"></div></td>' +
+            '<td class="derecha" style="width: 50px;"><div class="esperando"></div></td>' +
+            '<td class="derecha" style="width: 50px;"><div class="esperando"></div></td>' +
+            '<td class="derecha"><div class="esperando"></div></td>' +
+            '</tr>' +
+            '</table>'
+            );
+    var $dVCLRM = $('#dVentaCreditoLetraResumenMensual');
+    $dVCLRM.find('table').addClass('ocultar');
+    $dVCLRM.append(
+            '<table class="reporte-tabla-2 anchoTotal temp" style="font-size: 9px;">' +
+            '<tr>' +
+            '<td style="width: 70px;"><div class="esperando"></div></td>' +
+            '<td style="width: 70px;" class="derecha"><div class="esperando"></div></td>' +
+            '<td style="width: 70px;" class="derecha"><div class="esperando"></div></td>' +
+            '<td style="width: 70px;" class="derecha"><div class="esperando"></div></td>' +
+            '<td class="derecha"><div class="esperando"></div></td>' +
+            '</tr>' +
+            '</table>'
+            );
+    fAntesEnvioVentaCreditoLetra();
+    fAntesEnvioVentaDetalle();
+    var $tdCobranza = $('#dCobranza');
+    $tdCobranza.find('table').addClass('ocultar');
+    $tdCobranza.append(
+            '<table class="reporte-tabla-2 anchoTotal temp" style="font-size: 9px;">' +
+            '<tr>' +
+            '<td style="width: 110px;"><div class="esperando"></div></td>' +
+            '<td style="width: 70px;" class="derecha"><div class="esperando"></div></td>' +
+            '<td style="width: 70px;"><div class="esperando"></div></td>' +
+            '<td class="derecha"><div class="esperando"></div></td>' +
+            '</tr>' +
+            '</table>'
+            );
+    var $tCobranzaDetalle = $('#tCobranzaDetalle');
+    $tCobranzaDetalle.find('tr').addClass('ocultar');
+    $tCobranzaDetalle.append(
+            '<tr>' +
+            '<td class="derecha"><div class="esperando"></div></td>' +
+            '</tr>'
+            );
+}
+;
+
+function fAntesEnvioVentaCreditoLetra() {
+    var $dVCL = $('#dVentaCreditoLetra');
+    $dVCL.find('table').addClass('ocultar');
+    $dVCL.append(
+            '<table class="reporte-tabla-2 anchoTotal temp" style="font-size: 9px;">' +
+            '<tr>' +
+            '<td style="width: 90px;"><div class="esperando"></div></td>' +
+            '<td style="width: 90px;" class="derecha"><div class="esperando"></div></td>' +
+            '<td style="width: 70px;" class="derecha"><div class="esperando"></div></td>' +
+            '<td style="width: 60px;" class="derecha"><div class="esperando"></div></td>' +
+            '<td style="width: 60px;" class="derecha"><div class="esperando"></div></td>' +
+            '<td style="width: 70px;" class="derecha"><div class="esperando"></div></td>' +
+            '<td style="width: 40px;" class="derecha"><div class="esperando"></div></td>' +
+            '<td style="width: 60px;" class="derecha"><div class="esperando"></div></td>' +
+            '<td class="derecha"><div class="esperando"></div></td>' +
+            '</tr>' +
+            '</table>'
+            );
+}
+;
+
+function fAntesEnvioVentaDetalle() {
+    var $dVD = $('#dVentaDetalle');
+    $dVD.find('table').addClass('ocultar');
+    $dVD.append(
+            '<table class="reporte-tabla-2 anchoTotal temp" style="font-size: 9px;">' +
+            '<tr>' +
+            '<td style="width: 90px;"><div class="esperando"></div></td>' +
+            '<td style="width: 40px;" class="derecha"><div class="esperando"></div></td>' +
+            '<td style="width: 350px;" class="derecha"><div class="esperando"></div></td>' +
+            '<td style="width: 70px;" class="derecha"><div class="esperando"></div></td>' +
+            '<td class="derecha"><div class="esperando"></div></td>' +
+            '</tr>' +
+            '</table>'
+            );
+}
+;

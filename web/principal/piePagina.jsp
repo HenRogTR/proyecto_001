@@ -52,7 +52,9 @@
 
 <!--div libre-->
 <div id="dLibre" style="text-align: center; vertical-align: middle;">
-    <img src="../imagenes/loading_1.gif" style="height: 50px;"/>
+    <div id="dLibreSub" class="izquierda">
+        <img src="../imagenes/loading_1.gif" style="height: 50px;"/>
+    </div>
 </div>
 
 <div id="dNovedades" title="Novedades" style="font-size: 10px;">

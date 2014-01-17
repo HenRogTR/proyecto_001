@@ -14,6 +14,7 @@
 <%
     int codCliente = Integer.parseInt(request.getParameter("codCliente"));
     List CList = new cCobranza().leer_codPersona_SC(new cDatosCliente().leer_cod(codCliente).getPersona().getCodPersona());
+    if (CList.size() > 0) {
 %>
 <table class="reporte-tabla-2 anchoTotal" style="font-size: 9px;">
     <thead>
@@ -22,14 +23,17 @@
             for (Iterator it = CList.iterator(); it.hasNext();) {
                 Cobranza objCobranza = (Cobranza) it.next();
         %>
-        <tr class="trCodCobranza=<%=objCobranza.getCodCobranza()%>" title="<%=objCobranza.getObservacion()%>">
+        <tr class="tr_cobranza" title="<%=objCobranza.getObservacion()%>">
             <td style="width: 110px;"><span style="padding-left: 2px;"><%=objCobranza.getDocSerieNumero()%></span></td>
             <td style="width: 70px;" class="derecha"><span style="padding-right: 2px;"><%=objcOtros.decimalFormato(objCobranza.getImporte(), 2)%></span></td>
             <td style="width: 70px;"><span style="padding-left: 2px;"><%=new cManejoFechas().DateAString(objCobranza.getFechaCobranza())%></span></td>
-            <td class="derecha"><span style="padding-right: 2px;"><%=objcOtros.decimalFormato(objCobranza.getSaldo(), 2)%></span></td>
+            <td class="derecha"><span style="padding-right: 2px;"><%=objcOtros.decimalFormato(objCobranza.getSaldo(), 2)%></span><div class="info_cobranzaDetalle" title="<%=objcOtros.replace_comillas_comillasD_barraInvertida(objCobranza.getObservacion())%>"></div></td>
         </tr>
         <%
             }
         %>
     </thead>
 </table>
+<%
+    }
+%>
