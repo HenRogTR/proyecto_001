@@ -7,6 +7,7 @@ package articuloProductoClases;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import otros.cUtilitarios;
 import tablas.HibernateUtil;
 import tablas.PrecioVenta;
@@ -29,22 +30,29 @@ public class cPrecioVenta {
     }
 
     public cPrecioVenta() {
+        this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
+        this.error = null;
     }
 
-    public boolean Crear(PrecioVenta objPrecioVenta) {
-        setError(null);
+    public boolean crear(PrecioVenta objPrecioVenta) {
+        Boolean est = false;
+        Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
-        sesion.getTransaction().begin();
         try {
+            trns = sesion.beginTransaction();
             sesion.save(objPrecioVenta);
             sesion.getTransaction().commit();
-            return true;
+            est = true;
         } catch (Exception e) {
-            sesion.getTransaction().rollback();
+            if (trns != null) {
+                trns.rollback();
+            }
             e.printStackTrace();
-            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
         }
-        return false;
+        return est;
     }
 
     public List leer() {

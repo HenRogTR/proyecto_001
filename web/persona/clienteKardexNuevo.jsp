@@ -1,5 +1,5 @@
 <%-- 
-    Document   : clienteKardex
+    Document   : clienteKardexNuevo
     Created on : 06/01/2014, 09:28:23 AM
     Author     : Henrri
 --%>
@@ -22,23 +22,8 @@
         <!--cambios-->
         <%@include file="../principal/inclusiones.jsp" %>
         <!--propio-->
-        <script type="text/javascript" src="../librerias/persona/cliente/clienteKardex.js?v14.01.17"></script>
+        <script type="text/javascript" src="../librerias/persona/cliente/clienteKardex.js"></script>
         <script type="text/javascript" src="../librerias/plugin/mask/jquery.mask.min.js"></script>
-        <style>
-            .ui-autocomplete {
-                /*width: 400px;*/
-                max-height: 300px;
-                overflow-y: auto;
-                /* prevent horizontal scrollbar */
-                overflow-x: hidden;
-            }
-            /* IE 6 doesn't support max-height
-            * we use height instead, but this forces the menu to always be this tall
-            */
-            * html .ui-autocomplete {
-                height: 300px;
-            }
-        </style>
     </head>
     <body>
         <input type="hidden" name="paginaActualPermiso" id="permisoPaginaP2" value="" title="KARDEX DE CLIENTES"/>
@@ -48,24 +33,15 @@
             </div>
             <div id="right" style="width: 1024px;">
                 <div id="rightSub1" class="ocultar">
-                    <h3 class="titulo">
-                        <a href="../index.jsp" class="sexybutton"><span><span><span class="home">Inicio</span></span></span></a>
-                        <span>KARDEX DE CLIENTES</span>
-                        <button class="sexybutton sexyicononly sexysimple sexypropio sexysmall" id="bClienteBuscar" type="button"><span class="search"></span></button>
-                        <a id="bClienteInfo" class="sexybutton" href="#"><span><span><span class="info">Cliente</span></span></span></a>
-                        <span id="lNombresC" style="font-size: 16px;font-weight: bold; margin-top: 5px;"></span>
-                    </h3>                    
+                    <h3 class="titulo"><a href="../index.jsp" class="sexybutton"><span><span><span class="home">Inicio</span></span></span></a> KARDEX DE CLIENTES</h3>
                     <!--Inicio de div general-->
-                    <div class="ocultar">
-                        <input type="text" name="codCliente" id="codCliente" value="" />
-                    </div>                    
                     <div>
                         <div><!--Inicio div superior-->
                             <div style="width: 60%; float: left;">
                                 <table class="reporte-tabla-2 anchoTotal" style="font-size: 9px;">
                                     <thead>
                                         <tr>
-                                            <th colspan="9"><span>VENTAS</span> <a id="" href="#"><img src="../librerias/botonesIconos/images/icons/silk/printer.png"/></a></th>
+                                            <th colspan="9"><span>VENTAS</span></th>
                                         </tr>
                                         <tr>
                                             <th style="width: 80px;"><span>Documento</span></th>
@@ -88,7 +64,7 @@
                                 <table class="reporte-tabla-2 anchoTotal" style="font-size: 9px;">
                                     <thead>
                                         <tr>
-                                            <th colspan="5"><span>RESUMEN DE PAGOS</span> <a id="bVCLRM" href="#"><img src="../librerias/botonesIconos/images/icons/silk/printer.png"/></a></th>
+                                            <th colspan="5"><span>RESUMEN DE PAGOS</span></th>
                                         </tr>
                                         <tr>
                                             <th style="width: 70px;"><span>Mes/Año</span></th>
@@ -110,7 +86,7 @@
                                 <table class="reporte-tabla-2 anchoTotal" style="font-size: 9px;">
                                     <thead>
                                         <tr>
-                                            <th colspan="9"><span>CUOTAS DE PAGOS</span> <a id="" href="#"><img src="../librerias/botonesIconos/images/icons/silk/printer.png"/></a></th>
+                                            <th colspan="9"><span>CUOTAS DE PAGOS</span></th>
                                         </tr>
                                         <tr>
                                             <th style="width: 90px;"><span>Documento</span></th>
@@ -144,7 +120,7 @@
                                 <table class="reporte-tabla-2 anchoTotal" style="font-size: 9px;">
                                     <thead>
                                         <tr>
-                                            <th colspan="5"><span>DETALLE DE VENTAS</span> <a id="" href="#"><img src="../librerias/botonesIconos/images/icons/silk/printer.png"/></a></th>
+                                            <th colspan="5"><span>DETALLE DE VENTAS</span></th>
                                         </tr>
                                         <tr>
                                             <th style="width: 90px;"><span>Documento</span></th>
@@ -163,7 +139,7 @@
                                 <table class="reporte-tabla-2 anchoTotal" style="font-size: 9px;">
                                     <thead>
                                         <tr>
-                                            <th colspan="4"><span>PAGOS REALIZADOS</span> <a id="" href="#"><img src="../librerias/botonesIconos/images/icons/silk/printer.png"/></a></th>
+                                            <th colspan="4"><span>PAGOS REALIZADOS</span></th>
                                         </tr>
                                         <tr>
                                             <th style="width: 110px;"><span>Documento</span></th>
@@ -173,27 +149,13 @@
                                         </tr>
                                     </thead>
                                 </table>
-                                <div id="dCobranza" style="width: 100%;height: 270px; overflow: auto;">
+                                <div id="dCobranza" style="width: 100%;height: 150px; overflow: auto;">
 
-                                </div>
-                                <div style="clear: both; padding-top: 5px;"></div>
-                                <table class="reporte-tabla-2 anchoTotal" style="font-size: 9px;">
-                                    <thead>
-                                        <tr>
-                                            <th colspan="4"><span>DETALLE RECIBO</span></th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                                <div style="width: 100%;height: 70px; overflow: auto;">
-                                    <table id="tCobranzaDetalle" class="reporte-tabla-2 anchoTotal"  style="font-size: 9px;">
-
-                                    </table>
                                 </div>
                             </div><!--Fin div derecho-->
                         </div>
                     </div>
                     <!--Fin de div general-->
-                    <div style="clear: both;"></div>
                     <!--inicio dialog's-->
                     <div id="dClienteBuscar" title="Buscar cliente">
                         <table class="reporte-tabla-1 anchoTotal">
@@ -209,7 +171,7 @@
                                         <input type="text" name="codClienteBuscar" id="codClienteBuscar" value="" class="anchoTotal entrada derecha"/>
                                     </td>
                                     <td class="contenedorEntrada">
-                                        <input type="text" name="dniPasaporteRucNombresCBuscar" id="dniPasaporteRucNombresCBuscar" value="" class="anchoTotal entrada mayuscula"/>
+                                        <input type="text" name="dniPasaporteRucNombresCBuscar" id="dniPasaporteRucNombresCBuscar" value="" class="anchoTotal entrada"/>
                                     </td>
                                 </tr>
                             </tbody>

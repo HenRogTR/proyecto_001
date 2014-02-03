@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import otros.cUtilitarios;
 import tablas.Compra;
 import tablas.HibernateUtil;
@@ -31,26 +32,27 @@ public class cCompra {
 
     public cCompra() {
         this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
+        this.error = null;
     }
 
-    //******************************************************************
-    
-    //******************************************************************
-
-    public int Crear(Compra objCompra) {
-        setError(null);
+    public int crear(Compra objCompra) {
+        int cod = 0;
+        Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
-        sesion.getTransaction().begin();
         try {
-            int codPersona = (Integer) sesion.save(objCompra);
+            trns = sesion.beginTransaction();
+            cod = (Integer) sesion.save(objCompra);
             sesion.getTransaction().commit();
-            return codPersona;
         } catch (Exception e) {
-            sesion.getTransaction().rollback();
+            if (trns != null) {
+                trns.rollback();
+            }
             e.printStackTrace();
-            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
         }
-        return 0;
+        return cod;
     }
 
     public List leer() {

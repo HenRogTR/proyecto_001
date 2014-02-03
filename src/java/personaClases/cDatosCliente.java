@@ -111,7 +111,7 @@ public class cDatosCliente {
                     + "and substring(dc.persona.registro,1,1)=1 "
                     + "and dc.persona.nombresC like :nombresC "
                     + "order by dc.persona.nombresC asc")
-                    .setParameter("nombresC", "%" + nombresC + "%");
+                    .setParameter("nombresC", "%" + nombresC.replace(" ", "%") + "%");
             return q.list();
         } catch (Exception e) {
             setError("Error en consulta datos clientes: " + e.getMessage());
@@ -176,7 +176,7 @@ public class cDatosCliente {
                     + "and substring(dc.persona.registro,1,1)=1 "
                     + "and (dc.persona.dniPasaporte like :term or dc.persona.ruc like :term or dc.persona.nombresC like :term ) "
                     + "order by dc.persona.nombresC,dc.persona.dniPasaporte asc ,dc.persona.ruc asc")
-                    .setParameter("term", "%" + term + "%");
+                    .setParameter("term", "%" + term.replace(" ", "%") + "%");
             return q.list();
         } catch (Exception e) {
             setError(e.getMessage());
@@ -194,21 +194,21 @@ public class cDatosCliente {
     public List leer_dniPasaporteRucNombresC_ordenado_CS(String term) {
         List clienteList = null;
         Transaction trns = null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        sesion = HibernateUtil.getSessionFactory().openSession();
         try {
-            trns = session.beginTransaction();
-            Query q = session.createQuery("select dc.codDatosCliente, p.codPersona, p.dniPasaporte, p.ruc, p.nombresC "
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select dc.codDatosCliente, p.codPersona, p.dniPasaporte, p.ruc, p.nombresC "
                     + "from Persona p, DatosCliente dc "
                     + "where p=dc.persona "
                     + "and (dc.persona.dniPasaporte like :term or dc.persona.ruc like :term or dc.persona.nombresC like :term ) "
                     + "order by dc.persona.nombresC, dc.persona.dniPasaporte asc, dc.persona.ruc asc")
-                    .setParameter("term", "%" + term + "%");
+                    .setParameter("term", "%" + term.replace(" ", "%") + "%");
             clienteList = q.list();
         } catch (RuntimeException e) {
             e.printStackTrace();
         } finally {
-            session.flush();
-            session.close();
+            sesion.flush();
+            sesion.close();
         }
         return clienteList;
     }

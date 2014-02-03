@@ -7,6 +7,7 @@ package articuloProductoClases;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import otros.cUtilitarios;
 import tablas.ArticuloProducto;
 import tablas.HibernateUtil;
@@ -30,9 +31,9 @@ public class cArticuloProducto {
 
     public cArticuloProducto() {
         this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
+        this.error = null;
     }
 
-    //**************************************************************
     public int Crear(ArticuloProducto objArticuloProducto) {
         setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
@@ -50,8 +51,8 @@ public class cArticuloProducto {
     }
 
     public ArticuloProducto leer_cod(int codArticuloProducto) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        return (ArticuloProducto) session.get(ArticuloProducto.class, codArticuloProducto);
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        return (ArticuloProducto) sesion.get(ArticuloProducto.class, codArticuloProducto);
     }
 
     public ArticuloProducto leer_primero() {
@@ -94,7 +95,7 @@ public class cArticuloProducto {
                     + "where ap.descripcion like :term "
                     + "and  substring(ap.registro,1,1)=1"
                     + "order by ap.descripcion").
-                    setParameter("term", "%" + term + "%");
+                    setParameter("term", "%" + term.replace(" ", "%") + "%");
             return (List) q.list();
         } catch (Exception e) {
             setError(e.getMessage());
@@ -154,7 +155,7 @@ public class cArticuloProducto {
             Query q = sesion.createQuery("from ArticuloProducto a "
                     + "where a.descripcion like :term "
                     + "and  substring(registro,1,1)=1").
-                    setParameter("term", "%" + term + "%");
+                    setParameter("term", "%" + term.replace(" ", "%") + "%");
             return (List) q.list();
         } catch (Exception e) {
             setError("Error leer x descripcion: " + e.getMessage());
@@ -265,21 +266,27 @@ public class cArticuloProducto {
     }
 
     public boolean actualizar_precio_venta(int codArticuloProducto, Double precioVenta, int precioVentaRango) {
-        setError(null);
+        Boolean est = false;
+        Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
-        sesion.getTransaction().begin();
-        ArticuloProducto obj = (ArticuloProducto) sesion.get(ArticuloProducto.class, codArticuloProducto);
-        obj.setPrecioVenta(precioVenta);
-        obj.setPrecioVentaRango(precioVentaRango);
         try {
+            trns = sesion.beginTransaction();
+            ArticuloProducto obj = (ArticuloProducto) sesion.get(ArticuloProducto.class, codArticuloProducto);
+            obj.setPrecioVenta(precioVenta);
+            obj.setPrecioVentaRango(precioVentaRango);
             sesion.update(obj);
             sesion.getTransaction().commit();
-            return true;
+            est = true;
         } catch (Exception e) {
-            sesion.getTransaction().rollback();
-            setError("ArticuloProducto_precioVenta: " + e.getMessage());
+            if (trns != null) {
+                trns.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
+            sesion.close();
         }
-        return false;
+        return est;
     }
 
     /**

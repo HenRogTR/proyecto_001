@@ -7,6 +7,7 @@ package personaClases;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import tablas.HibernateUtil;
 import tablas.Personal;
 
@@ -29,6 +30,7 @@ public class cPersonal {
 
     public cPersonal() {
         this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
+        this.error = null;
     }
 
     //**************************************************************************
@@ -164,13 +166,39 @@ public class cPersonal {
         }
         return null;
     }
-    
+
+    /**
+     * 
+     * @param term
+     * @return Objeto[5]
+     */
+    public List leer_cobradorVendedor_SC(String term) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select pl.codPersonal, p.codPersona, p.dniPasaporte, p.ruc, p.nombresC "
+                    + "from Personal pl join pl.persona p  "
+                    + "where (p.dniPasaporte=:term or p.ruc like :term or p.nombresC like :term) "
+                    + "and pl.cargo.codCargo=1 and substring(pl.registro,1,1)=1")
+                    .setParameter("term", "%" + term.replace(" ", "%") + "%");
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+
     public List leer_personal(String personal) {
         setError(null);
         try {
             sesion = HibernateUtil.getSessionFactory().openSession();
             Query q = sesion.createQuery("from Personal p "
-                    + "where (p.persona.dniPasaporte=:term or p.persona.ruc like :term or p.persona.nombresC like :term) "                    
+                    + "where (p.persona.dniPasaporte=:term or p.persona.ruc like :term or p.persona.nombresC like :term) "
                     + "and substring(p.registro,1,1)=1")
                     .setParameter("term", "%" + personal + "%");
             return q.list();

@@ -58,8 +58,8 @@ public class cKardexSerieNumero {
     }
 
     public KardexSerieNumero leer_codKardexSerieNumero(int codKardexSerieNumero) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        return (KardexSerieNumero) session.get(KardexSerieNumero.class, codKardexSerieNumero);
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        return (KardexSerieNumero) sesion.get(KardexSerieNumero.class, codKardexSerieNumero);
     }
 
     /**
@@ -68,19 +68,22 @@ public class cKardexSerieNumero {
      * @return
      */
     public List leer_por_codKardexArticuloProducto(int codKardexArticuloProducto) {
-//        from KardexSerieNumero a where a.codKardexSerieNumero=1 and substring(registro,1,1)=1setError(null);
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
         try {
             sesion = HibernateUtil.getSessionFactory().openSession();
             Query q = sesion.createQuery("from KardexSerieNumero ksn "
                     + "where ksn.kardexArticuloProducto.codKardexArticuloProducto=:cod "
                     + "and substring(ksn.registro,1,1)=1")
                     .setParameter("cod", codKardexArticuloProducto);
-            return (List) q.list();
+            l = (List) q.list();
         } catch (Exception e) {
-            setError(e.getMessage());
             e.printStackTrace();
+        } finally {
+            sesion.flush();
         }
-        return null;
+        return l;
     }
 
     public List leer_admin() {

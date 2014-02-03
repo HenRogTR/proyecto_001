@@ -72,7 +72,7 @@ public class cDatosExtras {
         }
         return l;
     }
-    
+
     public List leer_documentoDescuento() {
         List l = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
@@ -88,32 +88,32 @@ public class cDatosExtras {
     }
 
     public DatosExtras nombreEmpresa() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        return (DatosExtras) session.get(DatosExtras.class, 1);
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        return (DatosExtras) sesion.get(DatosExtras.class, 1);
     }
 
     public DatosExtras rucEmpresa() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        return (DatosExtras) session.get(DatosExtras.class, 2);
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        return (DatosExtras) sesion.get(DatosExtras.class, 2);
     }
 
     public DatosExtras direccionEmpresa() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        return (DatosExtras) session.get(DatosExtras.class, 3);
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        return (DatosExtras) sesion.get(DatosExtras.class, 3);
     }
 
     public DatosExtras gerenteEmpresa() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        return (DatosExtras) session.get(DatosExtras.class, 4);
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        return (DatosExtras) sesion.get(DatosExtras.class, 4);
     }
 
     public DatosExtras dniGerenteEmpresa() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        return (DatosExtras) session.get(DatosExtras.class, 5);
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        return (DatosExtras) sesion.get(DatosExtras.class, 5);
     }
 
     public DatosExtras rucGerenteEmpresa() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        return (DatosExtras) session.get(DatosExtras.class, 6);
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        return (DatosExtras) sesion.get(DatosExtras.class, 6);
     }
 }

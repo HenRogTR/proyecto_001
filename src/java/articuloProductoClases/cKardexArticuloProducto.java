@@ -31,6 +31,7 @@ public class cKardexArticuloProducto {
 
     public cKardexArticuloProducto() {
         this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
+        this.error = null;
     }
 
     public int crear(KardexArticuloProducto objKardexArticuloProducto) {
@@ -197,22 +198,25 @@ public class cKardexArticuloProducto {
      */
     // </editor-fold>
     public KardexArticuloProducto leer_articuloProductoStock(int codArticuloProducto, int codAlmacen) {
-        setError(null);
+        KardexArticuloProducto obj = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
         try {
-            Session session = HibernateUtil.getSessionFactory().openSession();
-            Query q = session.createQuery("from KardexArticuloProducto k where substring(registro,1,1)=1 and "
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("from KardexArticuloProducto k where substring(registro,1,1)=1 and "
                     + "k.almacen.codAlmacen=:codAlmacen and "
                     + "k.articuloProducto.codArticuloProducto=:codArticuloProducto "
                     + "order by codKardexArticuloProducto desc")
                     .setParameter("codArticuloProducto", codArticuloProducto)
                     .setParameter("codAlmacen", codAlmacen)
                     .setMaxResults(1);
-            return (KardexArticuloProducto) q.list().get(0);
+            obj = (KardexArticuloProducto) q.list().get(0);
         } catch (Exception e) {
-            setError("Error Kardex: " + e.getMessage());
             e.printStackTrace();
+        } finally {
+            sesion.flush();
         }
-        return null;
+        return obj;
     }
 
     public List leer_codOperacion_tipoOperacion_codArticuloProducto(int codOperacion, int tipoOperacion, int codArticuloProducto) {

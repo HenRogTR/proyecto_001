@@ -30,6 +30,7 @@ public class cPersona {
 
     public cPersona() {
         this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
+        this.error = null;
     }
 
     /**
@@ -94,8 +95,8 @@ public class cPersona {
      * @return
      */
     public Persona leer_cod(int codPersona) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        return (Persona) session.get(Persona.class, codPersona);
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        return (Persona) sesion.get(Persona.class, codPersona);
     }
 
     public List leer_admin() {

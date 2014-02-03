@@ -30,8 +30,8 @@
         <script type="text/javascript" src="../librerias/persona/cliente/clienteMantenimiento.js?v13.10.30"></script>
         <style>
             .ui-autocomplete {
-                width: 500px;
-                max-height: 200px;
+                /*width: 400px;*/
+                max-height: 300px;
                 overflow-y: auto;
                 /* prevent horizontal scrollbar */
                 overflow-x: hidden;
@@ -40,7 +40,7 @@
             * we use height instead, but this forces the menu to always be this tall
             */
             * html .ui-autocomplete {
-                height: 200px;
+                height: 300px;
             }
         </style>
     </head>
@@ -265,11 +265,11 @@
                                 <table class="reporte-tabla-1 anchoTotal">
                                     <thead>
                                         <tr>
-                                            <th class="ancho160px medio">TÍTULO</th>
-                                            <th class="ancho80px medio">FECHA</th>
+                                            <th class="ancho160px medio"><span>TÍTULO</span></th>
+                                            <th class="ancho80px medio"><span>FECHA</span></th>
                                             <th class="medio">
-                                                DESCRIPCIÓN 
-                                                <button class="sexybutton sexyicononly sexysimple sexysmall sexypropio" id="bDocumentoNotificacion" type="button"><span class="add"></span></button>
+                                                <span>DESCRIPCIÓN</span>
+                                                <img id="bDocumentoNotificacion" src="../librerias/botonesIconos/images/icons/silk/add.png" style="height: 18px; vertical-align: middle; cursor: pointer;"/>
                                                 <input type="text" name="codDocumentoNotificacionAux" id="codDocumentoNotificacionAux" value="" class="ocultar"/>
                                             </th>
                                             <th class="ancho120px medio">OBSERVACIÓN</th>

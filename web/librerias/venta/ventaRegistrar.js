@@ -480,7 +480,7 @@ $(function() {
     });
 
     $('#vendedorBuscar').autocomplete({
-        source: 'autocompletado/cobradorVendedorLeer.jsp',
+        source: 'autocompletado/cobradorVendedor.jsp',
         minLength: 4,
         select: vendedorSeleccionado,
         focus: vendedorMarcado
@@ -756,6 +756,10 @@ function fVentaRegistrarVerificar() {
             mensaje += '*Primero genere las letras de credito.<br>';
             estado = false;
         }
+    }
+    if (!fValidarVentaDocSerieNumero($('#docSerieNumero').val())) {
+        mensaje += '*Formato de documento incorrecto (F/B-001-123456)';
+        estado = false;
     }
     if (!estado) {
         fAlerta(mensaje);

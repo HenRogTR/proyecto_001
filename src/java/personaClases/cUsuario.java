@@ -55,10 +55,10 @@ public class cUsuario {
     public Usuario ingresar2(String usuario, String contrasenia) {
         Usuario objUsuario = null;
         Transaction trns = null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        sesion = HibernateUtil.getSessionFactory().openSession();
         try {
-            trns = session.beginTransaction();
-            Query q = session.createQuery("from Usuario "
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("from Usuario "
                     + "where substring(registro,1,1)=1 "
                     + "and usuario=:usuario "
                     + "and contrasenia=:contrasenia")
@@ -68,7 +68,7 @@ public class cUsuario {
         } catch (RuntimeException e) {
             e.printStackTrace();
         } finally {
-            session.flush();
+            sesion.flush();
 //            session.close();
         }
         return objUsuario;

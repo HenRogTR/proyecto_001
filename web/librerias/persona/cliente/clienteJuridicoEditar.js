@@ -80,7 +80,7 @@ $(document).ready(function() {
         $.trim($(this).val().toUpperCase());
     });
     $('#formClienteJuridicoRegistrar').validate({
-        ignore: "",
+        ignore: '',
         submitHandler: function() {
             if ($('#codCobrador').val() == 0) {
                 $('#dMensajeAlertaDiv').empty().append('Seleccione cobrador');

@@ -167,7 +167,7 @@ public class sArticuloProducto extends HttpServlet {
                 objPrecioVenta.setObservacion("Actualización Manual(" + objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(precioVenta, 2), 2) + ")");
                 objPrecioVenta.setArticuloProducto(objcArticuloProducto.leer_cod(codArticuloProducto));
                 objPrecioVenta.setRegistro(objcUtilitarios.registro("1", objUsuario.getCodUsuario().toString()));
-                objcPrecioVenta.Crear(objPrecioVenta);
+                objcPrecioVenta.crear(objPrecioVenta);
                 out.print(codArticuloProducto);
             }
         }

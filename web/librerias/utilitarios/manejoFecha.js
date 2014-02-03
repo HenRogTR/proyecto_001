@@ -77,7 +77,7 @@ function fSumarAnio(ovalue, nAnio) {
  */
 function fValidarFecha(value) {
     var check = false;
-    var re = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
+    var re = /^\d{2}\/\d{2}\/\d{4}$/;
     if (re.test(value)) {
         var adata = value.split('/');
         var dd = parseInt(adata[0], 10);

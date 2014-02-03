@@ -31,24 +31,25 @@ public class cDocumentoNotificacion {
 
     public cDocumentoNotificacion() {
         this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
+        this.error = null;
     }
 
     public int crear(DocumentoNotificacion objDocumentoNotificacion) {
         int cod = 0;
         Transaction trns = null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        sesion = HibernateUtil.getSessionFactory().openSession();
         try {
-            trns = session.beginTransaction();
-            cod = (Integer) session.save(objDocumentoNotificacion);
-            session.getTransaction().commit();
+            trns = sesion.beginTransaction();
+            cod = (Integer) sesion.save(objDocumentoNotificacion);
+            sesion.getTransaction().commit();
         } catch (Exception e) {
             if (trns != null) {
                 trns.rollback();
             }
             setError(e.getMessage());
         } finally {
-            session.flush();
-            session.close();
+            sesion.flush();
+            sesion.close();
         }
         return cod;
     }
@@ -56,10 +57,10 @@ public class cDocumentoNotificacion {
     public List leer_codCliente(int codCliente) {
         List objList = null;
         setError(null);
-        Session session = HibernateUtil.getSessionFactory().openSession();
+       sesion = HibernateUtil.getSessionFactory().openSession();
         try {
-            session.flush();
-            Query q = session.createQuery("from DocumentoNotificacion dc "
+            sesion.flush();
+            Query q = sesion.createQuery("from DocumentoNotificacion dc "
                     + "where substring(dc.registro,1,1)= 1 "
                     + "and dc.datosCliente.codDatosCliente= :codCliente "
                     + "order by dc.fech1 desc")
@@ -73,18 +74,18 @@ public class cDocumentoNotificacion {
     }
 
     public DocumentoNotificacion leer_cod(int codDocumentoNotificacion) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        return (DocumentoNotificacion) session.get(DocumentoNotificacion.class, codDocumentoNotificacion);
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        return (DocumentoNotificacion) sesion.get(DocumentoNotificacion.class, codDocumentoNotificacion);
     }
 
     public Boolean actualizar(DocumentoNotificacion objDocumentoNotificacion) {
         Boolean est = false;
         Transaction trns = null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        sesion = HibernateUtil.getSessionFactory().openSession();
         try {
-            trns = session.beginTransaction();
-            session.update(objDocumentoNotificacion);
-            session.getTransaction().commit();
+            trns = sesion.beginTransaction();
+            sesion.update(objDocumentoNotificacion);
+            sesion.getTransaction().commit();
             est = true;
         } catch (Exception e) {
             if (trns != null) {
@@ -92,8 +93,8 @@ public class cDocumentoNotificacion {
             }
             setError(e.getMessage());
         } finally {
-            session.flush();
-            session.close();
+            sesion.flush();
+            sesion.close();
         }
         return est;
     }
@@ -101,13 +102,13 @@ public class cDocumentoNotificacion {
     public Boolean actualizar_registro_historial(int codDocumentoNotificacion, String registro) {
         Boolean est = false;
         Transaction trns = null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        sesion = HibernateUtil.getSessionFactory().openSession();
         try {
-            DocumentoNotificacion obj = (DocumentoNotificacion) session.get(DocumentoNotificacion.class, codDocumentoNotificacion);
+            DocumentoNotificacion obj = (DocumentoNotificacion) sesion.get(DocumentoNotificacion.class, codDocumentoNotificacion);
             obj.setRegistro(registro);
-            trns = session.beginTransaction();
-            session.update(obj);
-            session.getTransaction().commit();
+            trns = sesion.beginTransaction();
+            sesion.update(obj);
+            sesion.getTransaction().commit();
             est = true;
         } catch (Exception e) {
             if (trns != null) {
@@ -115,8 +116,8 @@ public class cDocumentoNotificacion {
             }
             setError(e.getMessage());
         } finally {
-            session.flush();
-            session.close();
+            sesion.flush();
+            sesion.close();
         }
         return est;
     }

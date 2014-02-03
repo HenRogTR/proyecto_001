@@ -7,6 +7,7 @@ package compraClases;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import otros.cUtilitarios;
 import tablas.CompraSerieNumero;
 import tablas.HibernateUtil;
@@ -39,19 +40,23 @@ public class cCompraSerieNumero {
      * el registro
      */
     public int crear(CompraSerieNumero objCompraSerieNumero) {
-        setError(null);
+        int cod = 0;
+        Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
-        sesion.getTransaction().begin();
         try {
-            int codCompraSerieNumero = (Integer) sesion.save(objCompraSerieNumero);
+            trns = sesion.beginTransaction();
+            cod = (Integer) sesion.save(objCompraSerieNumero);
             sesion.getTransaction().commit();
-            return codCompraSerieNumero;
         } catch (Exception e) {
-            sesion.getTransaction().rollback();
+            if (trns != null) {
+                trns.rollback();
+            }
             e.printStackTrace();
-            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
         }
-        return 0;
+        return cod;
     }
 
     /**
@@ -71,9 +76,9 @@ public class cCompraSerieNumero {
     }
 
     /**
-     * 
+     *
      * @param serieNumero
-     * @return 
+     * @return
      */
     public List leer_serieNumero(String serieNumero) {
         setError(null);
@@ -82,7 +87,7 @@ public class cCompraSerieNumero {
             Query q = sesion.createQuery("from CompraSerieNumero c "
                     + "where substring(registro,1,1)=1 "
                     + "and c.serieNumero like :serieNumero")
-                    .setParameter("serieNumero", "%"+serieNumero+"%");
+                    .setParameter("serieNumero", "%" + serieNumero + "%");
             return q.list();
         } catch (Exception e) {
             setError(e.getMessage());

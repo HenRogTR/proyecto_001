@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import otros.cUtilitarios;
 import tablas.CompraDetalle;
 import tablas.HibernateUtil;
@@ -32,6 +33,7 @@ public class cCompraDetalle {
 
     public cCompraDetalle() {
         this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
+        this.error = null;
     }
 
     //*********************************************************************
@@ -56,22 +58,25 @@ public class cCompraDetalle {
         }
         return null;
     }
-    //*********************************************************************
 
-    public int Crear(CompraDetalle objCompraDetalle) {
-        setError(null);
+    public int crear(CompraDetalle objCompraDetalle) {
+        int cod = 0;
+        Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
-        sesion.getTransaction().begin();
         try {
-            int codCompraDetalle = (Integer) sesion.save(objCompraDetalle);
+            trns = sesion.beginTransaction();
+            cod = (Integer) sesion.save(objCompraDetalle);
             sesion.getTransaction().commit();
-            return codCompraDetalle;
         } catch (Exception e) {
-            sesion.getTransaction().rollback();
+            if (trns != null) {
+                trns.rollback();
+            }
             e.printStackTrace();
-            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
         }
-        return 0;
+        return cod;
     }
 
     public List leer() {

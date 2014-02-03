@@ -31,7 +31,8 @@
         <script type="text/javascript" src="../librerias/jquery.validate/1.11.1/localization/messages_es.js"></script>
         <script type="text/javascript" src="../librerias/plugin/mask/jquery.mask.min.js"></script>
         <script type="text/javascript" src="../librerias/jquery-ui/jquery-ui-1.10.3.custom/js/i18n/jquery.ui.datepicker-es-min.js"></script>
-        <script type="text/javascript" src="../librerias/venta/ventaRegistrar.js?v.13.11.22"></script>
+        <script type="text/javascript" src="../librerias/venta/ventaRegistrar.js?v14.01.29"></script>        
+        <script type="text/javascript" src="../librerias/utilitarios/validaciones.js"></script>
         <style>
             .ui-autocomplete {
                 width: 400px;
@@ -85,7 +86,7 @@
                             </thead>
                             <tfoot>
                                 <tr id="trBoton">
-                                    <th colspan="6">
+                                    <th colspan="6" class="centrado">
                                         <button class="sexybutton" type="button" id="bCancelar"><span><span><span class="cancel">Cancelar</span></span></span></button>
                                         <button class="sexybutton" type="reset" id="bRestaurar"><span><span><span class="redo">Restaurar</span></span></span></button>
                                         <button class="sexybutton" type="submit" id="bRegistrar"><span><span><span class="save">Registrar</span></span></span></button>
@@ -174,9 +175,9 @@
                                                 </tr>
                                                 <tr>
                                                     <th colspan="2">Observación</th>
-                                                    <td colspan="3" rowspan="4" class="contenedorEntrada"><textarea id="observacion" name="observacion" class="anchoTotal altoTotal limpiar" rows="5"></textarea></td>
+                                                    <td colspan="3" rowspan="4" class="contenedorEntrada"><textarea id="observacion" name="observacion" class="anchoTotal altoTotal limpiar entrada" rows="5"></textarea></td>
                                                     <th>Descuento</th>
-                                                    <td class="derecha contenedorEntrada"><input type="text" name="descuento" id="descuento" value="" class="derecha anchoTotal limpiar" style="font-size: 11px;"/></td>
+                                                    <td class="derecha contenedorEntrada"><input type="text" name="descuento" id="descuento" value="" class="derecha anchoTotal limpiar entrada" style="font-size: 11px;"/></td>
                                                 </tr>
                                                 <tr>
                                                     <td colspan="2"></td>

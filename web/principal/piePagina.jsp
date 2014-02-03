@@ -59,6 +59,25 @@
 
 <div id="dNovedades" title="Novedades" style="font-size: 10px;">
     <div style="background: #F1F1F7">
+        <h3 class="titulo">30/01/2014</h3>
+        <p>            
+            * Correciones y mejoras.<br>
+        </p>
+        <h3 class="titulo">29/01/2014</h3>
+        <p>
+            * La busqueda para los clientes, articulos, vendedores etc se hace por una mejora en 
+            coincidencia.<br>
+            * Ejm. si busco <strong>JUAN LO</strong><br>
+            * Dará como resultados<br>
+            --- ARANGO TATAJE <strong>JUAN</strong> CAR<strong>LO</strong>S <br>
+            --- CENTRO MEDICO QUIRURGICO <strong>JUAN</strong> PAB<strong>LO</strong> II E.I.R.L.<br>
+            Todas las coincidencias por cada palabra dentro de cada palabra respetando el orden. Parte_primer_apellido+Parte_nombres <br>
+        </p>
+        <h3 class="titulo">28/01/2014</h3>
+        <p>
+            * Actualización y mejora en la la serie de los comprobantes(formato) en venta, compra y cobranza.<br>
+            * Otras correcciones.<br>
+        </p>
         <h3 class="titulo">17/01/2014</h3>
         <p>
             * Actualización y mejora de kardex de cliente.<br>

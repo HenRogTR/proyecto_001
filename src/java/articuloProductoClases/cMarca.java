@@ -31,6 +31,7 @@ public class cMarca {
 
     public cMarca() {
         this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
+        this.error = null;
     }
 
     public int Crear(Marca objMarca) {
@@ -55,10 +56,10 @@ public class cMarca {
 
     public List leer() {
         setError(null);
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        sesion = HibernateUtil.getSessionFactory().openSession();
         try {
-            session.flush();
-            Query q = session.createQuery("from Marca m where substring(m.registro,1,1)=1");
+            sesion.flush();
+            Query q = sesion.createQuery("from Marca m where substring(m.registro,1,1)=1");
             return (List) q.list();
         } catch (Exception e) {
             setError(e.getMessage());

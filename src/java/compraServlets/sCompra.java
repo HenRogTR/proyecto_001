@@ -151,13 +151,13 @@ public class sCompra extends HttpServlet {
                     objCompra.setSon(objcNumeroLetra.importeNumeroALetra(String.valueOf(objcUtilitarios.redondearDecimales(objCompra.getNeto(), 2)), true));
                     // fin de recojo de datos para una compra
                     //inicio de proceso de grabacion
-                    codCompra = new cCompra().Crear(objCompra);    // se registra la compra
+                    codCompra = new cCompra().crear(objCompra);    // se registra la compra
                     if (codCompra != 0) {
                         objCompra.setCodCompra(codCompra);  //actualizamos el objeto compra
                         for (int i = 0; i < compraDetalleList.size(); i++) {   //comenzamos a a registrar las comprasDetalles recorriendo la lista
                             CompraDetalle objCompraDetalle = (CompraDetalle) compraDetalleList.get(i); //cogemos cada detalle
                             objCompraDetalle.setCompra(objCompra);  //agregamos el idCompra a la t_compra_detalle, para ellos se agrega todo el objeto
-                            int codCompraDetalle = objcCompraDetalle.Crear(objCompraDetalle); //registramos compraDetalle
+                            int codCompraDetalle = objcCompraDetalle.crear(objCompraDetalle); //registramos compraDetalle
                             objCompraDetalle.setCodCompraDetalle(codCompraDetalle); //seteamos el codCompraDetalle
 
                             KardexArticuloProducto objKardexArticuloProducto = new KardexArticuloProducto();    //creamos nueva variable para subir los datos del nuevo kardex
@@ -230,7 +230,7 @@ public class sCompra extends HttpServlet {
                                     objPrecioVenta.setObservacion("Actualización de PV(" + objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(objCompraDetalle.getPrecioUnitario(), 2), 2) + ") en tArticuloProducto con Compra reciente");
                                     objPrecioVenta.setArticuloProducto(objCompraDetalle.getArticuloProducto());
                                     objPrecioVenta.setRegistro(objcUtilitarios.registro("1", objUsuario.getCodUsuario().toString()));
-                                    objcPrecioVenta.Crear(objPrecioVenta);
+                                    objcPrecioVenta.crear(objPrecioVenta);
                                 } else {
                                     PrecioVenta objPrecioVenta = new PrecioVenta();
                                     objPrecioVenta.setCodCompraDetalle(objCompraDetalle.getCodCompraDetalle());
@@ -238,7 +238,7 @@ public class sCompra extends HttpServlet {
                                     objPrecioVenta.setObservacion("No se actualiza PV(" + objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(objCompraDetalle.getPrecioUnitario(), 2), 2) + ")");
                                     objPrecioVenta.setArticuloProducto(objCompraDetalle.getArticuloProducto());
                                     objPrecioVenta.setRegistro(objcUtilitarios.registro("1", objUsuario.getCodUsuario().toString()));
-                                    objcPrecioVenta.Crear(objPrecioVenta);
+                                    objcPrecioVenta.crear(objPrecioVenta);
                                 }
                             }
                         }
@@ -313,13 +313,13 @@ public class sCompra extends HttpServlet {
                     objCompra.setSon(objcNumeroLetra.importeNumeroALetra(String.valueOf(objcUtilitarios.redondearDecimales(objCompra.getNeto(), 2)), true));
                     // fin de recojo de datos para una compra
                     //inicio de proceso de grabacion
-                    codCompra = new cCompra().Crear(objCompra);    // se registra la compra
+                    codCompra = new cCompra().crear(objCompra);    // se registra la compra
                     if (codCompra != 0) {
                         objCompra.setCodCompra(codCompra);  //actualizamos el objeto compra
                         for (int i = 0; i < compraDetalleList.size(); i++) {   //comenzamos a a registrar las comprasDetalles recorriendo la lista
                             CompraDetalle objCompraDetalle = (CompraDetalle) compraDetalleList.get(i); //cogemos cada detalle
                             objCompraDetalle.setCompra(objCompra);  //agregamos el idCompra a la t_compra_detalle, para ellos se agrega todo el objeto
-                            int codCompraDetalle = objcCompraDetalle.Crear(objCompraDetalle); //registramos compraDetalle
+                            int codCompraDetalle = objcCompraDetalle.crear(objCompraDetalle); //registramos compraDetalle
                             objCompraDetalle.setCodCompraDetalle(codCompraDetalle); //seteamos el codCompraDetalle
 
                             KardexArticuloProducto objKardexArticuloProducto = new KardexArticuloProducto();    //creamos nueva variable para subir los datos del nuevo kardex
@@ -392,7 +392,7 @@ public class sCompra extends HttpServlet {
                                     objPrecioVenta.setObservacion("Actualización de PV(" + objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(objCompraDetalle.getPrecioUnitario(), 2), 2) + ") en tArticuloProducto con Compra reciente");
                                     objPrecioVenta.setArticuloProducto(objCompraDetalle.getArticuloProducto());
                                     objPrecioVenta.setRegistro(objcUtilitarios.registro("1", objUsuario.getCodUsuario().toString()));
-                                    objcPrecioVenta.Crear(objPrecioVenta);
+                                    objcPrecioVenta.crear(objPrecioVenta);
                                 } else {
                                     PrecioVenta objPrecioVenta = new PrecioVenta();
                                     objPrecioVenta.setCodCompraDetalle(objCompraDetalle.getCodCompraDetalle());
@@ -400,7 +400,7 @@ public class sCompra extends HttpServlet {
                                     objPrecioVenta.setObservacion("No se actualiza PV(" + objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(objCompraDetalle.getPrecioUnitario(), 2), 2) + ")");
                                     objPrecioVenta.setArticuloProducto(objCompraDetalle.getArticuloProducto());
                                     objPrecioVenta.setRegistro(objcUtilitarios.registro("1", objUsuario.getCodUsuario().toString()));
-                                    objcPrecioVenta.Crear(objPrecioVenta);
+                                    objcPrecioVenta.crear(objPrecioVenta);
                                 }
                             }
                         }

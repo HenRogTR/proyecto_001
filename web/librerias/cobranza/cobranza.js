@@ -541,7 +541,14 @@ function fVerificarDatos() {
             }
         }
         if ($('#rdManual').is(':checked')) {
-            if ($('#docSerieNumero').val() == '' || $('#docSerieNumero').val().length < 12) {
+            var docSerieNumero = $('#docSerieNumero').val();
+            if (fValidarRequerido(docSerieNumero)) {
+                if (fValidarCobranzaDocSerieNumero(docSerieNumero)) {
+                } else {
+                    estado = true;
+                    $('#dMensajeAlertaDiv').append('*Error en ingreso de documento manual (R-002-123456).<br>');
+                }
+            } else {
                 estado = true;
                 $('#dMensajeAlertaDiv').append('*Error en ingreso de documento manual (R-002-123456).<br>');
             }
