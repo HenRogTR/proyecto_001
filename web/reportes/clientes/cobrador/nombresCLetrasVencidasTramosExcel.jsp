@@ -35,7 +35,7 @@
         mensaje = "Fecha incorrecta";
     }
     cUtilitarios objcUtilitarios = new cUtilitarios();
-    List lLetrasVencidas = new cVentaCreditoLetra().letras_codCobrador_orderByNombresC(codCobrador);
+    List lLetrasVencidas = new cVentaCreditoLetra().letras_codCobrador_ordenNombresC(codCobrador);
     cManejoFechas objcManejoFechas = new cManejoFechas();
     response.setContentType("application/vnd.ms-excel"); //Tipo de fichero.
     response.setHeader("Content-Disposition", "attachment;filename=\"" + objcUtilitarios.fechaHoraActualNumerosLineal() + ".xls\"");

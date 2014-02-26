@@ -14,10 +14,10 @@
 <%
     String termString = "";
     List personalList = null;
-    try {
+    termString = request.getParameter("term").toString();
+    personalList = new cPersonal().leer_cobradorVendedor_SC(termString);
+    if (personalList != null) {
         cOtros objcOtros = new cOtros();
-        termString = request.getParameter("term").toString();
-        personalList = new cPersonal().leer_cobradorVendedor_SC(termString);
         int contador = 0;
         for (Iterator it = personalList.iterator(); it.hasNext();) {
             Object[] personalObjects = (Object[]) it.next();
@@ -35,8 +35,6 @@
                     + "} "
                     + "}");
         }
-    } catch (Exception e) {
-
     }
 %>
 ]

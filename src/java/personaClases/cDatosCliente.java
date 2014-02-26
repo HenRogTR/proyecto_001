@@ -254,17 +254,21 @@ public class cDatosCliente {
      * @return
      */
     public List leer_ordenadoNombresC() {
-        setError(null);
+        List l = null;
+        Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
+            trns = sesion.beginTransaction();
             Query q = sesion.createQuery("from DatosCliente dc "
                     + "where substring(registro,1,1)=1 "
                     + "order by dc.persona.nombresC");
-            return q.list();
+            l = q.list();
         } catch (Exception e) {
-            setError(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
         }
-        return null;
+        return l;
     }
 
     public List leer_codCobrador_ordenadoNombresC(int codCobrador) {
@@ -323,20 +327,24 @@ public class cDatosCliente {
      * @param codEmpresaConvenio
      * @return
      */
-    public List leer_empresaConvenio_ordenadoNombresC(int codEmpresaConvenio) {
-        setError(null);
+    public List leer_empresaConvenio_ordenNombresC(int codEmpresaConvenio) {
+        List l = null;
+        Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
+            trns = sesion.beginTransaction();
             Query q = sesion.createQuery("from DatosCliente dc "
                     + "where substring(registro,1,1)=1 "
                     + "and dc.empresaConvenio.codEmpresaConvenio=:codEmpresaConvenio "
                     + "order by dc.persona.nombresC")
                     .setParameter("codEmpresaConvenio", codEmpresaConvenio);
-            return q.list();
+            l = q.list();
         } catch (Exception e) {
-            setError(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
         }
-        return null;
+        return l;
     }
 
     public List leer_empresaConvenio_tipo_ordenadoNombresC(int codEmpresaConvenio, int tipo) {
@@ -377,10 +385,12 @@ public class cDatosCliente {
         return null;
     }
 
-    public List leer_codCobrador_empresaConvenio_ordenadoNombresC(int codEmpresaConvenio, int codCobrador) {
-        setError(null);
+    public List leer_codCobrador_empresaConvenio_ordenNombresC(int codEmpresaConvenio, int codCobrador) {
+        List l = null;
+        Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
+            trns = sesion.beginTransaction();
             Query q = sesion.createQuery("from DatosCliente dc "
                     + "where substring(registro,1,1)=1 "
                     + "and dc.codCobrador=:codCobrador "
@@ -388,27 +398,33 @@ public class cDatosCliente {
                     + "order by dc.persona.nombresC")
                     .setParameter("codEmpresaConvenio", codEmpresaConvenio)
                     .setParameter("codCobrador", codCobrador);
-            return q.list();
+            l = q.list();
         } catch (Exception e) {
-            setError(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
         }
-        return null;
+        return l;
     }
 
-    public List leer_empresaConvenio_ordenadoDireccion(int codEmpresaConvenio) {
-        setError(null);
+    public List leer_empresaConvenio_ordenDireccion(int codEmpresaConvenio) {
+        List l = null;
+        Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
+            trns = sesion.beginTransaction();
             Query q = sesion.createQuery("from DatosCliente dc "
                     + "where substring(registro,1,1)=1 "
                     + "and dc.empresaConvenio.codEmpresaConvenio=:codEmpresaConvenio "
                     + "order by dc.persona.direccion")
                     .setParameter("codEmpresaConvenio", codEmpresaConvenio);
-            return q.list();
+            l = q.list();
         } catch (Exception e) {
-            setError(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
         }
-        return null;
+        return l;
     }
 
     public List leer_empresaConvenio_tipo_ordenadoDireccion(int codEmpresaConvenio, int tipo) {
@@ -449,10 +465,12 @@ public class cDatosCliente {
         return null;
     }
 
-    public List leer_codCobrador_empresaConvenio_ordenadoDireccion(int codEmpresaConvenio, int codCobrador) {
-        setError(null);
+    public List leer_codCobrador_empresaConvenio_ordenDireccion(int codEmpresaConvenio, int codCobrador) {
+        List l = null;
+        Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
+            trns = sesion.beginTransaction();
             Query q = sesion.createQuery("from DatosCliente dc "
                     + "where substring(registro,1,1)=1 "
                     + "and dc.codCobrador=:codCobrador "
@@ -460,11 +478,13 @@ public class cDatosCliente {
                     + "order by dc.persona.direccion")
                     .setParameter("codEmpresaConvenio", codEmpresaConvenio)
                     .setParameter("codCobrador", codCobrador);
-            return q.list();
+            l = q.list();
         } catch (Exception e) {
-            setError(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
         }
-        return null;
+        return l;
     }
 
     public DatosCliente leer_codDatosCliente(int codDatosCliente) {

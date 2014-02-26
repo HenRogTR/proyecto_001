@@ -17,6 +17,7 @@
         <property name="c3p0.timeout">200</property><!-- seconds -->
         <property name="c3p0.preferredTestQuery">SELECT 1;</property> 
         <property name="c3p0.testConnectionOnCheckout">true</property>
+        <!-- tablas -->
         <mapping resource="tablas/VentaCreditoLetra.hbm.xml"/>
         <mapping resource="tablas/CompraSerieNumero.hbm.xml"/>
         <mapping resource="tablas/Cobranza.hbm.xml"/>

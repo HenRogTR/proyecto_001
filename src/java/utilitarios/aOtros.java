@@ -19,18 +19,8 @@ public class aOtros {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        cOtros objcOtros=new cOtros();
         
-        String ab="******GRUPO YUCRA******";
-        String a=objcOtros.centrar(ab, 40);
-        System.out.println(ab.length());
-        System.out.println(a);
-        System.out.println(a.length());
-        
-        Date aa=new Date("12/30/2013");
-        System.out.println(aa.toLocaleString());
-        
-        System.out.println(new cManejoFechas().DateAString(aa));
+        System.out.println(new cOtros().agregarCerosNumeroFormato(0, 3));
     }
     
 }

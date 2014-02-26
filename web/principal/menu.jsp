@@ -67,9 +67,9 @@
         <input type="hidden" name="accionUsuario" id="accionUsuario" value="ingresar" />
         <label id="lUsuarioErrorInicio" class="alerta"></label>
         <br>
-        <button class="sexybutton" id="bCerrarSistema"><span><span><img src="../librerias/botonesIconos/images/icons/silk/decline.png">Cerrar</span></span></button>
-        <button class="sexybutton" id="bLimpiarLogin"><span><span><img src="../librerias/botonesIconos/images/icons/silk/erase.png">Limpiar</span></span></button>
-        <button class="sexybutton" id="bIngresar"><span><span><img src="../librerias/botonesIconos/images/icons/silk/key_go.png">Ingresar</span></span></button>
+        <button class="sexybutton" id="bCerrarSistema" type="button"><span><span><img src="../librerias/botonesIconos/images/icons/silk/decline.png">Cerrar</span></span></button>
+        <button class="sexybutton" id="bLimpiarLogin" type="button"><span><span><img src="../librerias/botonesIconos/images/icons/silk/erase.png">Limpiar</span></span></button>
+        <button class="sexybutton" id="bIngresar" type="button"><span><span><img src="../librerias/botonesIconos/images/icons/silk/key_go.png">Ingresar</span></span></button>
     </form>
 </div>
 

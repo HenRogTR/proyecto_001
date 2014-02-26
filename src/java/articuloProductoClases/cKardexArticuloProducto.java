@@ -11,6 +11,7 @@ import org.hibernate.Transaction;
 import otros.cUtilitarios;
 import tablas.HibernateUtil;
 import tablas.KardexArticuloProducto;
+import utilitarios.cOtros;
 
 /**
  *
@@ -266,12 +267,12 @@ public class cKardexArticuloProducto {
     }
 
     public boolean actualizar_registro(int codKardexArticuloProducto, String estado, String user) {
-        cUtilitarios objcUtilitarios = new cUtilitarios();
+        cOtros objcOtros = new cOtros();
         setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
         sesion.getTransaction().begin();
         KardexArticuloProducto obj = (KardexArticuloProducto) sesion.get(KardexArticuloProducto.class, codKardexArticuloProducto);
-        obj.setRegistro(objcUtilitarios.registro(estado, user));
+        obj.setRegistro(objcOtros.registro(estado, user));
         try {
             sesion.update(obj);
             sesion.getTransaction().commit();

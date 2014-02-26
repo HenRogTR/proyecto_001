@@ -32,15 +32,17 @@ $(document).ready(function() {
         event.preventDefault();
     });
 
-    $('.login').keyup(function(event) {
-        var key = event.charCode ? event.charCode : (event.keyCode ? event.keyCode : 0);
+    $('#usuario, #contrasenia').keyup(function(event) {
+        var key = event.charCode ? event.charCode : event.keyCode ? event.keyCode : 0;
         if (key == 13) {
+            fLoginBotonesDeshabilitar();
             fUsuarioIngresar();
             event.preventDefault();
         }
     });
 
     $('#bIngresar').click(function(event) {
+        fLoginBotonesDeshabilitar();
         fUsuarioIngresar();
         event.preventDefault();
     });
@@ -448,11 +450,13 @@ function fUsuarioIngresar() {
     if (!usuario.match(/^[a-zA-Z0-9._-]{4,16}$/)) {
         $('#lUsuarioErrorInicio').text('*Usuario entre 4-16 caracteres alfanuméricos.');
         $('#usuario').val($.trim($('#usuario').val())).focus();
+        fLoginBotonesHabilitar();
         return;
     }
     if (!contrasenia.match(/^[a-zA-Z0-9._-]{4,16}$/)) {
         $('#lUsuarioErrorInicio').text('*Contraseña entre 4-16 caracteres alfanuméricos.');
         $('#contrasenia').val($.trim($('#contrasenia').val())).focus();
+        fLoginBotonesHabilitar();
         return;
     }
     var data = $('#formUsuarioIniciar').serialize();
@@ -470,8 +474,10 @@ function fUsuarioIngresar() {
             },
             success: function(ajaxResponse, textStatus) {
                 if (ajaxResponse != '1') {
+                    fLoginBotonesHabilitar();
                     $('#contrasenia').val('');
                     $('#lUsuarioErrorInicio').text(ajaxResponse);
+                    $('#usuario').focus();
                 } else {
                     fUsuarioPermiso(function() {
                         if ($('input[name=paginaActualPermiso]').val() == '1') {
@@ -532,6 +538,7 @@ function fUsuarioCerrarSesion() {
             },
             success: function(ajaxResponse, textStatus) {
                 if (ajaxResponse) {
+                    fLoginBotonesHabilitar();
                     $('#rightSub1').addClass('ocultar');
                     $('#rightSub2').removeClass('ocultar');
                     $('#menu').addClass('ocultar');
@@ -662,49 +669,16 @@ function fDLibreReiniciar() {
 ;
 //</editor-fold>
 
-//<editor-fold defaultstate="collapsed" desc="fAjax(type, data, url, beforeSend, callback). Clic en el signo + de la izquierda para mas detalles.">
-/**
- * 
- * @param {type} type
- * @param {type} data
- * @param {type} url
- * @param {type} beforeSend2
- * @param {type} callback
- * @returns {ajaxResponse}
- */
-function fAjax(type, data, url, beforeSend2, callback) {
-    var ar = null;
-    try {
-        $.ajax({
-            type: type,
-            url: url,
-            data: data,
-            beforeSend: function() {
-                beforeSend2();
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                $('#lServidorError').text(errorThrown + '(' + url + ')');
-                $('#dServidorError').dialog('open');
-            },
-            success: function(ajaxResponse, textStatus) {
-                ar = ajaxResponse;
-            },
-            statusCode: {
-                404: function() {
-                    $('#lServidorError').text('Página no encontrada(' + url + ').');
-                    $('#dServidorError').dialog('open');
-                }
-            },
-            complete: function() {
-                callback();
-            }
-        });
-    }
-    catch (ex) {
-        $('#lServidorError').text(ex);
-        $('#dServidorError').dialog('open');
-    }
-    return ar;
+function fLoginBotonesDeshabilitar() {
+    $('#bCerrarSistema').addClass('disabled').prop('disabled', true);
+    $('#bLimpiarLogin').addClass('disabled').prop('disabled', true);
+    $('#bIngresar').addClass('disabled').prop('disabled', true);
 }
 ;
-//</editor-fold>
+
+function fLoginBotonesHabilitar() {
+    $('#bCerrarSistema').removeClass('disabled').prop('disabled', false);
+    $('#bLimpiarLogin').removeClass('disabled').prop('disabled', false);
+    $('#bIngresar').removeClass('disabled').prop('disabled', false);
+}
+;

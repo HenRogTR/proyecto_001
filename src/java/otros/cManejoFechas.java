@@ -77,11 +77,11 @@ public class cManejoFechas {
     }
 
     /**
-     * 
+     *
      * @param fecha
      * @return fecha con formato <b>dd/MM/yyyy</b>
      */
     public String fechaDateToString(Date fecha) {
         return new SimpleDateFormat("dd/MM/yyyy").format(fecha);
     }
-}
+    }

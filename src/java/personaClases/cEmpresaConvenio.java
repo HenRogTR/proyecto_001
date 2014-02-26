@@ -6,6 +6,7 @@ package personaClases;
 
 import java.util.List;
 import org.hibernate.Query;
+import org.hibernate.Transaction;
 import org.hibernate.classic.Session;
 import otros.cUtilitarios;
 import tablas.EmpresaConvenio;
@@ -57,6 +58,24 @@ public class cEmpresaConvenio {
             setError(e.getMessage());
         }
         return null;
+    }
+
+    public List leer_SC() {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("from EmpresaConvenio ec "
+                    + "where substring(ec.registro,1,1)=1");
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
     }
 
     public EmpresaConvenio leer_nombre(String nombre) {

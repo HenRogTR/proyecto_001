@@ -59,6 +59,11 @@
 
 <div id="dNovedades" title="Novedades" style="font-size: 10px;">
     <div style="background: #F1F1F7">
+        <h3 class="titulo">17/02/2014</h3>
+        <p>
+            * Mejora en el inicio de sesión.<br>
+            * Otras correcciones.<br>
+        </p>
         <h3 class="titulo">30/01/2014</h3>
         <p>            
             * Correciones y mejoras.<br>

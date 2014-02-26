@@ -6,6 +6,8 @@
 
 
 
+<%@page import="utilitarios.cManejoFechas"%>
+<%@page import="utilitarios.cOtros"%>
 <%@page import="tablas.Usuario"%>
 <%@page import="tablas.VentaCreditoLetra"%>
 <%@page import="java.util.Iterator"%>
@@ -74,9 +76,9 @@
         </script>
         <div id="documento">
             <div id="contenido">
-                <%
-                    if (estado) {
-                        cUtilitarios objcUtilitarios = new cUtilitarios();
+                <%                    if (estado) {
+                        cOtros objcOtros = new cOtros();
+                        cManejoFechas objcManejoFechas = new cManejoFechas();
                         Iterator iVentaCreditoLetra = lVentaCreditoLetra.iterator();
                         VentaCreditoLetra objVentaCreditoLetra0 = (VentaCreditoLetra) lVentaCreditoLetra.iterator().next();
                         Double pagado = 0.00;
@@ -99,7 +101,7 @@
                         </tr>
                         <tr>
                             <td colspan="7">
-                                <label><%=objVentaCreditoLetra0.getVentaCredito().getVentas().getDocSerieNumero()%>&nbsp;&nbsp;&nbsp;<%=objcUtilitarios.fechaDateToString(objVentaCreditoLetra0.getVentaCredito().getVentas().getFecha())%></label>
+                                <label><%=objVentaCreditoLetra0.getVentaCredito().getVentas().getDocSerieNumero()%>&nbsp;&nbsp;&nbsp;<%=objcManejoFechas.DateAString(objVentaCreditoLetra0.getVentaCredito().getVentas().getFecha())%></label>
                             </td>
                         </tr>
                     </thead>
@@ -111,11 +113,11 @@
                         <tr>
                             <td></td>
                             <td><%=objVentaCreditoLetra.getDetalleLetra()%></td>
-                            <td><%=objcUtilitarios.fechaDateToString(objVentaCreditoLetra.getFechaVencimiento())%></td>
-                            <td style="text-align: right;padding-right: 10px;"><%=objcUtilitarios.agregarCerosNumeroFormato(objVentaCreditoLetra.getMonto(), 2)%></td>
-                            <td style="text-align: right;padding-right: 10px;"><%=objcUtilitarios.agregarCerosNumeroFormato(objVentaCreditoLetra.getTotalPago(), 2)%></td>
-                            <td><%=objVentaCreditoLetra.getFechaPago() == null ? "" : objcUtilitarios.fechaDateToString(objVentaCreditoLetra.getFechaPago())%></td>
-                            <td style="text-align: right;padding-right: 10px;"><%=objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(objVentaCreditoLetra.getMonto() - objVentaCreditoLetra.getTotalPago(), 2), 2)%></td>
+                            <td><%=objcManejoFechas.DateAString(objVentaCreditoLetra.getFechaVencimiento())%></td>
+                            <td style="text-align: right;padding-right: 10px;"><%=objcOtros.agregarCerosNumeroFormato(objVentaCreditoLetra.getMonto(), 2)%></td>
+                            <td style="text-align: right;padding-right: 10px;"><%=objcOtros.agregarCerosNumeroFormato(objVentaCreditoLetra.getTotalPago(), 2)%></td>
+                            <td><%=objVentaCreditoLetra.getFechaPago() == null ? "" : objcManejoFechas.DateAString(objVentaCreditoLetra.getFechaPago())%></td>
+                            <td style="text-align: right;padding-right: 10px;"><%=objcOtros.agregarCerosNumeroFormato(objcOtros.redondearDecimales(objVentaCreditoLetra.getMonto() - objVentaCreditoLetra.getTotalPago(), 2), 2)%></td>
                         </tr>
                         <%
                                 pagado += objVentaCreditoLetra.getTotalPago();
@@ -128,10 +130,10 @@
                             <td></td>
                             <td><label style="font-weight: bold">Total general</label></td>
                             <td></td>
-                            <td style="text-align: right;padding-right: 10px;"><%=objcUtilitarios.agregarCerosNumeroFormato(objVentaCreditoLetra0.getVentaCredito().getVentas().getNeto(), 2)%></td>
-                            <td style="text-align: right;padding-right: 10px;"><%=objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(pagado, 2), 2)%></td>
+                            <td style="text-align: right;padding-right: 10px;"><%=objcOtros.agregarCerosNumeroFormato(objVentaCreditoLetra0.getVentaCredito().getVentas().getNeto(), 2)%></td>
+                            <td style="text-align: right;padding-right: 10px;"><%=objcOtros.agregarCerosNumeroFormato(objcOtros.redondearDecimales(pagado, 2), 2)%></td>
                             <td></td>
-                            <td style="text-align: right;padding-right: 10px;"><%=objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(objVentaCreditoLetra0.getVentaCredito().getVentas().getNeto() - pagado, 2), 2)%></td>
+                            <td style="text-align: right;padding-right: 10px;"><%=objcOtros.agregarCerosNumeroFormato(objcOtros.redondearDecimales(objVentaCreditoLetra0.getVentaCredito().getVentas().getNeto() - pagado, 2), 2)%></td>
                         </tr>
                     </tbody>
                 </table>

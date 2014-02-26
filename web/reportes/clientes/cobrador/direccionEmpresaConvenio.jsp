@@ -35,7 +35,7 @@
             estado = false;
             mensaje = "No hay empresa con ese parametro";
         }
-        lCliente = objcDatosCliente.leer_codCobrador_empresaConvenio_ordenadoDireccion(codEmpresaConvenio, codCobrador);
+        lCliente = objcDatosCliente.leer_codCobrador_empresaConvenio_ordenDireccion(codEmpresaConvenio, codCobrador);
         if (lCliente == null) {
             estado = false;
             mensaje = objcDatosCliente.getError();

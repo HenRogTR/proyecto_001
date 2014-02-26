@@ -12,7 +12,6 @@
 <%@page import="tablas.CompraDetalle"%>
 <%@page import="compraClases.cCompraDetalle"%>
 <%@page import="java.util.List"%>
-<%@page import="otros.cUtilitarios"%>
 <%@page import="tablas.Compra"%>
 <%@page import="compraClases.cCompra"%>
 <%
@@ -30,9 +29,7 @@
     } catch (Exception e) {
         out.print("Error en parámetros.");
         return;
-    }
-
-    cUtilitarios objcUtilitarios = new cUtilitarios();
+    }    
     cManejoFechas objcManejoFechas = new cManejoFechas();
     cOtros objcOtros = new cOtros();
 %>
@@ -41,7 +38,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title><%=objcUtilitarios.fechaHoraActualNumerosLineal()%></title>
+        <title><%=objcManejoFechas.fechaHoraActualNumerosLineal()%></title>
         <link rel="stylesheet" type="text/css" href="../librerias/principal/bodyPrint.css" media="screen"/>
         <link rel="stylesheet" type="text/css" href="../librerias/principal/bodyPrint.css" media="print"/>
     </head>

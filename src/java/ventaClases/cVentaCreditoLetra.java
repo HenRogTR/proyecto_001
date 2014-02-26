@@ -414,25 +414,31 @@ public class cVentaCreditoLetra {
      *
      * @return
      */
-    public List letras_orderByNombresC() {
-        setError(null);
+    public List letras_ordenNombresC() {
+        List l = null;
+        Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
+            trns = sesion.beginTransaction();
             Query q = sesion.createQuery("from VentaCreditoLetra vcl "
                     + "where (vcl.monto-vcl.totalPago)>0 "
                     + "and substring(vcl.registro,1,1)=1 "
                     + "order by vcl.ventaCredito.ventas.persona.nombresC asc, vcl.codVentaCreditoLetra");
-            return q.list();
+            l = q.list();
         } catch (Exception e) {
-            setError(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
         }
-        return null;
+        return l;
     }
 
-    public List letras_codCobrador_orderByNombresC(int codCobrador) {
-        setError(null);
+    public List letras_codCobrador_ordenNombresC(int codCobrador) {
+        List l = null;
+        Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
+            trns = sesion.beginTransaction();
             Query q = sesion.createQuery("select vcl from VentaCreditoLetra vcl, DatosCliente dc "
                     + "where vcl.ventaCredito.ventas.persona=dc.persona "
                     + "and dc.codCobrador=:codCobrador "
@@ -440,11 +446,13 @@ public class cVentaCreditoLetra {
                     + "and substring(vcl.registro,1,1)=1 "
                     + "order by vcl.ventaCredito.ventas.persona.nombresC asc, vcl.codVentaCreditoLetra")
                     .setParameter("codCobrador", codCobrador);
-            return q.list();
+            l = q.list();
         } catch (Exception e) {
-            setError(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
         }
-        return null;
+        return l;
     }
 
     public List letras_codEmpresaConvenio_orderByNombresC(int codEmpresaConvenio) {
@@ -529,25 +537,32 @@ public class cVentaCreditoLetra {
      *
      * @return
      */
-    public List letras_orderByDireccion() {
-        setError(null);
+    public List letras_ordenDireccion() {
+        List l = null;
+        Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
+            trns = sesion.beginTransaction();
             Query q = sesion.createQuery("from VentaCreditoLetra vcl "
                     + "where (vcl.monto-vcl.totalPago)>0 "
                     + "and substring(vcl.registro,1,1)=1 "
                     + "order by vcl.ventaCredito.ventas.persona.direccion asc, vcl.codVentaCreditoLetra");
-            return q.list();
+            l = q.list();
         } catch (Exception e) {
-            setError(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
         }
-        return null;
+        return l;
     }
 
-    public List letras_codCobrador_orderByDireccion(int codCobrador) {
-        setError(null);
+//    borrar
+    public List letras_codCobrador_ordenDireccion(int codCobrador) {
+        List l = null;
+        Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
+            trns = sesion.beginTransaction();
             Query q = sesion.createQuery("select vcl from VentaCreditoLetra vcl,DatosCliente dc "
                     + "where vcl.ventaCredito.ventas.persona=dc.persona "
                     + "and dc.codCobrador=:codCobrador "
@@ -555,11 +570,13 @@ public class cVentaCreditoLetra {
                     + "and substring(vcl.registro,1,1)=1 "
                     + "order by vcl.ventaCredito.ventas.persona.direccion asc, vcl.codVentaCreditoLetra")
                     .setParameter("codCobrador", codCobrador);
-            return q.list();
+            l = q.list();
         } catch (Exception e) {
-            setError(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
         }
-        return null;
+        return l;
     }
 
     /**
@@ -568,6 +585,7 @@ public class cVentaCreditoLetra {
      * @param fechaVencimiento
      * @return Array.
      */
+//    borrar
     public List letrasVencidas_orderDireccion(Date fechaVencimiento) {
         setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
@@ -768,7 +786,10 @@ public class cVentaCreditoLetra {
         setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
-            Query q = sesion.createQuery("select vcl.ventaCredito.ventas.persona.nombresC,vcl.ventaCredito.ventas.persona.dniPasaporte,vcl.ventaCredito.ventas.persona.ruc, sum(vcl.monto-vcl.totalPago) "
+            Query q = sesion.createQuery("select vcl.ventaCredito.ventas.persona.nombresC, "
+                    + "vcl.ventaCredito.ventas.persona.dniPasaporte, "
+                    + "vcl.ventaCredito.ventas.persona.ruc, "
+                    + "sum(vcl.monto-vcl.totalPago) "
                     + "from VentaCreditoLetra vcl "
                     + "where (vcl.monto-vcl.totalPago)>0 "
                     + "and substring(vcl.registro,1,1)=1 "

@@ -3,6 +3,7 @@
     Created on : 15/05/2013, 06:13:33 PM
     Author     : Henrri
 --%>
+<%@page import="utilitarios.cOtros"%>
 <%@page import="otros.cUtilitarios"%>
 <%@page import="utilitarios.cManejoFechas"%>
 <%@page import="ventaClases.cVentaCredito"%>
@@ -23,8 +24,9 @@
     String titulo = "No hay ventas";
     cVentasDetalle objcVentasDetalle = new cVentasDetalle();
     List lVentasDetalle = new ArrayList();
-    
-    cUtilitarios objcUtilitarios = new cUtilitarios();
+
+    cManejoFechas objcManejoFechas = new cManejoFechas();
+    cOtros objcOtros = new cOtros();
     try {
         int codVentas = Integer.parseInt(request.getParameter("codVentas"));
         lVentasDetalle = objcVentasDetalle.leer_ventas_porCodVentas(codVentas);
@@ -32,7 +34,7 @@
             estado = false;
             mensaje = "No hay venta para ese codigo<br>";
         } else {
-            titulo = ((VentasDetalle) lVentasDetalle.iterator().next()).getVentas().getDocSerieNumero() + " " + objcUtilitarios.fechaHoraActualNumerosLineal();
+            titulo = ((VentasDetalle) lVentasDetalle.iterator().next()).getVentas().getDocSerieNumero() + " " + objcManejoFechas.fechaHoraActualNumerosLineal();
         }
     } catch (NumberFormatException e) {
         estado = false;
@@ -74,7 +76,6 @@
     </style>    
     <body>
         <%
-            cManejoFechas objcManejoFechas = new cManejoFechas();
             Ventas objVentasAux = ((VentasDetalle) lVentasDetalle.get(0)).getVentas();
             int tamanioCuerpo = 480;
         %>
@@ -127,9 +128,9 @@
                                     }
                                 %>
                             </td>
-                            <td style="text-align: left;width: 90px;"><%=objcUtilitarios.dia(objVentasAux.getFecha())%></td>
-                            <td style="text-align: right;width: 80px;"><%=objcUtilitarios.mesNombre(objVentasAux.getFecha())%></td>
-                            <td style="text-align: right;width: 80px;"><%=objcUtilitarios.anio(objVentasAux.getFecha())%></td>
+                            <td style="text-align: left;width: 90px;"><%=objcManejoFechas.dia(objVentasAux.getFecha())%></td>
+                            <td style="text-align: right;width: 80px;"><%=objcManejoFechas.mesNombre(objVentasAux.getFecha())%></td>
+                            <td style="text-align: right;width: 80px;"><%=objcManejoFechas.anio(objVentasAux.getFecha())%></td>
                         </tr>
                     </table>
                 </div>
@@ -149,13 +150,13 @@
                                     for (VentasSerieNumero objVentasSerieNumero : objVentasDetalle.getVentasSerieNumeros()) {
                                         out.print("&nbsp;&nbsp;" + objVentasSerieNumero.getSerieNumero().replace("\n", "<br>") + ", ");
                                         if (objVentasSerieNumero.getObservacion() != "") {
-                                            out.print("&nbsp;&nbsp;" + objcUtilitarios.replace_caracteres_especiales(objVentasSerieNumero.getObservacion()) + "<br>");
+                                            out.print("&nbsp;&nbsp;" + objcOtros.replace_comillas_comillasD_barraInvertida(objVentasSerieNumero.getObservacion()) + "<br>");
                                         }
                                     }
                                 %>
                             </td>
-                            <td style="text-align: right;width: 80px;"><%=objcUtilitarios.agregarCerosNumeroFormato(objVentasDetalle.getPrecioVenta(), 2)%></td>
-                            <td style="text-align: right;width: 80px;"><%=objcUtilitarios.agregarCerosNumeroFormato(objVentasDetalle.getValorVenta(), 2)%></td>
+                            <td style="text-align: right;width: 80px;"><%=objcOtros.agregarCerosNumeroFormato(objVentasDetalle.getPrecioVenta(), 2)%></td>
+                            <td style="text-align: right;width: 80px;"><%=objcOtros.agregarCerosNumeroFormato(objVentasDetalle.getValorVenta(), 2)%></td>
                         </tr>
                         <%
                             }
@@ -165,14 +166,14 @@
                             <td></td>
                             <td></td>
                             <td style="font-size: 8px;">
-                                <%            
+                                <%
                                     VentaCredito objVentaCredito = new cVentaCredito().leer_codVenta(objVentasAux.getCodVentas());
-                                    out.print("<br><br>Incial S/. " + objcUtilitarios.agregarCerosNumeroFormato(objVentaCredito.getMontoInicial(), 2) + " ," + objVentaCredito.getCantidadLetras() + " Letra(s) de S/. " + objcUtilitarios.agregarCerosNumeroFormato(objVentaCredito.getMontoLetra(), 2) + ", Inicio: " + objcManejoFechas.DateAString(objVentaCredito.getFechaVencimientoLetra()));
+                                    out.print("<br><br>Incial S/. " + objcOtros.agregarCerosNumeroFormato(objVentaCredito.getMontoInicial(), 2) + " ," + objVentaCredito.getCantidadLetras() + " Letra(s) de S/. " + objcOtros.agregarCerosNumeroFormato(objVentaCredito.getMontoLetra(), 2) + ", Inicio: " + objcManejoFechas.DateAString(objVentaCredito.getFechaVencimientoLetra()));
                                 %>
                             </td>
                         </tr>
                         <%                            }
-                            
+
                             if (objVentasAux.getObservacion() != "") {
                         %>
                         <tr>
@@ -189,14 +190,14 @@
                 </div>
                 <div id="dPie">
                     <table>
-                        <%    
+                        <%
                             if (objVentasAux.getDocSerieNumero().substring(0, 1).equals("B")) {
                         %>
                         <tr>
                             <td style="width: 130px;"></td>
                             <td><%=objVentasAux.getSon()%></td>
                             <td></td>
-                            <td style="text-align: right;"><%=objcUtilitarios.agregarCerosNumeroFormato(objVentasAux.getNeto(), 2)%></td>
+                            <td style="text-align: right;"><%=objcOtros.agregarCerosNumeroFormato(objVentasAux.getNeto(), 2)%></td>
                         </tr>
                         <%
                             }
@@ -206,7 +207,7 @@
                             <td style="width: 130px;"></td>
                             <td><%=objVentasAux.getSon()%></td>
                             <td></td>
-                            <td style="text-align: right;"><%=objcUtilitarios.agregarCerosNumeroFormato(objVentasAux.getSubTotal(), 2)%></td>
+                            <td style="text-align: right;"><%=objcOtros.agregarCerosNumeroFormato(objVentasAux.getSubTotal(), 2)%></td>
                         </tr>
                         <tr>
                             <td></td>
@@ -218,7 +219,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td style="text-align: right;"><%=objcUtilitarios.agregarCerosNumeroFormato(objVentasAux.getValorIgv(), 2)%></td>
+                            <td style="text-align: right;"><%=objcOtros.agregarCerosNumeroFormato(objVentasAux.getValorIgv(), 2)%></td>
                         </tr>
                         <tr>
                             <td></td>
@@ -230,7 +231,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td style="text-align: right;"><%=objcUtilitarios.agregarCerosNumeroFormato(objVentasAux.getNeto(), 2)%></td>
+                            <td style="text-align: right;"><%=objcOtros.agregarCerosNumeroFormato(objVentasAux.getNeto(), 2)%></td>
                         </tr>
                         <%
                             }

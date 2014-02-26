@@ -30,11 +30,8 @@ public class cOtros {
     public String md5(String cadena) {
         try {
             MessageDigest msgd = MessageDigest.getInstance("MD5");
-//            System.out.println("msgd: " + msgd);
             byte[] bytes = msgd.digest(cadena.getBytes());
-//            System.out.println("bytes: "+bytes+" :::");
             StringBuilder strbCadenaMD5 = new StringBuilder(2 * bytes.length);
-//            System.out.println("strbCadenaMD5: " + strbCadenaMD5+" :::");
             for (int i = 0; i < bytes.length; i++) {
                 int bajo = (int) (bytes[i] & 0x0f);
                 int alto = (int) ((bytes[i] & 0xf0) >> 4);
@@ -72,7 +69,6 @@ public class cOtros {
             tex = texto;
         } else {
             for (int i = 0; i < (anchoTotal - texto.length()) / 2; i++) {
-//            System.out.println("aquiii");
                 tex = " " + tex;
             }
         }
@@ -135,10 +131,7 @@ public class cOtros {
         String num = String.valueOf(numero);
 
         int posPuntoDecimal = num.indexOf(".");
-//        System.out.println("posPuntoDecimal: " + posPuntoDecimal);
         int cerosFaltantes = decimales - num.substring(posPuntoDecimal + 1, num.length()).length();
-//        System.out.println("parteDecimal: " + num.substring(posPuntoDecimal, num.length()));
-//        System.out.println("cerosFaltantes: " + cerosFaltantes);
         for (int i = 0; i < cerosFaltantes; i++) {
             num += "0";
         }
@@ -156,6 +149,9 @@ public class cOtros {
      * @return
      */
     public String decimalFormato(Double numero, int decimales) {
+        if (numero == null) {
+            numero = 0.0;
+        }
         if (numero < 0.009) {
             return numero.toString();
         }

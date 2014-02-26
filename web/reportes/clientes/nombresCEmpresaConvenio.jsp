@@ -24,7 +24,7 @@
             estado = false;
             mensaje = "No hay empresa con ese parametro";
         }
-        lCliente = objcDatosCliente.leer_empresaConvenio_ordenadoNombresC(codEmpresaConvenio);
+        lCliente = objcDatosCliente.leer_empresaConvenio_ordenNombresC(codEmpresaConvenio);
         if (lCliente == null) {
             estado = false;
             mensaje = objcDatosCliente.getError();
