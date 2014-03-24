@@ -20,7 +20,7 @@
             for (Iterator it = clienteList.iterator(); it.hasNext();) {
                 DatosCliente objCliente = (DatosCliente) it.next();
                 if (cont++ > 0) {
-                    out.print(",");
+                    out.print(", ");
                 }
                 String dni = objCliente.getPersona().getDniPasaporte().equals("") ? "" : "DNI " + objCliente.getPersona().getDniPasaporte();
                 String ruc = objCliente.getPersona().getRuc().equals("") ? "" : "RUC " + objCliente.getPersona().getRuc();

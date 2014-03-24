@@ -7,8 +7,8 @@ package ventaClases;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.classic.Session;
 import otros.cUtilitarios;
 import tablas.HibernateUtil;
 import tablas.Ventas;
@@ -32,6 +32,7 @@ public class cVenta {
 
     public cVenta() {
         this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
+        this.error = null;
     }
 
     //********************************************************************
@@ -88,8 +89,13 @@ public class cVenta {
         }
         return null;
     }
-    //********************************************************************
 
+    //<editor-fold defaultstate="collapsed" desc="Metódos corregidos *correcto*. Clic en el signo + de la izquierda para mas detalles.">
+    /**
+     *
+     * @param objVentas
+     * @return
+     */
     public int crear(Ventas objVentas) {
         int cod = 0;
         Transaction trns = null;
@@ -127,10 +133,551 @@ public class cVenta {
     }
 
     /**
+     * 0:codCliente, 1:nombresC, 2:codVenta, 3:docSerieNumero, 4:fecha, 5:tipo,
+     * 6:neto, 7:registro, 8:precioReal, 9:montoInicial, 10:cantidadLetras
      *
+     * @param fechaInicio
+     * @param fechaFin
      * @return
      */
-    public List leer_fechaInicio_fechaFin(Date fechaInicio, Date fechaFin) {
+    public List leer_todos_fechas_SC(Date fechaInicio, Date fechaFin) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select"
+                    + " dc.codDatosCliente, "
+                    + " dc.persona.nombresC,"
+                    + "	v.codVentas,"
+                    + " v.docSerieNumero,"
+                    + " v.fecha,"
+                    + " v.tipo,"
+                    + "	v.neto,"
+                    + " v.registro,"
+                    + " (select sum( CASE WHEN vd.precioReal>vd.precioVenta THEN (vd.precioVenta*vd.cantidad) ELSE (vd.precioReal*vd.cantidad) END ) from VentasDetalle vd where vd.ventas = v and substring(vd.registro,1,1) = 1 and substring(vd.ventas.registro,1,1) = 1 ),"
+                    + "	(select sum(vc.montoInicial) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
+                    + "	(select sum(vc.cantidadLetras) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1)"
+                    + " from Ventas v, DatosCliente dc"
+                    + " where v.persona = dc.persona"
+                    + "	and (substring(v.registro,1,1) = 0 or substring(v.registro,1,1) = 1)"
+                    + "	and v.fecha between :par1 and :par2"
+                    + " order by v.fecha, v.docSerieNumero")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+
+    /**
+     * 0:codCliente, 1:nombresC, 2:codVenta, 3:docSerieNumero, 4:fecha, 5:tipo,
+     * 6:neto, 7:registro, 8:precioReal, 9:montoInicial, 10:cantidadLetras
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @return
+     */
+    public List leer_contado_fechas_SC(Date fechaInicio, Date fechaFin) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select"
+                    + " dc.codDatosCliente, "
+                    + " dc.persona.nombresC,"
+                    + "	v.codVentas,"
+                    + " v.docSerieNumero,"
+                    + " v.fecha,"
+                    + " v.tipo,"
+                    + "	v.neto,"
+                    + " v.registro,"
+                    + " (select sum( CASE WHEN vd.precioReal>vd.precioVenta THEN (vd.precioVenta*vd.cantidad) ELSE (vd.precioReal*vd.cantidad) END ) from VentasDetalle vd where vd.ventas = v and substring(vd.registro,1,1) = 1 and substring(vd.ventas.registro,1,1) = 1 ),"
+                    + "	(select sum(vc.montoInicial) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
+                    + "	(select sum(vc.cantidadLetras) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1)"
+                    + " from Ventas v, DatosCliente dc"
+                    + " where v.persona = dc.persona"
+                    + "	and (substring(v.registro,1,1) = 0 or substring(v.registro,1,1) = 1)"
+                    + "	and v.fecha between :par1 and :par2"
+                    + " and v.tipo = 'contado'"
+                    + " order by v.fecha, v.docSerieNumero")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+
+    /**
+     * 0:codCliente, 1:nombresC, 2:codVenta, 3:docSerieNumero, 4:fecha, 5:tipo,
+     * 6:neto, 7:registro, 8:precioReal, 9:montoInicial, 10:cantidadLetras
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @return
+     */
+    public List leer_credito_fechas_SC(Date fechaInicio, Date fechaFin) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select"
+                    + " dc.codDatosCliente, "
+                    + " dc.persona.nombresC,"
+                    + "	v.codVentas,"
+                    + " v.docSerieNumero,"
+                    + " v.fecha,"
+                    + " v.tipo,"
+                    + "	v.neto,"
+                    + " v.registro,"
+                    + " (select sum( CASE WHEN vd.precioReal>vd.precioVenta THEN (vd.precioVenta*vd.cantidad) ELSE (vd.precioReal*vd.cantidad) END ) from VentasDetalle vd where vd.ventas = v and substring(vd.registro,1,1) = 1 and substring(vd.ventas.registro,1,1) = 1 ),"
+                    + "	(select sum(vc.montoInicial) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
+                    + "	(select sum(vc.cantidadLetras) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1)"
+                    + " from Ventas v, DatosCliente dc"
+                    + " where v.persona = dc.persona"
+                    + "	and (substring(v.registro,1,1) = 0 or substring(v.registro,1,1) = 1)"
+                    + "	and v.fecha between :par1 and :par2"
+                    + " and v.tipo = 'credito'"
+                    + " order by v.fecha, v.docSerieNumero")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+
+    /**
+     * 0:codCliente, 1:nombresC, 2:codVenta, 3:docSerieNumero, 4:fecha, 5:tipo,
+     * 6:neto, 7:registro, 8:precioReal, 9:montoInicial, 10:cantidadLetras
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @param tipo_serie
+     * @return
+     */
+    public List leer_documento_todos_fechas_SC(Date fechaInicio, Date fechaFin, String tipo_serie) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select"
+                    + " dc.codDatosCliente, "
+                    + " dc.persona.nombresC,"
+                    + "	v.codVentas,"
+                    + " v.docSerieNumero,"
+                    + " v.fecha,"
+                    + " v.tipo,"
+                    + "	v.neto,"
+                    + " v.registro,"
+                    + " (select sum( CASE WHEN vd.precioReal>vd.precioVenta THEN (vd.precioVenta*vd.cantidad) ELSE (vd.precioReal*vd.cantidad) END ) from VentasDetalle vd where vd.ventas = v and substring(vd.registro,1,1) = 1 and substring(vd.ventas.registro,1,1) = 1 ),"
+                    + "	(select sum(vc.montoInicial) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
+                    + "	(select sum(vc.cantidadLetras) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1)"
+                    + " from Ventas v, DatosCliente dc"
+                    + " where v.persona = dc.persona"
+                    + "	and (substring(v.registro,1,1) = 0 or substring(v.registro,1,1) = 1)"
+                    + "	and v.fecha between :par1 and :par2"
+                    + " and substring(v.docSerieNumero,1,5) = :par3 "
+                    + " order by v.fecha, v.docSerieNumero")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin)
+                    .setString("par3", tipo_serie);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+
+    /**
+     * 0:codCliente, 1:nombresC, 2:codVenta, 3:docSerieNumero, 4:fecha, 5:tipo,
+     * 6:neto, 7:registro, 8:precioReal, 9:montoInicial, 10:cantidadLetras
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @param tipo_serie
+     * @return
+     */
+    public List leer_documento_contado_fechas_SC(Date fechaInicio, Date fechaFin, String tipo_serie) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select"
+                    + " dc.codDatosCliente, "
+                    + " dc.persona.nombresC,"
+                    + "	v.codVentas,"
+                    + " v.docSerieNumero,"
+                    + " v.fecha,"
+                    + " v.tipo,"
+                    + "	v.neto,"
+                    + " v.registro,"
+                    + " (select sum( CASE WHEN vd.precioReal>vd.precioVenta THEN (vd.precioVenta*vd.cantidad) ELSE (vd.precioReal*vd.cantidad) END ) from VentasDetalle vd where vd.ventas = v and substring(vd.registro,1,1) = 1 and substring(vd.ventas.registro,1,1) = 1 ),"
+                    + "	(select sum(vc.montoInicial) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
+                    + "	(select sum(vc.cantidadLetras) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1)"
+                    + " from Ventas v, DatosCliente dc"
+                    + " where v.persona = dc.persona"
+                    + "	and (substring(v.registro,1,1) = 0 or substring(v.registro,1,1) = 1)"
+                    + "	and v.fecha between :par1 and :par2"
+                    + " and v.tipo = 'contado'"
+                    + " and substring(v.docSerieNumero,1,5) = :par3 "
+                    + " order by v.fecha, v.docSerieNumero")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin)
+                    .setString("par3", tipo_serie);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+
+    /**
+     * 0:codCliente, 1:nombresC, 2:codVenta, 3:docSerieNumero, 4:fecha, 5:tipo,
+     * 6:neto, 7:registro, 8:precioReal, 9:montoInicial, 10:cantidadLetras
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @param tipo_serie
+     * @return
+     */
+    public List leer_documento_credito_fechas_SC(Date fechaInicio, Date fechaFin, String tipo_serie) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select"
+                    + " dc.codDatosCliente, "
+                    + " dc.persona.nombresC,"
+                    + "	v.codVentas,"
+                    + " v.docSerieNumero,"
+                    + " v.fecha,"
+                    + " v.tipo,"
+                    + "	v.neto,"
+                    + " v.registro,"
+                    + " (select sum( CASE WHEN vd.precioReal>vd.precioVenta THEN (vd.precioVenta*vd.cantidad) ELSE (vd.precioReal*vd.cantidad) END ) from VentasDetalle vd where vd.ventas = v and substring(vd.registro,1,1) = 1 and substring(vd.ventas.registro,1,1) = 1 ),"
+                    + "	(select sum(vc.montoInicial) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
+                    + "	(select sum(vc.cantidadLetras) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1)"
+                    + " from Ventas v, DatosCliente dc"
+                    + " where v.persona = dc.persona"
+                    + "	and (substring(v.registro,1,1) = 0 or substring(v.registro,1,1) = 1)"
+                    + "	and v.fecha between :par1 and :par2"
+                    + " and v.tipo = 'credito'"
+                    + " and substring(v.docSerieNumero,1,5) = :par3 "
+                    + " order by v.fecha, v.docSerieNumero")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin)
+                    .setString("par3", tipo_serie);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+
+    /**
+     * 0:codCliente, 1:nombresC, 2:codVenta, 3:docSerieNumero, 4:fecha, 5:tipo,
+     * 6:neto, 7:registro, 8:precioReal, 9:montoInicial, 10:cantidadLetras
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @param codVendedor
+     * @return
+     */
+    public List leer_todos_vendedor_fechas_SC(Date fechaInicio, Date fechaFin, int codVendedor) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select"
+                    + " dc.codDatosCliente, "
+                    + " dc.persona.nombresC,"
+                    + "	v.codVentas,"
+                    + " v.docSerieNumero,"
+                    + " v.fecha,"
+                    + " v.tipo,"
+                    + "	v.neto,"
+                    + " v.registro,"
+                    + " (select sum( CASE WHEN vd.precioReal>vd.precioVenta THEN (vd.precioVenta*vd.cantidad) ELSE (vd.precioReal*vd.cantidad) END ) from VentasDetalle vd where vd.ventas = v and substring(vd.registro,1,1) = 1 and substring(vd.ventas.registro,1,1) = 1 ),"
+                    + "	(select sum(vc.montoInicial) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
+                    + "	(select sum(vc.cantidadLetras) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1)"
+                    + " from Ventas v, DatosCliente dc"
+                    + " where v.persona = dc.persona"
+                    + "	and (substring(v.registro,1,1) = 0 or substring(v.registro,1,1) = 1)"
+                    + "	and v.fecha between :par1 and :par2"
+                    + " and v.personaCodVendedor = :par3"
+                    + " order by v.fecha, v.docSerieNumero")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin)
+                    .setInteger("par3", codVendedor);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+
+    /**
+     * 0:codCliente, 1:nombresC, 2:codVenta, 3:docSerieNumero, 4:fecha, 5:tipo,
+     * 6:neto, 7:registro, 8:precioReal, 9:montoInicial, 10:cantidadLetras
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @param codVendedor
+     * @return
+     */
+    public List leer_contado_vendedor_fechas_SC(Date fechaInicio, Date fechaFin, int codVendedor) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select"
+                    + " dc.codDatosCliente, "
+                    + " dc.persona.nombresC,"
+                    + "	v.codVentas,"
+                    + " v.docSerieNumero,"
+                    + " v.fecha,"
+                    + " v.tipo,"
+                    + "	v.neto,"
+                    + " v.registro,"
+                    + " (select sum( CASE WHEN vd.precioReal>vd.precioVenta THEN (vd.precioVenta*vd.cantidad) ELSE (vd.precioReal*vd.cantidad) END ) from VentasDetalle vd where vd.ventas = v and substring(vd.registro,1,1) = 1 and substring(vd.ventas.registro,1,1) = 1 ),"
+                    + "	(select sum(vc.montoInicial) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
+                    + "	(select sum(vc.cantidadLetras) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1)"
+                    + " from Ventas v, DatosCliente dc"
+                    + " where v.persona = dc.persona"
+                    + "	and (substring(v.registro,1,1) = 0 or substring(v.registro,1,1) = 1)"
+                    + "	and v.fecha between :par1 and :par2"
+                    + " and v.tipo = 'contado'"
+                    + " and v.personaCodVendedor = :par3"
+                    + " order by v.fecha, v.docSerieNumero")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin)
+                    .setInteger("par3", codVendedor);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+
+    /**
+     * 0:codCliente, 1:nombresC, 2:codVenta, 3:docSerieNumero, 4:fecha, 5:tipo,
+     * 6:neto, 7:registro, 8:precioReal, 9:montoInicial, 10:cantidadLetras
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @param codVendedor
+     * @return
+     */
+    public List leer_credito_vendedor_fechas_SC(Date fechaInicio, Date fechaFin, int codVendedor) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select"
+                    + " dc.codDatosCliente, "
+                    + " dc.persona.nombresC,"
+                    + "	v.codVentas,"
+                    + " v.docSerieNumero,"
+                    + " v.fecha,"
+                    + " v.tipo,"
+                    + "	v.neto,"
+                    + " v.registro,"
+                    + " (select sum( CASE WHEN vd.precioReal>vd.precioVenta THEN (vd.precioVenta*vd.cantidad) ELSE (vd.precioReal*vd.cantidad) END ) from VentasDetalle vd where vd.ventas = v and substring(vd.registro,1,1) = 1 and substring(vd.ventas.registro,1,1) = 1 ),"
+                    + "	(select sum(vc.montoInicial) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
+                    + "	(select sum(vc.cantidadLetras) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1)"
+                    + " from Ventas v, DatosCliente dc"
+                    + " where v.persona = dc.persona"
+                    + "	and (substring(v.registro,1,1) = 0 or substring(v.registro,1,1) = 1)"
+                    + "	and v.fecha between :par1 and :par2"
+                    + " and v.tipo = 'credito'"
+                    + " and v.personaCodVendedor = :par3"
+                    + " order by v.fecha, v.docSerieNumero")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin)
+                    .setInteger("par3", codVendedor);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+
+    /**
+     * 0:codCliente, 1:nombresC, 2:codVenta, 3:docSerieNumero, 4:fecha, 5:tipo,
+     * 6:neto, 7:registro, 8:precioReal, 9:montoInicial, 10:cantidadLetras
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @return
+     */
+    public List leer_todos_anulado_fechas_SC(Date fechaInicio, Date fechaFin) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select"
+                    + " dc.codDatosCliente, "
+                    + " dc.persona.nombresC,"
+                    + "	v.codVentas,"
+                    + " v.docSerieNumero,"
+                    + " v.fecha,"
+                    + " v.tipo,"
+                    + "	v.neto,"
+                    + " v.registro,"
+                    + " (select sum( CASE WHEN vd.precioReal>vd.precioVenta THEN (vd.precioVenta*vd.cantidad) ELSE (vd.precioReal*vd.cantidad) END ) from VentasDetalle vd where vd.ventas = v and substring(vd.registro,1,1) = 1 and substring(vd.ventas.registro,1,1) = 1 ),"
+                    + "	(select sum(vc.montoInicial) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
+                    + "	(select sum(vc.cantidadLetras) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1)"
+                    + " from Ventas v, DatosCliente dc"
+                    + " where v.persona = dc.persona"
+                    + "	and substring(v.registro,1,1) = 0"
+                    + "	and v.fecha between :par1 and :par2"
+                    + " order by v.fecha, v.docSerieNumero")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+
+    /**
+     * 0:codCliente, 1:nombresC, 2:codVenta, 3:docSerieNumero, 4:fecha, 5:tipo,
+     * 6:neto, 7:registro, 8:precioReal, 9:montoInicial, 10:cantidadLetras
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @return
+     */
+    public List leer_contado_anulado_fechas_SC(Date fechaInicio, Date fechaFin) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select"
+                    + " dc.codDatosCliente, "
+                    + " dc.persona.nombresC,"
+                    + "	v.codVentas,"
+                    + " v.docSerieNumero,"
+                    + " v.fecha,"
+                    + " v.tipo,"
+                    + "	v.neto,"
+                    + " v.registro,"
+                    + " (select sum( CASE WHEN vd.precioReal>vd.precioVenta THEN (vd.precioVenta*vd.cantidad) ELSE (vd.precioReal*vd.cantidad) END ) from VentasDetalle vd where vd.ventas = v and substring(vd.registro,1,1) = 1 and substring(vd.ventas.registro,1,1) = 1 ),"
+                    + "	(select sum(vc.montoInicial) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
+                    + "	(select sum(vc.cantidadLetras) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1)"
+                    + " from Ventas v, DatosCliente dc"
+                    + " where v.persona = dc.persona"
+                    + "	and substring(v.registro,1,1) = 0"
+                    + "	and v.fecha between :par1 and :par2"
+                    + " and v.tipo = 'contado'"
+                    + " order by v.fecha, v.docSerieNumero")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+
+    /**
+     * 0:codCliente, 1:nombresC, 2:codVenta, 3:docSerieNumero, 4:fecha, 5:tipo,
+     * 6:neto, 7:registro, 8:precioReal, 9:montoInicial, 10:cantidadLetras
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @return
+     */
+    public List leer_credito_anulado_fechas_SC(Date fechaInicio, Date fechaFin) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select"
+                    + " dc.codDatosCliente, "
+                    + " dc.persona.nombresC,"
+                    + "	v.codVentas,"
+                    + " v.docSerieNumero,"
+                    + " v.fecha,"
+                    + " v.tipo,"
+                    + "	v.neto,"
+                    + " v.registro,"
+                    + " (select sum( CASE WHEN vd.precioReal>vd.precioVenta THEN (vd.precioVenta*vd.cantidad) ELSE (vd.precioReal*vd.cantidad) END ) from VentasDetalle vd where vd.ventas = v and substring(vd.registro,1,1) = 1 and substring(vd.ventas.registro,1,1) = 1 ),"
+                    + "	(select sum(vc.montoInicial) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
+                    + "	(select sum(vc.cantidadLetras) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1)"
+                    + " from Ventas v, DatosCliente dc"
+                    + " where v.persona = dc.persona"
+                    + "	and substring(v.registro,1,1) = 0"
+                    + "	and v.fecha between :par1 and :par2"
+                    + " and v.tipo = 'credito'"
+                    + " order by v.fecha, v.docSerieNumero")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Métodos que seran borrados *borrar*. Clic en el signo + de la izquierda para mas detalles.">
+    //borrar
+    public List leer_fechaInicio_fechaFin(Date fechaInicio, Date fechaFin) {//borrar funcion
         setError(null);
         try {
             sesion = HibernateUtil.getSessionFactory().openSession();
@@ -147,13 +694,8 @@ public class cVenta {
         return null;
     }
 
-    /**
-     *
-     * @param fechaInicio
-     * @param fechaFin
-     * @return
-     */
-    public List leer_contado_fechaInicio_fechaFin(Date fechaInicio, Date fechaFin) {
+    //borrar
+    public List leer_contado_fechaInicio_fechaFin(Date fechaInicio, Date fechaFin) {//borrar
         setError(null);
         try {
             sesion = HibernateUtil.getSessionFactory().openSession();
@@ -172,7 +714,8 @@ public class cVenta {
         return null;
     }
 
-    public List leer_credito_fechaInicio_fechaFin(Date fechaInicio, Date fechaFin) {
+    //borrar
+    public List leer_credito_fechaInicio_fechaFin(Date fechaInicio, Date fechaFin) {//borrar
         setError(null);
         try {
             sesion = HibernateUtil.getSessionFactory().openSession();
@@ -191,13 +734,7 @@ public class cVenta {
         return null;
     }
 
-    /**
-     *
-     * @param fechaInicio
-     * @param fechaFin
-     * @param serie
-     * @return
-     */
+    //borrar
     public List leer_fechaInicio_fechaFin_serie(Date fechaInicio, Date fechaFin, String serie) {
         setError(null);
         try {
@@ -218,13 +755,7 @@ public class cVenta {
         return null;
     }
 
-    /**
-     *
-     * @param fechaInicio
-     * @param fechaFin
-     * @param serie
-     * @return
-     */
+    //borrar
     public List leer_contado_fechaInicio_fechaFin_serie(Date fechaInicio, Date fechaFin, String serie) {
         setError(null);
         try {
@@ -246,6 +777,7 @@ public class cVenta {
         return null;
     }
 
+    //borrar
     public List leer_credito_fechaInicio_fechaFin(Date fechaInicio, Date fechaFin, String serie) {
         setError(null);
         try {
@@ -267,10 +799,7 @@ public class cVenta {
         return null;
     }
 
-    /**
-     *
-     * @return
-     */
+    //borrar
     public List leer_fechaInicio_fechaFin_vendedor(Date fechaInicio, Date fechaFin, int codVendedor) {
         setError(null);
         try {
@@ -291,10 +820,7 @@ public class cVenta {
         return null;
     }
 
-    /**
-     *
-     * @return
-     */
+    //borrar
     public List leer_contado_fechaInicio_fechaFin_vendedor(Date fechaInicio, Date fechaFin, int codVendedor) {
         setError(null);
         try {
@@ -316,6 +842,7 @@ public class cVenta {
         return null;
     }
 
+    //borrar
     public List leer_credito_fechaInicio_fechaFin_vendedor(Date fechaInicio, Date fechaFin, int codVendedor) {
         setError(null);
         try {
@@ -337,10 +864,7 @@ public class cVenta {
         return null;
     }
 
-    /**
-     *
-     * @return
-     */
+    //borrar
     public List leer_fechaInicio_fechaFin_anulado(Date fechaInicio, Date fechaFin) {
         setError(null);
         try {
@@ -358,10 +882,7 @@ public class cVenta {
         return null;
     }
 
-    /**
-     *
-     * @return
-     */
+    //borrar
     public List leer_contado_fechaInicio_fechaFin_anulado(Date fechaInicio, Date fechaFin) {
         setError(null);
         try {
@@ -381,6 +902,7 @@ public class cVenta {
         return null;
     }
 
+    //borrar
     public List leer_credito_fechaInicio_fechaFin_anulado(Date fechaInicio, Date fechaFin) {
         setError(null);
         try {
@@ -400,6 +922,7 @@ public class cVenta {
         return null;
     }
 
+    //</editor-fold>
     public List ventas_credito() {
         setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
@@ -616,12 +1139,12 @@ public class cVenta {
     }
 
     /**
-     * 
+     *
      * @param codVenta
      * @param direccion2
      * @param direccion3
      * @param docSerieNumeroGuia
-     * @return 
+     * @return
      */
     public Boolean actualizar_docSerieNumeroGuia(int codVenta, String direccion2, String direccion3, String docSerieNumeroGuia) {
         Boolean est = false;

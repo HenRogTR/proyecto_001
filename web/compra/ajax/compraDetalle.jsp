@@ -47,8 +47,8 @@
             %>
         </div>
     </td>
-    <td class="derecha"><div><%=objcOtros.agregarCerosNumeroFormato(objCD.getPrecioUnitario(), 4)%></div></td>
-    <td class="derecha"><div><%=objcOtros.agregarCerosNumeroFormato(objCD.getPrecioTotal(), 4)%></div></td>
+    <td class="derecha"><div><%=objcOtros.decimalFormato(objCD.getPrecioUnitario(), 4)%></div></td>
+    <td class="derecha"><div><%=objcOtros.decimalFormato(objCD.getPrecioTotal(), 4)%></div></td>
 </tr>
 <%
         }

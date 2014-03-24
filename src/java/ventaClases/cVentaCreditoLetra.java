@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Transaction;
-import org.hibernate.classic.Session;
+import org.hibernate.Session;
 import otros.cUtilitarios;
 import tablas.HibernateUtil;
 import tablas.VentaCreditoLetra;

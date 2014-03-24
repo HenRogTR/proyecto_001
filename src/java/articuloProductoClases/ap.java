@@ -14,18 +14,18 @@ import utilitarios.cOtros;
  *
  * @author Henrri
  */
-public class aaa {
+public class ap {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        cMarca objcMarca = new cMarca();
-        cOtros objcOtros = new cOtros();
-        cArticuloProducto objcArticuloProducto = new cArticuloProducto();
+        List l = new cArticuloProducto().leer_inventario_SC();
 
-        List KSNList = new cKardexSerieNumero().leer_por_codKardexArticuloProducto(1);
-        System.out.println(KSNList);
+        for (Iterator it = l.iterator(); it.hasNext();) {
+            Object dato[] = (Object[]) it.next();
+            System.out.println(dato[0] + " / " + dato[1] + " / " + dato[2] + " / " + dato[3] + " / " + dato[4] + " / " + dato[5] + " / " + dato[6]);
+        }
     }
 }

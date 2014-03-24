@@ -6,8 +6,8 @@ package personaClases;
 
 import java.util.List;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.classic.Session;
 import otros.cUtilitarios;
 import tablas.DatosCliente;
 import tablas.HibernateUtil;
@@ -347,10 +347,12 @@ public class cDatosCliente {
         return l;
     }
 
-    public List leer_empresaConvenio_tipo_ordenadoNombresC(int codEmpresaConvenio, int tipo) {
-        setError(null);
+    public List leer_empresaConvenio_tipo_ordenNombresC(int codEmpresaConvenio, int tipo) {
+        List l = null;
+        Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
+            trns = sesion.beginTransaction();
             Query q = sesion.createQuery("from DatosCliente dc "
                     + "where substring(registro,1,1)=1 "
                     + "and dc.empresaConvenio.codEmpresaConvenio=:codEmpresaConvenio "
@@ -358,17 +360,21 @@ public class cDatosCliente {
                     + "order by dc.persona.nombresC")
                     .setParameter("codEmpresaConvenio", codEmpresaConvenio)
                     .setParameter("tipo", tipo);
-            return q.list();
+            l = q.list();
         } catch (Exception e) {
-            setError(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
         }
-        return null;
+        return l;
     }
 
-    public List leer_empresaConvenio_tipo_condicion_ordenadoNombresC(int codEmpresaConvenio, int tipo, int condicion) {
-        setError(null);
+    public List leer_empresaConvenio_tipo_condicion_ordenNombresC(int codEmpresaConvenio, int tipo, int condicion) {
+        List l = null;
+        Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
+            trns = sesion.beginTransaction();
             Query q = sesion.createQuery("from DatosCliente dc "
                     + "where substring(registro,1,1)=1 "
                     + "and dc.empresaConvenio.codEmpresaConvenio=:codEmpresaConvenio "
@@ -378,11 +384,13 @@ public class cDatosCliente {
                     .setParameter("codEmpresaConvenio", codEmpresaConvenio)
                     .setParameter("tipo", tipo)
                     .setParameter("condicion", condicion);
-            return q.list();
+            l = q.list();
         } catch (Exception e) {
-            setError(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
         }
-        return null;
+        return l;
     }
 
     public List leer_codCobrador_empresaConvenio_ordenNombresC(int codEmpresaConvenio, int codCobrador) {
@@ -427,10 +435,12 @@ public class cDatosCliente {
         return l;
     }
 
-    public List leer_empresaConvenio_tipo_ordenadoDireccion(int codEmpresaConvenio, int tipo) {
-        setError(null);
+    public List leer_empresaConvenio_tipo_ordenDireccion(int codEmpresaConvenio, int tipo) {
+        List l = null;
+        Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
+            trns = sesion.beginTransaction();
             Query q = sesion.createQuery("from DatosCliente dc "
                     + "where substring(registro,1,1)=1 "
                     + "and dc.empresaConvenio.codEmpresaConvenio=:codEmpresaConvenio "
@@ -438,17 +448,21 @@ public class cDatosCliente {
                     + "order by dc.persona.direccion")
                     .setParameter("codEmpresaConvenio", codEmpresaConvenio)
                     .setParameter("tipo", tipo);
-            return q.list();
+            l = q.list();
         } catch (Exception e) {
-            setError(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
         }
-        return null;
+        return l;
     }
 
-    public List leer_empresaConvenio_tipo_condicion_ordenadoDireccion(int codEmpresaConvenio, int tipo, int condicion) {
-        setError(null);
+    public List leer_empresaConvenio_tipo_condicion_ordenDireccion(int codEmpresaConvenio, int tipo, int condicion) {
+        List l = null;
+        Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
+            trns = sesion.beginTransaction();
             Query q = sesion.createQuery("from DatosCliente dc "
                     + "where substring(registro,1,1)=1 "
                     + "and dc.empresaConvenio.codEmpresaConvenio=:codEmpresaConvenio "
@@ -458,11 +472,13 @@ public class cDatosCliente {
                     .setParameter("codEmpresaConvenio", codEmpresaConvenio)
                     .setParameter("tipo", tipo)
                     .setParameter("condicion", condicion);
-            return q.list();
+            l = q.list();
         } catch (Exception e) {
-            setError(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
         }
-        return null;
+        return l;
     }
 
     public List leer_codCobrador_empresaConvenio_ordenDireccion(int codEmpresaConvenio, int codCobrador) {
@@ -619,13 +635,13 @@ public class cDatosCliente {
     public String tipoCliente(int tipo) {
         switch (tipo) {
             case 1:
-                return "Activo";
+                return "ACTIVO";
             case 2:
-                return "4 Sueldos";
+                return "4 SUELDOS";
             case 3:
-                return "Cesante";
+                return "CESANTE";
             case 4:
-                return "Particular";
+                return "PARTICULAR";
         }
         return "";
     }
@@ -633,11 +649,11 @@ public class cDatosCliente {
     public String condicionCliente(int condicion) {
         switch (condicion) {
             case 2:
-                return "Nombrado";
+                return "NOMBRADO";
             case 1:
-                return "Contratado";
+                return "CONTRATADO";
             case 3:
-                return "Otros";
+                return "OTROS";
         }
         return "";
     }

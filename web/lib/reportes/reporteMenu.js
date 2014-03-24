@@ -454,10 +454,10 @@ $(document).ready(function() {
 //        event.preventDefault();
         switch ($(this).attr("id")) {
             case 'aArticulosInventario':
-                $(this).attr("target", direccion).attr("href", "articuloProducto/" + direccion + ".jsp?orden=" + articuloOrden + pCompra + pVenta+sn);
+                $(this).attr("target", direccion).attr("href", "articuloProducto/" + direccion + ".jsp?orden=" + articuloOrden + pCompra + pVenta + sn);
                 break;
             case 'aArticulosInventarioFamilia':
-                $(this).attr("target", direccion + "Familia").attr("href", "articuloProducto/" + direccion + "Familia.jsp?orden=" + articuloOrden + familia + pCompra + pVenta+sn);
+                $(this).attr("target", direccion + "Familia").attr("href", "articuloProducto/" + direccion + "Familia.jsp?orden=" + articuloOrden + familia + pCompra + pVenta + sn);
                 if ($("#codFamilia").val() == "") {
                     alert("Seleccione familia");
                     event.preventDefault();

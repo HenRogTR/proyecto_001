@@ -502,7 +502,7 @@ function fUsuarioIngresar() {
                     $('#menu').removeClass('ocultar');
                     $('.login').val('');
                     $('#dNovedades').dialog('open');
-
+                    fLoginBotonesHabilitar();
                 }
             },
             statusCode: {

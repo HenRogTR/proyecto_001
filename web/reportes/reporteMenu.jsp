@@ -16,8 +16,8 @@
 <%@page import="articuloProductoClases.cFamilia"%>
 <%@page import="java.util.List"%>
 <%@page import="tablas.Usuario"%>
-<%
-    Usuario objUsuario = (Usuario) session.getAttribute("usuario");
+<%    
+Usuario objUsuario = (Usuario) session.getAttribute("usuario");
     if (objUsuario == null) {
         session.removeAttribute("direccion");
         session.setAttribute("direccion", "reportes/reporteMenu.jsp");
@@ -117,7 +117,7 @@
                     cEmpresaConvenio objcEmpresaConvenio = new cEmpresaConvenio();
                     cUtilitarios objcUtilitarios = new cUtilitarios();
                 %>
-                <h3 class="titulo">REPORTES EN GENERAL <a href="../index.jsp" class="sexybutton"><span><span><span class="home">Inicio</span></span></span></a></h3>
+                <h3 class="titulo"><a href="reporte.jsp" class="sexybutton"><span><span><span class="info">Nueva versión</span></span></span></a> REPORTES EN GENERAL <a href="../index.jsp" class="sexybutton"><span><span><span class="home">Inicio</span></span></span></a></h3>
                 <br>
                 <div id="tabs">
                     <ul>
@@ -364,7 +364,7 @@
                                             while (iVendedor.hasNext()) {
                                                 Personal objPersonal = (Personal) iVendedor.next();
                                         %>
-                                        <option value="<%=objPersonal.getPersona().getCodPersona() %>"><%=objPersonal.getPersona().getNombresC() %></option>
+                                        <option value="<%=objPersonal.getPersona().getCodPersona()%>"><%=objPersonal.getPersona().getNombresC()%></option>
                                         <%
                                             }
                                         %>

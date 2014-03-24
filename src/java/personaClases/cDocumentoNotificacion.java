@@ -8,7 +8,7 @@ package personaClases;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Transaction;
-import org.hibernate.classic.Session;
+import org.hibernate.Session;
 import tablas.DocumentoNotificacion;
 import tablas.HibernateUtil;
 

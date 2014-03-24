@@ -150,11 +150,11 @@ public class cOtros {
      */
     public String decimalFormato(Double numero, int decimales) {
         if (numero == null) {
-            numero = 0.0;
+            numero = 0.00;
         }
-        if (numero < 0.009) {
-            return numero.toString();
-        }
+//        if (numero < 0.009) {
+//            return numero.toString();
+//        }
         BigDecimal bd = new BigDecimal(numero);
         bd = bd.setScale(decimales, BigDecimal.ROUND_HALF_UP);//redondea
 

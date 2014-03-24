@@ -17,7 +17,7 @@
     </li>
     <li id="permiso18"><a href="../sVenta?accionVenta=mantenimiento">Módulo de Ventas</a></li>
     <li id="permiso22"><a href="../cobranza/cobranza.jsp">Módulo de Cobranza</a></li>
-    <li id="permiso19"><a href="../reportes/reporteMenu.jsp">Reportes</a></li>
+    <li id="permiso19"><a href="../reportes/reporte.jsp">Reporte</a></li>
     <li><a href="#">Almacen</a>
         <ul>
             <li id="permiso3"><a href="../compra/compraMantenimiento.jsp">Movimientos y Compras</a></li>

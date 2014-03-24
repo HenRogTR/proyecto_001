@@ -5,12 +5,15 @@
 package cobranzaClases;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import otrasTablasClases.cDatosExtras;
 import otros.cUtilitarios;
 import tablas.Cobranza;
+import tablas.DatosExtras;
 import tablas.HibernateUtil;
 
 /**
@@ -108,7 +111,9 @@ public class cCobranza {
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
             trns = sesion.beginTransaction();
-            Cobranza obj = (Cobranza) sesion.createQuery("from Cobranza where (substring(registro,1,1)=1 or substring(registro,1,1)=0) and docSerieNumero=:docSerieNumero")
+            Cobranza obj = (Cobranza) sesion.createQuery("from Cobranza"
+                    + " where (substring(registro,1,1)=1 or substring(registro,1,1)=0)"
+                    + " and docSerieNumero = :docSerieNumero")
                     .setParameter("docSerieNumero", docSerieNumero)
                     .setMaxResults(1) //solo un registro
                     .list() //casteamos lis
@@ -152,14 +157,659 @@ public class cCobranza {
         return cobranzaList;
     }
 
+    //<editor-fold defaultstate="collapsed" desc="Método(s) para reporte cobranza. Clic en el signo + de la izquierda para mas detalles.">
+    //<editor-fold defaultstate="collapsed" desc="Método: leer_documentoCaja_query(String abreviatura, boolean and). Clic en el signo + de la izquierda para mas detalles.">
     /**
-     * Retorna una lista de todas las cobranzas en un periodo dado ordenado
-     * segun fecha de cobranza.
+     * Genera un String con la consulta que se hará para los datos referentes a
+     * los códigos de cobranza.
+     *
+     * @param abreviatura
+     * @param and
+     * @return
+     */
+    public String leer_documentoCaja_query(String abreviatura, boolean and) {
+        String queryString = "";
+        List documentoCajaList = new cDatosExtras().leer_documentoCaja();
+        int contador = 0;
+        for (Iterator it = documentoCajaList.iterator(); it.hasNext();) {
+            DatosExtras objDE = (DatosExtras) it.next();
+            if (contador++ > 0) {
+                queryString += " or";
+            }
+            queryString += " substring(" + abreviatura + ".docSerieNumero,1," + objDE.getLetras().length() + ")='" + objDE.getLetras() + "'";
+        }
+        if (and & queryString.length() > 0) {
+            queryString = " and (" + queryString + ")";
+        }
+        return queryString;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Método: leer_todo_todos_fechas_SC(Date fechaInicio, Date fechaFin). Clic en el signo + de la izquierda para mas detalles.">
+    /**
+     *
+     * 0:codCliente, 1:nombresC, 2:codCobranza, 3:fechaCobranza,
+     * 4:docSerieNumero, 5:total, 6:registro
      *
      * @param fechaInicio
      * @param fechaFin
      * @return
      */
+    public List leer_todo_todos_fechas_SC(Date fechaInicio, Date fechaFin) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select"
+                    + " dc.codDatosCliente"
+                    + " ,dc.persona.nombresC"
+                    + " ,c.codCobranza"
+                    + " ,c.fechaCobranza"
+                    + " ,c.docSerieNumero"
+                    + " ,( c.importe + c.saldo )"
+                    + " ,c.registro"
+                    + " from Cobranza c join c.persona.datosClientes dc"
+                    + "	where (substring(c.registro,1,1) = 0 or substring(c.registro,1,1) = 1)" //hay casos con tipo 2 las cuales son las que deberian eliminarse pero se corservan por seguridad
+                    + leer_documentoCaja_query("c", true)
+                    + "	and c.fechaCobranza between :par1 and :par2"
+                    + " order by c.fechaCobranza asc, c.docSerieNumero asc")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Método: leer_inicial_todos_fechas_SC(Date fechaInicio, Date fechaFin). Clic en el signo + de la izquierda para mas detalles.">
+    /**
+     *
+     * 0:codCliente, 1:nombresC, 2:codCobranza, 3:fechaCobranza,
+     * 4:docSerieNumero, 5:total, 6:registro
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @return
+     */
+    public List leer_inicial_todos_fechas_SC(Date fechaInicio, Date fechaFin) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select"
+                    + " dc.codDatosCliente"
+                    + " ,dc.persona.nombresC"
+                    + " ,c.codCobranza"
+                    + " ,c.fechaCobranza"
+                    + " ,c.docSerieNumero"
+                    + " ,( c.importe + c.saldo )"
+                    + " ,c.registro"
+                    + " from Cobranza c join c.persona.datosClientes dc"
+                    + "	where (substring(c.registro,1,1) = 0 or substring(c.registro,1,1) = 1)" //hay casos con tipo 2 las cuales son las que deberian eliminarse pero se corservan por seguridad
+                    + leer_documentoCaja_query("c", true)
+                    + " and c.observacion like 'PAGO INICIAL%'"
+                    + "	and c.fechaCobranza between :par1 and :par2"
+                    + " order by c.fechaCobranza asc, c.docSerieNumero asc")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Método: leer_cobranza_todos_fechas_SC(Date fechaInicio, Date fechaFin). Clic en el signo + de la izquierda para mas detalles.">
+    /**
+     *
+     * 0:codCliente, 1:nombresC, 2:codCobranza, 3:fechaCobranza,
+     * 4:docSerieNumero, 5:total, 6:registro
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @return
+     */
+    public List leer_cobranza_todos_fechas_SC(Date fechaInicio, Date fechaFin) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select"
+                    + " dc.codDatosCliente"
+                    + " ,dc.persona.nombresC"
+                    + " ,c.codCobranza"
+                    + " ,c.fechaCobranza"
+                    + " ,c.docSerieNumero"
+                    + " ,( c.importe + c.saldo )"
+                    + " ,c.registro"
+                    + " from Cobranza c join c.persona.datosClientes dc"
+                    + "	where (substring(c.registro,1,1) = 0 or substring(c.registro,1,1) = 1)" //hay casos con tipo 2 las cuales son las que deberian eliminarse pero se corservan por seguridad
+                    + leer_documentoCaja_query("c", true)
+                    + " and c.observacion like 'LETRA N%'"
+                    + "	and c.fechaCobranza between :par1 and :par2"
+                    + " order by c.fechaCobranza asc, c.docSerieNumero asc")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Método: leer_anticipo_todos_fechas_SC(Date fechaInicio, Date fechaFin). Clic en el signo + de la izquierda para mas detalles.">
+    /**
+     *
+     * 0:codCliente, 1:nombresC, 2:codCobranza, 3:fechaCobranza,
+     * 4:docSerieNumero, 5:total, 6:registro
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @return
+     */
+    public List leer_anticipo_todos_fechas_SC(Date fechaInicio, Date fechaFin) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select"
+                    + " dc.codDatosCliente"
+                    + " ,dc.persona.nombresC"
+                    + " ,c.codCobranza"
+                    + " ,c.fechaCobranza"
+                    + " ,c.docSerieNumero"
+                    + " ,( c.importe + c.saldo )"
+                    + " ,c.registro"
+                    + " from Cobranza c join c.persona.datosClientes dc"
+                    + "	where (substring(c.registro,1,1) = 0 or substring(c.registro,1,1) = 1)" //hay casos con tipo 2 las cuales son las que deberian eliminarse pero se corservan por seguridad
+                    + leer_documentoCaja_query("c", true)
+                    + " and c.observacion like 'ANTICIPO%'"
+                    + "	and c.fechaCobranza between :par1 and :par2"
+                    + " order by c.fechaCobranza asc, c.docSerieNumero asc")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Método: leer_todo_cobrador_fechas_SC(Date fechaInicio, Date fechaFin, int codCobrador). Clic en el signo + de la izquierda para mas detalles.">
+    /**
+     *
+     * 0:codCliente, 1:nombresC, 2:codCobranza, 3:fechaCobranza,
+     * 4:docSerieNumero, 5:total, 6:registro
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @param codCobrador
+     * @return
+     */
+    public List leer_todo_cobrador_fechas_SC(Date fechaInicio, Date fechaFin, int codCobrador) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select"
+                    + " dc.codDatosCliente"
+                    + " ,dc.persona.nombresC"
+                    + " ,c.codCobranza"
+                    + " ,c.fechaCobranza"
+                    + " ,c.docSerieNumero"
+                    + " ,( c.importe + c.saldo )"
+                    + " ,c.registro"
+                    + " from Cobranza c join c.persona.datosClientes dc"
+                    + "	where (substring(c.registro,1,1) = 0 or substring(c.registro,1,1) = 1)" //hay casos con tipo 2 las cuales son las que deberian eliminarse pero se corservan por seguridad
+                    + leer_documentoCaja_query("c", true)
+                    + "	and c.fechaCobranza between :par1 and :par2"
+                    + " and dc.codCobrador = :par3"
+                    + " order by c.fechaCobranza asc, c.docSerieNumero asc")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin)
+                    .setInteger("par3", codCobrador);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Método: leer_inicial_cobrador_fechas_SC(Date fechaInicio, Date fechaFin, int codCobrador). Clic en el signo + de la izquierda para mas detalles.">
+    /**
+     *
+     * 0:codCliente, 1:nombresC, 2:codCobranza, 3:fechaCobranza,
+     * 4:docSerieNumero, 5:total, 6:registro
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @param codCobrador
+     * @return
+     */
+    public List leer_inicial_cobrador_fechas_SC(Date fechaInicio, Date fechaFin, int codCobrador) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select"
+                    + " dc.codDatosCliente"
+                    + " ,dc.persona.nombresC"
+                    + " ,c.codCobranza"
+                    + " ,c.fechaCobranza"
+                    + " ,c.docSerieNumero"
+                    + " ,( c.importe + c.saldo )"
+                    + " ,c.registro"
+                    + " from Cobranza c join c.persona.datosClientes dc"
+                    + "	where (substring(c.registro,1,1) = 0 or substring(c.registro,1,1) = 1)" //hay casos con tipo 2 las cuales son las que deberian eliminarse pero se corservan por seguridad
+                    + leer_documentoCaja_query("c", true)
+                    + " and c.observacion like 'PAGO INICIAL%'"
+                    + "	and c.fechaCobranza between :par1 and :par2"
+                    + " and dc.codCobrador = :par3"
+                    + " order by c.fechaCobranza asc, c.docSerieNumero asc")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin)
+                    .setInteger("par3", codCobrador);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Método: leer_cobranza_cobrador_fechas_SC(Date fechaInicio, Date fechaFin, int codCobrador). Clic en el signo + de la izquierda para mas detalles.">
+    /**
+     *
+     * 0:codCliente, 1:nombresC, 2:codCobranza, 3:fechaCobranza,
+     * 4:docSerieNumero, 5:total, 6:registro
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @param codCobrador
+     * @return
+     */
+    public List leer_cobranza_cobrador_fechas_SC(Date fechaInicio, Date fechaFin, int codCobrador) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select"
+                    + " dc.codDatosCliente"
+                    + " ,dc.persona.nombresC"
+                    + " ,c.codCobranza"
+                    + " ,c.fechaCobranza"
+                    + " ,c.docSerieNumero"
+                    + " ,( c.importe + c.saldo )"
+                    + " ,c.registro"
+                    + " from Cobranza c join c.persona.datosClientes dc"
+                    + "	where (substring(c.registro,1,1) = 0 or substring(c.registro,1,1) = 1)" //hay casos con tipo 2 las cuales son las que deberian eliminarse pero se corservan por seguridad
+                    + leer_documentoCaja_query("c", true)
+                    + " and c.observacion like 'PAGO INICIAL%'"
+                    + "	and c.fechaCobranza between :par1 and :par2"
+                    + " and dc.codCobrador = :par3"
+                    + " order by c.fechaCobranza asc, c.docSerieNumero asc")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin)
+                    .setInteger("par3", codCobrador);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Método: leer_anticipo_cobrador_fechas_SC(Date fechaInicio, Date fechaFin, int codCobrador). Clic en el signo + de la izquierda para mas detalles.">
+    /**
+     *
+     * 0:codCliente, 1:nombresC, 2:codCobranza, 3:fechaCobranza,
+     * 4:docSerieNumero, 5:total, 6:registro
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @param codCobrador
+     * @return
+     */
+    public List leer_anticipo_cobrador_fechas_SC(Date fechaInicio, Date fechaFin, int codCobrador) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select"
+                    + " dc.codDatosCliente"
+                    + " ,dc.persona.nombresC"
+                    + " ,c.codCobranza"
+                    + " ,c.fechaCobranza"
+                    + " ,c.docSerieNumero"
+                    + " ,( c.importe + c.saldo )"
+                    + " ,c.registro"
+                    + " from Cobranza c join c.persona.datosClientes dc"
+                    + "	where (substring(c.registro,1,1) = 0 or substring(c.registro,1,1) = 1)" //hay casos con tipo 2 las cuales son las que deberian eliminarse pero se corservan por seguridad
+                    + leer_documentoCaja_query("c", true)
+                    + " and c.observacion like 'PAGO INICIAL%'"
+                    + "	and c.fechaCobranza between :par1 and :par2"
+                    + " and dc.codCobrador = :par3"
+                    + " order by c.fechaCobranza asc, c.docSerieNumero asc")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin)
+                    .setInteger("par3", codCobrador);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Método: leer_todo_documento_todos_fechas_SC(Date fechaInicio, Date fechaFin, String tipoSerie). Clic en el signo + de la izquierda para mas detalles.">
+    /**
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @param tipoSerie
+     * @return
+     */
+    public List leer_todo_documento_todos_fechas_SC(Date fechaInicio, Date fechaFin, String tipoSerie) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select"
+                    + " dc.codDatosCliente"
+                    + " ,dc.persona.nombresC"
+                    + " ,c.codCobranza"
+                    + " ,c.fechaCobranza"
+                    + " ,c.docSerieNumero"
+                    + " ,( c.importe + c.saldo )"
+                    + " ,c.registro"
+                    + " from Cobranza c join c.persona.datosClientes dc"
+                    + "	where (substring(c.registro,1,1) = 0 or substring(c.registro,1,1) = 1)" //hay casos con tipo 2 las cuales son las que deberian eliminarse pero se corservan por seguridad
+                    + "	and c.fechaCobranza between :par1 and :par2"
+                    + " and c.docSerieNumero like :par3"
+                    + " order by c.fechaCobranza asc, c.docSerieNumero asc")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin).
+                    setString("par3", tipoSerie + "%");
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Método: leer_todo_documento_cobrador_fechas_SC(Date fechaInicio, Date fechaFin, String tipoSerie, int codcobrador). Clic en el signo + de la izquierda para mas detalles.">
+    /**
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @param tipoSerie
+     * @param codcobrador
+     * @return
+     */
+    public List leer_todo_documento_cobrador_fechas_SC(Date fechaInicio, Date fechaFin, String tipoSerie, int codcobrador) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select"
+                    + " dc.codDatosCliente"
+                    + " ,dc.persona.nombresC"
+                    + " ,c.codCobranza"
+                    + " ,c.fechaCobranza"
+                    + " ,c.docSerieNumero"
+                    + " ,( c.importe + c.saldo )"
+                    + " ,c.registro"
+                    + " from Cobranza c join c.persona.datosClientes dc"
+                    + "	where (substring(c.registro,1,1) = 0 or substring(c.registro,1,1) = 1)" //hay casos con tipo 2 las cuales son las que deberian eliminarse pero se corservan por seguridad
+                    + "	and c.fechaCobranza between :par1 and :par2"
+                    + " and c.docSerieNumero like :par3"
+                    + " and dc.codCobrador = :par4"
+                    + " order by c.fechaCobranza asc, c.docSerieNumero asc")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin).
+                    setString("par3", tipoSerie + "%")
+                    .setInteger("par4", codcobrador);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+    //</editor-fold> 
+
+    //<editor-fold defaultstate="collapsed" desc="Método: leer_todo_anulado_todos_fechas_SC(Date fechaInicio, Date fechaFin). Clic en el signo + de la izquierda para mas detalles.">
+    /**
+     *
+     * 0:codCliente, 1:nombresC, 2:codCobranza, 3:fechaCobranza,
+     * 4:docSerieNumero, 5:total, 6:registro
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @return
+     */
+    public List leer_todo_anulado_todos_fechas_SC(Date fechaInicio, Date fechaFin) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select"
+                    + " dc.codDatosCliente"
+                    + " ,dc.persona.nombresC"
+                    + " ,c.codCobranza"
+                    + " ,c.fechaCobranza"
+                    + " ,c.docSerieNumero"
+                    + " ,( c.importe + c.saldo )"
+                    + " ,c.registro"
+                    + " from Cobranza c join c.persona.datosClientes dc"
+                    + "	where substring(c.registro,1,1) = 0" //hay casos con tipo 2 las cuales son las que deberian eliminarse pero se corservan por seguridad
+                    + leer_documentoCaja_query("c", true)
+                    + "	and c.fechaCobranza between :par1 and :par2"
+                    + " order by c.fechaCobranza asc, c.docSerieNumero asc")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Método: leer_todo_anulado_cobrador_fechas_SC(Date fechaInicio, Date fechaFin, int codCobrador). Clic en el signo + de la izquierda para mas detalles.">
+    /**
+     *
+     * 0:codCliente, 1:nombresC, 2:codCobranza, 3:fechaCobranza,
+     * 4:docSerieNumero, 5:total, 6:registro
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @param codCobrador
+     * @return
+     */
+    public List leer_todo_anulado_cobrador_fechas_SC(Date fechaInicio, Date fechaFin, int codCobrador) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select"
+                    + " dc.codDatosCliente"
+                    + " ,dc.persona.nombresC"
+                    + " ,c.codCobranza"
+                    + " ,c.fechaCobranza"
+                    + " ,c.docSerieNumero"
+                    + " ,( c.importe + c.saldo )"
+                    + " ,c.registro"
+                    + " from Cobranza c join c.persona.datosClientes dc"
+                    + "	where substring(c.registro,1,1) = 0" //hay casos con tipo 2 las cuales son las que deberian eliminarse pero se corservan por seguridad
+                    + leer_documentoCaja_query("c", true)
+                    + "	and c.fechaCobranza between :par1 and :par2"
+                    + " and dc.codCobrador = :par3"
+                    + " order by c.fechaCobranza asc, c.docSerieNumero asc")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin)
+                    .setInteger("par3", codCobrador);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Método: leer_cobranzaPagos_todos(Date fechaInicio, Date fechaFin). Clic en el signo + de la izquierda para mas detalles.">
+    /**
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @return
+     */
+    public List leer_cobranzaPagos_todos(Date fechaInicio, Date fechaFin) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select"
+                    + " dc.codDatosCliente"
+                    + " ,dc.persona.nombresC"
+                    + " ,c.codCobranza"
+                    + " ,c.fechaCobranza"
+                    + " ,c.docSerieNumero"
+                    + " ,( c.importe + c.saldo )"
+                    + " ,c.registro"
+                    + " ,c.observacion"
+                    + " from Cobranza c join c.persona.datosClientes dc"
+                    + "	where (substring(c.registro,1,1) = 0 or substring(c.registro,1,1) = 1)" //hay casos con tipo 2 las cuales son las que deberian eliminarse pero se corservan por seguridad
+                    + " and c.docSerieNumero not like 'X%'"
+                    + "	and c.fechaCobranza between :par1 and :par2"
+                    + " order by dc.persona.nombresC, dc.codDatosCliente, c.fechaCobranza")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Método: leer_cobranzaPagos_cobrador(Date fechaInicio, Date fechaFin, int codCobrador). Clic en el signo + de la izquierda para mas detalles.">
+    /**
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @param codCobrador
+     * @return
+     */
+    public List leer_cobranzaPagos_cobrador(Date fechaInicio, Date fechaFin, int codCobrador) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select"
+                    + " dc.codDatosCliente"
+                    + " ,dc.persona.nombresC"
+                    + " ,c.codCobranza"
+                    + " ,c.fechaCobranza"
+                    + " ,c.docSerieNumero"
+                    + " ,( c.importe + c.saldo )"
+                    + " ,c.registro"
+                    + " from Cobranza c join c.persona.datosClientes dc"
+                    + "	where (substring(c.registro,1,1) = 0 or substring(c.registro,1,1) = 1)" //hay casos con tipo 2 las cuales son las que deberian eliminarse pero se corservan por seguridad
+                    + " and c.docSerieNumero not like 'X%'"
+                    + "	and c.fechaCobranza between :par1 and :par2"
+                    + " and dc.codCobrador = :par3"
+                    + " order by dc.persona.nombresC, dc.codDatosCliente, c.fechaCobranza")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin)
+                    .setInteger("par3", codCobrador);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+    //</editor-fold>
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Método(s) para borrar *borrar*. Clic en el signo + de la izquierda para mas detalles.">
+    //*borrar*
     public List leer_todo_fechaInicio_fechaFin(Date fechaInicio, Date fechaFin) {
         setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
@@ -178,6 +828,7 @@ public class cCobranza {
         return null;
     }
 
+    //*borrar*
     public List leer_todo_fechaInicio_fechaFin_codCobrador(Date fechaInicio, Date fechaFin, int codCobrador) {
         setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
@@ -200,14 +851,7 @@ public class cCobranza {
         return null;
     }
 
-    /**
-     * Retorna una lista de todas las cobranzas en un periodo dado ordenado
-     * segun fecha de cobranza.
-     *
-     * @param fechaInicio
-     * @param fechaFin
-     * @return
-     */
+    // *borrar*
     public List leer_iniciales_fechaInicio_fechaFin(Date fechaInicio, Date fechaFin) {
         setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
@@ -227,6 +871,7 @@ public class cCobranza {
         return null;
     }
 
+    // *borrar*
     public List leer_iniciales_fechaInicio_fechaFin_codCobrador(Date fechaInicio, Date fechaFin, int codCobrador) {
         setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
@@ -250,14 +895,7 @@ public class cCobranza {
         return null;
     }
 
-    /**
-     * Retorna una lista de todas las cobranzas en un periodo dado ordenado
-     * segun fecha de cobranza.
-     *
-     * @param fechaInicio
-     * @param fechaFin
-     * @return
-     */
+    //*borrar
     public List leer_cobranza_fechaInicio_fechaFin(Date fechaInicio, Date fechaFin) {
         setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
@@ -277,6 +915,7 @@ public class cCobranza {
         return null;
     }
 
+    //*borrar*
     public List leer_cobranza_fechaInicio_fechaFin_codCobrador(Date fechaInicio, Date fechaFin, int codCobrador) {
         setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
@@ -300,14 +939,7 @@ public class cCobranza {
         return null;
     }
 
-    /**
-     * Retorna una lista de todas las cobranzas en un periodo dado ordenado
-     * segun fecha de cobranza.
-     *
-     * @param fechaInicio
-     * @param fechaFin
-     * @return
-     */
+    //*borrar*
     public List leer_anticipo_fechaInicio_fechaFin(Date fechaInicio, Date fechaFin) {
         setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
@@ -327,6 +959,7 @@ public class cCobranza {
         return null;
     }
 
+    //*borrar*
     public List leer_anticipo_fechaInicio_fechaFin_codCobrador(Date fechaInicio, Date fechaFin, int codCobrador) {
         setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
@@ -350,14 +983,7 @@ public class cCobranza {
         return null;
     }
 
-    /**
-     * Retorna una lista de todas las cobranzas en un periodo dado ordenado
-     * segun fecha de cobranza.
-     *
-     * @param fechaInicio
-     * @param fechaFin
-     * @return
-     */
+    //*borrar
     public List leer_serie_fechaInicio_fechaFin(Date fechaInicio, Date fechaFin, String serie) {
         setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
@@ -377,6 +1003,7 @@ public class cCobranza {
         return null;
     }
 
+    //*borrar*
     public List leer_serie_fechaInicio_fechaFin_codCobrador(Date fechaInicio, Date fechaFin, String serie, int codCobrador) {
         setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
@@ -400,6 +1027,7 @@ public class cCobranza {
         return null;
     }
 
+    //*borrar
     public List leer_anulados_fechaInicio_fechaFin(Date fechaInicio, Date fechaFin) {
         setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
@@ -418,6 +1046,7 @@ public class cCobranza {
         return null;
     }
 
+    //*borrar
     public List leer_anulados_fechaInicio_fechaFin_codCobrador(Date fechaInicio, Date fechaFin, int codCobrador) {
         setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
@@ -438,6 +1067,7 @@ public class cCobranza {
         }
         return null;
     }
+    //</editor-fold>    
 
     public List leer_cobranzaGeneral(Date fechaInicio, Date fechaFin) {
         setError(null);
@@ -447,7 +1077,7 @@ public class cCobranza {
                     + "where c.fechaCobranza>=:fechaInicio "
                     + "and c.fechaCobranza<=:fechaFin "
                     + "and (substring(c.registro,1,1)=1 or substring(c.registro,1,1)=0) "
-                    + "and c.docSerieNumero not like 'XXX%' "
+                    + "and c.docSerieNumero not like 'X%' "
                     + "order by c.persona.nombresC, c.fechaCobranza")
                     .setParameter("fechaInicio", fechaInicio)
                     .setParameter("fechaFin", fechaFin);
@@ -467,7 +1097,7 @@ public class cCobranza {
                     + "and c.fechaCobranza>=:fechaInicio "
                     + "and c.fechaCobranza<=:fechaFin "
                     + "and (substring(c.registro,1,1)=1 or substring(c.registro,1,1)=0) "
-                    + "and c.docSerieNumero not like 'XXX%' "
+                    + "and c.docSerieNumero not like 'X%' "
                     + "and dc.codCobrador=:codCobrador "
                     + "order by c.persona.nombresC, c.fechaCobranza")
                     .setParameter("fechaInicio", fechaInicio)

@@ -7,6 +7,7 @@ package articuloProductoClases;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import otros.cUtilitarios;
 import tablas.Familia;
 import tablas.HibernateUtil;
@@ -30,6 +31,7 @@ public class cFamilia {
 
     public cFamilia() {
         this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
+        this.error = null;
     }
 
     public int Crear(Familia objFamilia) {
@@ -70,6 +72,31 @@ public class cFamilia {
             setError(e.getMessage());
         }
         return null;
+    }
+
+    /**
+     *
+     * @param familia
+     * @return
+     */
+    public List leer_coincidencia_SC(String familia) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("from Familia f"
+                    + " where f.familia like :par1")
+                    .setString("par1", "%" + familia.replace(" ", "%") + "%");
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
     }
 
     public Familia leer_cod(int codFamilia) {

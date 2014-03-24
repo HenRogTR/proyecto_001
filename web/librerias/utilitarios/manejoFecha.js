@@ -61,7 +61,7 @@ function fSumarMes(value, nMes) {
  * @param {integer} nAnio
  * @returns {Date}
  */
-function fSumarAnio(ovalue, nAnio) {
+function fSumarAnio(value, nAnio) {
     var adata = fDateAString(value).split('/');
     var dd = parseInt(adata[0], 10);
     var mm = parseInt(adata[1], 10);
@@ -94,3 +94,17 @@ function fValidarFecha(value) {
     }
     return check;
 }
+
+/**
+ * 
+ * @param {String} fecha1
+ * @param {String} fecha2
+ * @returns {int}
+ */
+function fComparaFecha(fecha1, fecha2) {
+    var f1 = fStringADate(fecha1).getTime();
+    var f2 = fStringADate(fecha2).getTime();
+    return (f1 < f2 ? -1 : (f1 == f2 ? 0 : 1));
+
+}
+;

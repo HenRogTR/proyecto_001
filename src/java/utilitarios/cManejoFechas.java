@@ -52,6 +52,22 @@ public class cManejoFechas {
     }
 
     /**
+     * Convierte un tipo date a un string de la forma dd-MM-YYYY si en caso es
+     * <b>null</b> devolvera vacio.
+     *
+     * @param fecha
+     * @return
+     */
+    public String DateAString2(Date fecha) {
+        try {
+            SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy");
+            return formato.format(fecha);
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    /**
      *
      * @param fecha
      * @return
@@ -66,7 +82,7 @@ public class cManejoFechas {
 
     public String fechaHoraAString(Date fecha) {
         try {
-            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/YYYY HH:mm:ss");
+            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
             return formato.format(fecha);
         } catch (Exception e) {
             return "";

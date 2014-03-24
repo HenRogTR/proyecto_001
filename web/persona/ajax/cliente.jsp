@@ -95,9 +95,9 @@
         if (objDatosCliente.getTipoCliente().equals(1)) {
             PNatural objNatural = new PNatural();
             for (PNatural objNaturalTemp : objDatosCliente.getPersona().getPNaturals()) {
-                if (objNaturalTemp.getRegistro().substring(0, 1).equals("1")) {
+//                if (objNaturalTemp.getRegistro().substring(0, 1).equals("1")) {
                     objNatural = objNaturalTemp;
-                }
+//                }
             }
             session.removeAttribute("codDatoClienteNaturalMantenimiento");
             session.setAttribute("codDatoClienteNaturalMantenimiento", objDatosCliente.getCodDatosCliente());

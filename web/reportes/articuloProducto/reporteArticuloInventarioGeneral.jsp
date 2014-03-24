@@ -88,6 +88,7 @@
                                     for (CompraDetalle objCompraDetalle : objArticuloProducto.getCompraDetalles()) {
                                         if (objCompraDetalle.getCodCompraDetalle() > b) {
                                             objCompraDetalleAux = objCompraDetalle;
+                                            b = objCompraDetalle.getCodCompraDetalle();
                                         }
                                     }
                             %>

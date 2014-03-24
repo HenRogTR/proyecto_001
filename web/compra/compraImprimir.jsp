@@ -4,16 +4,16 @@
     Author     : Henrri
 --%>
 
+
+<%@page import="java.util.List"%>
+<%@page import="tablas.CompraSerieNumero"%>
+<%@page import="tablas.CompraDetalle"%>
+<%@page import="java.util.Iterator"%>
 <%@page import="utilitarios.cOtros"%>
 <%@page import="utilitarios.cManejoFechas"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="tablas.CompraSerieNumero"%>
-<%@page import="otros.cNumeroLetra"%>
-<%@page import="tablas.CompraDetalle"%>
 <%@page import="compraClases.cCompraDetalle"%>
-<%@page import="java.util.List"%>
-<%@page import="tablas.Compra"%>
 <%@page import="compraClases.cCompra"%>
+<%@page import="tablas.Compra"%>
 <%
     int codCompra = 0;
     Compra objCompra = null;
@@ -26,10 +26,14 @@
             return;
         }
         CDList = new cCompraDetalle().leer_compraDetalle_codCompra(codCompra);
+        if (CDList == null) {
+            out.print("Compra no encontrada.");
+            return;
+        }
     } catch (Exception e) {
         out.print("Error en parámetros.");
         return;
-    }    
+    }
     cManejoFechas objcManejoFechas = new cManejoFechas();
     cOtros objcOtros = new cOtros();
 %>

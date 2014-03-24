@@ -102,7 +102,275 @@ public class cArticuloProducto {
         }
         return null;
     }
-//************************************
+
+    /**
+     *
+     * @param term
+     * @return
+     */
+    public List leer_SC(String term) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("from ArticuloProducto ap "
+                    + " where ap.descripcion like :term"
+                    + " and substring(ap.registro,1,1)=1"
+                    + " order by ap.descripcion").
+                    setParameter("term", "%" + term.replace(" ", "%") + "%");
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public List leer_inventario_SC() {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select ap.codArticuloProducto,"
+                    + " ap.descripcion"
+                    + ", ap.usarSerieNumero"
+                    + ", (select cd.precioUnitario from CompraDetalle cd"
+                    + "     where cd = ( select max(cd1.codCompraDetalle) "
+                    + "        from CompraDetalle cd1 where cd1.articuloProducto = ap and substring(cd1.registro,1,1) = '1' and substring(cd1.compra.registro,1,1) = '1' )"
+                    + "   )"
+                    + ", ap.precioVenta"
+                    + ", (select kap.codKardexArticuloProducto from KardexArticuloProducto kap"
+                    + "     where kap = ( select max(kap1.codKardexArticuloProducto) "
+                    + "        from KardexArticuloProducto kap1 where kap1.articuloProducto = ap and substring(kap1.registro,1,1) = '1' ))"
+                    + ", (select kap.stock from KardexArticuloProducto kap"
+                    + "     where kap = ( select max(kap1.codKardexArticuloProducto) "
+                    + "        from KardexArticuloProducto kap1 where kap1.articuloProducto = ap and substring(kap1.registro,1,1) = '1' ))"
+                    + " from ArticuloProducto ap"
+                    + " where substring(ap.registro,1,1) = 1");
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public List leer_inventario_ordenDescripcion_SC() {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select ap.codArticuloProducto,"
+                    + " ap.descripcion"
+                    + ", ap.usarSerieNumero"
+                    + ", (select cd.precioUnitario from CompraDetalle cd"
+                    + "     where cd = ( select max(cd1.codCompraDetalle) "
+                    + "        from CompraDetalle cd1 where cd1.articuloProducto = ap and substring(cd1.registro,1,1) = '1' and substring(cd1.compra.registro,1,1) = '1' )"
+                    + "   )"
+                    + ", ap.precioVenta"
+                    + ", (select kap.codKardexArticuloProducto from KardexArticuloProducto kap"
+                    + "     where kap = ( select max(kap1.codKardexArticuloProducto) "
+                    + "        from KardexArticuloProducto kap1 where kap1.articuloProducto = ap and substring(kap1.registro,1,1) = '1' ))"
+                    + ", (select kap.stock from KardexArticuloProducto kap"
+                    + "     where kap = ( select max(kap1.codKardexArticuloProducto) "
+                    + "        from KardexArticuloProducto kap1 where kap1.articuloProducto = ap and substring(kap1.registro,1,1) = '1' ))"
+                    + " from ArticuloProducto ap"
+                    + " where substring(ap.registro,1,1) = 1"
+                    + " order by ap.descripcion");
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+
+    /**
+     *
+     * @param codFamilia
+     * @return
+     */
+    public List leer_inventario_familia_SC(int codFamilia) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select ap.codArticuloProducto,"
+                    + " ap.descripcion"
+                    + ", ap.usarSerieNumero"
+                    + ", (select cd.precioUnitario from CompraDetalle cd"
+                    + "     where cd = ( select max(cd1.codCompraDetalle) "
+                    + "        from CompraDetalle cd1 where cd1.articuloProducto = ap and substring(cd1.registro,1,1) = '1' and substring(cd1.compra.registro,1,1) = '1' )"
+                    + "   )"
+                    + ", ap.precioVenta"
+                    + ", (select kap.codKardexArticuloProducto from KardexArticuloProducto kap"
+                    + "     where kap = ( select max(kap1.codKardexArticuloProducto) "
+                    + "        from KardexArticuloProducto kap1 where kap1.articuloProducto = ap and substring(kap1.registro,1,1) = '1' ))"
+                    + ", (select kap.stock from KardexArticuloProducto kap"
+                    + "     where kap = ( select max(kap1.codKardexArticuloProducto) "
+                    + "        from KardexArticuloProducto kap1 where kap1.articuloProducto = ap and substring(kap1.registro,1,1) = '1' ))"
+                    + " from ArticuloProducto ap"
+                    + " where substring(ap.registro,1,1) = 1"
+                    + " and ap.familia = :par1")
+                    .setInteger("par1", codFamilia);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+
+    /**
+     *
+     * @param codFamilia
+     * @return
+     */
+    public List leer_inventario_familia_ordenDescripcion_SC(int codFamilia) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select ap.codArticuloProducto,"
+                    + " ap.descripcion"
+                    + ", ap.usarSerieNumero"
+                    + ", (select cd.precioUnitario from CompraDetalle cd"
+                    + "     where cd = ( select max(cd1.codCompraDetalle) "
+                    + "        from CompraDetalle cd1 where cd1.articuloProducto = ap and substring(cd1.registro,1,1) = '1' and substring(cd1.compra.registro,1,1) = '1' )"
+                    + "   )"
+                    + ", ap.precioVenta"
+                    + ", (select kap.codKardexArticuloProducto from KardexArticuloProducto kap"
+                    + "     where kap = ( select max(kap1.codKardexArticuloProducto) "
+                    + "        from KardexArticuloProducto kap1 where kap1.articuloProducto = ap and substring(kap1.registro,1,1) = '1' ))"
+                    + ", (select kap.stock from KardexArticuloProducto kap"
+                    + "     where kap = ( select max(kap1.codKardexArticuloProducto) "
+                    + "        from KardexArticuloProducto kap1 where kap1.articuloProducto = ap and substring(kap1.registro,1,1) = '1' ))"
+                    + " from ArticuloProducto ap"
+                    + " where substring(ap.registro,1,1) = 1"
+                    + " and ap.familia = :par1"
+                    + " order by ap.descripcion")
+                    .setInteger("par1", codFamilia);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+
+    /**
+     *
+     * @param codFamilia
+     * @param codMarca
+     * @return
+     */
+    public List leer_inventario_familia_marca_SC(int codFamilia, int codMarca) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select ap.codArticuloProducto,"
+                    + " ap.descripcion"
+                    + ", ap.usarSerieNumero"
+                    + ", (select cd.precioUnitario from CompraDetalle cd"
+                    + "     where cd = ( select max(cd1.codCompraDetalle) "
+                    + "        from CompraDetalle cd1 where cd1.articuloProducto = ap and substring(cd1.registro,1,1) = '1' and substring(cd1.compra.registro,1,1) = '1' )"
+                    + "   )"
+                    + ", ap.precioVenta"
+                    + ", (select kap.codKardexArticuloProducto from KardexArticuloProducto kap"
+                    + "     where kap = ( select max(kap1.codKardexArticuloProducto) "
+                    + "        from KardexArticuloProducto kap1 where kap1.articuloProducto = ap and substring(kap1.registro,1,1) = '1' ))"
+                    + ", (select kap.stock from KardexArticuloProducto kap"
+                    + "     where kap = ( select max(kap1.codKardexArticuloProducto) "
+                    + "        from KardexArticuloProducto kap1 where kap1.articuloProducto = ap and substring(kap1.registro,1,1) = '1' ))"
+                    + " from ArticuloProducto ap"
+                    + " where substring(ap.registro,1,1) = 1"
+                    + " and ap.familia = :par1"
+                    + " and ap.marca = :par2")
+                    .setInteger("par1", codFamilia)
+                    .setInteger("par2", codMarca);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+
+    /**
+     *
+     * @param codFamilia
+     * @param codMarca
+     * @return
+     */
+    public List leer_inventario_familia_marca_ordenDescripcion_SC(int codFamilia, int codMarca) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select ap.codArticuloProducto,"
+                    + " ap.descripcion"
+                    + ", ap.usarSerieNumero"
+                    + ", (select cd.precioUnitario from CompraDetalle cd"
+                    + "     where cd = ( select max(cd1.codCompraDetalle) "
+                    + "        from CompraDetalle cd1 where cd1.articuloProducto = ap and substring(cd1.registro,1,1) = '1' and substring(cd1.compra.registro,1,1) = '1' )"
+                    + "   )"
+                    + ", ap.precioVenta"
+                    + ", (select kap.codKardexArticuloProducto from KardexArticuloProducto kap"
+                    + "     where kap = ( select max(kap1.codKardexArticuloProducto) "
+                    + "        from KardexArticuloProducto kap1 where kap1.articuloProducto = ap and substring(kap1.registro,1,1) = '1' ))"
+                    + ", (select kap.stock from KardexArticuloProducto kap"
+                    + "     where kap = ( select max(kap1.codKardexArticuloProducto) "
+                    + "        from KardexArticuloProducto kap1 where kap1.articuloProducto = ap and substring(kap1.registro,1,1) = '1' ))"
+                    + " from ArticuloProducto ap"
+                    + " where substring(ap.registro,1,1) = 1"
+                    + " and ap.familia = :par1"
+                    + " and ap.marca = :par2"
+                    + " order by ap.descripcion")
+                    .setInteger("par1", codFamilia)
+                    .setInteger("par2", codMarca);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
 
     public List leer() {
         setError(null);

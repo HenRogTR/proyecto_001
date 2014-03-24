@@ -17,16 +17,16 @@
     }
     cArticuloProducto objcArticuloProducto = new cArticuloProducto();
     cOtros objcOtros = new cOtros();
-    List lAP = objcArticuloProducto.leer(term);
-    Iterator iAP = lAP.iterator();
+    List aPList = objcArticuloProducto.leer_SC(term);
     int contador = 0;
     out.print("[");
-    while (iAP.hasNext()) {
-        ArticuloProducto objAP = (ArticuloProducto) iAP.next();
+    for (Iterator it = aPList.iterator(); it.hasNext();) {
+        ArticuloProducto objAP = (ArticuloProducto) it.next();
         if (contador++ > 0) {
             out.println(", ");
         }
-        out.print("{\"label\" : \"" + objcOtros.replace_comillas_comillasD_barraInvertida(objAP.getDescripcion()) + "\",\"value\":{"
+        out.print("{\"label\" : \"" + objcOtros.replace_comillas_comillasD_barraInvertida(objAP.getDescripcion()) + "\""
+                + ",\"value\":{"
                 + "\"codArticuloProducto\" : \"" + objcOtros.agregarCeros_int(objAP.getCodArticuloProducto(), 8) + "\""
                 + ",\"descripcion\":\"" + objcOtros.replace_comillas_comillasD_barraInvertida(objAP.getDescripcion()) + "\""
                 + "} }");

@@ -59,6 +59,62 @@
 
 <div id="dNovedades" title="Novedades" style="font-size: 10px;">
     <div style="background: #F1F1F7">
+        <h3 class="titulo">24/03/2014</h3>
+        <p>            
+            * Otras correcciones.<br>
+            * Corrección en la visualización de montos en monedas menores a 0.10.<br>
+            * Corrección de desplazamiento o navegación de los botones primero <> atras <> siguiente <> último en los diferentes módulos.<br>
+            * Habilitación de autogenerado para el módulo cobranza de el tipo de doc. R-XXX<br>
+        </p>
+        <h3 class="titulo">22/03/2014</h3>
+        <p>            
+            * Se añadio el reporte de articulos comprados ó vendidios en un periodo dado<br>
+            * Pruebas en este reporte.<br>
+        </p>
+        <h3 class="titulo">20/03/2014</h3>
+        <p>            
+            * Se añade los reportes de stock por familia, familia-marca<br>
+            * Se personaliza los nombres de los archivos exportados<br>
+        </p>
+        <h3 class="titulo">19/03/2014</h3>
+        <p>            
+            * Habilitación y mejora de reportes en módulo/articulos<br>
+            * Antes de generar los reportes de cliente se validaran los datos desde usario y servidor para evitar errores ya sea de fechas y otros.<br>
+            * Optimización de uso de conexiones para reportes, reduciendo de n (conexiones) * cantidadArticulos a sólo cantidad de articulos.<br>
+            * Personalizacion en los nombres de los archivos exportados (excel) de acuerdo al tipo de archivo<br>
+        </p>
+        <h3 class="titulo">14/03/2014</h3>
+        <p>            
+            * Habilitación y mejora de reportes en módulo/cobranza<br>
+            * Correción en el bloqueo de fechas anteriores y posteriores en la validacion del calendario<br>
+            * Antes de generar los reportes de cliente se validaran los datos desde usario y servidor para evitar errores ya sea de fechas y otros.<br>
+            * Optimización de uso de conexiones para reportes, reduciendo de n (conexiones) * cantidadClientes a sólo cantidad de clientes.<br>
+            * Personalizacion en los nombres de los archivos exportados (excel) de acuerdo al tipo de archivo<br>
+        </p>
+        <h3 class="titulo">12/03/2014</h3>
+        <p>
+            * Habilitación y mejora de reportes en módulo/cliente<br>
+            * Correción en el bloqueo de fechas anteriores y posteriores en la validacion del calendario<br>
+            * Antes de generar los reportes de cliente se validaran los datos desde usario y servidor para evitar errores ya sea de fechas y otros.<br>
+            * Optimización de uso de conexiones para reportes, reduciendo de n (conexiones) * cantidadClientes a sólo cantidad de clientes.<br>
+            * Personalizacion en los nombres de los archivos exportados (excel) de acuerdo al tipo de archivo<br>
+        </p>
+        <h3 class="titulo">10/03/2014</h3>
+        <p>
+            * Habilitación y mejora de reportes/venta<br>
+            * Correción en el bloqueo de fechas anteriores y posteriores en la validacion del calendario reporte/venta<br>
+            * Antes de generar los reportes de cliente se validaran los datos desde usario y servidor para evitar errores ya sea de fechas y otros.<br>
+            * Se cambio a la forma de busqueda de cobrador por autocompletado facilitando la búsqueda de un cobrador.<br>
+            * Optimización de uso de conexiones para reportes, reduciendo de n (conexiones) * cantidadClientes a sólo cantidad de clientes. (reporte/cobranza)<br>
+        </p>
+        <h3 class="titulo">08/03/2014</h3>
+        <p>            
+            * Otras correcciones.<br>
+        </p>
+        <h3 class="titulo">01/03/2014</h3>
+        <p>            
+            * Otras correcciones.<br>
+        </p>
         <h3 class="titulo">17/02/2014</h3>
         <p>
             * Mejora en el inicio de sesión.<br>

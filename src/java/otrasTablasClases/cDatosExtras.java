@@ -6,7 +6,7 @@ package otrasTablasClases;
 
 import java.util.List;
 import org.hibernate.Query;
-import org.hibernate.classic.Session;
+import org.hibernate.Session;
 import tablas.DatosExtras;
 import tablas.HibernateUtil;
 

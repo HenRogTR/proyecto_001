@@ -20,7 +20,7 @@ public class aOtros {
     public static void main(String[] args) {
         // TODO code application logic here
         
-        System.out.println(new cOtros().agregarCerosNumeroFormato(0, 3));
+        System.out.println(new cOtros().decimalFormato(0.00001, 6));
     }
     
 }

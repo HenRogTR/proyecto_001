@@ -12,6 +12,20 @@ function fValidarRequerido(value) {
 }
 ;
 
+function fValidarMinimo(value, minimo) {
+    if (value == null)
+        return false;
+    return fTrim(value).length >= minimo;
+}
+;
+
+function fValidarMaximo(value, maximo) {
+    if (value == null)
+        return false;
+    return fTrim(value).length <= maximo;
+}
+;
+
 function fValidarVentaDocSerieNumero(value) {
     var re = /^[a-zA-Z]{1}\-\d{3}\-\d{6}$/;
     return re.test(value);

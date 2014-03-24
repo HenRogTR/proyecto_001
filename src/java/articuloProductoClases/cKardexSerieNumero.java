@@ -74,8 +74,8 @@ public class cKardexSerieNumero {
         try {
             sesion = HibernateUtil.getSessionFactory().openSession();
             Query q = sesion.createQuery("from KardexSerieNumero ksn "
-                    + "where ksn.kardexArticuloProducto.codKardexArticuloProducto=:cod "
-                    + "and substring(ksn.registro,1,1)=1")
+                    + "where ksn.kardexArticuloProducto.codKardexArticuloProducto = :cod "
+                    + "and substring(ksn.registro,1,1) = 1")
                     .setParameter("cod", codKardexArticuloProducto);
             l = (List) q.list();
         } catch (Exception e) {

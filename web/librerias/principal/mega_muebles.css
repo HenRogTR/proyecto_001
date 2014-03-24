@@ -186,6 +186,7 @@ label.error:before{
 .contenedorEntrada{padding-right: 15px !important;}
 
 .ancho40px{width: 40px;}
+.ancho50px{width: 50px;}
 .ancho60px{width: 60px;}
 .ancho80px{width: 80px;}
 .ancho90px{width: 90px;}
@@ -200,6 +201,8 @@ label.error:before{
 .ancho320px{width: 320px;}
 .ancho360px{width: 360px;}
 .ancho400px{width: 400px;}
+.ancho420px{width: 420px;}
+.ancho440px{width: 440px;}
 
 .alto40px{height: 40px;}
 .alto60px{height: 60px;}

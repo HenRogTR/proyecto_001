@@ -67,6 +67,11 @@ public class cMarca {
         return null;
     }
 
+    public Marca leer_cod(int codMarca) {
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        return (Marca) sesion.get(Marca.class, codMarca);
+    }
+
     public List leer_admin() {
         setError(null);
         try {
@@ -77,6 +82,31 @@ public class cMarca {
             setError(e.getMessage());
         }
         return null;
+    }
+
+    /**
+     *
+     * @param marca
+     * @return
+     */
+    public List leer_coincidencia_SC(String marca) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("from Marca m"
+                    + " where m.descripcion like :par1")
+                    .setString("par1", "%" + marca.replace(" ", "%") + "%");
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
     }
 
     public boolean verficarMarca(String descripcion) {

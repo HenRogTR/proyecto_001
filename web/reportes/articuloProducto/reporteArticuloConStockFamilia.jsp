@@ -41,7 +41,7 @@
             String pVenta = request.getParameter("pVenta");
             String codFamilia = request.getParameter("codFamilia");
 
-            Familia objFamilia = objcFamilia.leer_cod(Integer.parseInt(codFamilia));
+            Familia objFamilia = new cFamilia().leer_cod(Integer.parseInt(codFamilia));
             List lArticuloProducto = orden.equals("articuloAlfabetico") ? objcArticuloProducto.leer_familia_orderByDescripcion(Integer.parseInt(codFamilia)) : objcArticuloProducto.leer_familia(Integer.parseInt(codFamilia));
             String ordena = orden.equals("articuloAlfabetico") ? "Alfabético" : "Normal";
 

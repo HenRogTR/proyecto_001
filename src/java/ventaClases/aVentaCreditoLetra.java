@@ -5,6 +5,12 @@
  */
 package ventaClases;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import utilitarios.cManejoFechas;
+
 /**
  *
  * @author Henrri
@@ -16,8 +22,14 @@ public class aVentaCreditoLetra {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        Object[] RDCObjects = new cVentaCreditoLetraReporte().leer_resumenDeudaCliente(1);        
-            System.out.println(RDCObjects[0]);
+        List VCLList1 = new cVentaCreditoLetraReporte().letrasVencidas_todos_ordenNombresC_SC(new cManejoFechas().StringADate("15/06/2013"));
+        List VCLList2 = new cVentaCreditoLetraReporte().letrasVencidas_todos_ordenDireccion_SC(new cManejoFechas().StringADate("15/06/2013"));
+        
+        Iterator i=VCLList1.iterator();
+        while(i.hasNext()){
+            i.next();
+        }
+        System.out.println(i.hasNext());
     }
 
 }
