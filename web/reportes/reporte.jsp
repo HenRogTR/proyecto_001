@@ -443,13 +443,13 @@
                                         <tr>
                                             <th><span>PERIODO</span></th>
                                             <td class="ancho420px">
-                                                <label>DEL</label> <input type="text" id="articuloProducto_fechaInicio" name="" value="" class="ancho110px entrada fechaEntrada"/>
-                                                <label>AL</label> <input type="text" id="articuloProducto_fechaFin" name="" value="" class="ancho110px entrada fechaEntrada"/>
+                                                <label>DEL</label> <input type="text" id="articuloProducto_fechaInicio" name="articuloProducto_fechaInicio" value="" class="ancho110px entrada fechaEntrada"/>
+                                                <label>AL</label> <input type="text" id="articuloProducto_fechaFin" name="articuloProducto_fechaFin" value="" class="ancho110px entrada fechaEntrada"/>
                                             </td>
                                             <td class="ancho90px">
                                                 <div>
-                                                    <a id="" class="sexybutton sexyicononly aArticuloProducto" ><span><span><span class="print"></span></span></span></a>
-                                                    <a id="" class="sexybutton sexyicononly aArticuloProducto" ><span><span><span class="excel"></span></span></span></a>
+                                                    <a id="articulo_rMovimiento" class="sexybutton sexyicononly aArticuloProducto aArticuloProductoFechaPeriodo" ><span><span><span class="print"></span></span></span></a>
+                                                    <a id="articulo_rMovimientoExcel" class="sexybutton sexyicononly aArticuloProducto aArticuloProductoFechaPeriodo" ><span><span><span class="excel"></span></span></span></a>
                                                 </div>
                                             </td>
                                         </tr>
@@ -463,8 +463,8 @@
                                             </td>                                            
                                             <td class="ancho90px">
                                                 <div>
-                                                    <a id="" class="sexybutton sexyicononly aArticuloProducto" ><span><span><span class="print"></span></span></span></a>
-                                                    <a id="" class="sexybutton sexyicononly aArticuloProducto" ><span><span><span class="excel"></span></span></span></a>
+                                                    <a id="articulo_rFamiliaMovimiento" class="sexybutton sexyicononly aArticuloProducto aArticuloProductoFechaPeriodo" ><span><span><span class="print"></span></span></span></a>
+                                                    <a id="articulo_rFamiliaMovimientoExcel" class="sexybutton sexyicononly aArticuloProducto aArticuloProductoFechaPeriodo" ><span><span><span class="excel"></span></span></span></a>
                                                 </div>
                                             </td>
                                         </tr>
@@ -478,8 +478,8 @@
                                             </td>                                            
                                             <td class="ancho90px">
                                                 <div>
-                                                    <a id="" class="sexybutton sexyicononly aArticuloProducto" ><span><span><span class="print"></span></span></span></a>
-                                                    <a id="" class="sexybutton sexyicononly aArticuloProducto" ><span><span><span class="excel"></span></span></span></a>
+                                                    <a id="articulo_rFamiliaMarcaMovimiento" class="sexybutton sexyicononly aArticuloProducto aArticuloProductoFechaPeriodo" ><span><span><span class="print"></span></span></span></a>
+                                                    <a id="articulo_rFamiliaMarcaMovimientoExcel" class="sexybutton sexyicononly aArticuloProducto aArticuloProductoFechaPeriodo" ><span><span><span class="excel"></span></span></span></a>
                                                 </div>
                                             </td>
                                         </tr>
@@ -493,8 +493,8 @@
                                             </td>                                            
                                             <td class="ancho90px">
                                                 <div>
-                                                    <a id="" class="sexybutton sexyicononly aArticuloProducto" ><span><span><span class="print"></span></span></span></a>
-                                                    <a id="" class="sexybutton sexyicononly aArticuloProducto" ><span><span><span class="excel"></span></span></span></a>
+                                                    <a id="articulo_rAPMovimiento" class="sexybutton sexyicononly aArticuloProducto aArticuloProductoFechaPeriodo" ><span><span><span class="print"></span></span></span></a>
+                                                    <a id="articulo_rAPMovimientoExcel" class="sexybutton sexyicononly aArticuloProducto aArticuloProductoFechaPeriodo" ><span><span><span class="excel"></span></span></span></a>
                                                 </div>
                                             </td>
                                         </tr>

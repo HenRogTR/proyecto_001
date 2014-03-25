@@ -4,6 +4,7 @@
  */
 package articuloProductoClases;
 
+import java.util.Date;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -122,6 +123,7 @@ public class cArticuloProducto {
             l = q.list();
         } catch (Exception e) {
             e.printStackTrace();
+            setError(e.getMessage());
         } finally {
             sesion.flush();
             sesion.close();
@@ -130,8 +132,15 @@ public class cArticuloProducto {
     }
 
     /**
+     * <strong>precioUnitario</strong>; es el precio de compra ultimo, puede
+     * retornar
+     * <strong>NULL</strong> si en caso no se ha realizado ninguna compra.<br>
+     * <strong>codKardexArticuloProducto</strong> y <strong>stock</strong>;
+     * puede retornar <strong>NULL</strong>
+     * si en caso no se ha realizado ninguna compra.
      *
-     * @return
+     * @return 0:codArticuloProducto, 1:descripcion, 2:usarSerieNumero,
+     * 3:precioUnitario, 4:precioVenta, 5:codKardexArticuloProducto, 6:stock
      */
     public List leer_inventario_SC() {
         List l = null;
@@ -167,8 +176,15 @@ public class cArticuloProducto {
     }
 
     /**
+     * <strong>precioUnitario</strong>; es el precio de compra ultimo, puede
+     * retornar
+     * <strong>NULL</strong> si en caso no se ha realizado ninguna compra.<br>
+     * <strong>codKardexArticuloProducto</strong> y <strong>stock</strong>;
+     * puede retornar <strong>NULL</strong>
+     * si en caso no se ha realizado ninguna compra.
      *
-     * @return
+     * @return 0:codArticuloProducto, 1:descripcion, 2:usarSerieNumero,
+     * 3:precioUnitario, 4:precioVenta, 5:codKardexArticuloProducto, 6:stock
      */
     public List leer_inventario_ordenDescripcion_SC() {
         List l = null;
@@ -205,9 +221,16 @@ public class cArticuloProducto {
     }
 
     /**
+     * <strong>precioUnitario</strong>; es el precio de compra ultimo, puede
+     * retornar
+     * <strong>NULL</strong> si en caso no se ha realizado ninguna compra.<br>
+     * <strong>codKardexArticuloProducto</strong> y <strong>stock</strong>;
+     * puede retornar <strong>NULL</strong>
+     * si en caso no se ha realizado ninguna compra.
      *
      * @param codFamilia
-     * @return
+     * @return 0:codArticuloProducto, 1:descripcion, 2:usarSerieNumero,
+     * 3:precioUnitario, 4:precioVenta, 5:codKardexArticuloProducto, 6:stock
      */
     public List leer_inventario_familia_SC(int codFamilia) {
         List l = null;
@@ -245,9 +268,16 @@ public class cArticuloProducto {
     }
 
     /**
+     * <strong>precioUnitario</strong>; es el precio de compra ultimo, puede
+     * retornar
+     * <strong>NULL</strong> si en caso no se ha realizado ninguna compra.<br>
+     * <strong>codKardexArticuloProducto</strong> y <strong>stock</strong>;
+     * puede retornar <strong>NULL</strong>
+     * si en caso no se ha realizado ninguna compra.
      *
      * @param codFamilia
-     * @return
+     * @return 0:codArticuloProducto, 1:descripcion, 2:usarSerieNumero,
+     * 3:precioUnitario, 4:precioVenta, 5:codKardexArticuloProducto, 6:stock
      */
     public List leer_inventario_familia_ordenDescripcion_SC(int codFamilia) {
         List l = null;
@@ -286,10 +316,17 @@ public class cArticuloProducto {
     }
 
     /**
+     * <strong>precioUnitario</strong>; es el precio de compra ultimo, puede
+     * retornar
+     * <strong>NULL</strong> si en caso no se ha realizado ninguna compra.<br>
+     * <strong>codKardexArticuloProducto</strong> y <strong>stock</strong>;
+     * puede retornar <strong>NULL</strong>
+     * si en caso no se ha realizado ninguna compra.
      *
      * @param codFamilia
      * @param codMarca
-     * @return
+     * @return 0:codArticuloProducto, 1:descripcion, 2:usarSerieNumero,
+     * 3:precioUnitario, 4:precioVenta, 5:codKardexArticuloProducto, 6:stock
      */
     public List leer_inventario_familia_marca_SC(int codFamilia, int codMarca) {
         List l = null;
@@ -329,12 +366,20 @@ public class cArticuloProducto {
     }
 
     /**
+     * <strong>precioUnitario</strong>; es el precio de compra ultimo, puede
+     * retornar
+     * <strong>NULL</strong> si en caso no se ha realizado ninguna compra.<br>
+     * <strong>codKardexArticuloProducto</strong> y <strong>stock</strong>;
+     * puede retornar <strong>NULL</strong>
+     * si en caso no se ha realizado ninguna compra.
      *
      * @param codFamilia
      * @param codMarca
-     * @return
+     * @return 0:codArticuloProducto, 1:descripcion, 2:usarSerieNumero,
+     * 3:precioUnitario, 4:precioVenta, 5:codKardexArticuloProducto, 6:stock
      */
-    public List leer_inventario_familia_marca_ordenDescripcion_SC(int codFamilia, int codMarca) {
+    public List leer_inventario_familia_marca_ordenDescripcion_SC(int codFamilia,
+            int codMarca) {
         List l = null;
         Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
@@ -361,6 +406,189 @@ public class cArticuloProducto {
                     + " order by ap.descripcion")
                     .setInteger("par1", codFamilia)
                     .setInteger("par2", codMarca);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+
+    /**
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @return 0:codArticuloProducto, 1:descripcion, 2:codVenta,
+     * 3:docSerieNumero, 4:fecha, 5:cliente, 6:codVentaDetalle, 7:cantidad,
+     * 8:precioVenta, 9:valorVenta
+     */
+    public List leer_vendidos_SC(Date fechaInicio, Date fechaFin) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select ap.codArticuloProducto"
+                    + ", ap.descripcion"
+                    + ", vd.ventas.codVentas"
+                    + ", vd.ventas.docSerieNumero"
+                    + ", vd.ventas.fecha"
+                    + ", vd.ventas.cliente"
+                    + ", vd.codVentasDetalle"
+                    + ", vd.cantidad"
+                    + ", vd.precioVenta"
+                    + ", vd.valorVenta"
+                    + " from ArticuloProducto ap join ap.ventasDetalles vd"
+                    + " where substring(vd.registro,1,1) = 1"
+                    + " and substring(vd.ventas.registro,1,1) = 1"
+                    + " and vd.ventas.fecha between :par1 and :par2"
+                    + " order by ap.descripcion, vd.ventas.fecha")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+
+    /**
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @param codFamilia
+     * @return 0:codArticuloProducto, 1:descripcion, 2:codVenta,
+     * 3:docSerieNumero, 4:fecha, 5:cliente, 6:codVentaDetalle, 7:cantidad,
+     * 8:precioVenta, 9:valorVenta
+     */
+    public List leer_vendidos_familia_SC(Date fechaInicio, Date fechaFin,
+            int codFamilia) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select ap.codArticuloProducto"
+                    + ", ap.descripcion"
+                    + ", vd.ventas.codVentas"
+                    + ", vd.ventas.docSerieNumero"
+                    + ", vd.ventas.fecha"
+                    + ", vd.ventas.cliente"
+                    + ", vd.codVentasDetalle"
+                    + ", vd.cantidad"
+                    + ", vd.precioVenta"
+                    + ", vd.valorVenta"
+                    + " from ArticuloProducto ap join ap.ventasDetalles vd"
+                    + " where substring(vd.registro,1,1) = 1"
+                    + " and substring(vd.ventas.registro,1,1) = 1"
+                    + " and vd.ventas.fecha between :par1 and :par2"
+                    + " and ap.familia = :par3"
+                    + " order by ap.descripcion, vd.ventas.fecha")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin)
+                    .setInteger("par3", codFamilia);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+
+    /**
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @param codFamilia
+     * @param codMarca
+     * @return 0:codArticuloProducto, 1:descripcion, 2:codVenta,
+     * 3:docSerieNumero, 4:fecha, 5:cliente, 6:codVentaDetalle, 7:cantidad,
+     * 8:precioVenta, 9:valorVenta
+     */
+    public List leer_vendidos_familia_marca_SC(Date fechaInicio, Date fechaFin,
+            int codFamilia, int codMarca) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select ap.codArticuloProducto"
+                    + ", ap.descripcion"
+                    + ", vd.ventas.codVentas"
+                    + ", vd.ventas.docSerieNumero"
+                    + ", vd.ventas.fecha"
+                    + ", vd.ventas.cliente"
+                    + ", vd.codVentasDetalle"
+                    + ", vd.cantidad"
+                    + ", vd.precioVenta"
+                    + ", vd.valorVenta"
+                    + " from ArticuloProducto ap join ap.ventasDetalles vd"
+                    + " where substring(vd.registro,1,1) = 1"
+                    + " and substring(vd.ventas.registro,1,1) = 1"
+                    + " and vd.ventas.fecha between :par1 and :par2"
+                    + " and ap.familia = :par3"
+                    + " and ap.marca = :par4"
+                    + " order by ap.descripcion, vd.ventas.fecha")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin)
+                    .setInteger("par3", codFamilia)
+                    .setInteger("par4", codMarca);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+
+    /**
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @param codArticuloProducto
+     * @return 0:codArticuloProducto, 1:descripcion, 2:codVenta,
+     * 3:docSerieNumero, 4:fecha, 5:cliente, 6:codVentaDetalle, 7:cantidad,
+     * 8:precioVenta, 9:valorVenta
+     */
+    public List leer_vendidos_articuloProducto_SC(Date fechaInicio, Date fechaFin,
+            int codArticuloProducto) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select ap.codArticuloProducto"
+                    + ", ap.descripcion"
+                    + ", vd.ventas.codVentas"
+                    + ", vd.ventas.docSerieNumero"
+                    + ", vd.ventas.fecha"
+                    + ", vd.ventas.cliente"
+                    + ", vd.codVentasDetalle"
+                    + ", vd.cantidad"
+                    + ", vd.precioVenta"
+                    + ", vd.valorVenta"
+                    + " from ArticuloProducto ap join ap.ventasDetalles vd"
+                    + " where substring(vd.registro,1,1) = 1"
+                    + " and substring(vd.ventas.registro,1,1) = 1"
+                    + " and vd.ventas.fecha between :par1 and :par2"
+                    + " and ap = :par3"
+                    + " order by ap.descripcion, vd.ventas.fecha")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin)
+                    .setInteger("par3", codArticuloProducto);
             l = q.list();
         } catch (Exception e) {
             e.printStackTrace();
@@ -427,18 +655,6 @@ public class cArticuloProducto {
             return (List) q.list();
         } catch (Exception e) {
             setError("Error leer x descripcion: " + e.getMessage());
-        }
-        return null;
-    }
-
-    public ArticuloProducto leer_top() {
-        setError(null);
-        try {
-            sesion = HibernateUtil.getSessionFactory().openSession();
-            Query q = sesion.createQuery("from ArticuloProducto where codArticuloProducto=1400 order by codArticuloProducto desc ");
-            return (ArticuloProducto) q.list().get(0);
-        } catch (Exception e) {
-            setError(e.getMessage());
         }
         return null;
     }

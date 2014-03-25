@@ -477,53 +477,132 @@ $(document).ready(function() {
     $('.aArticuloProducto').click(function(e) {
         var orden = $('input[name=articulo_orden]:checked').val();
         var stock = $('input[name=articulo_tipoInventario]:checked').val();
-        var codFamilia = $('#articuloProducto_codFamiliaStock').val();
-        var codMarca = $('#articuloProducto_codMarcaStock').val();
+        var codFamiliaStock = $('#articuloProducto_codFamiliaStock').val();
+        var codMarcaStock = $('#articuloProducto_codMarcaStock').val();
+        var codFamiliaMovimiento = $('#articuloProducto_codFamiliaMovimiento').val();
+        var codMarcaMovimiento = $('#articuloProducto_codMarcaMovimiento').val();
+        var codAPMovimiento = $('#articuloProducto_codArticuloProductoMovimiento').val();
 
         var pCompra = $('input[name=articulo_precioCompra]').is(':checked') ? ("&pCompra=" + $('input[name=articuloPrecioCompra]').val()) : "";
         var pVenta = $('input[name=articulo_precioVenta]').is(':checked') ? ("&pVenta=" + $('input[name=articuloPrecioVenta]').val()) : "";
         var sn = $('input[name=articulo_serieNumero]').is(':checked') ? ("&sn=ON") : "";
 
+        var movimiento = $('input[name=articuloProducto_control]:checked').val();
+        var $fechaInicio = $('#articuloProducto_fechaInicio');
+        var $fechaFin = $('#articuloProducto_fechaFin');
+
+        if ($(this).hasClass('aArticuloProductoFechaPeriodo')) {
+            if (!fValidarFecha($fechaInicio.val())) {
+                fAlerta('Ingrese fecha de inicio.');
+                return;
+            }
+            if (!fValidarFecha($fechaFin.val())) {
+                fAlerta('Ingrese fecha final.');
+                return;
+            }
+            //validar que las fechas no sean fuera de rango
+            if (fComparaFecha($fechaInicio.val(), $fechaFin.val()) > 0) {
+                fAlerta('Las fechas estan fuera de rango.');
+                return;
+            }
+        }
+
         switch ($(this).attr('id')) {
             case 'articulo_rInventario':
                 $(this).attr('target', '_blank')
-                        .attr('href', 'articuloProducto/articuloProducto.jsp?reporte=' + orden + '_' + stock + '&codFamilia=' + codFamilia + '&codMarca=' + codMarca + pCompra + pVenta + sn);
+                        .attr('href', 'articuloProducto/articuloProducto.jsp?reporte=' + orden + '_' + stock + '&codFamilia=' + codFamiliaStock + '&codMarca=' + codMarcaStock + pCompra + pVenta + sn);
                 break;
             case 'articulo_rInventarioExcel':
                 $(this).attr('target', '_blank')
-                        .attr('href', 'articuloProducto/articuloProductoExcel.jsp?reporte=' + orden + '_' + stock + '&codFamilia=' + codFamilia + '&codMarca=' + codMarca + pCompra + pVenta + sn);
+                        .attr('href', 'articuloProducto/articuloProductoExcel.jsp?reporte=' + orden + '_' + stock + '&codFamilia=' + codFamiliaStock + '&codMarca=' + codMarcaStock + pCompra + pVenta + sn);
                 break;
             case 'articulo_rFamiliaInventario':
-                if (!fValidarRequerido(codFamilia)) {
-                    fAlerta('Seleccione familia');
+                if (!fValidarRequerido(codFamiliaStock)) {
+                    fAlerta('Seleccione familia.');
                     return;
                 }
                 $(this).attr('target', '_blank')
-                        .attr('href', 'articuloProducto/articuloProducto.jsp?reporte=' + orden + '_familia_' + stock + '&codFamilia=' + codFamilia + '&codMarca=' + codMarca + pCompra + pVenta + sn);
+                        .attr('href', 'articuloProducto/articuloProducto.jsp?reporte=' + orden + '_familia_' + stock + '&codFamilia=' + codFamiliaStock + '&codMarca=' + codMarcaStock + pCompra + pVenta + sn);
                 break;
             case 'articulo_rFamiliaInventarioExcel':
-                if (!fValidarRequerido(codFamilia)) {
-                    fAlerta('Seleccione familia');
+                if (!fValidarRequerido(codFamiliaStock)) {
+                    fAlerta('Seleccione familia.');
                     return;
                 }
                 $(this).attr('target', '_blank')
-                        .attr('href', 'articuloProducto/articuloProductoExcel.jsp?reporte=' + orden + '_familia_' + stock + '&codFamilia=' + codFamilia + '&codMarca=' + codMarca + pCompra + pVenta + sn);
+                        .attr('href', 'articuloProducto/articuloProductoExcel.jsp?reporte=' + orden + '_familia_' + stock + '&codFamilia=' + codFamiliaStock + '&codMarca=' + codMarcaStock + pCompra + pVenta + sn);
                 break;
             case 'articulo_rFamiliaMarcaInventario':
-                if (!fValidarRequerido(codFamilia) || !fValidarRequerido(codMarca)) {
-                    fAlerta('Seleccione familia y/o marca');
+                if (!fValidarRequerido(codFamiliaStock) || !fValidarRequerido(codMarcaStock)) {
+                    fAlerta('Seleccione familia y/o marca.');
                     return;
                 }
                 $(this).attr('target', '_blank')
-                        .attr('href', 'articuloProducto/articuloProducto.jsp?reporte=' + orden + '_familia_marca_' + stock + '&codFamilia=' + codFamilia + '&codMarca=' + codMarca + pCompra + pVenta + sn);
+                        .attr('href', 'articuloProducto/articuloProducto.jsp?reporte=' + orden + '_familia_marca_' + stock + '&codFamilia=' + codFamiliaStock + '&codMarca=' + codMarcaStock + pCompra + pVenta + sn);
                 break;
             case 'articulo_rFamiliaMarcaInventarioExcel':
-                if (!fValidarRequerido(codFamilia) || !fValidarRequerido(codMarca)) {
-                    fAlerta('Seleccione familia y/o marca');
+                if (!fValidarRequerido(codFamiliaStock) || !fValidarRequerido(codMarcaStock)) {
+                    fAlerta('Seleccione familia y/o marca.');
                     return;
                 }
                 $(this).attr('target', '_blank')
-                        .attr('href', 'articuloProducto/articuloProductoExcel.jsp?reporte=' + orden + '_familia_marca_' + stock + '&codFamilia=' + codFamilia + '&codMarca=' + codMarca + pCompra + pVenta + sn);
+                        .attr('href', 'articuloProducto/articuloProductoExcel.jsp?reporte=' + orden + '_familia_marca_' + stock + '&codFamilia=' + codFamiliaStock + '&codMarca=' + codMarcaStock + pCompra + pVenta + sn);
+                break;
+            case 'articulo_rMovimiento':
+                $(this).attr('target', '_blank')
+                        .attr('href', 'articuloProducto/' + movimiento + '.jsp?reporte=' + movimiento + '&fechaInicio=' + $fechaInicio.val() + '&fechaFin=' + $fechaFin.val() + '&codFamilia=' + codFamiliaStock + '&codMarca=' + codMarcaStock + '&codAP=' + codAPMovimiento);
+                break;
+            case 'articulo_rMovimientoExcel':
+                $(this).attr('target', '_blank')
+                        .attr('href', 'articuloProducto/' + movimiento + 'Excel.jsp?reporte=' + movimiento + '&fechaInicio=' + $fechaInicio.val() + '&fechaFin=' + $fechaFin.val() + '&codFamilia=' + codFamiliaMovimiento + '&codMarca=' + codMarcaMovimiento + '&codAP=' + codAPMovimiento);
+                break;
+            case 'articulo_rFamiliaMovimiento':
+                if (!fValidarRequerido(codFamiliaMovimiento)) {
+                    fAlerta('Seleccione familia.');
+                    return;
+                }
+                $(this).attr('target', '_blank')
+                        .attr('href', 'articuloProducto/' + movimiento + '.jsp?reporte=' + movimiento + '_familia&fechaInicio=' + $fechaInicio.val() + '&fechaFin=' + $fechaFin.val() + '&codFamilia=' + codFamiliaMovimiento + '&codMarca=' + codMarcaMovimiento + '&codAP=' + codAPMovimiento);
+                break;
+            case 'articulo_rFamiliaMovimientoExcel':
+                if (!fValidarRequerido(codFamiliaMovimiento)) {
+                    fAlerta('Seleccione familia.');
+                    return;
+                }
+                $(this).attr('target', '_blank')
+                        .attr('href', 'articuloProducto/' + movimiento + 'Excel.jsp?reporte=' + movimiento + '_familia&fechaInicio=' + $fechaInicio.val() + '&fechaFin=' + $fechaFin.val() + '&codFamilia=' + codFamiliaMovimiento + '&codMarca=' + codMarcaMovimiento + '&codAP=' + codAPMovimiento);
+                break;
+            case 'articulo_rFamiliaMarcaMovimiento':
+                if (!fValidarRequerido(codFamiliaMovimiento) || !fValidarRequerido(codMarcaMovimiento)) {
+                    fAlerta('Seleccione familia y/o marca.');
+                    return;
+                }
+                $(this).attr('target', '_blank')
+                        .attr('href', 'articuloProducto/' + movimiento + '.jsp?reporte=' + movimiento + '_familia_marca&fechaInicio=' + $fechaInicio.val() + '&fechaFin=' + $fechaFin.val() + '&codFamilia=' + codFamiliaMovimiento + '&codMarca=' + codMarcaMovimiento + '&codAP=' + codAPMovimiento);
+                break;
+            case 'articulo_rFamiliaMarcaMovimientoExcel':
+                if (!fValidarRequerido(codFamiliaMovimiento) || !fValidarRequerido(codMarcaMovimiento)) {
+                    fAlerta('Seleccione familia y/o marca.');
+                    return;
+                }
+                $(this).attr('target', '_blank')
+                        .attr('href', 'articuloProducto/' + movimiento + 'Excel.jsp?reporte=' + movimiento + '_familia_marca&fechaInicio=' + $fechaInicio.val() + '&fechaFin=' + $fechaFin.val() + '&codFamilia=' + codFamiliaMovimiento + '&codMarca=' + codMarcaMovimiento + '&codAP=' + codAPMovimiento);
+                break;
+            case 'articulo_rAPMovimiento':
+                if (!fValidarRequerido(codAPMovimiento)) {
+                    fAlerta('Seleccione artículo.');
+                    return;
+                }
+                $(this).attr('target', '_blank')
+                        .attr('href', 'articuloProducto/' + movimiento + '.jsp?reporte=' + movimiento + '_ap&fechaInicio=' + $fechaInicio.val() + '&fechaFin=' + $fechaFin.val() + '&codFamilia=' + codFamiliaStock + '&codMarca=' + codMarcaStock + '&codAP=' + codAPMovimiento);
+                break;
+            case 'articulo_rAPMovimientoExcel':
+                if (!fValidarRequerido(codAPMovimiento)) {
+                    fAlerta('Seleccione artículo.');
+                    return;
+                }
+                $(this).attr('target', '_blank')
+                        .attr('href', 'articuloProducto/' + movimiento + 'Excel.jsp?reporte=' + movimiento + '_ap&fechaInicio=' + $fechaInicio.val() + '&fechaFin=' + $fechaFin.val() + '&codFamilia=' + codFamiliaStock + '&codMarca=' + codMarcaStock + '&codAP=' + codAPMovimiento);
                 break;
             default :
                 fAlerta('No implementado ID : ' + $(this).attr('id'));
