@@ -32,7 +32,7 @@
         <script type="text/javascript" src="../librerias/plugin/mask/jquery.mask.min.js"></script>
         <script type="text/javascript" src="../librerias/utilitarios/validaciones.js"></script>
         <script type="text/javascript" src="../librerias/utilitarios/manejoFecha.js"></script>
-        <script type="text/javascript" src="../librerias/reporte/reporte.js?v.14.03.12"></script>
+        <script type="text/javascript" src="../librerias/reporte/reporte.js?v.14.03.25"></script>
         <style>
             .ui-autocomplete {
                 width: 400px;
@@ -525,7 +525,6 @@
                                         </td>
                                     </tr>
                                 </table>
-
                             </div>
                         </div>
                         <div id="tabs_otros">
