@@ -32,7 +32,7 @@
         <script type="text/javascript" src="../librerias/plugin/mask/jquery.mask.min.js"></script>
         <script type="text/javascript" src="../librerias/utilitarios/validaciones.js"></script>
         <script type="text/javascript" src="../librerias/utilitarios/manejoFecha.js"></script>
-        <script type="text/javascript" src="../librerias/reporte/reporte.js?v.14.03.25"></script>
+        <script type="text/javascript" src="../librerias/reporte/reporte.js?v.14.03.25-1"></script>
         <style>
             .ui-autocomplete {
                 width: 400px;
