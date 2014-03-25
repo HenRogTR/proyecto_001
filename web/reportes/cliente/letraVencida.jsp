@@ -415,7 +415,7 @@
                             Integer codClienteAux = 0;
                             Integer codVentaAux = 0;
                             Double totalDeudaAux = 0.00;
-                            Integer contAux = 0;//------
+                            Integer contAux = 1;//------
                             for (Iterator it = LVList.iterator(); it.hasNext();) {
                                 Object dato[] = (Object[]) it.next();
                                 codPersona = (Integer) dato[0];
