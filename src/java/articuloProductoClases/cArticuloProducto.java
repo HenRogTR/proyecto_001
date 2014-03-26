@@ -600,6 +600,188 @@ public class cArticuloProducto {
         return l;
     }
 
+    /**
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @return 0:codArticuloProducto, 1:descripcion, 2:codCompra,
+     * 3:docSerieNumero, 4:fechaFactura, 5:proveedor, 6:codCompraDetalle,
+     * 7:cantidad, 8:precioUnitario, 9:precioTotal
+     */
+    public List leer_comprados_SC(Date fechaInicio, Date fechaFin) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select ap.codArticuloProducto"
+                    + ", ap.descripcion"
+                    + ", cd.compra.codCompra"
+                    + ", cd.compra.docSerieNumero"
+                    + ", cd.compra.fechaFactura"
+                    + ", cd.compra.proveedor.razonSocial"
+                    + ", cd.codCompraDetalle"
+                    + ", cd.cantidad"
+                    + ", cd.precioUnitario"
+                    + ", cd.precioTotal"
+                    + " from ArticuloProducto ap join ap.compraDetalles cd"
+                    + " where substring(cd.registro,1,1) = 1"
+                    + " and substring(cd.compra.registro,1,1) = 1"
+                    + " and cd.compra.fechaFactura between :par1 and :par2"
+                    + " order by ap.descripcion, cd.compra.fechaFactura")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+
+    /**
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @param codFamilia
+     * @return 0:codArticuloProducto, 1:descripcion, 2:codCompra,
+     * 3:docSerieNumero, 4:fechaFactura, 5:proveedor, 6:codCompraDetalle,
+     * 7:cantidad, 8:precioUnitario, 9:precioTotal
+     */
+    public List leer_comprados_familia_SC(Date fechaInicio, Date fechaFin,
+            int codFamilia) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select ap.codArticuloProducto"
+                    + ", ap.descripcion"
+                    + ", cd.compra.codCompra"
+                    + ", cd.compra.docSerieNumero"
+                    + ", cd.compra.fechaFactura"
+                    + ", cd.compra.proveedor.razonSocial"
+                    + ", cd.codCompraDetalle"
+                    + ", cd.cantidad"
+                    + ", cd.precioUnitario"
+                    + ", cd.precioTotal"
+                    + " from ArticuloProducto ap join ap.compraDetalles cd"
+                    + " where substring(cd.registro,1,1) = 1"
+                    + " and substring(cd.compra.registro,1,1) = 1"
+                    + " and cd.compra.fechaFactura between :par1 and :par2"
+                    + " and ap.familia = :par3"
+                    + " order by ap.descripcion, cd.compra.fechaFactura")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin)
+                    .setInteger("par3", codFamilia);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+
+    /**
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @param codFamilia
+     * @param codMarca
+     * @return 0:codArticuloProducto, 1:descripcion, 2:codCompra,
+     * 3:docSerieNumero, 4:fechaFactura, 5:proveedor, 6:codCompraDetalle,
+     * 7:cantidad, 8:precioUnitario, 9:precioTotal
+     */
+    public List leer_comprados_familia_marca_SC(Date fechaInicio, Date fechaFin,
+            int codFamilia, int codMarca) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select ap.codArticuloProducto"
+                    + ", ap.descripcion"
+                    + ", cd.compra.codCompra"
+                    + ", cd.compra.docSerieNumero"
+                    + ", cd.compra.fechaFactura"
+                    + ", cd.compra.proveedor.razonSocial"
+                    + ", cd.codCompraDetalle"
+                    + ", cd.cantidad"
+                    + ", cd.precioUnitario"
+                    + ", cd.precioTotal"
+                    + " from ArticuloProducto ap join ap.compraDetalles cd"
+                    + " where substring(cd.registro,1,1) = 1"
+                    + " and substring(cd.compra.registro,1,1) = 1"
+                    + " and cd.compra.fechaFactura between :par1 and :par2"
+                    + " and ap.familia = :par3"
+                    + " and ap.marca = :par4"
+                    + " order by ap.descripcion, cd.compra.fechaFactura")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin)
+                    .setInteger("par3", codFamilia)
+                    .setInteger("par4", codMarca);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+
+    /**
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @param codArticuloProducto
+     * @return 0:codArticuloProducto, 1:descripcion, 2:codCompra,
+     * 3:docSerieNumero, 4:fechaFactura, 5:proveedor, 6:codCompraDetalle,
+     * 7:cantidad, 8:precioUnitario, 9:precioTotal
+     */
+    public List leer_comprados_articuloProducto_SC(Date fechaInicio, Date fechaFin, int codArticuloProducto) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select ap.codArticuloProducto"
+                    + ", ap.descripcion"
+                    + ", cd.compra.codCompra"
+                    + ", cd.compra.docSerieNumero"
+                    + ", cd.compra.fechaFactura"
+                    + ", cd.compra.proveedor.razonSocial"
+                    + ", cd.codCompraDetalle"
+                    + ", cd.cantidad"
+                    + ", cd.precioUnitario"
+                    + ", cd.precioTotal"
+                    + " from ArticuloProducto ap join ap.compraDetalles cd"
+                    + " where substring(cd.registro,1,1) = 1"
+                    + " and substring(cd.compra.registro,1,1) = 1"
+                    + " and cd.compra.fechaFactura between :par1 and :par2"
+                    + " and ap = :par3"
+                    + " order by ap.descripcion, cd.compra.fechaFactura")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin)
+                    .setInteger("par3", codArticuloProducto);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+
     public List leer() {
         setError(null);
         try {
