@@ -56,12 +56,12 @@ public class cPrecioVenta {
     }
 
     public List leer() {
-        setError(null);
         try {
             sesion = HibernateUtil.getSessionFactory().openSession();
             Query q = sesion.createQuery("from PrecioVenta where substring(registro,1,1)=1");
             return (List) q.list();
         } catch (Exception e) {
+            e.printStackTrace();
             setError(e.getMessage());
         }
         return null;
@@ -77,7 +77,6 @@ public class cPrecioVenta {
      */
     // </editor-fold>
     public PrecioVenta leer_precioVenta(int codArticuloProducto, int codAlmacen) {
-        setError(null);
         try {
             sesion = HibernateUtil.getSessionFactory().openSession();
             Query q = sesion.createQuery("from PrecioVenta a where "
@@ -88,6 +87,7 @@ public class cPrecioVenta {
                     .setParameter("codArticuloProducto", codArticuloProducto);
             return (PrecioVenta) q.list().get(0);
         } catch (Exception e) {
+            e.printStackTrace();
             setError(e.getMessage());
         }
         sesion.close();
@@ -95,12 +95,12 @@ public class cPrecioVenta {
     }
 
     public List leer_admin() {
-        setError(null);
         try {
             sesion = HibernateUtil.getSessionFactory().openSession();
             Query q = sesion.createQuery("from PrecioVenta");
             return (List) q.list();
         } catch (Exception e) {
+            e.printStackTrace();
             setError(e.getMessage());
         }
         return null;
@@ -108,7 +108,6 @@ public class cPrecioVenta {
 
     public boolean actualizar_registro(int codPrecioVenta, String estado, String user) {
         cUtilitarios objUtilitarios = new cUtilitarios();
-        setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
         sesion.getTransaction().begin();
         PrecioVenta obj = (PrecioVenta) sesion.get(PrecioVenta.class, codPrecioVenta);
@@ -119,7 +118,8 @@ public class cPrecioVenta {
             return true;
         } catch (Exception e) {
             sesion.getTransaction().rollback();
-            setError("PrecioVenta_actualizar_registro: " + e.getMessage());
+            e.printStackTrace();
+            setError(e.getMessage());
         }
         return false;
     }
