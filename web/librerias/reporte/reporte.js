@@ -95,6 +95,12 @@ $(document).ready(function() {
         e.preventDefault();
     });
 
+    $('#compra_bProveedorBuscar').click(function(e) {
+        $('#compra_dProveedorBuscar').dialog('open');
+        e.preventDefault();
+    });
+
+
     //bloquenado fechas fuera de rango para ventaFechaInicio
 
     $('#ventaFechaInicio').change(function(e) {
@@ -116,6 +122,13 @@ $(document).ready(function() {
     });
     $('#articuloProducto_fechaFin').change(function(e) {
         $('#articuloProducto_fechaInicio').datepicker('option', 'maxDate', fValidarFecha(this.value) ? fStringADate(this.value) : null);
+    });
+
+    $('#compra_fechaInicio').change(function(e) {
+        $('#compra_fechaFin').datepicker('option', 'minDate', fValidarFecha(this.value) ? fStringADate(this.value) : null);
+    });
+    $('#compra_fechaFin').change(function(e) {
+        $('#compra_fechaInicio').datepicker('option', 'maxDate', fValidarFecha(this.value) ? fStringADate(this.value) : null);
     });
 
     $('#ventaSerieDoc').mask('000');
@@ -474,6 +487,45 @@ $(document).ready(function() {
         }
     });
 
+    $('.aCompra').click(function(e) {
+
+        var tipo = $('input[name=compra_tipo]:checked').val();
+        var $fechaInicio = $('#compra_fechaInicio');
+        var $fechaFin = $('#compra_fechaFin');
+        var codProveedor = $('#compra_codProveedor').val();
+
+        if (!fValidarFecha($fechaInicio.val())) {
+            fAlerta('Ingrese fecha de inicio.');
+            return;
+        }
+        if (!fValidarFecha($fechaFin.val())) {
+            fAlerta('Ingrese fecha final.');
+            return;
+        }
+        //validar que las fechas no sean fuera de rango
+        if (fComparaFecha($fechaInicio.val(), $fechaFin.val()) > 0) {
+            fAlerta('Las fechas estan fuera de rango.');
+            return;
+        }
+        switch ($(this).attr('id')) {
+            case 'compra_rTipo':
+                $(this).attr('target', '_blank').attr('href', 'compra/' + tipo + '.jsp?reporte=documento&fechaInicio=' + $fechaInicio.val() + '&fechaFin=' + $fechaFin.val() + '&codProveedor=' + codProveedor);
+                break;
+            case 'compra_rProveedor':
+                if (!fValidarRequerido(codProveedor)) {
+                    fAlerta('Seleccione proveedor.');
+                    return;
+                }
+                $(this).attr('target', '_blank').attr('href', 'compra/documento.jsp?reporte=proveedor_documento&fechaInicio=' + $fechaInicio.val() + '&fechaFin=' + $fechaFin.val() + '&codProveedor=' + codProveedor);
+                break;
+            default :
+                fAlerta('No implementado ID : ' + $(this).attr('id'));
+                e.preventDefault();
+                break;
+        }
+
+    });
+
     $('.aArticuloProducto').click(function(e) {
         var orden = $('input[name=articulo_orden]:checked').val();
         var stock = $('input[name=articulo_tipoInventario]:checked').val();
@@ -640,6 +692,12 @@ $(function() {
     $('#articuloProducto_fechaFin')
             .datepicker('option', 'minDate', fStringADate($('#articuloProducto_fechaInicio').val()));
 
+    $('#compra_fechaInicio')
+            .val(fDateAString(fSumarMes(fStringADate($('#compra_fechaFin').val()), -1)))
+            .datepicker('option', 'maxDate', fStringADate($('#compra_fechaFin').val()));
+    $('#compra_fechaFin')
+            .datepicker('option', 'minDate', fStringADate($('#compra_fechaInicio').val()));
+
     //<editor-fold defaultstate="collapsed" desc="dialog. Clic en el signo + de la izquierda para mas detalles.">
     $('#dVendedorCobradorBuscar').dialog({
         autoOpen: false,
@@ -731,8 +789,20 @@ $(function() {
         }
     });
 
-
     $('#articuloProducto_dArticuloProductoMovimientoBuscar').dialog({
+        autoOpen: false,
+        modal: true,
+        resizable: true,
+        height: 140,
+        width: 800,
+        buttons: {
+            Cerrar: function() {
+                $(this).dialog('close');
+            }
+        }
+    });
+
+    $('#compra_dProveedorBuscar').dialog({
         autoOpen: false,
         modal: true,
         resizable: true,
@@ -794,6 +864,13 @@ $(function() {
         minLength: 4,
         focus: fArticuloProductoMovimiento_marcado,
         select: fArticuloProductoMovimiento_seleccionado
+    });
+
+    $('#compra_proveedorBuscar').autocomplete({
+        source: 'autocompletado/proveedor_rucRazonSocial.jsp',
+        minLength: 4,
+        focus: fMarca_proveedor_marcado,
+        select: fMarca_proveedor_seleccionado
     });
 
     //</editor-fold>
@@ -937,15 +1014,15 @@ function fArticuloProductoMovimiento_marcado(event, ui) {
 function fArticuloProductoMovimiento_seleccionado(event, ui) {
     var articuloProducto = ui.item.value;
     $('#articuloProducto_codArticuloProductoMovimiento').val(articuloProducto.codArticuloProducto);
-    $('#articuloProducto_articuloProductoMovimiento').text(articuloProducto.descripcion);
-    $('#articuloProducto_codArticuloProductoMovimientoT').text(articuloProducto.codArticuloProducto);
+    $('#articuloProducto_articuloProductoMovimiento').text(articuloProducto.codArticuloProducto + ' / ' + articuloProducto.descripcion);
     $('#articuloProducto_articuloProductoMovimientoBuscar').val('');
     $('#articuloProducto_codArticuloProductoMovimientoBuscar').val('');
     $('#articuloProducto_dArticuloProductoMovimientoBuscar').dialog('close');
     event.preventDefault();
 }
 ;
-//<editor-fold defaultstate="collapsed" desc="fAPLeer(codArticuloProducto)...">
+
+//<editor-fold defaultstate="collapsed" desc="fAPLeer(codArticuloProducto). Clic en el signo + de la izquierda para mas detalles.">
 function fAPLeer(codArticuloProducto) {
     var data = {codArticuloProducto: codArticuloProducto};
     var url = 'ajax/articuloProducto_cod.jsp';
@@ -965,8 +1042,7 @@ function fAPLeer(codArticuloProducto) {
                 } else {
                     var APItem = APArray[0];
                     $('#articuloProducto_codArticuloProductoMovimiento').val(APItem.codArticuloProducto);
-                    $('#articuloProducto_articuloProductoMovimiento').text(APItem.descripcion);
-                    $('#articuloProducto_codArticuloProductoMovimientoT').text(APItem.codArticuloProducto);
+                    $('#articuloProducto_articuloProductoMovimiento').text(APItem.codArticuloProducto + ' / ' + APItem.descripcion);
                     $('#articuloProducto_codArticuloProductoMovimientoBuscar').val('');
                 }
             },
@@ -985,3 +1061,20 @@ function fAPLeer(codArticuloProducto) {
 }
 ;
 //</editor-fold>
+
+function fMarca_proveedor_marcado(event, ui) {
+    var proveedor = ui.item.value;
+    $('#compra_proveedorBuscar').val(proveedor.razonSocial);
+    event.preventDefault();
+}
+;
+
+function fMarca_proveedor_seleccionado(event, ui) {
+    var proveedor = ui.item.value;
+    $('#compra_codProveedor').val(proveedor.codProveedor);
+    $('#compra_proveedor').text(proveedor.ruc + ' / ' + proveedor.razonSocial);
+    $('#compra_proveedorBuscar').val('');
+    $('#compra_dProveedorBuscar').dialog('close');
+    event.preventDefault();
+}
+;

@@ -353,7 +353,51 @@
                             </div>
                         </div>
                         <div id="tabs_compra">
+                            <div>
+                                <table class="reporte-tabla-1">
+                                    <tbody>
+                                        <tr>
+                                            <th><span>PERIODO</span></th>
+                                            <td colspan="2">
+                                                <div>
+                                                    <label>DEL</label> <input type="text" id="compra_fechaInicio" name="compra_fechaInicio" value="" class="ancho110px entrada fechaEntrada"/>
+                                                    <label>AL</label> <input type="text" id="compra_fechaFin" name="compra_fechaFin" value="" class="ancho110px entrada fechaEntrada"/>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="ancho120px"><span>TIPO</span></th>
+                                            <td class="ancho440px">
+                                                <div>
+                                                    <input type="radio" name="compra_tipo" value="documento" checked="checked" id="compra_documento"/><label for="compra_documento">Documento</label>
+                                                    <input type="radio" name="compra_tipo" value="articulo" id="compra_articulo"/><label for="compra_articulo">Artículo</label>
+                                                </div>
+                                            </td>
+                                            <td class="ancho50px">
+                                                <a id="compra_rTipo" class="sexybutton sexyicononly aCompra" ><span><span><span class="print"></span></span></span></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>PROVEEDOR</span> <a id="compra_bProveedorBuscar" class="sexybutton sexyicononly"><span><span><span class="search"></span></span></span></a></th>
+                                            <td>
+                                                <div>
+                                                    <input type="text" name="compra_codProveedor" id="compra_codProveedor" value="" class="ocultar"/>
+                                                    <span id="compra_proveedor"></span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <a id="compra_rProveedor" class="sexybutton sexyicononly aCompra" ><span><span><span class="print"></span></span></span></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
 
+                                <div id="compra_dProveedorBuscar" title="Seleccione proveedor" class="contenedorEntrada">
+                                    <input type="search" name="compra_proveedorBuscar" id="compra_proveedorBuscar" value="" class="anchoTotal entrada mayuscula"/>
+                                </div>
+                            </div>
                         </div>
                         <div id="tabs_proveedor">
 
@@ -381,7 +425,7 @@
                                         </tr>
                                         <tr>
                                             <th><span>INVENTARIO GENERAL</span></th>
-                                            <td colspan="3" class="ancho320px">                                                
+                                            <td class="ancho320px" colspan="3">
                                                 <div>
                                                     <input type="radio" name="articulo_tipoInventario" value="inventarioGeneral" id="articulo_inventarioGeneral" checked="checked" /><label for="articulo_inventarioGeneral">General</label>
                                                     <input type="radio" name="articulo_tipoInventario" value="conStock" id="articulo_conStock" /><label for="articulo_conStock">Con Stock</label>
@@ -432,7 +476,7 @@
                                 <table class="reporte-tabla-1">
                                     <tbody>
                                         <tr>
-                                            <th class="ancho200px"><span>MOVIMIENTO</span></th>
+                                            <th><span>MOVIMIENTO</span></th>
                                             <td colspan="2">
                                                 <div>
                                                     <input type="radio" name="articuloProducto_control" id="articuloProducto_vendidos" value="vendidos" checked="checked" /><label for="articuloProducto_vendidos">Vendidos</label>
@@ -441,7 +485,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th><span>PERIODO</span></th>
+                                            <th class="ancho200px"><span>PERIODO</span></th>
                                             <td class="ancho420px">
                                                 <label>DEL</label> <input type="text" id="articuloProducto_fechaInicio" name="articuloProducto_fechaInicio" value="" class="ancho110px entrada fechaEntrada"/>
                                                 <label>AL</label> <input type="text" id="articuloProducto_fechaFin" name="articuloProducto_fechaFin" value="" class="ancho110px entrada fechaEntrada"/>
@@ -461,7 +505,7 @@
                                                     <span id="articuloProducto_familiaMovimiento"></span>
                                                 </div>
                                             </td>                                            
-                                            <td class="ancho90px">
+                                            <td>
                                                 <div>
                                                     <a id="articulo_rFamiliaMovimiento" class="sexybutton sexyicononly aArticuloProducto aArticuloProductoFechaPeriodo" ><span><span><span class="print"></span></span></span></a>
                                                     <a id="articulo_rFamiliaMovimientoExcel" class="sexybutton sexyicononly aArticuloProducto aArticuloProductoFechaPeriodo" ><span><span><span class="excel"></span></span></span></a>
@@ -476,7 +520,7 @@
                                                     <span id="articuloProducto_marcaMovimiento"></span>
                                                 </div>
                                             </td>                                            
-                                            <td class="ancho90px">
+                                            <td>
                                                 <div>
                                                     <a id="articulo_rFamiliaMarcaMovimiento" class="sexybutton sexyicononly aArticuloProducto aArticuloProductoFechaPeriodo" ><span><span><span class="print"></span></span></span></a>
                                                     <a id="articulo_rFamiliaMarcaMovimientoExcel" class="sexybutton sexyicononly aArticuloProducto aArticuloProductoFechaPeriodo" ><span><span><span class="excel"></span></span></span></a>
@@ -488,10 +532,10 @@
                                             <td>
                                                 <div>
                                                     <input type="text" name="articuloProducto_codArticuloProductoMovimiento" id="articuloProducto_codArticuloProductoMovimiento" value="" class="ocultar"/>
-                                                    <span id="articuloProducto_codArticuloProductoMovimientoT"></span> / <span id="articuloProducto_articuloProductoMovimiento"></span>
+                                                    <span id="articuloProducto_articuloProductoMovimiento"></span>
                                                 </div>
                                             </td>                                            
-                                            <td class="ancho90px">
+                                            <td>
                                                 <div>
                                                     <a id="articulo_rAPMovimiento" class="sexybutton sexyicononly aArticuloProducto aArticuloProductoFechaPeriodo" ><span><span><span class="print"></span></span></span></a>
                                                     <a id="articulo_rAPMovimientoExcel" class="sexybutton sexyicononly aArticuloProducto aArticuloProductoFechaPeriodo" ><span><span><span class="excel"></span></span></span></a>

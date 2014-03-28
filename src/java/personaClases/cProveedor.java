@@ -7,6 +7,7 @@ package personaClases;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import otros.cUtilitarios;
 import tablas.HibernateUtil;
 import tablas.Proveedor;
@@ -20,15 +21,17 @@ public class cProveedor {
     Session sesion = null;
     public String error;
 
-    public cProveedor() {
-    }
-
     public String getError() {
         return error;
     }
 
     public void setError(String error) {
         this.error = error;
+    }
+
+    public cProveedor() {
+        this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
+        this.error = null;
     }
 
     public int Crear(Proveedor objProveedor) {
@@ -84,6 +87,27 @@ public class cProveedor {
             setError(e.getMessage());
         }
         return null;
+    }
+
+    public List leer_coincidencia_SC(String term) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("from Proveedor p"
+                    + " where (p.ruc like :par1 or p.razonSocial like :par1)"
+                    + " and substring(p.registro,1,1) = 1 ")
+                    .setString("par1", "%" + term.replace(" ", "%") + "%");
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
     }
 
     public List leerRucORazonSocial(String criterio) {
@@ -189,7 +213,8 @@ public class cProveedor {
     }
 
     /**
-     * Busca una coincidencia de proveedor por el <b>razonSocial</b> diferente del
+     * Busca una coincidencia de proveedor por el <b>razonSocial</b> diferente
+     * del
      * <b>codProveedor</b> proporcionado.
      *
      * @param codProveedor

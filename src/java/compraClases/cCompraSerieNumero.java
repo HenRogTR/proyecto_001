@@ -31,6 +31,7 @@ public class cCompraSerieNumero {
 
     public cCompraSerieNumero() {
         this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
+        this.error = null;
     }
 
     /**
@@ -101,6 +102,31 @@ public class cCompraSerieNumero {
      */
     public List leer_admin() {
         return null;
+    }
+
+    /**
+     * 
+     * @param codCompraDetalle
+     * @return 
+     */
+    public List leer_codCompraDetalle(int codCompraDetalle) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            sesion = HibernateUtil.getSessionFactory().openSession();
+            Query q = sesion.createQuery("from CompraSerieNumero csn"
+                    + " where csn.compraDetalle = :par1 "
+                    + " and substring(csn.registro,1,1) = 1")
+                    .setInteger("par1", codCompraDetalle);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+        }
+        return l;
     }
 
     /**

@@ -142,22 +142,107 @@ public class cCompra {
         return null;
     }
 
-//    public List leer_fechaInicio_fechafin_orderByFechaCompra(Date fechaInicio, Date fechaFin) {
-//        List l = new ArrayList();
-//        setError(null);
-//        try {
-//            sesion = HibernateUtil.getSessionFactory().openSession();
-//            Query q = sesion.createQuery("from Compra where fechaFactura >= :fechaInicio and fechaFactura <= :fechaFin and substring(registro,1,1)='1' order by fechaFactura")
-//                    .setParameter("fechaInicio", fechaInicio)
-//                    .setParameter("fechaFin", fechaFin);
-//            l = q.list();
-//            sesion.disconnect();
-//        } catch (Exception e) {
-//            setError(e.getMessage());
-//            l = null;
-//        }
-//        return l;
-//    }
+    /**
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @return 0:codCompra, 1:docSerieNumero, 2:fechaFactura, 3:tipo,
+     * 4:observacion, 5:neto, 6:codProveedor, 7:ruc, 8:razonSocial,
+     * 9:codCompraDetalle, 10:codArticuloProducto, 11:cantidad, 12:descripcion,
+     * 13:usarSerieNumero, 14:precioUnitario, 15:precioTotal
+     */
+    public List leer_fechas_SC(Date fechaInicio, Date fechaFin) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select c.codCompra"
+                    + ", c.docSerieNumero"
+                    + ", c.fechaFactura"
+                    + ", c.tipo"
+                    + ", c.observacion"
+                    + ", c.neto"
+                    + ", c.proveedor.codProveedor"
+                    + ", c.proveedor.ruc"
+                    + ", c.proveedor.razonSocial"
+                    + ", cd.codCompraDetalle"
+                    + ", cd.articuloProducto.codArticuloProducto"
+                    + ", cd.cantidad"
+                    + ", cd.descripcion"
+                    + ", cd.articuloProducto.usarSerieNumero"
+                    + ", cd.precioUnitario"
+                    + ", cd.precioTotal"
+                    + " from Compra c join c.compraDetalles cd"
+                    + " where substring(c.registro,1,1) = 1"
+                    + " and substring(cd.registro,1,1) = 1"
+                    + " and c.fechaFactura between :par1 and :par2"
+                    + " order by c.fechaFactura, c.codCompra")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+
+    /**
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @param codProveedor
+     * @return 0:codCompra, 1:docSerieNumero, 2:fechaFactura, 3:tipo,
+     * 4:observacion, 5:neto, 6:codProveedor, 7:ruc, 8:razonSocial,
+     * 9:codCompraDetalle, 10:codArticuloProducto, 11:cantidad, 12:descripcion,
+     * 13:usarSerieNumero, 14:precioUnitario, 15:precioTotal
+     */
+    public List leer_proveedor_fechas_SC(Date fechaInicio, Date fechaFin, int codProveedor) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select c.codCompra"
+                    + ", c.docSerieNumero"
+                    + ", c.fechaFactura"
+                    + ", c.tipo"
+                    + ", c.observacion"
+                    + ", c.neto"
+                    + ", c.proveedor.codProveedor"
+                    + ", c.proveedor.ruc"
+                    + ", c.proveedor.razonSocial"
+                    + ", cd.codCompraDetalle"
+                    + ", cd.articuloProducto.codArticuloProducto"
+                    + ", cd.cantidad"
+                    + ", cd.descripcion"
+                    + ", cd.articuloProducto.usarSerieNumero"
+                    + ", cd.precioUnitario"
+                    + ", cd.precioTotal"
+                    + " from Compra c join c.compraDetalles cd"
+                    + " where substring(c.registro,1,1) = 1"
+                    + " and substring(cd.registro,1,1) = 1"
+                    + " and c.fechaFactura between :par1 and :par2"
+                    + " and c.proveedor = :par3"
+                    + " order by c.fechaFactura, c.codCompra")
+                    .setDate("par1", fechaInicio)
+                    .setDate("par2", fechaFin)
+                    .setInteger("par3", codProveedor);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return l;
+    }
+
     public List leer_fechaInicio_fechafin_codProveedor_orderByFechaCompra(Date fechaInicio, Date fechaFin, int codProveedor) {
         setError(null);
         try {
