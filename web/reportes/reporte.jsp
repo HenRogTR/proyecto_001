@@ -32,7 +32,7 @@
         <script type="text/javascript" src="../librerias/plugin/mask/jquery.mask.min.js"></script>
         <script type="text/javascript" src="../librerias/utilitarios/validaciones.js"></script>
         <script type="text/javascript" src="../librerias/utilitarios/manejoFecha.js"></script>
-        <script type="text/javascript" src="../librerias/reporte/reporte.js?v.14.03.28"></script>
+        <script type="text/javascript" src="../librerias/reporte/reporte.js?v.14.04.03"></script>
         <style>
             .ui-autocomplete {
                 width: 400px;
@@ -58,7 +58,7 @@
             <div id="right" style="width: 1024px;">
                 <div id="rightSub1" class="ocultar">
                     <input type="text" name="fechaActual" id="fechaActual" value="<%=new cManejoFechas().DateAString(new Date())%>" class="ocultar" />
-                    <h3 class="titulo"><a href="../index.jsp" class="sexybutton"><span><span><span class="home">Inicio</span></span></span></a> MÓDULO REPORTES <a href="reporteMenu.jsp" class="sexybutton"><span><span><span class="info">Versión antigua</span></span></span></a></h3>
+                    <h3 class="titulo"><a href="../index.jsp" class="sexybutton"><span><span><span class="home">Inicio</span></span></span></a> MÓDULO REPORTES </h3>
                     <div id="tabs">
                         <ul>
                             <li><a href="#tabs_cliente">Clientes</a></li>

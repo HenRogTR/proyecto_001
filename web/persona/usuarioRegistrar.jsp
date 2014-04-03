@@ -24,7 +24,7 @@
         <!--propio-->
         <script type="text/javascript" src="../librerias/persona/usuario/usuarioRegistrar.js"></script>
         <script type="text/javascript" src="../librerias/jquery.validate/1.11.1/jquery.validate.min.js"></script>
-        <script type="text/javascript" src="../librerias/jquery.validate/1.11.1/localization/messages_es.js"></script>        
+        <script type="text/javascript" src="../librerias/jquery.validate/1.11.1/localization/messages_es.js"></script>
         <script type="text/javascript" src="../librerias/jquery.validate/1.11.1/additional-methods.min.js"></script>
     </head>
     <body>

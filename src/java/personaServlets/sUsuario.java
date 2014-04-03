@@ -166,7 +166,7 @@ public class sUsuario extends HttpServlet {
                 response.sendRedirect("persona/usuarioMantenimiento.jsp");
             }
             if (accion.equals("permisos")) {
-                objUsuario = new cUsuario().leer_cod(objUsuario.getCodUsuario());                
+                objUsuario = new cUsuario().leer_cod(objUsuario.getCodUsuario());
                 session.setAttribute("usuario", objUsuario);
                 out.print("[{");
                 out.print("\"usuario\":\"" + objUsuario.getUsuario() + "\"");
@@ -236,271 +236,113 @@ public class sUsuario extends HttpServlet {
                 session.invalidate();
                 out.print(true);
             }
-            if (accion.equals("editarPermisoCliente")) {
+
+            if (accion.equals("editarPrivilegio")) {
                 try {
                     codUsuario = Integer.parseInt(request.getParameter("codUsuario"));
                     if (codUsuario == 1) {
                         out.print("Usuario bloqueado.");
                         return;
                     }
-                    boolean p1 = request.getParameter("p1") == null ? false : true;
-                    boolean p2 = request.getParameter("p2") == null ? false : true;
-                    boolean p29 = request.getParameter("p29") == null ? false : true;
-                    out.print(objcUsuario.editarClientePermiso(codUsuario, p1, p2, p29) ? codUsuario : "Error en actualizar.");
+                    boolean p1 = request.getParameter("p1") != null;
+                    boolean p2 = request.getParameter("p2") != null;
+                    boolean p3 = request.getParameter("p3") != null;
+                    boolean p4 = request.getParameter("p4") != null;
+                    boolean p5 = request.getParameter("p5") != null;
+                    boolean p6 = request.getParameter("p6") != null;
+                    boolean p7 = request.getParameter("p7") != null;
+                    boolean p8 = request.getParameter("p8") != null;
+                    boolean p9 = request.getParameter("p9") != null;
+                    boolean p10 = request.getParameter("p10") != null;
+                    boolean p11 = request.getParameter("p11") != null;
+                    boolean p12 = request.getParameter("p12") != null;
+                    boolean p13 = request.getParameter("p13") != null;
+                    boolean p14 = request.getParameter("p14") != null;
+                    boolean p15 = request.getParameter("p15") != null;
+                    boolean p16 = request.getParameter("p16") != null;
+                    boolean p17 = request.getParameter("p17") != null;
+                    boolean p18 = request.getParameter("p18") != null;
+                    boolean p19 = request.getParameter("p19") != null;
+                    boolean p20 = request.getParameter("p20") != null;
+                    boolean p21 = request.getParameter("p21") != null;
+                    boolean p22 = request.getParameter("p22") != null;
+                    boolean p23 = request.getParameter("p23") != null;
+                    boolean p24 = request.getParameter("p24") != null;
+                    boolean p25 = request.getParameter("p25") != null;
+                    boolean p26 = request.getParameter("p26") != null;
+                    boolean p27 = request.getParameter("p27") != null;
+                    boolean p28 = request.getParameter("p28") != null;
+                    boolean p29 = request.getParameter("p29") != null;
+                    boolean p30 = request.getParameter("p30") != null;
+                    boolean p31 = request.getParameter("p31") != null;
+                    boolean p32 = request.getParameter("p32") != null;
+                    boolean p33 = request.getParameter("p33") != null;
+                    boolean p34 = request.getParameter("p34") != null;
+                    boolean p35 = request.getParameter("p35") != null;
+                    boolean p36 = request.getParameter("p36") != null;
+                    boolean p37 = request.getParameter("p37") != null;
+                    boolean p38 = request.getParameter("p38") != null;
+                    boolean p39 = request.getParameter("p39") != null;
+                    boolean p40 = request.getParameter("p40") != null;
+                    boolean p41 = request.getParameter("p41") != null;
+                    boolean p42 = request.getParameter("p42") != null;
+                    boolean p43 = request.getParameter("p43") != null;
+                    boolean p44 = request.getParameter("p44") != null;
+                    boolean p45 = request.getParameter("p45") != null;
+                    boolean p46 = request.getParameter("p46") != null;
+                    boolean p47 = request.getParameter("p47") != null;
+                    boolean p48 = request.getParameter("p48") != null;
+                    boolean p49 = request.getParameter("p49") != null;
+                    boolean p50 = request.getParameter("p50") != null;
+                    boolean p51 = request.getParameter("p51") != null;
+                    boolean p52 = request.getParameter("p52") != null;
+                    boolean p53 = request.getParameter("p53") != null;
+                    boolean p54 = request.getParameter("p54") != null;
+                    boolean p55 = request.getParameter("p55") != null;
+                    boolean p56 = request.getParameter("p56") != null;
+                    boolean p57 = request.getParameter("p57") != null;
+                    boolean p58 = request.getParameter("p58") != null;
+                    boolean p59 = request.getParameter("p59") != null;
+                    boolean p60 = request.getParameter("p60") != null;
+
+                    boolean editar = new cUsuario().editarPrivilegios(codUsuario, p1,
+                            p2, p3, p4, p5, p6, p7, p8, p9, p10, p11,
+                            p12, p13, p14, p15, p16, p17, p18, p19, p20,
+                            p21, p22, p23, p24, p25, p26, p27, p28, p29,
+                            p30, p31, p32, p33, p34, p35, p36, p37, p38,
+                            p39, p40, p41, p42, p43, p44, p45, p46, p47,
+                            p48, p49, p50, p51, p52, p53, p54, p55, p56,
+                            p57, p58, p59, p60);
+                    out.print(editar ? codUsuario : "Error en actualización.");
                 } catch (Exception e) {
                     out.print("Error en parametros");
                 }
             }
-            if (accion.equals("editarPermisoVenta")) {
+
+            if (accion.equals("contraseniaCambiar")) {
+                String contraseniaAnterior;
+                String contraseniaNueva;
+                String contraseniaNuevaRepetir;
                 try {
-                    codUsuario = Integer.parseInt(request.getParameter("codUsuario"));
-                    if (codUsuario == 1) {
-                        out.print("Usuario bloqueado.");
-                        return;
-                    }
-                    boolean p18 = request.getParameter("p18") == null ? false : true;
-                    boolean p23 = request.getParameter("p23") == null ? false : true;
-                    boolean p31 = request.getParameter("p31") == null ? false : true;
-                    boolean p33 = request.getParameter("p33") == null ? false : true;
-                    boolean p34 = request.getParameter("p34") == null ? false : true;
-                    out.print(objcUsuario.editarVentaPermiso(codUsuario, p18, p23, p31, p33, p34) ? codUsuario : "Error en actualizacion");
+                    contraseniaAnterior = request.getParameter("contraseniaAnterior").toString();
+                    contraseniaNueva = request.getParameter("contraseniaNueva").toString();
+                    contraseniaNuevaRepetir = request.getParameter("contraseniaNuevaRepetir").toString();
                 } catch (Exception e) {
                     out.print("Error en parametros");
+                    return;
                 }
-            }
-            if (accion.equals("editarPermisoCobranza")) {
-                try {
-                    codUsuario = Integer.parseInt(request.getParameter("codUsuario"));
-                    if (codUsuario == 1) {
-                        out.print("Usuario bloqueado.");
-                        return;
-                    }
-                    boolean p22 = request.getParameter("p22") == null ? false : true;
-                    boolean p24 = request.getParameter("p24") == null ? false : true;
-                    boolean p35 = request.getParameter("p35") == null ? false : true;
-                    boolean p36 = request.getParameter("p36") == null ? false : true;
-                    boolean p37 = request.getParameter("p37") == null ? false : true;
-                    boolean p49 = request.getParameter("p49") == null ? false : true;
-                    out.print(objcUsuario.editarCobranzaPermiso(codUsuario, p22, p24, p35, p36, p37, p49) ? codUsuario : "Error en actualizacion");
-                } catch (Exception e) {
-                    out.print("Error en parametros");
+                if (!objUsuario.getContrasenia().equals(contraseniaAnterior)) {
+                    out.print("La contraseña no coincide.");
+                    return;
                 }
-            }
-            if (accion.equals("editarPermisoEmpresaConvenio")) {
-                try {
-                    codUsuario = Integer.parseInt(request.getParameter("codUsuario"));
-                    if (codUsuario == 1) {
-                        out.print("Usuario bloqueado.");
-                        return;
-                    }
-                    boolean p12 = request.getParameter("p12") == null ? false : true;
-                    boolean p41 = request.getParameter("p41") == null ? false : true;
-                    out.print(objcUsuario.editarEmpresaConvenioPermiso(codUsuario, p12, p41) ? codUsuario : "Error en actualizacion");
-                } catch (Exception e) {
-                    out.print("Error en parámetros");
+                if (!contraseniaNueva.equals(contraseniaNuevaRepetir)) {
+                    out.print("La contraseñas nuevas no coinciden.");
+                    return;
                 }
+                boolean estado = new cUsuario().editarContrasenia(objUsuario.getCodUsuario(), contraseniaNueva);
+                session.invalidate();
+                out.print(estado ? objUsuario.getCodUsuario() : "Error en actualización de contraseña.");
             }
-            if (accion.equals("editarPermisoAlmacen")) {
-                try {
-                    codUsuario = Integer.parseInt(request.getParameter("codUsuario"));
-                    if (codUsuario == 1) {
-                        out.print("Usuario bloqueado.");
-                        return;
-                    }
-                    boolean p8 = request.getParameter("p8") == null ? false : true;
-                    boolean p38 = request.getParameter("p38") == null ? false : true;
-                    out.print(objcUsuario.editarAlmacenPermiso(codUsuario, p8, p38) ? codUsuario : "Error en actualizacion");
-                } catch (Exception e) {
-                    out.print("Error en parámetros");
-                }
-            }
-            if (accion.equals("editarPermisoArticuloProducto")) {
-                try {
-                    codUsuario = Integer.parseInt(request.getParameter("codUsuario"));
-                    if (codUsuario == 1) {
-                        out.print("Usuario bloqueado.");
-                        return;
-                    }
-                    boolean p4 = request.getParameter("p4") == null ? false : true;
-                    boolean p6 = request.getParameter("p6") == null ? false : true;
-                    boolean p7 = request.getParameter("p7") == null ? false : true;
-                    boolean p15 = request.getParameter("p15") == null ? false : true;
-                    boolean p21 = request.getParameter("p21") == null ? false : true;
-                    boolean p27 = request.getParameter("p27") == null ? false : true;
-                    out.print(objcUsuario.editarArticuloProductoPermiso(codUsuario, p4, p6, p7, p15, p21, p27) ? codUsuario : "Error en actualizacion");
-                } catch (Exception e) {
-                    out.print("Error en parámetros");
-                }
-            }
-            if (accion.equals("editarPermisoGarante")) {
-                try {
-                    codUsuario = Integer.parseInt(request.getParameter("codUsuario"));
-                    if (codUsuario == 1) {
-                        out.print("Usuario bloqueado.");
-                        return;
-                    }
-                    boolean p25 = request.getParameter("p25") == null ? false : true;
-                    boolean p48 = request.getParameter("p48") == null ? false : true;
-                    out.print(objcUsuario.editarGarantePermiso(codUsuario, p25, p48) ? codUsuario : "Error en actualizacion");
-                } catch (Exception e) {
-                    out.print("Error en parámetros");
-                }
-            }
-            if (accion.equals("editarPermisoMarca")) {
-                try {
-                    codUsuario = Integer.parseInt(request.getParameter("codUsuario"));
-                    if (codUsuario == 1) {
-                        out.print("Usuario bloqueado.");
-                        return;
-                    }
-                    boolean p13 = request.getParameter("p13") == null ? false : true;
-                    boolean p45 = request.getParameter("p45") == null ? false : true;
-                    out.print(objcUsuario.editarMarcaPermiso(codUsuario, p13, p45) ? codUsuario : "Error en actualizacion");
-                } catch (Exception e) {
-                    out.print("Error en parámetros");
-                }
-            }
-            if (accion.equals("editarPermisoFamilia")) {
-                try {
-                    codUsuario = Integer.parseInt(request.getParameter("codUsuario"));
-                    if (codUsuario == 1) {
-                        out.print("Usuario bloqueado.");
-                        return;
-                    }
-                    boolean p14 = request.getParameter("p14") == null ? false : true;
-                    boolean p43 = request.getParameter("p43") == null ? false : true;
-                    out.print(objcUsuario.editarFamiliaPermiso(codUsuario, p14, p43) ? codUsuario : "Error en actualizacion");
-                } catch (Exception e) {
-                    out.print("Error en parámetros");
-                }
-            }
-            if (accion.equals("editarPermisoZona")) {
-                try {
-                    codUsuario = Integer.parseInt(request.getParameter("codUsuario"));
-                    if (codUsuario == 1) {
-                        out.print("Usuario bloqueado.");
-                        return;
-                    }
-                    boolean p16 = request.getParameter("p16") == null ? false : true;
-                    boolean p46 = request.getParameter("p46") == null ? false : true;
-                    out.print(objcUsuario.editarZonaPermiso(codUsuario, p16, p46) ? codUsuario : "Error en actualizacion");
-                } catch (Exception e) {
-                    out.print("Error en parámetros");
-                }
-            }
-            if (accion.equals("editarPermisoCompra")) {
-                try {
-                    codUsuario = Integer.parseInt(request.getParameter("codUsuario"));
-                    if (codUsuario == 1) {
-                        out.print("Usuario bloqueado.");
-                        return;
-                    }
-                    boolean p3 = request.getParameter("p3") == null ? false : true;
-                    boolean p39 = request.getParameter("p39") == null ? false : true;
-                    boolean p40 = request.getParameter("p40") == null ? false : true;
-                    out.print(objcUsuario.editarCompraPermiso(codUsuario, p3, p39, p40) ? codUsuario : "Error en actualizacion");
-                } catch (Exception e) {
-                    out.print("Error en parámetros");
-                }
-            }
-            if (accion.equals("editarPermisoProveedor")) {
-                try {
-                    codUsuario = Integer.parseInt(request.getParameter("codUsuario"));
-                    if (codUsuario == 1) {
-                        out.print("Usuario bloqueado.");
-                        return;
-                    }
-                    boolean p5 = request.getParameter("p5") == null ? false : true;
-                    boolean p17 = request.getParameter("p17") == null ? false : true;
-                    out.print(objcUsuario.editarProveedorPermiso(codUsuario, p5, p17) ? codUsuario : "Error en actualizacion");
-                } catch (Exception e) {
-                    out.print("Error en parámetros");
-                }
-            }
-            if (accion.equals("editarPermisoPersonal")) {
-                try {
-                    codUsuario = Integer.parseInt(request.getParameter("codUsuario"));
-                    if (codUsuario == 1) {
-                        out.print("Usuario bloqueado.");
-                        return;
-                    }
-                    boolean p9 = request.getParameter("p9") == null ? false : true;
-                    boolean p30 = request.getParameter("p30") == null ? false : true;
-                    out.print(objcUsuario.editarPersonalPermiso(codUsuario, p9, p30) ? codUsuario : "Error en actualizacion");
-                } catch (Exception e) {
-                    out.print("Error en parámetros");
-                }
-            }
-            if (accion.equals("editarPermisoReporte")) {
-                try {
-                    codUsuario = Integer.parseInt(request.getParameter("codUsuario"));
-                    if (codUsuario == 1) {
-                        out.print("Usuario bloqueado.");
-                        return;
-                    }
-                    boolean p19 = request.getParameter("p19") == null ? false : true;
-                    out.print(objcUsuario.editarReportePermiso(codUsuario, p19) ? codUsuario : "Error en actualizacion");
-                } catch (Exception e) {
-                    out.print("Error en parámetros");
-                }
-            }
-            if (accion.equals("editarPermisoPropietario")) {
-                try {
-                    codUsuario = Integer.parseInt(request.getParameter("codUsuario"));
-                    if (codUsuario == 1) {
-                        out.print("Usuario bloqueado.");
-                        return;
-                    }
-                    boolean p26 = request.getParameter("p26") == null ? false : true;
-                    boolean p47 = request.getParameter("p47") == null ? false : true;
-                    out.print(objcUsuario.editarPropietarioPermiso(codUsuario, p26, p47) ? codUsuario : "Error en actualizacion");
-                } catch (Exception e) {
-                    out.print("Error en parámetros");
-                }
-            }
-            if (accion.equals("editarPermisoUsuario")) {
-                try {
-                    codUsuario = Integer.parseInt(request.getParameter("codUsuario"));
-                    if (codUsuario == 1) {
-                        out.print("Usuario bloqueado.");
-                        return;
-                    }
-                    boolean p20 = request.getParameter("p20") == null ? false : true;
-                    boolean p44 = request.getParameter("p44") == null ? false : true;
-                    out.print(objcUsuario.editarUsuarioPermiso(codUsuario, p20, p44) ? codUsuario : "Error en actualizacion");
-                } catch (Exception e) {
-                    out.print("Error en parámetros");
-                }
-            }
-            if (accion.equals("editarPermisoCargo")) {
-                try {
-                    codUsuario = Integer.parseInt(request.getParameter("codUsuario"));
-                    if (codUsuario == 1) {
-                        out.print("Usuario bloqueado.");
-                        return;
-                    }
-                    boolean p10 = request.getParameter("p10") == null ? false : true;
-                    boolean p42 = request.getParameter("p42") == null ? false : true;
-                    out.print(objcUsuario.editarCargoPermiso(codUsuario, p10, p42) ? codUsuario : "Error en actualizacion");
-                } catch (Exception e) {
-                    out.print("Error en parámetros");
-                }
-            }
-            if (accion.equals("editarPermisoArea")) {
-                try {
-                    codUsuario = Integer.parseInt(request.getParameter("codUsuario"));
-                    if (codUsuario == 1) {
-                        out.print("Usuario bloqueado.");
-                        return;
-                    }
-                    boolean p11 = request.getParameter("p11") == null ? false : true;
-                    boolean p32 = request.getParameter("p32") == null ? false : true;
-                    out.print(objcUsuario.editarAreaPermiso(codUsuario, p11, p32) ? codUsuario : "Error en actualizacion");
-                } catch (Exception e) {
-                    out.print("Error en parámetros");
-                }
-            }
-            //*************************************
             if (accion.equals("c")) {
                 session.invalidate();
                 response.sendRedirect("");

@@ -48,11 +48,14 @@
             <li id="permiso50"><a href="../controlDocumento/controlReciboIngresos.jsp">Control de recibo ingresos</a></li>
         </ul>
     </li>
-    <li  id="permiso20">
+    <li id="permiso20">
         <a href="../sUsuario">Usuarios</a>
     </li>
     <li>
         <a href="#" id="aUsuarioCerrarSesion">Cerrar Sesión</a>
+    </li>
+    <li>
+        <a href="../persona/usuarioContraseniaCambiar.jsp">Cambiar contraseña</a>
     </li>
 </ul>
 <!--d iniciar sesion-->

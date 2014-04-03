@@ -19,9 +19,9 @@ public class aPrueba {
     public static void main(String[] args) {
         // TODO code application logic here
         Usuario objUsuario = new cUsuario().ingresar2("admin", "1234");
-        
-        System.out.println(objUsuario);
-//        objUsuario = new cUsuario().leer_cod(objUsuario.getCodUsuario());
-//        System.out.println(objUsuario);
+
+        String a = null;
+        Boolean f = a != null;
+        System.out.println(f);
     }
 }
