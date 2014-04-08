@@ -192,7 +192,7 @@ public class sClienteNatural extends HttpServlet {
                     EmpresaConvenio objEmpresaConvenio = new EmpresaConvenio();
                     objEmpresaConvenio.setCodEmpresaConvenio(Integer.parseInt(request.getParameter("codEmpresaConvenio")));
                     objCliente.setEmpresaConvenio(objEmpresaConvenio);
-                    objCliente.setCodCobrador(Integer.parseInt(request.getParameter("codCobrador")));
+                    objCliente.setCodCobrador(new cDatosCliente().leer_cod(objCliente.getCodDatosCliente()).getCodCobrador());
                     objCliente.setCentroTrabajo(request.getParameter("centroTrabajo").toString());
                     objCliente.setTipo(Integer.parseInt(request.getParameter("tipo")));
                     objCliente.setCondicion(Integer.parseInt(request.getParameter("condicion")));

@@ -156,7 +156,7 @@ public class sClienteJuridico extends HttpServlet {
                     EmpresaConvenio objEmpresaConvenio = new EmpresaConvenio();
                     objEmpresaConvenio.setCodEmpresaConvenio(1);
                     objCliente.setEmpresaConvenio(objEmpresaConvenio);
-                    objCliente.setCodCobrador(Integer.parseInt(request.getParameter("codCobrador")));
+                    objCliente.setCodCobrador(new cDatosCliente().leer_cod(objCliente.getCodDatosCliente()).getCodCobrador());
                     objCliente.setCentroTrabajo("");
                     objCliente.setTipo(4);
                     objCliente.setCondicion(3);
