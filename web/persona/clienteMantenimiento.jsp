@@ -27,7 +27,7 @@
         <script type="text/javascript" src="../librerias/jquery-ui/jquery-ui-1.10.3.custom/js/i18n/jquery.ui.datepicker-es-min.js"></script>
         <script type="text/javascript" src="../librerias/plugin/mask/jquery.mask.min.js"></script>
         <script type="text/javascript" src="../librerias/utilitarios/manejoFecha.js"></script>
-        <script type="text/javascript" src="../librerias/persona/cliente/clienteMantenimiento.js?v13.10.30"></script>
+        <script type="text/javascript" src="../librerias/persona/cliente/clienteMantenimiento.js?v.14.04.08"></script>
         <style>
             .ui-autocomplete {
                 /*width: 400px;*/
@@ -146,8 +146,8 @@
                                             <td class="lTelefono2P vaciar"></td>
                                         </tr>
                                         <tr class="clienteNatural">
-                                            <th>COBRADOR</th>
-                                            <td colspan="3" class="lCobrador vaciar"></td>
+                                            <th>COBRADOR <button class="sexybutton sexyicononly sexysimple sexysmall sexypropio" id="bNaturalCobradorEditar" type="button"><span class="search"></span></button></th>
+                                            <td colspan="3" class="lCobrador vaciar" id="tdCobradorNombres"></td>
                                         </tr>
                                         <tr class="clienteNatural">
                                             <th>DIRECCIÓN</th>
@@ -187,7 +187,7 @@
                                             <td class="lTelefono2P vaciar"></td>
                                         </tr>
                                         <tr class="clienteJuridico">
-                                            <th>COBRADOR</th>
+                                            <th>COBRADOR <button class="sexybutton sexyicononly sexysimple sexysmall sexypropio" id="bJuridicoCobradorEditar" type="button"><span class="search"></span></button></th>
                                             <td colspan="3" class="lCobrador vaciar"></td>
                                         </tr>
                                         <tr class="clienteJuridico">
@@ -335,6 +335,22 @@
                 </div>
                 <div id="dDocumentoNotificacionBorrarConfirmar" title="¿Confirma eliminar este documento?">
 
+                </div>
+                <!--div editar cobrador-->
+                <div id="dCobradorBuscar" title="Cobrador asigando">
+                    <table class="reporte-tabla-1 anchoTotal" >
+                        <tr>
+                            <th class="ancho120px"><label>COBRADOR ACTUAL</label></th>
+                            <td><label id="lCobradorAsigando"></label></td>
+                        </tr>
+                        <tr>
+                            <th><label>NUEVO COBRADOR</label></th>
+                            <td class="contenedorEntrada">
+                                <input type="text" name="cobradorBuscar" id="cobradorBuscar" value="" class="entrada anchoTotal"/>
+                                <input type="hidden" name="codCobradorAux" id="codCobradorAux" value=""/>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
                 <!--*******Dialog******************************************************************************-->
             </div>

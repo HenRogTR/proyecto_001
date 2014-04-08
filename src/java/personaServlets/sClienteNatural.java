@@ -12,10 +12,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import otrasTablasClases.cDatosExtras;
 import personaClases.cDatosCliente;
 import personaClases.cNatural;
 import personaClases.cPersona;
 import tablas.DatosCliente;
+import tablas.DatosExtras;
 import tablas.EmpresaConvenio;
 import tablas.PNatural;
 import tablas.Persona;
@@ -32,9 +34,8 @@ import utilitarios.cOtros;
 public class sClienteNatural extends HttpServlet {
 
     /**
-     * Processes requests for both HTTP
-     * <code>GET</code> and
-     * <code>POST</code> methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
      *
      * @param request servlet request
      * @param response servlet response
@@ -69,6 +70,16 @@ public class sClienteNatural extends HttpServlet {
                     return;
                 }
                 try {
+                    DatosExtras objDatosExtras = new cDatosExtras().cobradorDefecto();
+                    if (objDatosExtras == null) {
+                        out.print("No se ha definido el cobrador por defecto, informe al administardor del sistema. -> NULL");
+                        return;
+                    }
+                    if (objDatosExtras.getEntero() == 0) {
+                        out.print("No se ha definido el cobrador por defecto, informe al administardor del sistema. 0");
+                        return;
+                    }
+
                     //datos t_persona
                     Persona objPersona = new Persona();
                     objPersona.setNombres(request.getParameter("nombres").toString());
@@ -105,7 +116,7 @@ public class sClienteNatural extends HttpServlet {
                     EmpresaConvenio objEmpresaConvenio = new EmpresaConvenio();
                     objEmpresaConvenio.setCodEmpresaConvenio(Integer.parseInt(request.getParameter("codEmpresaConvenio")));
                     objCliente.setEmpresaConvenio(objEmpresaConvenio);
-                    objCliente.setCodCobrador(Integer.parseInt(request.getParameter("codCobrador")));
+                    objCliente.setCodCobrador(objDatosExtras.getEntero());
                     objCliente.setCentroTrabajo(request.getParameter("centroTrabajo").toString());
                     objCliente.setTipo(Integer.parseInt(request.getParameter("tipo")));
                     objCliente.setCondicion(Integer.parseInt(request.getParameter("condicion")));
@@ -207,8 +218,7 @@ public class sClienteNatural extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP
-     * <code>GET</code> method.
+     * Handles the HTTP <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -222,8 +232,7 @@ public class sClienteNatural extends HttpServlet {
     }
 
     /**
-     * Handles the HTTP
-     * <code>POST</code> method.
+     * Handles the HTTP <code>POST</code> method.
      *
      * @param request servlet request
      * @param response servlet response

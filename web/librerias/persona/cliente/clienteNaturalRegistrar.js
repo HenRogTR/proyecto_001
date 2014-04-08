@@ -39,39 +39,13 @@ $(document).ready(function() {
             $('#condicion').val('3');
         }
     });
-
-    $('#bCobradorBuscar').click(function(event) {
-        $('#lCobradorAsigando').text($('#lCobrador').text());
-        $('#dCobradorBuscar').dialog('open');
-        event.preventDefault();
-    });
+    
     $('#fechaNacimiento').mask('99/99/9999');
     $('#fechaNacimiento').datepicker({
         changeMonth: true,
         changeYear: true,
         numberOfMonths: 2
-    });
-    $('#dCobradorBuscar').dialog({
-        autoOpen: false,
-        modal: true,
-        resizable: true,
-        height: 180,
-        width: 800,
-        buttons: {
-            Cerrar: function() {
-                $(this).dialog("close");
-            },
-            Cambiar: function() {
-                $('#lCobrador').text($('#cobradorBuscar').val());
-                $('#codCobrador').val($('#codCobradorAux').val());
-                $('#cobradorBuscar').val('');
-                $(this).dialog("close");
-            }
-        },
-        close: function() {
-            $(this).dialog("close");
-        }
-    });
+    });    
     $("#dClienteRegistrarExito").dialog({
         autoOpen: false,
         modal: true,
@@ -88,12 +62,6 @@ $(document).ready(function() {
         }
     });
 
-    $('#cobradorBuscar').autocomplete({
-        source: "autocompletado/cobradorVendedor.jsp",
-        minLength: 3,
-        select: cobradorSeleccionado,
-        focus: cobradorMarcado
-    });
     $('.mayuscula').blur(function() {
         $(this).val($.trim($(this).val().toUpperCase()));
     });
@@ -103,11 +71,6 @@ $(document).ready(function() {
     $('#formClienteNaturalRegistrar').validate({
         ignore: "",
         submitHandler: function() {
-            if ($('#codCobrador').val() == 0) {
-                $('#dMensajeAlertaDiv').empty().append('Seleccione cobrador, se sugiere seleccionar: SIN COBRADOR');
-                $('#dMensajeAlerta').dialog('open');
-                return;
-            }
             fClienteNaturalRegistrar();
         },
         onkeyup: function(element) {
@@ -211,7 +174,7 @@ function fClienteNaturalRegistrar() {
 ;
 
 function fPersonaObtenerDniPasaporte(dniPasaporte) {
-    data = {dniPasaporte: dniPasaporte};
+    var data = {dniPasaporte: dniPasaporte};
     try {
         $.ajax({
             type: 'POST',
@@ -265,7 +228,7 @@ function fPersonaObtenerDniPasaporte(dniPasaporte) {
 ;
 
 function fPersonaObtenerRuc(ruc) {
-    data = {ruc: ruc};
+    var data = {ruc: ruc};
     try {
         $.ajax({
             type: 'POST',
@@ -320,24 +283,7 @@ function fPersonaObtenerRuc(ruc) {
 function fReiniciarForm() {
     $('.limpiar').val('');
     $('#saldoMax').val('5000.00');
-    $('.vaciar').empty();    
-    $('#codCobrador').val('');
-    $('#lCobrador').text('');
-}
-;
-
-function cobradorSeleccionado(event, ui) {
-    var cobrador = ui.item.value;
-    $('#cobradorBuscar').val(cobrador.nombresC);
-    $('#codCobradorAux').val(cobrador.codPersona);
-    event.preventDefault();
-}
-;
-
-function cobradorMarcado(event, ui) {
-    var cobrador = ui.item.value;
-    $('#cobradorBuscar').val(cobrador.nombresC);
-    event.preventDefault();
+    $('.vaciar').empty();
 }
 ;
 

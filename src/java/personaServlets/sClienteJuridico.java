@@ -12,9 +12,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import otrasTablasClases.cDatosExtras;
 import personaClases.cDatosCliente;
 import personaClases.cPersona;
 import tablas.DatosCliente;
+import tablas.DatosExtras;
 import tablas.EmpresaConvenio;
 import tablas.Persona;
 import tablas.Usuario;
@@ -64,6 +66,15 @@ public class sClienteJuridico extends HttpServlet {
                     return;
                 }
                 try {
+                    DatosExtras objDatosExtras = new cDatosExtras().cobradorDefecto();
+                    if (objDatosExtras == null) {
+                        out.print("No se ha definido el cobrador por defecto, informe al administardor del sistema. -> NULL");
+                        return;
+                    }
+                    if (objDatosExtras.getEntero() == 0) {
+                        out.print("No se ha definido el cobrador por defecto, informe al administardor del sistema. 0");
+                        return;
+                    }
                     //datos t_persona
                     Persona objPersona = new Persona();
                     objPersona.setNombres(request.getParameter("nombres").toString());
@@ -89,7 +100,7 @@ public class sClienteJuridico extends HttpServlet {
                     EmpresaConvenio objEmpresaConvenio = new EmpresaConvenio();
                     objEmpresaConvenio.setCodEmpresaConvenio(1);
                     objCliente.setEmpresaConvenio(objEmpresaConvenio);
-                    objCliente.setCodCobrador(Integer.parseInt(request.getParameter("codCobrador")));
+                    objCliente.setCodCobrador(objDatosExtras.getEntero());
                     objCliente.setCentroTrabajo("");
                     objCliente.setTipo(4);
                     objCliente.setCondicion(3);

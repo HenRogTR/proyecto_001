@@ -56,7 +56,7 @@
         <script type="text/javascript" src="../librerias/jquery.validate/1.11.1/additional-methods.min.js"></script>        
         <script type="text/javascript" src="../librerias/jquery-ui/jquery-ui-1.10.3.custom/js/i18n/jquery.ui.datepicker-es-min.js"></script>
         <script type="text/javascript" src="../librerias/jquery.maskedinput/jquery.maskedinput.min.js"></script>
-        <script type="text/javascript" src="../librerias/persona/cliente/clienteNaturalEditar.js?v13.09.13"></script>
+        <script type="text/javascript" src="../librerias/persona/cliente/clienteNaturalEditar.js?v.14.04.08"></script>
     </head>
     <body>
         <input type="hidden" name="paginaActualPermiso" id="permisoPaginaP29" value="" title="EDICION DE CLIENTES"/>
@@ -171,16 +171,6 @@
                                             <td class="contenedorEntrada"><input type="text" name="telefono1P" id="telefono1P" class="limpiar entrada anchoTotal" value="<%=objCliente.getPersona().getTelefono1()%>"/></td>
                                             <th>TELÉFONO (2)</th>
                                             <td class="contenedorEntrada"><input type="text" name="telefono2P" id="telefono2P" class="limpiar entrada anchoTotal" value="<%=objCliente.getPersona().getTelefono2()%>"/></td>
-                                        </tr>
-                                        <tr>
-                                            <th>COBRADOR <button class="sexybutton sexyicononly sexysimple sexysmall sexypropio" id="bCobradorBuscar" type="button"><span class="search"></span></button></th>
-                                            <td colspan="3">
-                                                <%
-                                                    Persona objCobrador = objcPersona.leer_cod(objCliente.getCodCobrador());
-                                                %>
-                                                <input type="hidden" name="codCobrador" id="codCobrador" value="<%=objCobrador.getCodPersona()%>" />
-                                                <label id="lCobrador" class="vaciar"><%=objCobrador.getNombresC()%></label>
-                                            </td>
                                         </tr>
                                         <tr>
                                             <th>DIRECCIÓN</th>
@@ -317,22 +307,6 @@
                 <div id="dClienteRegistrarExito" title="Registro exitoso" style="text-align: justify;">
                     Se ha registrado correctamente el personal.<br>
                     Seleccione la opcíon a realizar.
-                </div>
-                <!--div editar cobrador-->
-                <div id="dCobradorBuscar" title="Cobrador asigando">
-                    <table class="reporte-tabla-1" style="width: 100%;">
-                        <tr>
-                            <th style="width: 120px;"><label>COBRADOR ACTUAL</label></th>
-                            <td><label id="lCobradorAsigando"></label></td>
-                        </tr>
-                        <tr>
-                            <th><label>NUEVO COBRADOR</label></th>
-                            <td class="contenedorEntrada">
-                                <input type="text" name="cobradorBuscar" id="cobradorBuscar" value="" class="entrada anchoTotal"/>
-                                <input type="hidden" name="codCobradorAux" id="codCobradorAux" value=""/>
-                            </td>
-                        </tr>
-                    </table>
                 </div>
                 <!--fin dialogos******************************************-->
             </div>

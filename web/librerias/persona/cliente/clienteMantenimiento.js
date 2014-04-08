@@ -44,6 +44,13 @@ $(document).ready(function(event) {
         $('#dDocumentoNotificacion').dialog('open');
         event.preventDefault();
     });
+
+    $('#bNaturalCobradorEditar, #bJuridicoCobradorEditar').click(function(event) {
+        $('#lCobradorAsigando').text($('#tdCobradorNombres').text());
+        $('#dCobradorBuscar').dialog('open');
+        event.preventDefault();
+    });
+
     $('#fech1')
             .mask('00/00/0000')
             .blur(function() {
@@ -67,6 +74,7 @@ $(function() {
     $('#fech1').datepicker({
         changeMonth: true, changeYear: true, numberOfMonths: 2, showButtonPanel: true
     });
+
     $("#dClienteBuscar").dialog({
         autoOpen: false,
         modal: true,
@@ -122,7 +130,6 @@ $(function() {
         }
     });
 
-
     $("#dDocumentoNotificacionBorrarConfirmar").dialog({
         autoOpen: false,
         modal: true,
@@ -135,6 +142,24 @@ $(function() {
             },
             No: function() {
                 $(this).dialog("close");
+            }
+        },
+        close: function() {
+            $(this).dialog("close");
+        }
+    });
+    $('#dCobradorBuscar').dialog({
+        autoOpen: false,
+        modal: true,
+        resizable: true,
+        height: 180,
+        width: 800,
+        buttons: {
+            Cerrar: function() {
+                $(this).dialog("close");
+            },
+            Cambiar: function() {
+                fCobradorEditar();
             }
         },
         close: function() {
@@ -157,6 +182,12 @@ $(function() {
         select: datoClienteSeleccionado
     });
 
+    $('#cobradorBuscar').autocomplete({
+        source: "autocompletado/cobradorVendedor.jsp",
+        minLength: 3,
+        select: cobradorSeleccionado,
+        focus: cobradorMarcado
+    });
 });
 function fPaginaActual() {
     $('#dProcesandoPeticion').dialog('open');
@@ -527,6 +558,65 @@ function fDNEliminar() {
                     $('#trDN' + data.codDocumentoNotificacion).remove();
                 } else {
                     $('#dDocumentoNotificacionBorrarConfirmar').dialog('open');
+                    fAlerta(ajaxResponse);
+                }
+            },
+            statusCode: {
+                404: function() {
+                    $('#lServidorError').text('Página no encontrada().');
+                    $('#dServidorError').dialog('open');
+                }
+            }
+        });
+    }
+    catch (ex) {
+        $('#lServidorError').text(ex);
+        $('#dServidorError').dialog('open');
+    }
+}
+;
+
+function cobradorSeleccionado(event, ui) {
+    var cobrador = ui.item.value;
+    $('#cobradorBuscar').val(cobrador.nombresC);
+    $('#codCobradorAux').val(cobrador.codPersona);
+    event.preventDefault();
+}
+;
+
+function cobradorMarcado(event, ui) {
+    var cobrador = ui.item.value;
+    $('#cobradorBuscar').val(cobrador.nombresC);
+    event.preventDefault();
+}
+;
+
+function fCobradorEditar() {
+    var data = {
+        accionCliente: 'editarCobrador',
+        codCliente: $('#codDatoCliente').val(),
+        codCobrador: $('#codCobradorAux').val()
+    };
+    var url = '../sCliente';
+    try {
+        $.ajax({
+            type: 'post',
+            url: url,
+            data: data,
+            beforeSend: function() {
+
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                $('#lServidorError').text(errorThrown + '()');
+                $('#dServidorError').dialog('open');
+            },
+            success: function(ajaxResponse, textStatus) {
+                if ($.isNumeric(ajaxResponse)) {
+                    $('#codCobradorAux').val('');
+                    $('#dCobradorBuscar').dialog('close');
+                    fAlerta('Cobrador cambiado.');
+                    fClienteLeer(data.codCliente, '');
+                } else {
                     fAlerta(ajaxResponse);
                 }
             },
