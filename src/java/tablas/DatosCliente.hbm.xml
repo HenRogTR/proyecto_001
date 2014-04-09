@@ -41,6 +41,9 @@
         <property name="codCobrador" type="int">
             <column name="cod_cobrador" not-null="true" />
         </property>
+        <property name="personaCodGarante" type="int">
+            <column name="persona_cod_garante" not-null="true" />
+        </property>
         <property name="registro" type="string">
             <column name="registro" length="65535" not-null="true" />
         </property>
