@@ -219,7 +219,7 @@
                                     <th style="width: 90px;"><span>Cantidad</span></th>
                                     <th style="width: 80px;"><span>U.Medida</span></th>
                                     <th class="centrado"><span style="margin-right: 30px;">Artículo</span>Stock: <span id="lStock"></span></th>
-                                    <th style="width: 100px;"><span>P. Contado</span></th>
+                                    <th style="width: 100px;"><span>P. Proforma</span></th>
                                     <th style="width: 100px;"><span>P. Venta</span></th>
                                     <th style="width: 30px;" class="centrado">S/N</th>
                                 </tr>
@@ -257,14 +257,14 @@
                         </div>
                     </div>
                     <!--precioSugeridoEditar-->
-                    <div id="dPrecioContadoEditar" title="Cambiar precio contado">
+                    <div id="dPrecioContadoEditar" title="Cambiar precio proforma">
                         <table class="reporte-tabla-1">
                             <tr>
                                 <th style="width: 200px;">P. Contado Actual</th>
                                 <td style="width: 200px;">S/. <label id="lPrecioContadoActual"></label></td>
                             </tr>
                             <tr>
-                                <th>P. Sugerido Nuevo</th>
+                                <th>P. Proforma Nuevo</th>
                                 <td class="derecha">S/. <input id="precioContadoNuevo"/></td>
                             </tr>
                         </table>
