@@ -1,21 +1,21 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 17/12/2013 10:15:59 AM by Hibernate Tools 3.6.0 -->
+<!-- Generated 10/04/2014 10:20:21 AM by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
     <class name="tablas.TramiteDocumentario" table="tramite_documentario" catalog="proyecto_001">
         <id name="codTramiteDocumentario" type="java.lang.Integer">
             <column name="cod_tramite_documentario" />
             <generator class="identity" />
         </id>
-        <many-to-one name="estadoDocumento" class="tablas.EstadoDocumento" fetch="select">
-            <column name="estado_documento_cod_estado_documento" not-null="true" />
+        <many-to-one name="tipoDocumento" class="tablas.TipoDocumento" fetch="select">
+            <column name="tipo_documento_cod_tipo_documento" not-null="true" />
         </many-to-one>
         <many-to-one name="ventas" class="tablas.Ventas" fetch="select">
             <column name="ventas_cod_ventas" not-null="true" />
         </many-to-one>
-        <many-to-one name="tipoDocumento" class="tablas.TipoDocumento" fetch="select">
-            <column name="tipo_documento_cod_tipo_documento" not-null="true" />
+        <many-to-one name="estadoDocumento" class="tablas.EstadoDocumento" fetch="select">
+            <column name="estado_documento_cod_estado_documento" not-null="true" />
         </many-to-one>
         <property name="fechaSolicitud" type="timestamp">
             <column name="fecha_solicitud" length="19" not-null="true" />

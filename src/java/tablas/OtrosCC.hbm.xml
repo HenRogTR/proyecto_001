@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 17/12/2013 10:15:59 AM by Hibernate Tools 3.6.0 -->
+<!-- Generated 10/04/2014 10:20:21 AM by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
     <class name="tablas.OtrosCC" table="otros_c_c" catalog="proyecto_001">
         <id name="codOtrosCC" type="java.lang.Integer">

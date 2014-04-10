@@ -1,5 +1,5 @@
 package tablas;
-// Generated 17/12/2013 10:15:59 AM by Hibernate Tools 3.6.0
+// Generated 10/04/2014 10:20:20 AM by Hibernate Tools 3.6.0
 
 
 import java.util.HashSet;
@@ -16,8 +16,8 @@ public class Almacen  implements java.io.Serializable {
      private String direccion;
      private String detalle;
      private String registro;
-     private Set<CompraDetalle> compraDetalles = new HashSet<CompraDetalle>(0);
      private Set<KardexArticuloProducto> kardexArticuloProductos = new HashSet<KardexArticuloProducto>(0);
+     private Set<CompraDetalle> compraDetalles = new HashSet<CompraDetalle>(0);
 
     public Almacen() {
     }
@@ -29,13 +29,13 @@ public class Almacen  implements java.io.Serializable {
         this.detalle = detalle;
         this.registro = registro;
     }
-    public Almacen(String almacen, String direccion, String detalle, String registro, Set<CompraDetalle> compraDetalles, Set<KardexArticuloProducto> kardexArticuloProductos) {
+    public Almacen(String almacen, String direccion, String detalle, String registro, Set<KardexArticuloProducto> kardexArticuloProductos, Set<CompraDetalle> compraDetalles) {
        this.almacen = almacen;
        this.direccion = direccion;
        this.detalle = detalle;
        this.registro = registro;
-       this.compraDetalles = compraDetalles;
        this.kardexArticuloProductos = kardexArticuloProductos;
+       this.compraDetalles = compraDetalles;
     }
    
     public Integer getCodAlmacen() {
@@ -73,19 +73,19 @@ public class Almacen  implements java.io.Serializable {
     public void setRegistro(String registro) {
         this.registro = registro;
     }
-    public Set<CompraDetalle> getCompraDetalles() {
-        return this.compraDetalles;
-    }
-    
-    public void setCompraDetalles(Set<CompraDetalle> compraDetalles) {
-        this.compraDetalles = compraDetalles;
-    }
     public Set<KardexArticuloProducto> getKardexArticuloProductos() {
         return this.kardexArticuloProductos;
     }
     
     public void setKardexArticuloProductos(Set<KardexArticuloProducto> kardexArticuloProductos) {
         this.kardexArticuloProductos = kardexArticuloProductos;
+    }
+    public Set<CompraDetalle> getCompraDetalles() {
+        return this.compraDetalles;
+    }
+    
+    public void setCompraDetalles(Set<CompraDetalle> compraDetalles) {
+        this.compraDetalles = compraDetalles;
     }
 
 

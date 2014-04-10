@@ -1,5 +1,5 @@
 package tablas;
-// Generated 17/12/2013 10:15:59 AM by Hibernate Tools 3.6.0
+// Generated 10/04/2014 10:20:20 AM by Hibernate Tools 3.6.0
 
 
 import java.util.HashSet;
@@ -23,6 +23,7 @@ public class DatosCliente  implements java.io.Serializable {
      private double saldoFavor;
      private String observaciones;
      private int codCobrador;
+     private int personaCodGarante;
      private String registro;
      private Set<DocumentoNotificacion> documentoNotificacions = new HashSet<DocumentoNotificacion>(0);
 
@@ -30,16 +31,17 @@ public class DatosCliente  implements java.io.Serializable {
     }
 
 	
-    public DatosCliente(EmpresaConvenio empresaConvenio, Persona persona, int tipo, double creditoMax, double saldoFavor, int codCobrador, String registro) {
+    public DatosCliente(EmpresaConvenio empresaConvenio, Persona persona, int tipo, double creditoMax, double saldoFavor, int codCobrador, int personaCodGarante, String registro) {
         this.empresaConvenio = empresaConvenio;
         this.persona = persona;
         this.tipo = tipo;
         this.creditoMax = creditoMax;
         this.saldoFavor = saldoFavor;
         this.codCobrador = codCobrador;
+        this.personaCodGarante = personaCodGarante;
         this.registro = registro;
     }
-    public DatosCliente(EmpresaConvenio empresaConvenio, Persona persona, Integer tipoCliente, String centroTrabajo, String telefono, int tipo, Integer condicion, double creditoMax, double saldoFavor, String observaciones, int codCobrador, String registro, Set<DocumentoNotificacion> documentoNotificacions) {
+    public DatosCliente(EmpresaConvenio empresaConvenio, Persona persona, Integer tipoCliente, String centroTrabajo, String telefono, int tipo, Integer condicion, double creditoMax, double saldoFavor, String observaciones, int codCobrador, int personaCodGarante, String registro, Set<DocumentoNotificacion> documentoNotificacions) {
        this.empresaConvenio = empresaConvenio;
        this.persona = persona;
        this.tipoCliente = tipoCliente;
@@ -51,6 +53,7 @@ public class DatosCliente  implements java.io.Serializable {
        this.saldoFavor = saldoFavor;
        this.observaciones = observaciones;
        this.codCobrador = codCobrador;
+       this.personaCodGarante = personaCodGarante;
        this.registro = registro;
        this.documentoNotificacions = documentoNotificacions;
     }
@@ -138,6 +141,13 @@ public class DatosCliente  implements java.io.Serializable {
     
     public void setCodCobrador(int codCobrador) {
         this.codCobrador = codCobrador;
+    }
+    public int getPersonaCodGarante() {
+        return this.personaCodGarante;
+    }
+    
+    public void setPersonaCodGarante(int personaCodGarante) {
+        this.personaCodGarante = personaCodGarante;
     }
     public String getRegistro() {
         return this.registro;

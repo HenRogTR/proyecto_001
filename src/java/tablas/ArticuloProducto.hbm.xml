@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 17/12/2013 10:15:59 AM by Hibernate Tools 3.6.0 -->
+<!-- Generated 10/04/2014 10:20:21 AM by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
     <class name="tablas.ArticuloProducto" table="articulo_producto" catalog="proyecto_001">
         <id name="codArticuloProducto" type="java.lang.Integer">
             <column name="cod_articulo_producto" />
             <generator class="identity" />
         </id>
-        <many-to-one name="marca" class="tablas.Marca" fetch="select">
-            <column name="marca_cod_marca" not-null="true" />
-        </many-to-one>
         <many-to-one name="familia" class="tablas.Familia" fetch="select">
             <column name="familia_cod_familia" not-null="true" />
+        </many-to-one>
+        <many-to-one name="marca" class="tablas.Marca" fetch="select">
+            <column name="marca_cod_marca" not-null="true" />
         </many-to-one>
         <property name="codReferencia" type="string">
             <column name="cod_referencia" length="65535" />
@@ -44,29 +44,29 @@
         <property name="registro" type="string">
             <column name="registro" length="65535" not-null="true" />
         </property>
-        <set name="kardexArticuloProductos" table="kardex_articulo_producto" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="articulo_producto_cod_articulo_producto" not-null="true" />
-            </key>
-            <one-to-many class="tablas.KardexArticuloProducto" />
-        </set>
         <set name="compraDetalles" table="compra_detalle" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="articulo_producto_cod_articulo_producto" not-null="true" />
             </key>
             <one-to-many class="tablas.CompraDetalle" />
         </set>
-        <set name="ventasDetalles" table="ventas_detalle" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="articulo_producto_cod_articulo_producto" not-null="true" />
-            </key>
-            <one-to-many class="tablas.VentasDetalle" />
-        </set>
         <set name="precioVentas" table="precio_venta" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="articulo_producto_cod_articulo_producto" not-null="true" />
             </key>
             <one-to-many class="tablas.PrecioVenta" />
+        </set>
+        <set name="kardexArticuloProductos" table="kardex_articulo_producto" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="articulo_producto_cod_articulo_producto" not-null="true" />
+            </key>
+            <one-to-many class="tablas.KardexArticuloProducto" />
+        </set>
+        <set name="ventasDetalles" table="ventas_detalle" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="articulo_producto_cod_articulo_producto" not-null="true" />
+            </key>
+            <one-to-many class="tablas.VentasDetalle" />
         </set>
     </class>
 </hibernate-mapping>

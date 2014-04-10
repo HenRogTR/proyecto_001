@@ -1,5 +1,5 @@
 package tablas;
-// Generated 17/12/2013 10:15:59 AM by Hibernate Tools 3.6.0
+// Generated 10/04/2014 10:20:20 AM by Hibernate Tools 3.6.0
 
 
 import java.util.HashSet;
@@ -12,9 +12,9 @@ public class CompraDetalle  implements java.io.Serializable {
 
 
      private Integer codCompraDetalle;
-     private ArticuloProducto articuloProducto;
-     private Compra compra;
      private Almacen almacen;
+     private Compra compra;
+     private ArticuloProducto articuloProducto;
      private int cantidad;
      private String descripcion;
      private Double precioUnitario;
@@ -29,17 +29,17 @@ public class CompraDetalle  implements java.io.Serializable {
     }
 
 	
-    public CompraDetalle(ArticuloProducto articuloProducto, Compra compra, Almacen almacen, int cantidad, String registro) {
-        this.articuloProducto = articuloProducto;
-        this.compra = compra;
+    public CompraDetalle(Almacen almacen, Compra compra, ArticuloProducto articuloProducto, int cantidad, String registro) {
         this.almacen = almacen;
+        this.compra = compra;
+        this.articuloProducto = articuloProducto;
         this.cantidad = cantidad;
         this.registro = registro;
     }
-    public CompraDetalle(ArticuloProducto articuloProducto, Compra compra, Almacen almacen, int cantidad, String descripcion, Double precioUnitario, Double precioTotal, Integer item, String detalle, String registro, Set<CompraSerieNumero> compraSerieNumeros, Set<DetalleDescripcion> detalleDescripcions) {
-       this.articuloProducto = articuloProducto;
-       this.compra = compra;
+    public CompraDetalle(Almacen almacen, Compra compra, ArticuloProducto articuloProducto, int cantidad, String descripcion, Double precioUnitario, Double precioTotal, Integer item, String detalle, String registro, Set<CompraSerieNumero> compraSerieNumeros, Set<DetalleDescripcion> detalleDescripcions) {
        this.almacen = almacen;
+       this.compra = compra;
+       this.articuloProducto = articuloProducto;
        this.cantidad = cantidad;
        this.descripcion = descripcion;
        this.precioUnitario = precioUnitario;
@@ -58,12 +58,12 @@ public class CompraDetalle  implements java.io.Serializable {
     public void setCodCompraDetalle(Integer codCompraDetalle) {
         this.codCompraDetalle = codCompraDetalle;
     }
-    public ArticuloProducto getArticuloProducto() {
-        return this.articuloProducto;
+    public Almacen getAlmacen() {
+        return this.almacen;
     }
     
-    public void setArticuloProducto(ArticuloProducto articuloProducto) {
-        this.articuloProducto = articuloProducto;
+    public void setAlmacen(Almacen almacen) {
+        this.almacen = almacen;
     }
     public Compra getCompra() {
         return this.compra;
@@ -72,12 +72,12 @@ public class CompraDetalle  implements java.io.Serializable {
     public void setCompra(Compra compra) {
         this.compra = compra;
     }
-    public Almacen getAlmacen() {
-        return this.almacen;
+    public ArticuloProducto getArticuloProducto() {
+        return this.articuloProducto;
     }
     
-    public void setAlmacen(Almacen almacen) {
-        this.almacen = almacen;
+    public void setArticuloProducto(ArticuloProducto articuloProducto) {
+        this.articuloProducto = articuloProducto;
     }
     public int getCantidad() {
         return this.cantidad;

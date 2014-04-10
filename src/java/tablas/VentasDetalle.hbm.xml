@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 17/12/2013 10:15:59 AM by Hibernate Tools 3.6.0 -->
+<!-- Generated 10/04/2014 10:20:21 AM by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
     <class name="tablas.VentasDetalle" table="ventas_detalle" catalog="proyecto_001">
         <id name="codVentasDetalle" type="java.lang.Integer">
@@ -25,6 +25,9 @@
         </property>
         <property name="precioReal" type="double">
             <column name="precio_real" precision="10" not-null="true" />
+        </property>
+        <property name="precioProforma" type="double">
+            <column name="precio_proforma" precision="10" not-null="true" />
         </property>
         <property name="precioVenta" type="double">
             <column name="precio_venta" precision="10" not-null="true" />

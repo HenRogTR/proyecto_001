@@ -1,5 +1,5 @@
 package tablas;
-// Generated 17/12/2013 10:15:59 AM by Hibernate Tools 3.6.0
+// Generated 10/04/2014 10:20:20 AM by Hibernate Tools 3.6.0
 
 
 import java.util.Date;
@@ -29,11 +29,11 @@ public class Persona  implements java.io.Serializable {
      private String observaciones;
      private String logo;
      private String registro;
+     private Set<Personal> personals = new HashSet<Personal>(0);
      private Set<PNatural> PNaturals = new HashSet<PNatural>(0);
      private Set<Usuario> usuarios = new HashSet<Usuario>(0);
-     private Set<Cobranza> cobranzas = new HashSet<Cobranza>(0);
      private Set<Ventas> ventases = new HashSet<Ventas>(0);
-     private Set<Personal> personals = new HashSet<Personal>(0);
+     private Set<Cobranza> cobranzas = new HashSet<Cobranza>(0);
      private Set<DatosCliente> datosClientes = new HashSet<DatosCliente>(0);
 
     public Persona() {
@@ -48,7 +48,7 @@ public class Persona  implements java.io.Serializable {
         this.dniPasaporte = dniPasaporte;
         this.registro = registro;
     }
-    public Persona(Zona zona, String nombres, String nombresC, String direccion, String dniPasaporte, String telefono1, String telefono2, String ruc, String email, String foto, Boolean estado, Date fechaNacimiento, String paginaWeb, String observaciones, String logo, String registro, Set<PNatural> PNaturals, Set<Usuario> usuarios, Set<Cobranza> cobranzas, Set<Ventas> ventases, Set<Personal> personals, Set<DatosCliente> datosClientes) {
+    public Persona(Zona zona, String nombres, String nombresC, String direccion, String dniPasaporte, String telefono1, String telefono2, String ruc, String email, String foto, Boolean estado, Date fechaNacimiento, String paginaWeb, String observaciones, String logo, String registro, Set<Personal> personals, Set<PNatural> PNaturals, Set<Usuario> usuarios, Set<Ventas> ventases, Set<Cobranza> cobranzas, Set<DatosCliente> datosClientes) {
        this.zona = zona;
        this.nombres = nombres;
        this.nombresC = nombresC;
@@ -65,11 +65,11 @@ public class Persona  implements java.io.Serializable {
        this.observaciones = observaciones;
        this.logo = logo;
        this.registro = registro;
+       this.personals = personals;
        this.PNaturals = PNaturals;
        this.usuarios = usuarios;
-       this.cobranzas = cobranzas;
        this.ventases = ventases;
-       this.personals = personals;
+       this.cobranzas = cobranzas;
        this.datosClientes = datosClientes;
     }
    
@@ -192,6 +192,13 @@ public class Persona  implements java.io.Serializable {
     public void setRegistro(String registro) {
         this.registro = registro;
     }
+    public Set<Personal> getPersonals() {
+        return this.personals;
+    }
+    
+    public void setPersonals(Set<Personal> personals) {
+        this.personals = personals;
+    }
     public Set<PNatural> getPNaturals() {
         return this.PNaturals;
     }
@@ -206,13 +213,6 @@ public class Persona  implements java.io.Serializable {
     public void setUsuarios(Set<Usuario> usuarios) {
         this.usuarios = usuarios;
     }
-    public Set<Cobranza> getCobranzas() {
-        return this.cobranzas;
-    }
-    
-    public void setCobranzas(Set<Cobranza> cobranzas) {
-        this.cobranzas = cobranzas;
-    }
     public Set<Ventas> getVentases() {
         return this.ventases;
     }
@@ -220,12 +220,12 @@ public class Persona  implements java.io.Serializable {
     public void setVentases(Set<Ventas> ventases) {
         this.ventases = ventases;
     }
-    public Set<Personal> getPersonals() {
-        return this.personals;
+    public Set<Cobranza> getCobranzas() {
+        return this.cobranzas;
     }
     
-    public void setPersonals(Set<Personal> personals) {
-        this.personals = personals;
+    public void setCobranzas(Set<Cobranza> cobranzas) {
+        this.cobranzas = cobranzas;
     }
     public Set<DatosCliente> getDatosClientes() {
         return this.datosClientes;

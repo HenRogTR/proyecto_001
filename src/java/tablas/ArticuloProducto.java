@@ -1,5 +1,5 @@
 package tablas;
-// Generated 17/12/2013 10:15:59 AM by Hibernate Tools 3.6.0
+// Generated 10/04/2014 10:20:20 AM by Hibernate Tools 3.6.0
 
 
 import java.util.HashSet;
@@ -12,8 +12,8 @@ public class ArticuloProducto  implements java.io.Serializable {
 
 
      private Integer codArticuloProducto;
-     private Marca marca;
      private Familia familia;
+     private Marca marca;
      private String codReferencia;
      private String descripcion;
      private double precioVenta;
@@ -24,26 +24,26 @@ public class ArticuloProducto  implements java.io.Serializable {
      private String observaciones;
      private String foto;
      private String registro;
-     private Set<KardexArticuloProducto> kardexArticuloProductos = new HashSet<KardexArticuloProducto>(0);
      private Set<CompraDetalle> compraDetalles = new HashSet<CompraDetalle>(0);
-     private Set<VentasDetalle> ventasDetalles = new HashSet<VentasDetalle>(0);
      private Set<PrecioVenta> precioVentas = new HashSet<PrecioVenta>(0);
+     private Set<KardexArticuloProducto> kardexArticuloProductos = new HashSet<KardexArticuloProducto>(0);
+     private Set<VentasDetalle> ventasDetalles = new HashSet<VentasDetalle>(0);
 
     public ArticuloProducto() {
     }
 
 	
-    public ArticuloProducto(Marca marca, Familia familia, String descripcion, double precioVenta, int precioVentaRango, String registro) {
-        this.marca = marca;
+    public ArticuloProducto(Familia familia, Marca marca, String descripcion, double precioVenta, int precioVentaRango, String registro) {
         this.familia = familia;
+        this.marca = marca;
         this.descripcion = descripcion;
         this.precioVenta = precioVenta;
         this.precioVentaRango = precioVentaRango;
         this.registro = registro;
     }
-    public ArticuloProducto(Marca marca, Familia familia, String codReferencia, String descripcion, double precioVenta, int precioVentaRango, String unidadMedida, Boolean usarSerieNumero, Boolean reintegroTributario, String observaciones, String foto, String registro, Set<KardexArticuloProducto> kardexArticuloProductos, Set<CompraDetalle> compraDetalles, Set<VentasDetalle> ventasDetalles, Set<PrecioVenta> precioVentas) {
-       this.marca = marca;
+    public ArticuloProducto(Familia familia, Marca marca, String codReferencia, String descripcion, double precioVenta, int precioVentaRango, String unidadMedida, Boolean usarSerieNumero, Boolean reintegroTributario, String observaciones, String foto, String registro, Set<CompraDetalle> compraDetalles, Set<PrecioVenta> precioVentas, Set<KardexArticuloProducto> kardexArticuloProductos, Set<VentasDetalle> ventasDetalles) {
        this.familia = familia;
+       this.marca = marca;
        this.codReferencia = codReferencia;
        this.descripcion = descripcion;
        this.precioVenta = precioVenta;
@@ -54,10 +54,10 @@ public class ArticuloProducto  implements java.io.Serializable {
        this.observaciones = observaciones;
        this.foto = foto;
        this.registro = registro;
-       this.kardexArticuloProductos = kardexArticuloProductos;
        this.compraDetalles = compraDetalles;
-       this.ventasDetalles = ventasDetalles;
        this.precioVentas = precioVentas;
+       this.kardexArticuloProductos = kardexArticuloProductos;
+       this.ventasDetalles = ventasDetalles;
     }
    
     public Integer getCodArticuloProducto() {
@@ -67,19 +67,19 @@ public class ArticuloProducto  implements java.io.Serializable {
     public void setCodArticuloProducto(Integer codArticuloProducto) {
         this.codArticuloProducto = codArticuloProducto;
     }
-    public Marca getMarca() {
-        return this.marca;
-    }
-    
-    public void setMarca(Marca marca) {
-        this.marca = marca;
-    }
     public Familia getFamilia() {
         return this.familia;
     }
     
     public void setFamilia(Familia familia) {
         this.familia = familia;
+    }
+    public Marca getMarca() {
+        return this.marca;
+    }
+    
+    public void setMarca(Marca marca) {
+        this.marca = marca;
     }
     public String getCodReferencia() {
         return this.codReferencia;
@@ -151,13 +151,6 @@ public class ArticuloProducto  implements java.io.Serializable {
     public void setRegistro(String registro) {
         this.registro = registro;
     }
-    public Set<KardexArticuloProducto> getKardexArticuloProductos() {
-        return this.kardexArticuloProductos;
-    }
-    
-    public void setKardexArticuloProductos(Set<KardexArticuloProducto> kardexArticuloProductos) {
-        this.kardexArticuloProductos = kardexArticuloProductos;
-    }
     public Set<CompraDetalle> getCompraDetalles() {
         return this.compraDetalles;
     }
@@ -165,19 +158,26 @@ public class ArticuloProducto  implements java.io.Serializable {
     public void setCompraDetalles(Set<CompraDetalle> compraDetalles) {
         this.compraDetalles = compraDetalles;
     }
-    public Set<VentasDetalle> getVentasDetalles() {
-        return this.ventasDetalles;
-    }
-    
-    public void setVentasDetalles(Set<VentasDetalle> ventasDetalles) {
-        this.ventasDetalles = ventasDetalles;
-    }
     public Set<PrecioVenta> getPrecioVentas() {
         return this.precioVentas;
     }
     
     public void setPrecioVentas(Set<PrecioVenta> precioVentas) {
         this.precioVentas = precioVentas;
+    }
+    public Set<KardexArticuloProducto> getKardexArticuloProductos() {
+        return this.kardexArticuloProductos;
+    }
+    
+    public void setKardexArticuloProductos(Set<KardexArticuloProducto> kardexArticuloProductos) {
+        this.kardexArticuloProductos = kardexArticuloProductos;
+    }
+    public Set<VentasDetalle> getVentasDetalles() {
+        return this.ventasDetalles;
+    }
+    
+    public void setVentasDetalles(Set<VentasDetalle> ventasDetalles) {
+        this.ventasDetalles = ventasDetalles;
     }
 
 

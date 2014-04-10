@@ -1,5 +1,5 @@
 package tablas;
-// Generated 17/12/2013 10:15:59 AM by Hibernate Tools 3.6.0
+// Generated 10/04/2014 10:20:20 AM by Hibernate Tools 3.6.0
 
 
 import java.util.HashSet;
@@ -18,6 +18,7 @@ public class VentasDetalle  implements java.io.Serializable {
      private Integer cantidad;
      private String descripcion;
      private double precioReal;
+     private double precioProforma;
      private double precioVenta;
      private double valorVenta;
      private String registro;
@@ -27,21 +28,23 @@ public class VentasDetalle  implements java.io.Serializable {
     }
 
 	
-    public VentasDetalle(ArticuloProducto articuloProducto, Ventas ventas, double precioReal, double precioVenta, double valorVenta, String registro) {
+    public VentasDetalle(ArticuloProducto articuloProducto, Ventas ventas, double precioReal, double precioProforma, double precioVenta, double valorVenta, String registro) {
         this.articuloProducto = articuloProducto;
         this.ventas = ventas;
         this.precioReal = precioReal;
+        this.precioProforma = precioProforma;
         this.precioVenta = precioVenta;
         this.valorVenta = valorVenta;
         this.registro = registro;
     }
-    public VentasDetalle(ArticuloProducto articuloProducto, Ventas ventas, Integer item, Integer cantidad, String descripcion, double precioReal, double precioVenta, double valorVenta, String registro, Set<VentasSerieNumero> ventasSerieNumeros) {
+    public VentasDetalle(ArticuloProducto articuloProducto, Ventas ventas, Integer item, Integer cantidad, String descripcion, double precioReal, double precioProforma, double precioVenta, double valorVenta, String registro, Set<VentasSerieNumero> ventasSerieNumeros) {
        this.articuloProducto = articuloProducto;
        this.ventas = ventas;
        this.item = item;
        this.cantidad = cantidad;
        this.descripcion = descripcion;
        this.precioReal = precioReal;
+       this.precioProforma = precioProforma;
        this.precioVenta = precioVenta;
        this.valorVenta = valorVenta;
        this.registro = registro;
@@ -96,6 +99,13 @@ public class VentasDetalle  implements java.io.Serializable {
     
     public void setPrecioReal(double precioReal) {
         this.precioReal = precioReal;
+    }
+    public double getPrecioProforma() {
+        return this.precioProforma;
+    }
+    
+    public void setPrecioProforma(double precioProforma) {
+        this.precioProforma = precioProforma;
     }
     public double getPrecioVenta() {
         return this.precioVenta;
