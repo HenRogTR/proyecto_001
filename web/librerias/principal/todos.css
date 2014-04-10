@@ -11,7 +11,8 @@
 
 /*@import "mega_muebles.css?v.14.04.13";*/
 /*css iconos*/
-@import "../../librerias/botonesIconos/sexybuttons-min.css";
+@import "../../librerias/botonesIconos/sexybuttons-min.css?v.14.04.09";
+@import "../../librerias/botones/boton.css";
 /*css ui*/
 @import "../../librerias/jquery-ui/jquery-ui-1.10.3.custom/css/smoothness/jquery-ui-1.10.3.custom.min.css";
 

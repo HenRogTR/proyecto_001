@@ -5,7 +5,6 @@
 
 $(document).ready(function() {
 
-
     $('#docRecCaja').change(function(event) {
         fTipoCambiar(this.value);
     });

@@ -478,3 +478,57 @@
     cursor: pointer;
     background-image: url(images/icons/silk/add.png) !important;
 }
+
+.icono{
+    padding-left: 16px;
+    height: 10px;
+    color: transparent;
+    background-repeat: no-repeat;
+    background-position: left center;
+    cursor: pointer;
+}
+.ok			{ background-image: url(images/icons/silk/tick.png) !important; }
+.cancel			{ background-image: url(images/icons/silk/cross.png) !important; }
+.add			{ background-image: url(images/icons/silk/add.png) !important; }
+.delete			{ background-image: url(images/icons/silk/delete.png) !important; }
+.download		{ background-image: url(images/icons/silk/arrow_down.png) !important; }
+.download2		{ background-image: url(images/icons/silk/package_down.png) !important; }
+.upload			{ background-image: url(images/icons/silk/arrow_up.png) !important; }
+.search			{ background-image: url(images/icons/silk/magnifier.png) !important; }
+.find			{ background-image: url(images/icons/silk/find.png) !important; }
+.first			{ background-image: url(images/icons/silk/resultset_first.png) !important; }
+.prev			{ background-image: url(images/icons/silk/resultset_previous.png) !important; }
+.next			{ background-image: url(images/icons/silk/resultset_next.png) !important; }
+.last			{ background-image: url(images/icons/silk/resultset_last.png) !important; }
+.play			{ background-image: url(images/icons/silk/play_blue.png) !important; }
+.pause			{ background-image: url(images/icons/silk/pause_blue.png) !important; }
+.rewind			{ background-image: url(images/icons/silk/rewind_blue.png) !important; }
+.forward		{ background-image: url(images/icons/silk/forward_blue.png) !important; }
+.stop			{ background-image: url(images/icons/silk/stop_blue.png) !important; }
+.reload			{ background-image: url(images/icons/silk/reload.png) !important; }
+.sync			{ background-image: url(images/icons/silk/arrow_refresh.png) !important; }
+.save			{ background-image: url(images/icons/silk/disk.png) !important; }
+.email			{ background-image: url(images/icons/silk/email.png) !important; }
+.print			{ background-image: url(images/icons/silk/printer.png) !important; }
+.heart			{ background-image: url(images/icons/silk/heart.png) !important; }
+.like			{ background-image: url(images/icons/silk/thumb_up.png) !important; }
+.dislike		{ background-image: url(images/icons/silk/thumb_down.png) !important; }
+.accept			{ background-image: url(images/icons/silk/accept.png) !important; }
+.decline		{ background-image: url(images/icons/silk/decline.png) !important; }
+.help			{ background-image: url(images/icons/silk/help.png) !important; }
+.home			{ background-image: url(images/icons/silk/house.png) !important; }
+.info			{ background-image: url(images/icons/silk/information.png) !important; }
+.cut			{ background-image: url(images/icons/silk/cut.png) !important; }
+.copy			{ background-image: url(images/icons/silk/page_white_copy.png) !important; }
+.paste			{ background-image: url(images/icons/silk/paste_plain.png) !important; }
+.erase			{ background-image: url(images/icons/silk/erase.png) !important; }
+.undo			{ background-image: url(images/icons/silk/arrow_undo.png) !important; }
+.redo			{ background-image: url(images/icons/silk/arrow_redo.png) !important; }
+.edit			{ background-image: url(images/icons/silk/pencil.png) !important; }
+.calendar		{ background-image: url(images/icons/silk/date.png) !important; }
+.user			{ background-image: url(images/icons/silk/user.png) !important; }
+.settings		{ background-image: url(images/icons/silk/cog.png) !important; }
+.cart			{ background-image: url(images/icons/silk/cart.png) !important; }
+.wand			{ background-image: url(images/icons/silk/wand.png) !important; }
+.wrench			{ background-image: url(images/icons/silk/wrench.png) !important; }
+.excel			{ background-image: url(images/icons/propios/excel.png) !important; }

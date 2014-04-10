@@ -284,3 +284,74 @@ fieldset legend {
     padding:5px;
     margin-top: 10px;
 }
+
+.fondoDivSecundario{
+    background: #F1F1F7;
+}
+
+.fondoPrimario{
+    background: #6583E0;
+    color: #fff;
+}
+
+.tabla11px{
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 11px;
+    text-align: center;
+    border-collapse: collapse;
+}
+.tabla11px thead tr th{
+    text-align: center;
+}
+.tabla11px tfoot tr th{
+    text-align: right;
+}
+.tabla11px tbody tr th{
+    text-align: right;
+    padding-right: 4px;
+}
+.tabla11px th{
+    padding: 2px;
+    font-weight: normal;
+    color: #fff;
+    background: #6583E0;
+    border: 1px solid #fff;
+}
+.tabla11px td{
+    padding: 2px;
+    background: #F1F1F7;
+    border-top: 1px solid #fff;
+    color: #000;
+    border: 1px solid #fff;
+}
+
+.tabla9px{
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 9px;
+    text-align: center;
+    border-collapse: collapse;
+}
+.tabla9px thead tr th{
+    text-align: center;
+}
+.tabla9px tfoot tr th{
+    text-align: right;
+}
+.tabla9px tbody tr th{
+    text-align: right;
+    padding-right: 3px;
+}
+.tabla9px th{
+    padding: 2px;
+    font-weight: normal;
+    color: #fff;
+    background: #6583E0;
+    border: 1px solid #fff;
+}
+.tabla9px td{
+    padding: 2px;
+    background: #F1F1F7;
+    border-top: 1px solid #fff;
+    color: #000;
+    border: 1px solid #fff;
+}

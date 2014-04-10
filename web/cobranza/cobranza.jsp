@@ -376,12 +376,12 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th class="izquierda" style="font-size: 10px;">
+                                        <th class="izquierda">
                                             <input type="radio" name="tipoCobro" id="rdCaja" value="caja" checked="checked" /><label for="rdCaja">Caja</label>
                                             <input type="radio" name="tipoCobro" id="rdDescuento" value="descuento" /><label for="rdDescuento">Desc.</label>
                                             <input type="radio" name="tipoCobro" id="rdManual" value="manual"/><label for="rdManual">Manual</label>
                                         </th>
-                                        <td colspan="3">
+                                        <td colspan="3" class="centrado">
                                             <a class="sexybutton" href="reporte/cobranzaImprimir.jsp" target="_blank" id="cobranzaImprimir"><span><span><span class="print">Imp. Matri</span></span></span></a>
                                             <a class="sexybutton" href="#" id="bImprimirTicket"><span><span><span class="print">Imp. Ticket</span></span></span></a>
                                         </td>
