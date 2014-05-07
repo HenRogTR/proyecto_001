@@ -8,9 +8,9 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import otros.cUtilitarios;
 import tablas.DatosCliente;
 import tablas.HibernateUtil;
+import utilitarios.cOtros;
 
 /**
  *
@@ -34,7 +34,6 @@ public class cDatosCliente {
         this.error = null;
     }
 
-    //***************************************************
     public DatosCliente leer_codPersona(int codPersona) {
         DatosCliente objCliente = null;
         Transaction trns = null;
@@ -56,6 +55,38 @@ public class cDatosCliente {
     public DatosCliente leer_cod(int codCliente) {
         sesion = HibernateUtil.getSessionFactory().openSession();
         return (DatosCliente) sesion.get(DatosCliente.class, codCliente);
+    }
+
+    /**
+     *
+     * @param codCliente
+     * @return
+     */
+    public Object[] leer_codigo_SC(int codCliente) {
+        Object objCliente[] = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select dc.codDatosCliente"
+                    + ", dc.persona.nombresC"
+                    + ", dc.persona.direccion"
+                    + ", dc.empresaConvenio.codEmpresaConvenio"
+                    + ", dc.empresaConvenio.nombre"
+                    + ", dc.empresaConvenio.codCobranza"
+                    + ", dc.tipoCliente"
+                    + ", dc.condicion"
+                    + ", dc.saldoFavor"
+                    + " from DatosCliente dc"
+                    + " where dc = :par1")
+                    .setInteger("par1", codCliente);
+            objCliente = (Object[]) q.list().get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
+        }
+        return objCliente;
     }
 
     public DatosCliente leer_primero() {
@@ -554,12 +585,11 @@ public class cDatosCliente {
     }
 
     public boolean actualizar_registro(int codDatosCliente, String estado, String user) {
-        cUtilitarios objUtilitarios = new cUtilitarios();
         setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
         sesion.getTransaction().begin();
         DatosCliente obj = (DatosCliente) sesion.get(DatosCliente.class, codDatosCliente);
-        obj.setRegistro(objUtilitarios.registro(estado, user));
+        obj.setRegistro(new cOtros().registro(estado, user));
         try {
             sesion.update(obj);
             sesion.getTransaction().commit();

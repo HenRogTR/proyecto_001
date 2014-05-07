@@ -42,7 +42,7 @@
             <li id="permiso12"><a href="../sEmpresaConvenio">Empresa</a></li>
             <li id="permiso13"><a href="../articuloProducto/marcaListar.jsp">Marcas</a></li>
             <li id="permiso14"><a href="../sFamilia">Familias</a></li>
-            <li id="permiso15"><a href="">####</a></li>
+            <li id="permiso60"><a href="../configuracion/configuracion.jsp">Configuraciones</a></li>
             <li id="permiso16"><a href="../sZona">Zona</a></li>
             <li id="permiso17"><a href="../controlDocumento/controlDocumento.jsp">Control de documentos</a></li>
             <li id="permiso50"><a href="../controlDocumento/controlReciboIngresos.jsp">Control de recibo ingresos</a></li>
@@ -58,6 +58,16 @@
         <a href="#" id="aUsuarioCerrarSesion">Cerrar Sesión</a>
     </li>
 </ul>
+<!--mensaje alerta-->
+<div id="d_mensajeAlerta" class="ui-state-highlight ui-corner-all" style="margin-top: 11px; padding: 0 .7em;">
+    <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+        <strong>Hey!</strong> Sample ui-state-highlight style.</p>
+</div>
+<!--mensaje error-->
+<div id="d_mensajeError" class="ui-state-error ui-corner-all" style="margin-top: 11px; padding: 0 .7em;">
+    <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+        <strong>Alert:</strong> Sample ui-state-error style.</p>
+</div>
 <!--d iniciar sesion-->
 <div id="dIniciarSesion" style="text-align: center;" title="Iniciar sesión">
     <form action="sUsuario" method="post" id="formUsuarioIniciar" name="formUsuarioIniciar">

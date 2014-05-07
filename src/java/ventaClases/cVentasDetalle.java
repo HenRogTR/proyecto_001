@@ -8,9 +8,9 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import otros.cUtilitarios;
 import tablas.HibernateUtil;
 import tablas.VentasDetalle;
+import utilitarios.cOtros;
 
 /**
  *
@@ -31,11 +31,10 @@ public class cVentasDetalle {
 
     public cVentasDetalle() {
         this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
+        this.error = null;
     }
 
-    //***************************************************
     public List leer_ventasDetalle_porCodVentas(int codVentas) {
-        setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
             Query q = sesion.createQuery("from VentasDetalle v where "
@@ -67,7 +66,11 @@ public class cVentasDetalle {
         return null;
     }
 
-    //**************************************************************************
+    /**
+     *
+     * @param objVentasDetalle
+     * @return
+     */
     public int crear(VentasDetalle objVentasDetalle) {
         int cod = 0;
         Transaction trns = null;
@@ -148,12 +151,10 @@ public class cVentasDetalle {
     }
 
     public boolean actualizar_registro(int codVentasDetalle, String estado, String user) {
-        cUtilitarios objUtilitarios = new cUtilitarios();
-        setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
         sesion.getTransaction().begin();
         VentasDetalle obj = (VentasDetalle) sesion.get(VentasDetalle.class, codVentasDetalle);
-        obj.setRegistro(objUtilitarios.registro(estado, user));
+        obj.setRegistro(new cOtros().registro(estado, user));
         try {
             sesion.update(obj);
             sesion.getTransaction().commit();

@@ -12,9 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import otros.cUtilitarios;
 import personaClases.cDatosCliente;
 import tablas.Usuario;
+import utilitarios.cOtros;
 
 /**
  *
@@ -24,9 +24,8 @@ import tablas.Usuario;
 public class sDatoCliente extends HttpServlet {
 
     /**
-     * Processes requests for both HTTP
-     * <code>GET</code> and
-     * <code>POST</code> methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
      *
      * @param request servlet request
      * @param response servlet response
@@ -42,21 +41,19 @@ public class sDatoCliente extends HttpServlet {
 
         //Clases
         Usuario objUsuario = (Usuario) session.getAttribute("usuario");
-        cUtilitarios objcUtilitarios = new cUtilitarios();
         cDatosCliente objcDatosCliente = new cDatosCliente();
         //variables
         String accion = request.getParameter("accionDatoCliente");
 
-
         if (objUsuario == null) {
-            out.print(objcUtilitarios.iniciarSesion());
+            out.print(new cOtros().iniciarSesion());
             return;
-        }        
-        
+        }
+
         if (accion == null) {
             session.removeAttribute("codDatoClienteMantenimiento");
             response.sendRedirect("persona/clienteMantenimiento.jsp");
-            
+
         } else {
             //editar el cobrador del cliente
             if (accion.equals("editarCobrador")) {
@@ -95,8 +92,7 @@ public class sDatoCliente extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP
-     * <code>GET</code> method.
+     * Handles the HTTP <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -110,8 +106,7 @@ public class sDatoCliente extends HttpServlet {
     }
 
     /**
-     * Handles the HTTP
-     * <code>POST</code> method.
+     * Handles the HTTP <code>POST</code> method.
      *
      * @param request servlet request
      * @param response servlet response

@@ -196,7 +196,7 @@
             <div id="left">
                 <div class="acceso">
                     <h3 class="titulo">INICIE SESIÓN</h3>                    
-                    <button class="sexybutton" id="bAccesoAbrir"><span><span><img src="../librerias/botonesIconos/images/icons/silk/key_go.png">Ejecutar SICCI</span></span></button>
+                    <a id="bAccesoAbrir" class="boton botonNormal key">Ejecutar SICCI</a>
                 </div>
                 <div id="menu" class="ocultar">
                     <%@include file="../principal/menu.jsp" %>

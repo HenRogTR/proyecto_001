@@ -3,7 +3,7 @@
     Created on : 12/11/2012, 07:09:24 PM
     Author     : Henrri
 --%>
-<%@page import="otros.cUtilitarios"%>
+<%@page import="utilitarios.cOtros"%>
 <%@page import="tablas.ArticuloProducto"%>
 <%@page import="articuloProductoClases.cArticuloProducto"%>
 <%@page import="java.util.Iterator"%>
@@ -13,10 +13,8 @@
     if (term == null) {
         return;
     }
-
-    cUtilitarios objcUtilitarios = new cUtilitarios();
     cArticuloProducto objcArticuloProducto = new cArticuloProducto();
-    List lArticuloProducto = objcArticuloProducto.leer_descripcion(objcUtilitarios.replace_comillas_comillasD_barraInvertida(term));
+    List lArticuloProducto = objcArticuloProducto.leer_descripcion(new cOtros().replace_comillas_comillasD_barraInvertida(term));
     int contador = 0;
     out.print("[");
     for (int i = 0; i < lArticuloProducto.size(); i++) {
@@ -25,7 +23,7 @@
             out.println(",");
         }
         int codArticuloProducto = objArticuloProducto.getCodArticuloProducto();
-        String descripcion = objcUtilitarios.replace_comillas_comillasD_barraInvertida(objArticuloProducto.getDescripcion());
+        String descripcion = new cOtros().replace_comillas_comillasD_barraInvertida(objArticuloProducto.getDescripcion());
         out.println("{ \"label\" : \"" + descripcion + "\", \"value\" : {"
                 + " \"codArticuloProducto\" : " + codArticuloProducto
                 + ",\"descripcion\" : \"" + descripcion + "\""

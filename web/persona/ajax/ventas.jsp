@@ -3,12 +3,12 @@
     Created on : 29/05/2013, 06:56:43 PM
     Author     : Henrri
 --%>
+<%@page import="utilitarios.cManejoFechas"%>
+<%@page import="utilitarios.cOtros"%>
 <%@page import="tablas.VentasSerieNumero"%>
 <%@page import="tablas.VentasDetalle"%>
 <%@page import="tablas.VentaCreditoLetra"%>
 <%@page import="tablas.VentaCredito"%>
-<%@page import="otros.cManejoFechas"%>
-<%@page import="otros.cUtilitarios"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
@@ -40,8 +40,6 @@
         return;
     }
 
-    cManejoFechas objcManejoFechas = new cManejoFechas();
-    cUtilitarios objcUtilitarios = new cUtilitarios();
     Iterator iVentas = lVentas.iterator();
     int contador = 0;
     out.print("[");
@@ -50,7 +48,7 @@
         Ventas objVentas = (Ventas) iVentas.next();
         for (VentasDetalle objVentasDetalle : objVentas.getVentasDetalles()) {
             for (VentasSerieNumero objVentasSerieNumero : objVentasDetalle.getVentasSerieNumeros()) {
-                serie = objcUtilitarios.replace_comillas_comillasD_barraInvertida(objVentasSerieNumero.getSerieNumero() + "<br>" + objVentasSerieNumero.getObservacion());
+                serie = new cOtros().replace_comillas_comillasD_barraInvertida(objVentasSerieNumero.getSerieNumero() + "<br>" + objVentasSerieNumero.getObservacion());
             }
         }
         Double interesGeneredo = 0.00, montoAmortizado = objVentas.getNeto(), deudaTotal = 0.00;
@@ -74,15 +72,15 @@
                 + "\"codPersona\":" + codPersona
                 + ",\"codVentas\":" + objVentas.getCodVentas()
                 + ",\"docSerieNumero\":\"" + objVentas.getDocSerieNumero() + "\""
-                + ",\"fecha\":\"" + objcManejoFechas.fechaDateToString(objVentas.getFecha()) + "\""
-                + ",\"neto\":\"" + objcUtilitarios.agregarCerosNumeroFormato(objVentas.getNeto(), 2) + "\""
-                + ",\"interesGenerado\":\"" + (interesGeneredo == 0 ? "" : objcUtilitarios.agregarCerosNumeroFormato(interesGeneredo, 2)) + "\""
-                + ",\"montoAmortizado\":\"" + objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(montoAmortizado, 2), 2) + "\""
-                + ",\"deudaTotal\":\"" + objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(deudaTotal, 2), 2) + "\""
+                + ",\"fecha\":\"" + new cManejoFechas().DateAString(objVentas.getFecha()) + "\""
+                + ",\"neto\":\"" + new cOtros().decimalFormato(objVentas.getNeto(), 2) + "\""
+                + ",\"interesGenerado\":\"" + (interesGeneredo == 0 ? "" : new cOtros().decimalFormato(interesGeneredo, 2)) + "\""
+                + ",\"montoAmortizado\":\"" + new cOtros().decimalFormato(montoAmortizado, 2) + "\""
+                + ",\"deudaTotal\":\"" + new cOtros().decimalFormato(deudaTotal, 2) + "\""
                 + ",\"numeroLetras\":\"" + (numeroLetras == 0 ? "" : numeroLetras) + "\""
                 + ",\"tVenta\":\"" + tipoVenta + "\""
                 + ",\"tCambio\":" + "\"1.00\"" + ""
-                + ",\"observacion\":\"" + objcUtilitarios.replace_comillas_comillasD_barraInvertida(objVentas.getObservacion()).replace("\\n", "<br>") + "\""
+                + ",\"observacion\":\"" + new cOtros().replace_comillas_comillasD_barraInvertida(objVentas.getObservacion()).replace("\\n", "<br>") + "\""
                 + ",\"serie\":\"" + serie + "\""
                 + ",\"registro\":\"" + objVentas.getRegistro() + "\""
                 + "}");

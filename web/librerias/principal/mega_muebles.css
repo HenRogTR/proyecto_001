@@ -55,8 +55,9 @@ body {
     color: #fff; 
     background: #009999; 
     font-size: 1.2em; 
-    height: 24px; 
-    line-height: 24px; 
+    height: 28px; 
+    line-height: 24px;
+    vertical-align: middle;
 }
 .login{
     font-size: 14px;
@@ -204,6 +205,7 @@ label.error:before{
 .ancho420px{width: 420px;}
 .ancho440px{width: 440px;}
 
+.alto24px{height: 24px;}
 .alto40px{height: 40px;}
 .alto60px{height: 60px;}
 .alto80px{height: 80px;}
@@ -244,7 +246,7 @@ label.error:before{
 }
 
 .finalVenta{
-    border-top: 3px solid #3366ff !important;
+    border-top: 2px dashed #009999 !important;
 }
 
 .esperando{
@@ -252,6 +254,7 @@ label.error:before{
     background: url(images/loading.gif) no-repeat ;
     background-size:  11px;
     color: transparent;
+    background-position: 2px 2px;
 }
 .sinSubrayado{
     text-decoration:none
@@ -283,4 +286,74 @@ fieldset legend {
     border-top: 1px solid #009999;;
     padding:5px;
     margin-top: 10px;
+}
+
+.fondoDivSecundario{
+    background: #F1F1F7;
+}
+
+.tabla11px{
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 11px;
+    text-align: center;
+    border-collapse: collapse;
+}
+.tabla11px thead tr th{
+    text-align: center;
+}
+.tabla11px tfoot tr th{
+    text-align: right;
+}
+.tabla11px tbody tr th{
+    text-align: right;
+    padding-right: 4px;
+}
+.tabla11px th{
+    padding: 2px;
+    font-weight: normal;
+    color: #fff;
+    background: #009999;
+    border: 1px solid #fff;
+}
+.tabla11px td{
+    padding: 2px;
+    background: #F1F1F7;
+    border-top: 1px solid #fff;
+    color: #000;
+    border: 1px solid #fff;
+}
+
+.tabla9px{
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 9px;
+    text-align: center;
+    border-collapse: collapse;
+}
+.tabla9px thead tr th{
+    text-align: center;
+}
+.tabla9px tfoot tr th{
+    text-align: right;
+}
+.tabla9px tbody tr th{
+    text-align: right;
+    padding-right: 3px;
+}
+.tabla9px th{
+    padding: 1px 2px 0px 1px;
+    font-weight: normal;
+    color: #fff;
+    background: #009999;
+    border: 1px solid #fff;
+}
+.tabla9px td{
+    padding: 1px 2px 0px 1px;
+    background: #F1F1F7;
+    border-top: 1px solid #fff;
+    color: #000;
+    border: 1px solid #fff;
+}
+
+.manoPuntero{
+    cursor: help;
 }

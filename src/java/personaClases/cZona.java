@@ -7,9 +7,9 @@ package personaClases;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import otros.cUtilitarios;
 import tablas.HibernateUtil;
 import tablas.Zona;
+import utilitarios.cOtros;
 
 /**
  *
@@ -25,6 +25,7 @@ public class cZona {
     }
 
     public void setError(String error) {
+        this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
         this.error = error;
     }
 
@@ -118,7 +119,6 @@ public class cZona {
         }
         return false;
     }
-    //***************************************************************
 
     public List leer_admin() {
         setError(null);
@@ -133,12 +133,10 @@ public class cZona {
     }
 
     public boolean actualizar_registro(int codZona, String estado, String user) {
-        cUtilitarios objUtilitarios = new cUtilitarios();
-        setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
         sesion.getTransaction().begin();
         Zona obj = (Zona) sesion.get(Zona.class, codZona);
-        obj.setRegistro(objUtilitarios.registro(estado, user));
+        obj.setRegistro(new cOtros().registro(estado, user));
         try {
             sesion.update(obj);
             sesion.getTransaction().commit();

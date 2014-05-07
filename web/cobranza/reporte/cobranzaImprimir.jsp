@@ -4,9 +4,9 @@
     Author     : Henrri
 --%>
 
+<%@page import="utilitarios.cManejoFechas"%>
+<%@page import="utilitarios.cOtros"%>
 <%@page import="tablas.Usuario"%>
-<%@page import="otros.cNumeroLetra"%>
-<%@page import="otros.cUtilitarios"%>
 <%@page import="cobranzaClases.cCobranza"%>
 <%@page import="tablas.Cobranza"%>
 <%
@@ -37,7 +37,6 @@
             return;
         }
     }
-    cUtilitarios objcUtilitarios = new cUtilitarios();
 %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -47,7 +46,7 @@
         <title><%=objCobranza.getDocSerieNumero()%></title>
         <link rel="stylesheet" type="text/css" href="cobranzaImprimir.css" media="screen"/>
         <link rel="stylesheet" type="text/css" href="cobranzaImprimir.css" media="print"/>
-        <script type="text/javascript" src="../../lib/jquery/jquery-1.8.1.min.js"></script>
+        <script type="text/javascript" src="../../librerias/jquery/jquery-1.8.1.min.js"></script>
     </head>
     <script>
         $(document).ready(function() {
@@ -69,7 +68,7 @@
                 <tr>
                     <td style="width: 10px;"></td>
                     <td></td>
-                    <td style="text-align: right; font-weight: bold;"><%=objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(objCobranza.getImporte() + objCobranza.getSaldo(), 2), 2)%></td>
+                    <td style="text-align: right; font-weight: bold;"><%=new cOtros().decimalFormato(objCobranza.getImporte() + objCobranza.getSaldo(), 2)%></td>
                 </tr>
                 <tr>
                     <td></td>
@@ -102,7 +101,7 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td><%=new cNumeroLetra().importeNumeroALetra(objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(objCobranza.getImporte() + objCobranza.getSaldo(), 2), 2), true)%></td>
+                    <td><%=new cOtros().decimalFormato(objCobranza.getImporte() + objCobranza.getSaldo(), 2)%></td>
                 </tr>
                 <tr>
                     <td></td>
@@ -114,9 +113,9 @@
             <table>
                 <tr>
                     <!--<td></td>-->
-                    <td  style="width: 60px;font-weight: bold;"><%=objcUtilitarios.dia(objCobranza.getFechaCobranza())%></td>
-                    <td  style="width: 60px;font-weight: bold;"><%=objcUtilitarios.mesNombre(objCobranza.getFechaCobranza())%></td>
-                    <td style="width: 60px;font-weight: bold;"><%=objcUtilitarios.anio(objCobranza.getFechaCobranza())%></td>
+                    <td  style="width: 60px;font-weight: bold;"><%=new cManejoFechas().dia(objCobranza.getFechaCobranza())%></td>
+                    <td  style="width: 60px;font-weight: bold;"><%=new cManejoFechas().mesNombre(objCobranza.getFechaCobranza())%></td>
+                    <td style="width: 60px;font-weight: bold;"><%=new cManejoFechas().anio(objCobranza.getFechaCobranza())%></td>
                     <td style="width: "></td>
                 </tr>
             </table>

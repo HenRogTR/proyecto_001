@@ -47,7 +47,7 @@
         <!--css frm-->
         <link rel="stylesheet" type="text/css" href="../lib/propios/css/tablas/tablas-reportes.css" media="screen"/>
         <!--css iconos-->
-        <link rel="stylesheet" type="text/css" href="../lib/botones/sexybuttons.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="../librerias/botonesIconos/sexybuttons.css" media="screen">
     </head>
     <body>
         <div id="wrap">

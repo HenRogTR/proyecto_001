@@ -486,6 +486,16 @@
     background-repeat: no-repeat;
     background-position: left center;
     cursor: pointer;
+    background-position: 2px 1px;
+}
+.icono:hover { 
+    /*font-style: italic;*/ 
+    box-shadow: 0px 0px 5px 0px #000000; 
+} 
+.icono:active { 
+    color: #666; 
+    background-color: #FFF; 
+    box-shadow: 0px 0px 10px 0px #000000; 
 }
 .ok			{ background-image: url(images/icons/silk/tick.png) !important; }
 .cancel			{ background-image: url(images/icons/silk/cross.png) !important; }

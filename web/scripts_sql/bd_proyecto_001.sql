@@ -9,6 +9,8 @@ USE `proyecto_001` ;
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`almacen`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`almacen` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`almacen` (
   `cod_almacen` INT(11) NOT NULL AUTO_INCREMENT,
   `almacen` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NOT NULL,
@@ -23,6 +25,8 @@ AUTO_INCREMENT = 2;
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`area`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`area` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`area` (
   `cod_area` INT(11) NOT NULL AUTO_INCREMENT,
   `area` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NOT NULL,
@@ -36,6 +40,8 @@ AUTO_INCREMENT = 8;
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`marca`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`marca` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`marca` (
   `cod_marca` INT(11) NOT NULL AUTO_INCREMENT,
   `descripcion` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NULL DEFAULT NULL,
@@ -47,6 +53,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`familia`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`familia` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`familia` (
   `cod_familia` INT(11) NOT NULL AUTO_INCREMENT,
   `familia` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NULL DEFAULT NULL,
@@ -59,6 +67,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`articulo_producto`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`articulo_producto` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`articulo_producto` (
   `cod_articulo_producto` INT(11) NOT NULL AUTO_INCREMENT,
   `cod_referencia` TEXT CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NULL DEFAULT NULL,
@@ -92,6 +102,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`zona`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`zona` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`zona` (
   `cod_zona` INT(11) NOT NULL AUTO_INCREMENT,
   `zona` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NOT NULL,
@@ -105,6 +117,8 @@ AUTO_INCREMENT = 2;
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`persona`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`persona` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`persona` (
   `cod_persona` INT(11) NOT NULL AUTO_INCREMENT,
   `nombres` TEXT CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NOT NULL,
@@ -137,6 +151,8 @@ AUTO_INCREMENT = 2;
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`cobranza`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`cobranza` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`cobranza` (
   `cod_cobranza` INT(11) NOT NULL AUTO_INCREMENT,
   `persona_cod_persona` INT(11) NOT NULL,
@@ -160,6 +176,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`ventas`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`ventas` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`ventas` (
   `cod_ventas` INT(11) NOT NULL AUTO_INCREMENT,
   `persona_cod_persona` INT(11) NOT NULL,
@@ -197,6 +215,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`venta_credito`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`venta_credito` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`venta_credito` (
   `cod_venta_credito` INT(11) NOT NULL AUTO_INCREMENT,
   `ventas_cod_ventas` INT(11) NOT NULL,
@@ -224,6 +244,8 @@ COMMENT = '*La columna estado indica el estado del credito, será 1 si e /* comm
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`venta_credito_letra`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`venta_credito_letra` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`venta_credito_letra` (
   `cod_venta_credito_letra` INT(11) NOT NULL AUTO_INCREMENT,
   `venta_credito_cod_venta_credito` INT(11) NOT NULL,
@@ -249,6 +271,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`cobranza_detalle`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`cobranza_detalle` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`cobranza_detalle` (
   `cod_cobranza_detalle` INT(11) NOT NULL AUTO_INCREMENT,
   `cobranza_cod_cobranza` INT(11) NOT NULL,
@@ -275,6 +299,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`proveedor`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`proveedor` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`proveedor` (
   `cod_proveedor` INT(11) NOT NULL AUTO_INCREMENT,
   `ruc` VARCHAR(11) CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NOT NULL,
@@ -293,6 +319,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`compra`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`compra` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`compra` (
   `cod_compra` INT(11) NOT NULL AUTO_INCREMENT,
   `proveedor_cod_proveedor` INT(11) NOT NULL,
@@ -323,6 +351,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`compra_detalle`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`compra_detalle` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`compra_detalle` (
   `cod_compra_detalle` INT(11) NOT NULL AUTO_INCREMENT,
   `compra_cod_compra` INT(11) NOT NULL,
@@ -360,6 +390,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`compra_serie_numero`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`compra_serie_numero` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`compra_serie_numero` (
   `cod_compra_serie_numero` INT(11) NOT NULL AUTO_INCREMENT,
   `compra_detalle_cod_compra_detalle` INT(11) NOT NULL,
@@ -379,6 +411,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`comprobante_pago`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`comprobante_pago` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`comprobante_pago` (
   `cod_comprobante_pago` INT(11) NOT NULL AUTO_INCREMENT,
   `tipo` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NOT NULL,
@@ -391,11 +425,15 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`empresa_convenio`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`empresa_convenio` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`empresa_convenio` (
   `cod_empresa_convenio` INT(11) NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NOT NULL,
   `abreviatura` VARCHAR(10) CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NULL DEFAULT NULL,
   `cod_cobranza` VARCHAR(10) CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NOT NULL,
+  `interes_asigando` BIT NOT NULL DEFAULT 0,
+  `interes_automatico` BIT NOT NULL DEFAULT 0,
   `registro` TEXT CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NOT NULL,
   PRIMARY KEY (`cod_empresa_convenio`))
 ENGINE = InnoDB
@@ -405,6 +443,8 @@ AUTO_INCREMENT = 2;
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`datos_cliente`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`datos_cliente` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`datos_cliente` (
   `cod_datos_cliente` INT(11) NOT NULL AUTO_INCREMENT,
   `tipo_cliente` INT(11) NULL DEFAULT '0',
@@ -418,6 +458,7 @@ CREATE TABLE IF NOT EXISTS `proyecto_001`.`datos_cliente` (
   `saldo_favor` DOUBLE(10,2) NOT NULL DEFAULT '0.00',
   `observaciones` TEXT CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NULL,
   `cod_cobrador` INT(11) NOT NULL DEFAULT 0,
+  `persona_cod_garante` INT(11) NOT NULL DEFAULT 0,
   `registro` TEXT CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NOT NULL,
   PRIMARY KEY (`cod_datos_cliente`),
   INDEX `fk_datos_laborales_empresa_convenio1` (`empresa_convenio_cod_empresa_convenio` ASC),
@@ -438,6 +479,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`datos_extras`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`datos_extras` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`datos_extras` (
   `cod_datos_extras` INT(11) NOT NULL AUTO_INCREMENT,
   `cod_seguimiento` VARCHAR(45) NULL,
@@ -445,7 +488,7 @@ CREATE TABLE IF NOT EXISTS `proyecto_001`.`datos_extras` (
   `letras` TEXT NULL,
   `abreviatura` VARCHAR(45) NULL,
   `entero` INT(11) NULL DEFAULT '0',
-  `decimal` DOUBLE(10,4) NULL DEFAULT '0.0000',
+  `decimal_dato` DOUBLE(10,4) NULL DEFAULT '0.0000',
   `registro` TEXT CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NOT NULL,
   PRIMARY KEY (`cod_datos_extras`))
 ENGINE = InnoDB;
@@ -454,6 +497,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`detalle_descripcion`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`detalle_descripcion` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`detalle_descripcion` (
   `cod_detalle_descripcion` INT(11) NOT NULL AUTO_INCREMENT,
   `nombre_descripcion` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NULL DEFAULT NULL,
@@ -475,6 +520,8 @@ COMMENT = 'para registra, numero de serie, numero de motor, numero de c /* comme
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`estado_documento`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`estado_documento` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`estado_documento` (
   `cod_estado_documento` INT(11) NOT NULL AUTO_INCREMENT,
   `estado_documento` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NOT NULL,
@@ -487,6 +534,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`kardex_articulo_producto`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`kardex_articulo_producto` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`kardex_articulo_producto` (
   `cod_kardex_articulo_producto` INT(11) NOT NULL AUTO_INCREMENT,
   `articulo_producto_cod_articulo_producto` INT(11) NOT NULL,
@@ -523,6 +572,8 @@ COMMENT = '	total=precio_ponderado*stocken caso se compre	precio_pond / /* comme
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`kardex_serie_numero`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`kardex_serie_numero` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`kardex_serie_numero` (
   `cod_kardex_serie_numero` INT(11) NOT NULL AUTO_INCREMENT,
   `kardex_articulo_producto_cod_kardex_articulo_producto` INT(11) NOT NULL,
@@ -543,6 +594,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`p_natural`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`p_natural` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`p_natural` (
   `cod_natural` INT(11) NOT NULL AUTO_INCREMENT,
   `cod_modular` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NULL DEFAULT NULL,
@@ -569,6 +622,8 @@ AUTO_INCREMENT = 1904;
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`cargo`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`cargo` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`cargo` (
   `cod_cargo` INT(11) NOT NULL AUTO_INCREMENT,
   `cargo` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NOT NULL,
@@ -582,6 +637,8 @@ AUTO_INCREMENT = 8;
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`personal`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`personal` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`personal` (
   `cod_personal` INT(11) NOT NULL AUTO_INCREMENT,
   `fecha_inicio_actividades` DATE NULL DEFAULT NULL,
@@ -617,6 +674,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`precio_venta`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`precio_venta` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`precio_venta` (
   `cod_precio_venta` INT(11) NOT NULL AUTO_INCREMENT,
   `precio_venta` DOUBLE(10,2) NOT NULL DEFAULT '0.00',
@@ -637,6 +696,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`tipo_documento`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`tipo_documento` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`tipo_documento` (
   `cod_tipo_documento` INT(11) NOT NULL AUTO_INCREMENT,
   `tipo_documeto` VARCHAR(100) CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NOT NULL,
@@ -649,6 +710,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`tramite_documentario`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`tramite_documentario` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`tramite_documentario` (
   `cod_tramite_documentario` INT(11) NOT NULL AUTO_INCREMENT,
   `ventas_cod_ventas` INT(11) NOT NULL,
@@ -684,6 +747,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`usuario`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`usuario` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`usuario` (
   `cod_usuario` INT(11) NOT NULL AUTO_INCREMENT,
   `usuario` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NOT NULL,
@@ -768,6 +833,8 @@ COMMENT = 'p1=acceso a usuarios, de todo tipo';
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`ventas_detalle`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`ventas_detalle` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`ventas_detalle` (
   `cod_ventas_detalle` INT(11) NOT NULL AUTO_INCREMENT,
   `ventas_cod_ventas` INT(11) NOT NULL,
@@ -776,6 +843,7 @@ CREATE TABLE IF NOT EXISTS `proyecto_001`.`ventas_detalle` (
   `cantidad` INT(11) NULL DEFAULT NULL,
   `descripcion` TEXT CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NULL DEFAULT NULL,
   `precio_real` DOUBLE(10,2) NOT NULL,
+  `precio_proforma` DOUBLE(10,2) NOT NULL DEFAULT 0.00,
   `precio_venta` DOUBLE(10,2) NOT NULL,
   `valor_venta` DOUBLE(10,2) NOT NULL,
   `registro` TEXT CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NOT NULL,
@@ -798,6 +866,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`ventas_serie_numero`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`ventas_serie_numero` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`ventas_serie_numero` (
   `cod_ventas_serie_numero` INT(11) NOT NULL AUTO_INCREMENT,
   `serie_numero` TEXT CHARACTER SET 'latin1' NULL DEFAULT NULL,
@@ -817,6 +887,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `proyecto_001`.`comprobante_pago_detalle`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`comprobante_pago_detalle` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`comprobante_pago_detalle` (
   `cod_comprobante_pago_detalle` INT(11) NOT NULL AUTO_INCREMENT,
   `comprobante_pago_cod_comprobante_pago` INT(11) NOT NULL,
@@ -835,33 +907,10 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `proyecto_001`.`documento_notificacion`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `proyecto_001`.`documento_notificacion` (
-  `cod_documento_notificacion` INT(11) NOT NULL AUTO_INCREMENT,
-  `datos_cliente_cod_datos_cliente` INT(11) NOT NULL,
-  `fech1` DATE NULL,
-  `fech2` DATE NULL,
-  `fech3` DATE NULL,
-  `varchar1` VARCHAR(45) NULL,
-  `varchar2` VARCHAR(45) NULL,
-  `text1` TEXT NULL,
-  `text2` TEXT NULL,
-  `text3` TEXT NULL,
-  `registro` TEXT NOT NULL,
-  PRIMARY KEY (`cod_documento_notificacion`),
-  INDEX `fk_documento_notificacion_datos_cliente1_idx` (`datos_cliente_cod_datos_cliente` ASC),
-  CONSTRAINT `fk_documento_notificacion_datos_cliente1`
-    FOREIGN KEY (`datos_cliente_cod_datos_cliente`)
-    REFERENCES `proyecto_001`.`datos_cliente` (`cod_datos_cliente`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `proyecto_001`.`otros_c_c`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`otros_c_c` ;
+
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`otros_c_c` (
   `cod_otros_c_c` INT(11) NOT NULL AUTO_INCREMENT,
   `tipo` VARCHAR(45) NOT NULL,
@@ -875,6 +924,34 @@ CREATE TABLE IF NOT EXISTS `proyecto_001`.`otros_c_c` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `proyecto_001`.`documento_notificacion`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `proyecto_001`.`documento_notificacion` ;
+
+CREATE TABLE IF NOT EXISTS `proyecto_001`.`documento_notificacion` (
+  `cod_documento_notificacion` INT(11) NOT NULL AUTO_INCREMENT,
+  `datos_cliente_cod_datos_cliente` INT(11) NOT NULL,
+  `fech1` DATE NULL DEFAULT NULL,
+  `fech2` DATE NULL DEFAULT NULL,
+  `fech3` DATE NULL DEFAULT NULL,
+  `varchar1` VARCHAR(45) NULL DEFAULT NULL,
+  `varchar2` VARCHAR(45) NULL DEFAULT NULL,
+  `text1` TEXT NULL DEFAULT NULL,
+  `text2` TEXT NULL DEFAULT NULL,
+  `text3` TEXT NULL DEFAULT NULL,
+  `registro` TEXT NOT NULL,
+  PRIMARY KEY (`cod_documento_notificacion`),
+  INDEX `fk_documento_notificacion_datos_cliente1_idx` (`datos_cliente_cod_datos_cliente` ASC),
+  CONSTRAINT `fk_documento_notificacion_datos_cliente1`
+    FOREIGN KEY (`datos_cliente_cod_datos_cliente`)
+    REFERENCES `proyecto_001`.`datos_cliente` (`cod_datos_cliente`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

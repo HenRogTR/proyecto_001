@@ -13,7 +13,7 @@
     </head>
     <body>
         <strong>
-            <a href="venta_credito_actualizar.jsp">Venta credito actualizar</a><br>
+            <a href="venta_credito_actualizar_fechaUltimoPago.jsp">Venta credito actualizar</a><br>
             <a href="comprobar_serie_numero.jsp">comprobar serie numero</a><br>
             <a href="sesiones.jsp">sesiones</a><br>
             <a href="validaciones.jsp">validaciones</a>

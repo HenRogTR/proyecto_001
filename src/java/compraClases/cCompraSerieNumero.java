@@ -8,9 +8,9 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import otros.cUtilitarios;
 import tablas.CompraSerieNumero;
 import tablas.HibernateUtil;
+import utilitarios.cOtros;
 
 /**
  *
@@ -105,9 +105,9 @@ public class cCompraSerieNumero {
     }
 
     /**
-     * 
+     *
      * @param codCompraDetalle
-     * @return 
+     * @return
      */
     public List leer_codCompraDetalle(int codCompraDetalle) {
         List l = null;
@@ -138,12 +138,10 @@ public class cCompraSerieNumero {
      * @return
      */
     public boolean actualizar_est(int codCompraSerieNumero, String estado, String user) {
-        cUtilitarios objUtilitarios = new cUtilitarios();
-        setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
         sesion.getTransaction().begin();
         CompraSerieNumero objCompraDetalle = (CompraSerieNumero) sesion.get(CompraSerieNumero.class, codCompraSerieNumero);
-        objCompraDetalle.setRegistro(objUtilitarios.registro(estado, user));
+        objCompraDetalle.setRegistro(new cOtros().registro(estado, user));
         try {
             sesion.update(objCompraDetalle);
             sesion.getTransaction().commit();

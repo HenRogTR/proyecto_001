@@ -14,9 +14,9 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import otros.cUtilitarios;
 import tablas.CompraDetalle;
 import tablas.HibernateUtil;
+import utilitarios.cOtros;
 
 public class cCompraDetalle {
 
@@ -35,15 +35,13 @@ public class cCompraDetalle {
         this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
         this.error = null;
     }
-
-    //*********************************************************************
+    
     /**
      *
      * @param codArticuloProducto
      * @return
      */
     public List leer_ultimoDiez(int codArticuloProducto) {
-        setError(null);
         try {
             sesion = HibernateUtil.getSessionFactory().openSession();
             Query q = sesion.createQuery("from CompraDetalle cd "
@@ -174,12 +172,10 @@ public class cCompraDetalle {
     }
 
     public boolean actualizar_est(int codCompraDetalle, String estado, String user) {
-        cUtilitarios objUtilitarios = new cUtilitarios();
-        setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
         sesion.getTransaction().begin();
         CompraDetalle objCompraDetalle = (CompraDetalle) sesion.get(CompraDetalle.class, codCompraDetalle);
-        objCompraDetalle.setRegistro(objUtilitarios.registro(estado, user));
+        objCompraDetalle.setRegistro(new cOtros().registro(estado, user));
         try {
             sesion.update(objCompraDetalle);
             sesion.getTransaction().commit();

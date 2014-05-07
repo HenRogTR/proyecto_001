@@ -1,5 +1,5 @@
 package tablas;
-// Generated 10/04/2014 10:20:20 AM by Hibernate Tools 3.6.0
+// Generated 29/04/2014 10:30:26 AM by Hibernate Tools 3.6.0
 
 
 
@@ -15,7 +15,7 @@ public class DatosExtras  implements java.io.Serializable {
      private String letras;
      private String abreviatura;
      private Integer entero;
-     private Double decimal;
+     private Double decimalDato;
      private String registro;
 
     public DatosExtras() {
@@ -25,13 +25,13 @@ public class DatosExtras  implements java.io.Serializable {
     public DatosExtras(String registro) {
         this.registro = registro;
     }
-    public DatosExtras(String codSeguimiento, String descripcionDato, String letras, String abreviatura, Integer entero, Double decimal, String registro) {
+    public DatosExtras(String codSeguimiento, String descripcionDato, String letras, String abreviatura, Integer entero, Double decimalDato, String registro) {
        this.codSeguimiento = codSeguimiento;
        this.descripcionDato = descripcionDato;
        this.letras = letras;
        this.abreviatura = abreviatura;
        this.entero = entero;
-       this.decimal = decimal;
+       this.decimalDato = decimalDato;
        this.registro = registro;
     }
    
@@ -77,12 +77,12 @@ public class DatosExtras  implements java.io.Serializable {
     public void setEntero(Integer entero) {
         this.entero = entero;
     }
-    public Double getDecimal() {
-        return this.decimal;
+    public Double getDecimalDato() {
+        return this.decimalDato;
     }
     
-    public void setDecimal(Double decimal) {
-        this.decimal = decimal;
+    public void setDecimalDato(Double decimalDato) {
+        this.decimalDato = decimalDato;
     }
     public String getRegistro() {
         return this.registro;

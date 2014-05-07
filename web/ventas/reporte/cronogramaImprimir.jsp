@@ -11,7 +11,6 @@
 <%@page import="tablas.Usuario"%>
 <%@page import="tablas.VentaCreditoLetra"%>
 <%@page import="java.util.Iterator"%>
-<%@page import="otros.cUtilitarios"%>
 <%@page import="ventaClases.cVentaCreditoLetra"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
@@ -56,11 +55,9 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-        <!--        <link rel="stylesheet" type="text/css" href="../../lib/propios/css/paginaImprimir/bodyPrint.css" media="screen"/>
-                <link rel="stylesheet" type="text/css" href="../../lib/propios/css/paginaImprimir/bodyPrint.css" media="print"/>-->
         <link rel="stylesheet" type="text/css" href="cronogramaImprimir.css" media="print"/>
         <link rel="stylesheet" type="text/css" href="cronogramaImprimir.css" media="screen"/>
-        <script type="text/javascript" src="../../lib/jquery/jquery-1.8.1.min.js"></script>
+        <script type="text/javascript" src="../../librerias/jquery/jquery-1.8.1.min.js"></script>
     </head>
     <body>
         <script>

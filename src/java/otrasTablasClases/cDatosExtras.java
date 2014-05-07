@@ -32,6 +32,27 @@ public class cDatosExtras {
         this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
         this.error = null;
     }
+    
+    public int crear(DatosExtras objDatosExtras) {
+        int cod = 0;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            cod = (Integer) sesion.save(objDatosExtras);
+            sesion.getTransaction().commit();
+        } catch (Exception e) {
+            if (trns != null) {
+                trns.rollback();
+            }
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return cod;
+    }
 
     public List leer_cobranza() {
         List l = null;
@@ -135,6 +156,54 @@ public class cDatosExtras {
             sesion.close();
         }
         return obj;
+    }
+
+    /**
+     *
+     * @return getEntero() -> codCobrador asigando por defecto
+     */
+    public DatosExtras leer_interesFactor() {
+        DatosExtras obj = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("from DatosExtras de"
+                    + " where substring(de.registro,1,1) = 1"
+                    + " and de.descripcionDato = 'interesFactor'");
+            obj = (DatosExtras) q.list().get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return obj;
+    }
+
+    public boolean actualizar_interesFactor(int codDatosExtras, Double interesFactor) {
+        Boolean est = false;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            DatosExtras obj = (DatosExtras) sesion.get(DatosExtras.class, codDatosExtras);
+            obj.setDecimalDato(interesFactor);
+            trns = sesion.beginTransaction();
+            sesion.update(obj);
+            sesion.getTransaction().commit();
+            est = true;
+        } catch (Exception e) {
+            if (trns != null) {
+                setError(e.getMessage());
+                trns.rollback();
+                e.printStackTrace();
+            }
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return est;
     }
 
     public DatosExtras nombreEmpresa() {

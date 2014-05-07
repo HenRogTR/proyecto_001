@@ -3,8 +3,8 @@
     Created on : 12/03/2013, 03:23:05 AM
     Author     : Henrri
 --%>
+<%@page import="utilitarios.cOtros"%>
 <%@page import="tablas.CompraSerieNumero"%>
-<%@page import="otros.cUtilitarios"%>
 <%@page import="tablas.CompraDetalle"%>
 <%@page import="java.util.List"%>
 <%@page import="compraClases.cCompraDetalle"%>
@@ -14,7 +14,6 @@
         return;
     }
     cCompraDetalle objcCompraDetalle = new cCompraDetalle();
-    cUtilitarios objcUtilitarios = new cUtilitarios();
     List lCompraDetalle = objcCompraDetalle.leer_compraDetalle_codCompra(Integer.parseInt(codCompra));
     int contador = 0;
     out.print("[");
@@ -37,10 +36,10 @@
         out.print("{"
                 + "\"codCompraDetalle\":" + objCompraDetalle.getCodCompraDetalle() + ","
                 + "\"cantidad\":" + objCompraDetalle.getCantidad() + ","
-                + "\"precioUnitario\":\"" + objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(objCompraDetalle.getPrecioUnitario(), 4), 4) + "\","
-                + "\"precioTotal\":\"" + objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(objCompraDetalle.getPrecioTotal(), 2), 2) + "\","
+                + "\"precioUnitario\":\"" + new cOtros().decimalFormato(objCompraDetalle.getPrecioUnitario(), 4) + "\","
+                + "\"precioTotal\":\"" + new cOtros().decimalFormato(objCompraDetalle.getPrecioTotal(),  2) + "\","
                 + "\"item\":" + objCompraDetalle.getItem() + " ,"
-                + "\"descripcion\":\"" + objcUtilitarios.replace_comillas_comillasD_barraInvertida(objCompraDetalle.getDescripcion()) + "<br>" + objcUtilitarios.replace_comillas_comillasD_barraInvertida(serieNumero) + "\" ,"
+                + "\"descripcion\":\"" + new cOtros().replace_comillas_comillasD_barraInvertida(objCompraDetalle.getDescripcion()) + "<br>" + new cOtros().replace_comillas_comillasD_barraInvertida(serieNumero) + "\" ,"
                 + "\"unidadMedida\":\"" + "UNID." + "\""
                 + "}");
     }

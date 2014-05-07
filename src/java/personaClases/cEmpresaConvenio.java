@@ -8,9 +8,9 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Transaction;
 import org.hibernate.Session;
-import otros.cUtilitarios;
 import tablas.EmpresaConvenio;
 import tablas.HibernateUtil;
+import utilitarios.cOtros;
 
 /**
  *
@@ -30,6 +30,8 @@ public class cEmpresaConvenio {
     }
 
     public cEmpresaConvenio() {
+        this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
+        this.error = null;
     }
 
     public int Crear(EmpresaConvenio objEmpresaConvenio) {
@@ -124,12 +126,10 @@ public class cEmpresaConvenio {
     }
 
     public boolean actualizar_registro(int codEmpresaConvenio, String estado, String user) {
-        cUtilitarios objUtilitarios = new cUtilitarios();
-        setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
         sesion.getTransaction().begin();
         EmpresaConvenio obj = (EmpresaConvenio) sesion.get(EmpresaConvenio.class, codEmpresaConvenio);
-        obj.setRegistro(objUtilitarios.registro(estado, user));
+        obj.setRegistro(new cOtros().registro(estado, user));
         try {
             sesion.update(obj);
             sesion.getTransaction().commit();
@@ -201,5 +201,51 @@ public class cEmpresaConvenio {
             setError("DatosCliente_actualizar: " + e.getMessage());
         }
         return false;
+    }
+
+    public boolean actualizar_interesAsigando(int codEmpresaConvenio, boolean interesAsignado) {
+        boolean estado = false;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            EmpresaConvenio objEmpresaConvenio = (EmpresaConvenio) sesion.get(EmpresaConvenio.class, codEmpresaConvenio);
+            objEmpresaConvenio.setInteresAsigando(interesAsignado);
+            sesion.update(objEmpresaConvenio);
+            sesion.getTransaction().commit();
+            estado = true;
+        } catch (Exception e) {
+            if (trns != null) {
+                trns.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return estado;
+    }
+
+    public boolean actualizar_interesAutomatico(int codEmpresaConvenio, boolean interesAutomatico) {
+        boolean estado = false;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            EmpresaConvenio objEmpresaConvenio = (EmpresaConvenio) sesion.get(EmpresaConvenio.class, codEmpresaConvenio);
+            objEmpresaConvenio.setInteresAutomatico(interesAutomatico);
+            sesion.update(objEmpresaConvenio);
+            sesion.getTransaction().commit();
+            estado = true;
+        } catch (Exception e) {
+            if (trns != null) {
+                trns.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return estado;
     }
 }

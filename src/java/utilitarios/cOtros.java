@@ -180,4 +180,36 @@ public class cOtros {
         Date fecha = new Date();
         return est + formato.format(fecha) + user;
     }
+
+    /**
+     * Retorno cuando se hace una operacion y el usuario no ha iniciado sesion.
+     * Respuesta del servidor Ajax.
+     *
+     * @return
+     */
+    public String iniciarSesion() {
+        return "Estimado usuario, es necesario que se loguee.<a href=\"#\" id=\"aIniciarSesion\"> Clic aqui.</a>";
+    }
+    
+    public String accion2(String accion) {
+        if (accion.equals("r")) {
+            return "Registrar";
+        }
+        if (accion.equals("a")) {
+            return "EDITAR";
+        }
+        if (accion.equals("l")) {
+            return "LEER";
+        }
+        if (accion.equals("i")) {
+            return "INICIAR";
+        }
+        if (accion.equals("d")) {
+            return "ELIMINAR";
+        }
+        if (accion.equals("u")) {
+            return "Relacionar";
+        }
+        return null;
+    }
 }

@@ -3,7 +3,7 @@
     Created on : 22/12/2012, 12:08:31 AM
     Author     : Henrri
 --%>
-<%@page import="otros.cUtilitarios"%>
+<%@page import="utilitarios.cOtros"%>
 <%@page import="tablas.ArticuloProducto"%>
 <%@page import="articuloProductoClases.cArticuloProducto"%>
 <%@page import="java.util.Iterator"%>
@@ -14,7 +14,6 @@
         return;
     }
     cArticuloProducto objcArticuloProducto = new cArticuloProducto();
-    cUtilitarios objcUtilitarios = new cUtilitarios();
     List lArticuloProducto = objcArticuloProducto.leer(term);
     int contador = 0;
     out.print("[");
@@ -23,13 +22,13 @@
         if (contador++ > 0) {
             out.println(",");
         }
-        String codArticuloProducto = objcUtilitarios.agregarCeros_int(objArticuloProducto.getCodArticuloProducto(), 8);
-        String descripcion = objcUtilitarios.replace_comillas_comillasD_barraInvertida(objArticuloProducto.getDescripcion());
+        String codArticuloProducto = new cOtros().agregarCeros_int(objArticuloProducto.getCodArticuloProducto(), 8);
+        String descripcion = new cOtros().replace_comillas_comillasD_barraInvertida(objArticuloProducto.getDescripcion());
         out.println("{ \"label\" : \"" + descripcion + " ,COD: " + codArticuloProducto + "\", \"value\" : {"
                 + " \"codArticuloProducto\" : \"" + codArticuloProducto + "\""
                 + ",\"codReferencia\" : \"" + (objArticuloProducto.getCodReferencia() == null ? "" : objArticuloProducto.getCodReferencia()) + "\" "
                 + ",\"descripcion\" : \"" + descripcion + "\" "
-                + ",\"precioVenta\":\"" + objcUtilitarios.agregarCerosNumeroFormato(objArticuloProducto.getPrecioVenta(), 2) + "\""
+                + ",\"precioVenta\":\"" + new cOtros().decimalFormato(objArticuloProducto.getPrecioVenta(), 2) + "\""
                 + ",\"familia\" : \"" + objArticuloProducto.getFamilia().getFamilia() + "\" "
                 + ",\"marca\" : \"" + objArticuloProducto.getMarca().getDescripcion() + "\" "
                 + ",\"unidadMedida\" : \"" + objArticuloProducto.getUnidadMedida() + "\" "

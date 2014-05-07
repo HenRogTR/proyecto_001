@@ -9,9 +9,9 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import otros.cUtilitarios;
 import tablas.HibernateUtil;
 import tablas.Ventas;
+import utilitarios.cOtros;
 
 /**
  *
@@ -35,7 +35,6 @@ public class cVenta {
         this.error = null;
     }
 
-    //********************************************************************
     public Ventas leer_cod(int codVenta) {
         sesion = HibernateUtil.getSessionFactory().openSession();
         return (Ventas) sesion.get(Ventas.class, codVenta);
@@ -1061,6 +1060,32 @@ public class cVenta {
         }
     }
 
+    /**
+     *
+     * @return codCliente de la última venta al crédito realizada.
+     */
+    public int leer_codCliente_ultimaVentaCredito_SC() {
+        int codCliente = 0;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select dc.codDatosCliente"
+                    + " from Ventas v join v.persona.datosClientes dc"
+                    + " where substring(v.registro,1,1) = 1"
+                    + " and v.tipo = 'CREDITO'"
+                    + " order by v.fecha desc, v.codVentas desc");
+            codCliente = (Integer) q.list().iterator().next();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return codCliente;
+    }
+
     public List leer_admin() {
         setError(null);
         try {
@@ -1074,12 +1099,10 @@ public class cVenta {
     }
 
     public boolean actualizar_registro(int codVentas, String estado, String user) {
-        cUtilitarios objUtilitarios = new cUtilitarios();
-        setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
         sesion.getTransaction().begin();
         Ventas obj = (Ventas) sesion.get(Ventas.class, codVentas);
-        obj.setRegistro(objUtilitarios.registro(estado, user));
+        obj.setRegistro(new cOtros().registro(estado, user));
         try {
             sesion.update(obj);
             sesion.getTransaction().commit();

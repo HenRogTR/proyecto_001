@@ -4,7 +4,7 @@
     Author     : Henrri
 --%>
 
-<%@page import="otros.cUtilitarios"%>
+<%@page import="utilitarios.cOtros"%>
 <%@page import="tablas.Proveedor"%>
 <%@page import="personaClases.cProveedor"%>
 <%
@@ -15,7 +15,6 @@
         codProveedor = 0;
     }
     cProveedor objcProveedor = new cProveedor();
-    cUtilitarios objcUtilitarios = new cUtilitarios();
     Proveedor objProveedor = new Proveedor();
     switch (codProveedor) {
         case -1:
@@ -34,10 +33,10 @@
         session.setAttribute("codProveedorListar", objProveedor.getCodProveedor());
         out.print("{"
                 //                + "\"\":\"" + "" + "\""
-                + "\"codProveedor\":\"" + objcUtilitarios.agregarCeros_int(objProveedor.getCodProveedor(), 8) + "\""
+                + "\"codProveedor\":\"" + new cOtros().agregarCeros_int(objProveedor.getCodProveedor(), 8) + "\""
                 + ",\"ruc\":\"" + objProveedor.getRuc() + "\""
-                + ",\"razonSocial\":\"" + objcUtilitarios.replace_caracteres_especiales(objProveedor.getRazonSocial()) + "\""
-                + ",\"direccion\":\"" + objcUtilitarios.replace_caracteres_especiales(objProveedor.getDireccion()) + "\""
+                + ",\"razonSocial\":\"" + new cOtros().replace_comillas_comillasD_barraInvertida(objProveedor.getRazonSocial()) + "\""
+                + ",\"direccion\":\"" + new cOtros().replace_comillas_comillasD_barraInvertida(objProveedor.getDireccion()) + "\""
                 + ",\"telefono1\":\"" + objProveedor.getTelefono() + "\""
                 + ",\"telefono2\":\"" + "" + "\""
                 + ",\"email\":\"" + objProveedor.getEmail() + "\""

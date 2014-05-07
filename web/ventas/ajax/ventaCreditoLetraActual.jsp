@@ -45,7 +45,7 @@
             <td class="ancho120px derecha"><%=objcOtros.agregarCerosNumeroFormato(obj.getMonto(), 2)%>&nbsp;&nbsp;&nbsp;</td>
             <td class="ancho120px derecha"><%=objcOtros.agregarCerosNumeroFormato(obj.getTotalPago(), 2)%>&nbsp;&nbsp;&nbsp;</td>
             <td class="ancho120px centrado"><%=objcManejoFechas.DateAString(obj.getFechaPago())%></td>
-            <td class="derecha"><%=objcOtros.agregarCerosNumeroFormato(obj.getMonto() - obj.getTotalPago(), 2)%>&nbsp;&nbsp;&nbsp;</td>
+            <td class="derecha"><%=objcOtros.decimalFormato(obj.getMonto() - obj.getTotalPago(), 2)%>&nbsp;&nbsp;&nbsp;</td>
         </tr>
         <%
             }

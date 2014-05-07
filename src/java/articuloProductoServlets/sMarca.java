@@ -14,9 +14,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import otros.cUtilitarios;
 import tablas.Marca;
 import tablas.Usuario;
+import utilitarios.cOtros;
 
 /**
  *
@@ -53,7 +53,7 @@ public class sMarca extends HttpServlet {
         Usuario objUsuario = (Usuario) session.getAttribute("usuario");
 
         cMarca objcMarca = new cMarca();
-        cUtilitarios objcUtilitarios = new cUtilitarios();
+        cOtros objcOtros = new cOtros();
 
         if (accion != null) {
             if (accion.equals("r")) {
@@ -66,7 +66,7 @@ public class sMarca extends HttpServlet {
             if (accion.equals("r")) {
                 Marca objMarca = new Marca();
                 objMarca.setDescripcion(request.getParameter("descripcion"));
-                objMarca.setRegistro(objcUtilitarios.registro("1", objUsuario.getCodUsuario().toString()));
+                objMarca.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
                 if (objcMarca.Crear(objMarca) != 0) {
                     session.removeAttribute("accionMarca");
                     out.print(true);

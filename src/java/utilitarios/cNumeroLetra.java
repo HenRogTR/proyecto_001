@@ -4,7 +4,6 @@
  */
 package utilitarios;
 
-import otros.*;
 import java.util.regex.Pattern;
 
 /**

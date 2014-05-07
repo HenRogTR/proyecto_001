@@ -1,6 +1,6 @@
 /**
  * jquery.mask.js
- * @version: v1.5.3
+ * @version: v1.5.5
  * @author: Igor Escobar
  *
  * Created by Igor Escobar on 2012-03-10. Please report any bug at http://blog.igorescobar.com
@@ -30,8 +30,17 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  */
-
-(function($) {
+// UMD (Universal Module Definition) patterns for JavaScript modules that work everywhere.
+// https://github.com/umdjs/umd/blob/master/jqueryPlugin.js
+(function(factory) {
+    if (typeof define === "function" && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(["jquery"], factory);
+    } else {
+        // Browser globals
+        factory(window.jQuery || window.Zepto);
+    }
+}(function($) {
     "use strict";
     var Mask = function(el, mask, options) {
         var jMask = this, old_value;
@@ -75,10 +84,10 @@
                         cSelStart = ctrl.selectionStart;
 
                 // IE Support
-                if (dSel && navigator.appVersion.indexOf("MSIE 10") === -1) {
+                if (dSel && !~navigator.appVersion.indexOf("MSIE 10")) {
                     ctrl.focus();
                     sel = dSel.createRange();
-                    sel.moveStart('character', -ctrl.value.length);
+                    sel.moveStart('character', el.is("input") ? -el.val().length : -el.text().length);
                     pos = sel.text.length;
                 }
                 // Firefox support
@@ -107,33 +116,56 @@
                     old_value = p.val();
                 });
                 el.on('keyup.mask', p.behaviour);
-                el.on("paste.mask", function() {
+                el.on("paste.mask drop.mask", function() {
                     setTimeout(function() {
                         el.keydown().keyup();
                     }, 100);
                 });
+                el.on("change.mask", function() {
+                    el.data("changeCalled", true);
+                });
+                el.on("blur.mask", function(e) {
+                    var el = $(e.target)
+                    if (el.prop("defaultValue") != el.val()) {
+                        el.prop("defaultValue", el.val())
+                        if (!el.data("changeCalled"))
+                            el.trigger("change");
+                    }
+                    el.data("changeCalled", false);
+                });
             },
             destroyEvents: function() {
-                el.off('keydown.mask keyup.mask paste.mask');
+                el.off('keydown.mask keyup.mask paste.mask drop.mask change.mask blur.mask').removeData("changeCalled");
             },
             val: function(v) {
-                var isInput = el.get(0).tagName.toLowerCase() === "input";
+                var isInput = el.is('input');
                 return arguments.length > 0
                         ? (isInput ? el.val(v) : el.text(v))
                         : (isInput ? el.val() : el.text());
             },
             behaviour: function(e) {
                 e = e || window.event;
-                if ($.inArray(e.keyCode || e.which, jMask.byPassKeys) === -1) {
+                var keyCode = e.keyCode || e.which;
+                if ($.inArray(keyCode, jMask.byPassKeys) === -1) {
 
-                    var changeCaret, caretPos = p.getCaret();
-                    if (caretPos < p.val().length) {
-                        changeCaret = true;
+                    var caretPos = p.getCaret(),
+                            currVal = p.val(),
+                            currValL = currVal.length,
+                            changeCaret = caretPos < currValL;
+
+                    var newVal = p.getMasked(),
+                            newValL = newVal.length;
+                    if (newVal !== currVal) {
+                        p.val(newVal);
                     }
 
-                    p.val(p.getMasked());
-
-                    if (changeCaret) {
+                    // change caret but avoid CTRL+A
+                    if (changeCaret && !(keyCode === 65 && e.ctrlKey)) {
+                        if (newValL != currValL) {
+                            if (newVal.substring(0, caretPos) != currVal.substring(0, caretPos)) {
+                                caretPos = Math.min(caretPos + newValL - currValL, newValL);
+                            }
+                        }
                         p.setCaret(caretPos);
                     }
 
@@ -279,4 +311,4 @@
         input.mask(input.attr('data-mask'), options);
     });
 
-})(window.jQuery || window.Zepto);
+}));

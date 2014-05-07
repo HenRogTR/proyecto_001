@@ -4,7 +4,6 @@
     Author     : Henrri
 --%>
 
-<%@page import="otros.cUtilitarios"%>
 <%@page import="personaClases.cProveedor"%>
 <%@page import="tablas.Proveedor"%>
 <%@page import="java.util.Iterator"%>
@@ -36,7 +35,7 @@
         <link rel="stylesheet" type="text/css" href="../lib/propios/css/tablas/tablas-reportes.css">
         <!--css js modal-->
         <!--css iconos-->
-        <link rel="stylesheet" type="text/css" href="../lib/botones/sexybuttons.css">
+        <link rel="stylesheet" type="text/css" href="../librerias/botonesIconos/sexybuttons.css" media="screen">
         <!--css y js de pagina-->
         <script type="text/javascript" src="../lib/persona/proveedor/proveedorListar.js?v13.08.12"></script>
         <script type="text/javascript" src="../lib/jquerynumeric/jquery.numeric.js"></script>

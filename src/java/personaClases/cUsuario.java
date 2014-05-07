@@ -8,7 +8,6 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import otros.cUtilitarios;
 import tablas.HibernateUtil;
 import tablas.Usuario;
 import utilitarios.cOtros;
@@ -174,12 +173,10 @@ public class cUsuario {
     }
 
     public boolean actualizar_registro(int codUsuario, String estado, String user) {
-        cUtilitarios objUtilitarios = new cUtilitarios();
-        setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
         sesion.getTransaction().begin();
         Usuario obj = (Usuario) sesion.get(Usuario.class, codUsuario);
-        obj.setRegistro(objUtilitarios.registro(estado, user));
+        obj.setRegistro(new cOtros().registro(estado, user));
         try {
             sesion.update(obj);
             sesion.getTransaction().commit();

@@ -3,7 +3,7 @@
     Created on : 15/03/2013, 05:59:03 PM
     Author     : Henrri
 --%>
-<%@page import="otros.cUtilitarios"%>
+<%@page import="utilitarios.cOtros"%>
 <%@page import="java.util.List"%>
 <%@page import="personaClases.cProveedor"%>
 <%@page import="tablas.Proveedor"%>
@@ -13,7 +13,6 @@
         return;
     }
     cProveedor objcProveedor = new cProveedor();
-    cUtilitarios objcUtilitarios = new cUtilitarios();
     List lProveedor = objcProveedor.leerRucORazonSocial(term);
     int contador = 0;
     out.print("[");
@@ -22,11 +21,11 @@
             out.print(",");
         }
         Proveedor objProveedor = (Proveedor) lProveedor.get(i);
-        out.println("{ \"label\" : \"" + objProveedor.getRuc() + " " + objcUtilitarios.replace_comillas_comillasD_barraInvertida(objProveedor.getRazonSocial()) + "\" , \"value\" :{"
+        out.println("{ \"label\" : \"" + objProveedor.getRuc() + " " + new cOtros().replace_comillas_comillasD_barraInvertida(objProveedor.getRazonSocial()) + "\" , \"value\" :{"
                 + "\"codProveedor\" : " + objProveedor.getCodProveedor()
                 + " , \"ruc\" : \"" + objProveedor.getRuc() + "\""
-                + " , \"razonSocial\" : \"" + objcUtilitarios.replace_comillas_comillasD_barraInvertida(objProveedor.getRazonSocial()) + "\""
-                + " , \"direccion\" : \"" + objcUtilitarios.replace_comillas_comillasD_barraInvertida(objProveedor.getDireccion()) + "\""
+                + " , \"razonSocial\" : \"" + new cOtros().replace_comillas_comillasD_barraInvertida(objProveedor.getRazonSocial()) + "\""
+                + " , \"direccion\" : \"" + new cOtros().replace_comillas_comillasD_barraInvertida(objProveedor.getDireccion()) + "\""
                 + "}}");
     }
     out.print("]");

@@ -55,8 +55,9 @@ body {
     color: #fff; 
     background: #FE7B09 url(images/bg.jpg) repeat-x; 
     font-size: 1.2em; 
-    height: 24px; 
-    line-height: 24px; 
+    height: 28px; 
+    line-height: 24px;
+    vertical-align: middle;
 }
 .login{
     font-size: 14px;
@@ -204,6 +205,7 @@ label.error:before{
 .ancho420px{width: 420px;}
 .ancho440px{width: 440px;}
 
+.alto24px{height: 24px;}
 .alto40px{height: 40px;}
 .alto60px{height: 60px;}
 .alto80px{height: 80px;}
@@ -244,7 +246,7 @@ label.error:before{
 }
 
 .finalVenta{
-    border-top: 3px solid #3366ff !important;
+    border-top: 2px dashed #3366ff !important;
 }
 
 .esperando{
@@ -252,6 +254,7 @@ label.error:before{
     background: url(images/loading.gif) no-repeat ;
     background-size:  11px;
     color: transparent;
+    background-position: 2px 2px;
 }
 .sinSubrayado{
     text-decoration:none
@@ -287,11 +290,6 @@ fieldset legend {
 
 .fondoDivSecundario{
     background: #F1F1F7;
-}
-
-.fondoPrimario{
-    background: #6583E0;
-    color: #fff;
 }
 
 .tabla11px{
@@ -342,16 +340,20 @@ fieldset legend {
     padding-right: 3px;
 }
 .tabla9px th{
-    padding: 2px;
+    padding: 1px 2px 0px 1px;
     font-weight: normal;
     color: #fff;
     background: #6583E0;
     border: 1px solid #fff;
 }
 .tabla9px td{
-    padding: 2px;
+    padding: 1px 2px 0px 1px;
     background: #F1F1F7;
     border-top: 1px solid #fff;
     color: #000;
     border: 1px solid #fff;
+}
+
+.manoPuntero{
+    cursor: help;
 }

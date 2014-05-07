@@ -4,8 +4,8 @@
     Author     : Henrri
 --%>
 
+<%@page import="utilitarios.cOtros"%>
 <%@page import="personaClases.cUsuario"%>
-<%@page import="otros.cUtilitarios"%>
 <%@page import="tablas.Almacen"%>
 <%@page import="java.util.List"%>
 <%@page import="compraClases.cAlmacen"%>
@@ -34,7 +34,7 @@
         <!--css frm-->
         <link rel="stylesheet" type="text/css" href="../lib/propios/css/tablas/tablas-reportes.css" />        
         <!--css iconos-->
-        <link rel="stylesheet" type="text/css" href="../lib/botones/sexybuttons.css">
+        <link rel="stylesheet" type="text/css" href="../librerias/botonesIconos/sexybuttons.css" media="screen">
     </head>
     <body>        
         <div id="wrap">
@@ -47,7 +47,6 @@
             <div id="right">
                 <%
                     cAlmacen objcAlmacen = new cAlmacen();
-                    cUtilitarios objcUtilitarios = new cUtilitarios();
                     cUsuario objcUsuario = new cUsuario();
                 %>
                 <h3 class="titulo">MANTENIMIENTO DE ALMACEN(ES) &nbsp; <a href="../sAlmacen?accionAlmacen=r" class="sexybutton"><span><span><span class="add">Nuevo</span></span></span></a></h3>
@@ -88,7 +87,7 @@
                                     Usuario objUsuario1 = objcUsuario.leer_cod(Integer.parseInt(objAlmacen.getRegistro().substring(15, objAlmacen.getRegistro().length())));
                             %>
                             <td><%=objUsuario1.getUsuario()%></td>
-                            <td><%=objcUtilitarios.fechaFormato(objAlmacen.getRegistro())%></td>
+                            <td><%=new cManejoFechas().fechaFormato(objAlmacen.getRegistro())%></td>
                             <td style="color: green"><%=objUsuario.getRegistro().substring(0, 1).equals("1") ? "Activo" : "Borrado"%></td>
                             <%
                                 }

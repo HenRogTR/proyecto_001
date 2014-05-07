@@ -37,7 +37,6 @@ import javax.servlet.http.HttpSession;
 import otrasTablasClases.cComprobantePago;
 import otrasTablasClases.cComprobantePagoDetalle;
 import otrasTablasClases.cDatosExtras;
-import otros.cUtilitarios;
 import personaClases.cDatosCliente;
 import tablas.Cobranza;
 import tablas.CobranzaDetalle;
@@ -98,6 +97,7 @@ public class sCobranza extends HttpServlet {
                 return;
             }
             try {
+                //iniciamos variables
                 int codCliente = Integer.parseInt(request.getParameter("codCliente"));
                 DatosCliente objCliente = objcCliente.leer_cod(codCliente);
                 String tipoPago = request.getParameter("tipoPago").toString();
@@ -106,16 +106,22 @@ public class sCobranza extends HttpServlet {
                 Date fechaCobranza = objcManejoFechas.StringADate(request.getParameter("fechaCobranza"));
                 int codVenta = Integer.parseInt(request.getParameter("codVenta"));
                 String saldoFavorUsar = request.getParameter("saldoFavor").toString();
+                //en caso de que el ingreso sea manual
                 String docSerieNumero = "";
                 String tipo = "R", serie = "";
+                //el documento que se actualizará
                 ComprobantePagoDetalle objCPD = null;
+                //si se usa el saldo a favor
                 if (saldoFavorUsar.equals("1")) {
+                    //se asigna como documento
                     docSerieNumero = "XXX-999-111111";
                 } else {
+                    //si el cobro es manual se asigna lo ingresado, teniendo en cuenta el formato
                     if (tipoCobro.equals("manual")) {
                         docSerieNumero = request.getParameter("docSerieNumero");
                     } else {
-                        if (tipoCobro.equals("caja")) {//buscar el numero disponible siguiente//                            
+                        //buscar el numero disponible siguiente//            
+                        if (tipoCobro.equals("caja")) {
                             tipo = request.getParameter("docRecCaja").toString();
                             serie = request.getParameter("serieSelect").toString();
                         } else if (tipoCobro.equals("descuento")) {//buscar el siguiente teniendo en cuenta el codigo de cobranza
@@ -165,7 +171,7 @@ public class sCobranza extends HttpServlet {
                         objCobranza.setSaldoAnterior(0.00);
                         objCobranza.setImporte(0.00);
                         objCobranza.setSaldo(montoAmortizar);
-                        objCobranza.setObservacion("Anticipo");
+                        objCobranza.setObservacion("Anticipo "+new cOtros().decimalFormato(montoAmortizar, 2));
                         objCobranza.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
                         int codCobranza = new cCobranza().crear(objCobranza);
                         if (codCobranza != 0) {
@@ -189,7 +195,8 @@ public class sCobranza extends HttpServlet {
                         objCobranza.setSaldo(0.00);
                         objCobranza.setObservacion("");
                         objCobranza.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
-                        if (saldoFavorUsar.equals("0") & !tipoCobro.equals("manual")) {//que no sea un saldo a favor y que no sea manual
+                        //que no sea un saldo a favor y que no sea manual
+                        if (saldoFavorUsar.equals("0") & !tipoCobro.equals("manual")) {
                             objcComprobantePagoDetalle.actualizar_estado(objCPD.getCodComprobantePagoDetalle(), true);
                         }
 
@@ -230,7 +237,7 @@ public class sCobranza extends HttpServlet {
                         if (saldoFavorUsar.equals("0")) {
                             if (montoAmortizarAux > 0) {//decimos que sobro y se tiene que poner como saldo a favor
                                 observacion += "Anticipo";
-                                new cDatosCliente().actualizar_saldoFavor(objCliente.getCodDatosCliente(), montoAmortizarAux);//aactualizamod saldo a favor cliente
+                                new cDatosCliente().actualizar_saldoFavor(objCliente.getCodDatosCliente(), montoAmortizarAux);//actualizamos saldo a favor cliente
                                 new cCobranza().actualizar_observacion_saldo(codCobranza, observacion, montoAmortizar - montoAmortizarAux, montoAmortizarAux);
                             } else {//si en caso no hay saldo a favor
                                 new cCobranza().actualizar_observacion_saldo(codCobranza, observacion, montoAmortizar, montoAmortizarAux);
@@ -359,9 +366,10 @@ public class sCobranza extends HttpServlet {
                 if (objCobranzaDetalle.getRegistro().substring(0, 1).equals("1")) {
                     objcVentaCreditoLetra.actualizar_totalPago(objCobranzaDetalle.getVentaCreditoLetra().getCodVentaCreditoLetra(), -objCobranzaDetalle.getImporte(), objCobranza.getFechaCobranza());
                     objcCobranzaDetalle.actualizar_registro(objCobranzaDetalle.getCodCobranzaDetalle(), "0", objUsuario.getCodUsuario().toString());
+                    //actualizar ultima fecha de pago
+                    objcVentaCreditoLetra.actualizar_fechaUltimoPago(objCobranzaDetalle.getVentaCreditoLetra().getCodVentaCreditoLetra());
                 }
             }
-//            DatosCliente objDatosCliente = objCobranza.getPersona().getDatosClientes().iterator().next();// se lee a la persona
             DatosCliente objCliente = new cDatosCliente().leer_codPersona(objCobranza.getPersona().getCodPersona());// se lee a la persona
             System.out.println("Saldo actual= " + objCliente.getSaldoFavor());
             if (objCobranza.getDocSerieNumero().substring(0, 1).equals("X")) {//si en caso se uso el saldo a favor
@@ -369,7 +377,7 @@ public class sCobranza extends HttpServlet {
             } else {
                 new cDatosCliente().actualizar_saldoFavor(objCliente.getCodDatosCliente(), -objCobranza.getSaldo());
             }
-            objcCobranza.actualizar_importe_saldo_registro(codCobranza, new cUtilitarios().registro("0", objUsuario.getCodUsuario().toString()));// de la cobranza
+            objcCobranza.actualizar_importe_saldo_registro(codCobranza, new cOtros().registro("0", objUsuario.getCodUsuario().toString()));// de la cobranza
             out.print(codCobranza);
         }//fin eliminar
 

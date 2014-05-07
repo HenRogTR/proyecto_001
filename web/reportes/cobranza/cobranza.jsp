@@ -58,7 +58,7 @@
     if (reporte.equals("todo_todos")) {
         cobranzaList = objcCobranza.leer_todo_todos_fechas_SC(fechaInicioDate, fechaFinDate);
     }
-    if (reporte.equals("iniciales_todos")) {
+    if (reporte.equals("inicial_todos")) {
         cobranzaList = objcCobranza.leer_inicial_todos_fechas_SC(fechaInicioDate, fechaFinDate);
     }
     if (reporte.equals("cobranza_todos")) {
@@ -82,7 +82,7 @@
         cobranzaList = objcCobranza.leer_todo_cobrador_fechas_SC(fechaInicioDate, fechaFinDate, codCobradorInteger);
         cabeceraString += "<tr><th colspan=\"3\">COBRADOR: " + objCobrador.getPersona().getNombres() + "</th></tr>";
     }
-    if (reporte.equals("iniciales_cobrador")) {
+    if (reporte.equals("inicial_cobrador")) {
         try {
             codCobradorInteger = Integer.parseInt(request.getParameter("codCobrador"));
             objCobrador = new cPersonal().leer_cobradorVendedor(codCobradorInteger);

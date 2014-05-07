@@ -8,9 +8,9 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import otros.cUtilitarios;
 import tablas.Familia;
 import tablas.HibernateUtil;
+import utilitarios.cOtros;
 
 /**
  *
@@ -121,12 +121,12 @@ public class cFamilia {
     }
 
     public boolean actualizar_registro(int codFamilia, String estado, String user) {
-        cUtilitarios objUtilitarios = new cUtilitarios();
+        cOtros objcOtros = new cOtros();
         setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
         sesion.getTransaction().begin();
         Familia obj = (Familia) sesion.get(Familia.class, codFamilia);
-        obj.setRegistro(objUtilitarios.registro(estado, user));
+        obj.setRegistro(objcOtros.registro(estado, user));
         try {
             sesion.update(obj);
             sesion.getTransaction().commit();

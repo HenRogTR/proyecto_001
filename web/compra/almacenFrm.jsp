@@ -4,7 +4,7 @@
     Author     : Henrri
 --%>
 
-<%@page import="otros.cUtilitarios"%>
+<%@page import="utilitarios.cOtros"%>
 <%@page import="java.lang.String"%>
 <%@page import="tablas.Usuario"%>
 <%
@@ -18,8 +18,7 @@
         if (accion == null) {
             response.sendRedirect("almacenListar.jsp");
         } else {
-            cUtilitarios objcUtilitarios = new cUtilitarios();
-            String accion2 = objcUtilitarios.accion2(accion);
+            String accion2 = new cOtros().accion2(accion);
 %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -37,7 +36,7 @@
         <!--css frm-->
         <link rel="stylesheet" type="text/css" href="../lib/propios/css/formulario/detalles.css" />        
         <!--css iconos-->
-        <link rel="stylesheet" type="text/css" href="../lib/botones/sexybuttons.css">
+        <link rel="stylesheet" type="text/css" href="../librerias/botonesIconos/sexybuttons.css" media="screen">
     </head>
     <body>        
         <div id="wrap">

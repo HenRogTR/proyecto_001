@@ -7,9 +7,9 @@ package compraClases;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import otros.cUtilitarios;
 import tablas.Almacen;
 import tablas.HibernateUtil;
+import utilitarios.cOtros;
 
 /**
  *
@@ -30,6 +30,7 @@ public class cAlmacen {
 
     public cAlmacen() {
         this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
+        this.error = null;
     }
 
     public int Crear(Almacen objAlmacen) {
@@ -78,12 +79,10 @@ public class cAlmacen {
     }
 
     public boolean actualizar_registro(int codAlmacen, String estado, String user) {
-        cUtilitarios objUtilitarios = new cUtilitarios();
-        setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
         sesion.getTransaction().begin();
         Almacen obj = (Almacen) sesion.get(Almacen.class, codAlmacen);
-        obj.setRegistro(objUtilitarios.registro(estado, user));
+        obj.setRegistro(new cOtros().registro(estado, user));
         try {
             sesion.update(obj);
             sesion.getTransaction().commit();

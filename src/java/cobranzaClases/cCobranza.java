@@ -11,10 +11,10 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import otrasTablasClases.cDatosExtras;
-import otros.cUtilitarios;
 import tablas.Cobranza;
 import tablas.DatosExtras;
 import tablas.HibernateUtil;
+import utilitarios.cOtros;
 
 /**
  *
@@ -35,6 +35,7 @@ public class cCobranza {
 
     public cCobranza() {
         this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
+        this.error = null;
     }
 
     public int crear(Cobranza objCobranza) {
@@ -1123,14 +1124,13 @@ public class cCobranza {
     }
 
     public boolean actualizar_registro(int codCobranza, String estado, String user) {
-        cUtilitarios objUtilitarios = new cUtilitarios();
         Boolean est = false;
         setError(null);
         Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
             Cobranza obj = (Cobranza) sesion.get(Cobranza.class, codCobranza);
-            obj.setRegistro(objUtilitarios.registro(estado, user));
+            obj.setRegistro(new cOtros().registro(estado, user));
             trns = sesion.beginTransaction();
             sesion.update(obj);
             sesion.getTransaction().commit();

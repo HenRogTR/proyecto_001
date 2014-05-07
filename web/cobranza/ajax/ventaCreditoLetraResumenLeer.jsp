@@ -11,7 +11,6 @@
 <%@page import="ventaClases.cVentaCreditoLetra"%>
 <%@page import="java.util.List"%>
 
-
 [
 <%
     int codCliente = 0;
@@ -59,8 +58,7 @@
                         + ",\"interes\":\"" + objcOtros.agregarCerosNumeroFormato(objVentaCreditoLetra.getInteres(), 2) + "\""
                         + ",\"totalPago\":\"" + objcOtros.agregarCerosNumeroFormato(objVentaCreditoLetra.getTotalPago(), 2) + "\""
                         + ",\"fechaPago\":\"" + objcManejoFechas.DateAString(objVentaCreditoLetra.getFechaPago()) + "\""
-                        //                + ",\"saldo\":\"" + objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(objVentaCreditoLetra.getMonto() - objVentaCreditoLetra.getTotalPago(), 2), 2) + "\""
-                        + ",\"saldo\":\"" + objcOtros.agregarCerosNumeroFormato(objcOtros.redondearDecimales(saldo, 2), 2) + "\""
+                        + ",\"saldo\":\"" + new cOtros().decimalFormato(saldo + objVentaCreditoLetra.getInteres(), 2) + "\""
                         + ",\"diasRetraso\":\"" + dias + "\""
                         + ",\"estilo\":\"" + estilo + "\""
                         + ",\"finalVenta\":\"" + margen + "\""

@@ -4,9 +4,8 @@
     Author     : Henrri
 --%>
 
-
-<%@page import="otros.cUtilitarios"%>
-<%@page import="otros.cManejoFechas"%>
+<%@page import="utilitarios.cOtros"%>
+<%@page import="utilitarios.cManejoFechas"%>
 <%@page import="tablas.Cobranza"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.ArrayList"%>
@@ -27,21 +26,21 @@
         out.print("}]");
         return;
     }
-    Iterator iCobranza=lCobranza.iterator();
-    int cont=0;
+    Iterator iCobranza = lCobranza.iterator();
+    int cont = 0;
     out.print("[");
-    while(iCobranza.hasNext()){
-        Cobranza objCobranza=(Cobranza)iCobranza.next();
-        if(cont++>0){
+    while (iCobranza.hasNext()) {
+        Cobranza objCobranza = (Cobranza) iCobranza.next();
+        if (cont++ > 0) {
             out.print(",");
         }
         out.print("{"
-                +"\"codCobranza\":"+objCobranza.getCodCobranza()
-                +",\"fechaCobranza\":\""+new cManejoFechas().fechaDateToString(objCobranza.getFechaCobranza())+"\""
-                +",\"docSerieNumero\":\""+objCobranza.getDocSerieNumero()+"\""
-                +",\"importe\":\""+new cUtilitarios().agregarCerosNumeroFormato(objCobranza.getImporte(), 2)+"\""
-                +",\"saldo\":\""+new cUtilitarios().agregarCerosNumeroFormato(objCobranza.getSaldo(), 2)+"\""
-                +",\"observacion\":\""+new cUtilitarios().replace_comillas_comillasD_barraInvertida(objCobranza.getObservacion())+"\""
+                + "\"codCobranza\":" + objCobranza.getCodCobranza()
+                + ",\"fechaCobranza\":\"" + new cManejoFechas().DateAString(objCobranza.getFechaCobranza()) + "\""
+                + ",\"docSerieNumero\":\"" + objCobranza.getDocSerieNumero() + "\""
+                + ",\"importe\":\"" + new cOtros().decimalFormato(objCobranza.getImporte(), 2) + "\""
+                + ",\"saldo\":\"" + new cOtros().decimalFormato(objCobranza.getSaldo(), 2) + "\""
+                + ",\"observacion\":\"" + new cOtros().replace_comillas_comillasD_barraInvertida(objCobranza.getObservacion()) + "\""
                 + "}");
     }
     out.print("]");

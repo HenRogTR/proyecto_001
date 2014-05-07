@@ -2,11 +2,12 @@
     Document   : codCobranzaOtros
     Created on : 21/11/2013, 02:30:12 PM
     Author     : Henrri
---%><%@page import="tablas.OtrosCC"%>
+--%>
+
+<%@page import="tablas.OtrosCC"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="personaClases.cOtrosCC"%>
 <%@page import="java.util.List"%>
-
 
 [
 <%

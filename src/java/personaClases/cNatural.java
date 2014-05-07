@@ -7,9 +7,9 @@ package personaClases;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import otros.cUtilitarios;
 import tablas.HibernateUtil;
 import tablas.PNatural;
+import utilitarios.cOtros;
 
 /**
  *
@@ -25,6 +25,7 @@ public class cNatural {
     }
 
     public void setError(String error) {
+        this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
         this.error = error;
     }
 
@@ -84,12 +85,10 @@ public class cNatural {
     }
 
     public boolean actualizar_registro(int codNatural, String estado, String user) {
-        cUtilitarios objUtilitarios = new cUtilitarios();
-        setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
         sesion.getTransaction().begin();
         PNatural obj = (PNatural) sesion.get(PNatural.class, codNatural);
-        obj.setRegistro(objUtilitarios.registro(estado, user));
+        obj.setRegistro(new cOtros().registro(estado, user));
         try {
             sesion.update(obj);
             sesion.getTransaction().commit();

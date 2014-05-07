@@ -4,8 +4,9 @@
     Author     : Henrri
 --%>
 
+<%@page import="utilitarios.cOtros"%>
+<%@page import="utilitarios.cManejoFechas"%>
 <%@page import="tablas.VentaCreditoLetra"%>
-<%@page import="otros.cUtilitarios"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="ventaClases.cVentaCreditoLetra"%>
@@ -33,7 +34,6 @@
         out.print(mensaje);
     }
     Iterator iVentaCreditoLetra = lVentaCreditoLetra.iterator();
-    cUtilitarios objcUtilitarios = new cUtilitarios();
     int contador = 0;
     out.println("[");
     while (iVentaCreditoLetra.hasNext()) {
@@ -44,7 +44,7 @@
         String dias = "";
         String estilo = "";
         double saldo = objVentaCreditoLetra.getMonto() - objVentaCreditoLetra.getTotalPago();
-        int diasRetraso = objcUtilitarios.diferenciaDias(objVentaCreditoLetra.getFechaVencimiento());
+        int diasRetraso = new cManejoFechas().diferenciaDias(objVentaCreditoLetra.getFechaVencimiento());
         if (saldo > 0 & diasRetraso >= 0) {
             dias = String.valueOf(diasRetraso);
             estilo = "tomato";
@@ -57,13 +57,13 @@
                 + ",\"moneda\":\"" + objcVentaCreditoLetra.moneda(objVentaCreditoLetra.getMoneda()) + "\""
                 + ",\"numeroLetras\":\"" + objVentaCreditoLetra.getNumeroLetra() + "\""
                 + ",\"detalleLetra\":\"" + objVentaCreditoLetra.getDetalleLetra() + "\""
-                + ",\"fechaVencimiento\":\"" + objcUtilitarios.fechaDateToString(objVentaCreditoLetra.getFechaVencimiento()) + "\""
-                + ",\"monto\":\"" + objcUtilitarios.agregarCerosNumeroFormato(objVentaCreditoLetra.getMonto(), 2) + "\""
-                + ",\"interes\":\"" + objcUtilitarios.agregarCerosNumeroFormato(objVentaCreditoLetra.getInteres(), 2) + "\""
-                + ",\"totalPago\":\"" + objcUtilitarios.agregarCerosNumeroFormato(objVentaCreditoLetra.getTotalPago(), 2) + "\""
-                + ",\"fechaPago\":\"" + objcUtilitarios.fechaDateToString(objVentaCreditoLetra.getFechaPago()) + "\""
+                + ",\"fechaVencimiento\":\"" + new cManejoFechas().DateAString(objVentaCreditoLetra.getFechaVencimiento()) + "\""
+                + ",\"monto\":\"" + new cOtros().decimalFormato(objVentaCreditoLetra.getMonto(), 2) + "\""
+                + ",\"interes\":\"" + new cOtros().decimalFormato(objVentaCreditoLetra.getInteres(), 2) + "\""
+                + ",\"totalPago\":\"" + new cOtros().decimalFormato(objVentaCreditoLetra.getTotalPago(), 2) + "\""
+                + ",\"fechaPago\":\"" + new cManejoFechas().DateAString(objVentaCreditoLetra.getFechaPago()) + "\""
                 //                + ",\"saldo\":\"" + objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(objVentaCreditoLetra.getMonto() - objVentaCreditoLetra.getTotalPago(), 2), 2) + "\""
-                + ",\"saldo\":\"" + objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(saldo, 2), 2) + "\""
+                + ",\"saldo\":\"" + new cOtros().decimalFormato(saldo, 2) + "\""
                 + ",\"diasRetraso\":\"" + dias + "\""
                 + ",\"estilo\":\"" + estilo + "\""
                 //datos de venta
@@ -79,12 +79,10 @@
     }
     Object tem[] = objcVentaCreditoLetra.leer_resumen(codPersona);
     out.print("{"
-            + "\"mTotal\":\"" + objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales((Double) (tem[0] == null ? 0.00 : tem[0]), 2), 2) + "\""
-            + ",\"mAmortizado\":\"" + objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales((Double) (tem[1] == null ? 0.00 : tem[1]), 2), 2) + "\""
-            + ",\"mSaldo\":\"" + objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales((Double) (tem[2] == null ? 0.00 : tem[2]), 2), 2) + "\""
+            + "\"mTotal\":\"" + new cOtros().decimalFormato((Double) (tem[0] == null ? 0.00 : tem[0]), 2) + "\""
+            + ",\"mAmortizado\":\"" + new cOtros().decimalFormato((Double) (tem[1] == null ? 0.00 : tem[1]), 2) + "\""
+            + ",\"mSaldo\":\"" + new cOtros().decimalFormato((Double) (tem[2] == null ? 0.00 : tem[2]), 2) + "\""
             + "}");
-
-
 
     out.println("]");
 %>

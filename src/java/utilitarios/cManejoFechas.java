@@ -94,6 +94,11 @@ public class cManejoFechas {
         return (int) ((new Date().getTime() - fecha.getTime()) / MILLSECS_PER_DAY);
     }
 
+    public int diferenciaDosDias(Date fechaActual, Date fechaVencimiento) {
+        final long MILLSECS_PER_DAY = 24 * 60 * 60 * 1000; //Milisegundos al día
+        return (int) ((fechaActual.getTime() - fechaVencimiento.getTime()) / MILLSECS_PER_DAY);
+    }
+
     public String fechaHoraFormatoDeRegistro(String fechaHora) {
         return fechaHora.substring(1, 5) + "/" + fechaHora.substring(5, 7) + "/"
                 + fechaHora.substring(7, 9) + " " + fechaHora.substring(9, 11) + ":"
@@ -179,5 +184,23 @@ public class cManejoFechas {
 
     public int anio(Date fecha) {
         return fecha.getYear() + 1900;
+    }
+
+    public String anioCorto(Date fecha) {
+        String anio = "";
+        try {
+            SimpleDateFormat formato = new SimpleDateFormat("yy");  //tipo de formato de salida
+            anio = formato.format(fecha);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return anio;
+    }
+    
+    public String fechaFormato(String fecha) {
+        return fecha.substring(1, 5) + "/" + fecha.substring(5, 7) + "/"
+                + fecha.substring(7, 9) + " " + fecha.substring(9, 11) + ":"
+                + fecha.substring(11, 13) + ":" + fecha.substring(13, 15);
+//        return fecha;
     }
 }

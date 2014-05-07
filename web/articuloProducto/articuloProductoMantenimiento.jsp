@@ -92,11 +92,12 @@
                                         <td colspan="3" id="lDescripcion" class="vaciar"></td>
                                     </tr>
                                     <tr>
-                                        <th>STOCK <button id="bStock" class="sexybutton sexyicononly sexysimple sexysmall sexypropio disabled" disabled=""><span class="info"></span></button></th>
+                                        <th class="medio">
+                                            STOCK <button id="bStock" class="boton iconoSoloPequenio info disabled" disabled="">&nbsp;</button>
+                                        </th>
                                         <td id="lStock" class="vaciar"></td>
-                                        <th>
-                                            PRECIO VENTA
-                                            <button id="bPrecioVentaModificar" class="sexybutton sexyicononly sexysimple sexysmall sexypropio disabled" disabled=""><span class="edit"></span></button>
+                                        <th class="medio">
+                                            PRECIO VENTA <button id="bPrecioVentaModificar" class="boton iconoSoloPequenio edit" disabled="">&nbsp;</button>
                                         </th>
                                         <td id="lPrecioVenta" class="vaciar"></td>
                                     </tr>
@@ -231,11 +232,8 @@
             </div>
             <div id="left">
                 <div class="acceso">
-                    <h3 class="titulo">
-                        <button class="sexybutton" id="bAccesoAbrir"><span><span><img src="../librerias/botonesIconos/images/icons/silk/key_go.png">Ejecutar SICCI</span></span></button>
-                        INICIE SESIÓN
-                    </h3>                    
-
+                    <h3 class="titulo">INICIE SESIÓN</h3>                    
+                    <a id="bAccesoAbrir" class="boton botonNormal key">Ejecutar SICCI</a>
                 </div>
                 <div id="menu" class="ocultar">
                     <%@include file="../principal/menu.jsp" %>

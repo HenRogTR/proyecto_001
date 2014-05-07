@@ -4,6 +4,7 @@
     Author     : Henrri
 --%>
 
+<%@page import="utilitarios.cOtros"%>
 <%@page import="tablas.Marca"%>
 <%@page import="articuloProductoClases.cMarca"%>
 <%@page import="personaClases.cZona"%>
@@ -12,7 +13,6 @@
 <%@page import="tablas.Zona"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.List"%>
-<%@page import="otros.cUtilitarios"%>
 <%@page import="tablas.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -47,7 +47,7 @@
         </style>
         <script type="text/javascript" src="../lib/modal/js/jquery.simplemodal.js"></script>
         <!--css iconos-->
-        <link rel="stylesheet" type="text/css" href="../lib/botones/sexybuttons.css">
+        <link rel="stylesheet" type="text/css" href="../librerias/botonesIconos/sexybuttons.css" media="screen">
         <!--css y js inicio menu-->
         <style>
             .ui-menu { 
@@ -81,7 +81,7 @@
 
             <div id="right">
                 <%
-                    cUtilitarios objcUtilitarios = new cUtilitarios();
+//                    cUtilitarios objcUtilitarios = new cUtilitarios();
 
                     Marca objMarca = new Marca();
                     String accion = (String) session.getAttribute("accionMarca");
@@ -89,7 +89,7 @@
                         response.sendRedirect("../articuloProducto/marcaListar.jsp");
                     } else {
                         String codigo = "Autogenerado";
-                        String accion2 = objcUtilitarios.accion2(accion);
+                        String accion2 = new cOtros().accion2(accion);
                         if (accion.equals("a")) {
                             int codMarca = (Integer) session.getAttribute("codMarca");
                             codigo = String.valueOf(codMarca);

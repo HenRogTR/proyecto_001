@@ -8,9 +8,9 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import otros.cUtilitarios;
 import tablas.CobranzaDetalle;
 import tablas.HibernateUtil;
+import utilitarios.cOtros;
 
 /**
  *
@@ -34,7 +34,6 @@ public class cCobranzaDetalle {
         this.error = null;
     }
 
-    //**************************************************************************
     public boolean crear(CobranzaDetalle objCobranzaDetalle) {
         boolean est = false;
         Transaction trns = null;
@@ -97,14 +96,13 @@ public class cCobranzaDetalle {
 
     public boolean actualizar_registro(int codCobranzaDetalle, String estado, String user) {
         boolean est = false;
-        cUtilitarios objUtilitarios = new cUtilitarios();
         Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
             trns = sesion.beginTransaction();
             sesion.getTransaction().begin();
             CobranzaDetalle obj = (CobranzaDetalle) sesion.get(CobranzaDetalle.class, codCobranzaDetalle);
-            obj.setRegistro(objUtilitarios.registro(estado, user));
+            obj.setRegistro(new cOtros().registro(estado, user));
             sesion.update(obj);
             sesion.getTransaction().commit();
             est = true;
@@ -119,5 +117,5 @@ public class cCobranzaDetalle {
         }
         return est;
     }
-    //**************************************************************************
+
 }

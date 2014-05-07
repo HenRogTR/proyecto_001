@@ -31,7 +31,7 @@
         <!--css frm-->
         <link rel="stylesheet" type="text/css" href="../lib/propios/css/tablas/tablas-reportes.css" media="screen"/>
         <!--css iconos-->
-        <link rel="stylesheet" type="text/css" href="../lib/botones/sexybuttons.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="../librerias/botonesIconos/sexybuttons.css" media="screen">
         <!--propio-->
         <script type="text/javascript" src="../lib/jquerynumeric/jquery.numeric.js"></script>
         <script type="text/javascript" src="../lib/persona/proveedor/proveedorRegistrar.js"></script>

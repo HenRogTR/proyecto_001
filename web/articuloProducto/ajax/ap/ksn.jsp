@@ -45,8 +45,8 @@
             <td class="derecha"><span><%=cant%></span></td>
             <td><span><%=objKSN.getSerieNumero()%></span></td>
             <td><span><%=objKSN.getObservacion()%></span></td>
-            <td>
-                <a class="sexybutton" href="articuloProductoStockEditar.jsp?codKardexSerieNumero=<%=objKSN.getCodKardexSerieNumero()%>" target="_blank"><span><span><span class="edit"></span></span></span></a>
+            <td>                
+                <a href="articuloProductoStockEditar.jsp?codKardexSerieNumero=<%=objKSN.getCodKardexSerieNumero()%>" class="boton iconoSoloPequenio edit" target="_blank">&nbsp;</a><br><br>
             </td>
         </tr>
         <%

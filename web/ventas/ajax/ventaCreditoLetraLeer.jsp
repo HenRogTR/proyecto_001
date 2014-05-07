@@ -22,7 +22,7 @@
 <tr>
     <td style="width: 33%;"><%=objVentaCreditoLetra.getDetalleLetra()%></td>
     <td style="width: 34%; padding-left: 20px;"><%=new cManejoFechas().DateAString(objVentaCreditoLetra.getFechaVencimiento())%></td>    
-    <td class="derecha" style="padding-right: 20px;"><%=new cOtros().agregarCerosNumeroFormato(objVentaCreditoLetra.getMonto(), 2)%></td>
+    <td class="derecha" style="padding-right: 20px;"><%=new cOtros().decimalFormato(objVentaCreditoLetra.getMonto(), 2)%></td>
 </tr>
 <%
             }

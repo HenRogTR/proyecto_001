@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 10/04/2014 10:20:21 AM by Hibernate Tools 3.6.0 -->
+<!-- Generated 29/04/2014 10:30:26 AM by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
     <class name="tablas.EmpresaConvenio" table="empresa_convenio" catalog="proyecto_001">
         <id name="codEmpresaConvenio" type="java.lang.Integer">
@@ -16,6 +16,12 @@
         </property>
         <property name="codCobranza" type="string">
             <column name="cod_cobranza" length="10" not-null="true" />
+        </property>
+        <property name="interesAsigando" type="boolean">
+            <column name="interes_asigando" not-null="true" />
+        </property>
+        <property name="interesAutomatico" type="boolean">
+            <column name="interes_automatico" not-null="true" />
         </property>
         <property name="registro" type="string">
             <column name="registro" length="65535" not-null="true" />

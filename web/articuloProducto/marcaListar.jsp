@@ -25,7 +25,7 @@
         <!--css frm-->
         <link rel="stylesheet" type="text/css" href="../lib/propios/css/formulario/detalles.css" />        
         <!--css iconos-->
-        <link rel="stylesheet" type="text/css" href="../lib/botones/sexybuttons.css">
+        <link rel="stylesheet" type="text/css" href="../librerias/botonesIconos/sexybuttons.css" media="screen">
     </head>
     <body>
         <%

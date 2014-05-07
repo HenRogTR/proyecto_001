@@ -112,6 +112,24 @@ public class sEmpresaConvenio extends HttpServlet {
                     out.print("Error en parametros");
                 }
             }
+            if (accion.equals("interesAsigando")) {
+                try {
+                    int codEmpresaConvenio = Integer.parseInt(request.getParameter("codEmpresaConvenio"));
+                    boolean interesAsigando = Boolean.parseBoolean(request.getParameter("interesAsigando"));
+                    out.print((new cEmpresaConvenio().actualizar_interesAsigando(codEmpresaConvenio, interesAsigando)) ? codEmpresaConvenio : "Error al actualziar.");
+                } catch (Exception e) {
+                    out.print("Error en parámetros.");
+                }
+            }
+            if (accion.equals("interesAutomatico")) {
+                try {
+                    int codEmpresaConvenio = Integer.parseInt(request.getParameter("codEmpresaConvenio"));
+                    boolean interesAutomatico = Boolean.parseBoolean(request.getParameter("interesAutomatico"));
+                    out.print((new cEmpresaConvenio().actualizar_interesAutomatico(codEmpresaConvenio, interesAutomatico)) ? codEmpresaConvenio : "Error al actualziar.");
+                } catch (Exception e) {
+                    out.print("Error en parámetros.");
+                }
+            }
         }
     }
 

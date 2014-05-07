@@ -9,9 +9,9 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Transaction;
 import org.hibernate.Session;
-import otros.cUtilitarios;
 import tablas.HibernateUtil;
 import tablas.OtrosCC;
+import utilitarios.cOtros;
 
 /**
  *
@@ -32,6 +32,7 @@ public class cOtrosCC {
 
     public cOtrosCC() {
         this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
+        this.error = null;
     }
 
     public int crear(OtrosCC objOtrosCC) {
@@ -98,12 +99,10 @@ public class cOtrosCC {
     }
 
     public boolean actualizar_registro(int codOtrosCC, String estado, String user) {
-        cUtilitarios objUtilitarios = new cUtilitarios();
-        setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
         sesion.getTransaction().begin();
         OtrosCC obj = (OtrosCC) sesion.get(OtrosCC.class, codOtrosCC);
-        obj.setRegistro(objUtilitarios.registro(estado, user));
+        obj.setRegistro(new cOtros().registro(estado, user));
         try {
             sesion.update(obj);
             sesion.getTransaction().commit();

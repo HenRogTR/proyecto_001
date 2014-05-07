@@ -12,10 +12,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import otros.cUtilitarios;
 import personaClases.cProveedor;
 import tablas.Proveedor;
 import tablas.Usuario;
+import utilitarios.cOtros;
 
 /**
  *
@@ -45,7 +45,6 @@ public class sProveedor extends HttpServlet {
 
         Usuario objUsuario = (Usuario) session.getAttribute("usuario");
         cProveedor objcProveedor = new cProveedor();
-        cUtilitarios objcUtilitarios = new cUtilitarios();
         Proveedor objProveedor = new Proveedor();
 
         Integer codProveedor;
@@ -77,7 +76,7 @@ public class sProveedor extends HttpServlet {
                 paginaWeb = request.getParameter("paginaWeb");
                 observaciones = request.getParameter("observaciones");
                 logo = request.getParameter("logo");
-                registro = objcUtilitarios.registro("1", objUsuario.getCodUsuario().toString());
+                registro = new cOtros().registro("1", objUsuario.getCodUsuario().toString());
 
                 objProveedor = new Proveedor();
                 objProveedor.setRuc(ruc);
@@ -118,7 +117,7 @@ public class sProveedor extends HttpServlet {
                 objProveedor.setPaginaWeb(request.getParameter("paginaWeb") != null ? (!request.getParameter("paginaWeb").equals("") ? request.getParameter("paginaWeb") : "Sin datos") : "Sin datos");
                 objProveedor.setObservaciones(request.getParameter("observvaciones") != null ? request.getParameter("Observaciones") : "Sin datos");
                 objProveedor.setLogo(request.getParameter("logo") != null ? request.getParameter("logo") : "");
-                objProveedor.setRegistro(objcUtilitarios.registro("1", objUsuario.getCodUsuario().toString()));
+                objProveedor.setRegistro(new cOtros().registro("1", objUsuario.getCodUsuario().toString()));
                 out.print("implementando");
             }
             //eliminar proveedor
@@ -164,7 +163,7 @@ public class sProveedor extends HttpServlet {
                     objProveedor.setPaginaWeb(request.getParameter("paginaWeb") != null ? (!request.getParameter("paginaWeb").equals("") ? request.getParameter("paginaWeb") : "Sin datos") : "Sin datos");
                     objProveedor.setObservaciones(request.getParameter("observvaciones") != null ? request.getParameter("Observaciones") : "Sin datos");
                     objProveedor.setLogo(request.getParameter("logo") != null ? request.getParameter("logo") : "Sin datos");
-                    objProveedor.setRegistro(objcUtilitarios.registro("1", objUsuario.getCodUsuario().toString()));
+                    objProveedor.setRegistro(new cOtros().registro("1", objUsuario.getCodUsuario().toString()));
                     if (objcProveedor.Crear(objProveedor) != 0) {
                         objcProveedor.actualizar_registro(Integer.parseInt(request.getParameter("codProveedor")), "0", objUsuario.getCodUsuario().toString());
                         session.removeAttribute("accionProveedor");

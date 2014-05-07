@@ -492,11 +492,11 @@
                             <td class="derecha"><div style="padding-right: 5px;"><%=new cOtros().decimalFormato(monto, 2)%></div></td>
                             <td class="derecha"><div style="padding-right: 5px;"><%=new cOtros().decimalFormato(interes, 2)%></div></td>
                             <td class="derecha"><div style="padding-right: 5px;"><%=new cOtros().decimalFormato(totalPago, 2)%></div></td>
-                            <td class="derecha"><div style="padding-right: 5px;"><%=new cOtros().decimalFormato((monto - totalPago), 2)%></div></td>
+                            <td class="derecha"><div style="padding-right: 5px;"><%=new cOtros().decimalFormato((monto - totalPago + interes), 2)%></div></td>
                             <td><%=new cManejoFechas().DateAString(fechaPago)%></td>
                         </tr>
                         <%
-                                totalDeudaAux += monto - totalPago;
+                                totalDeudaAux += monto - totalPago + interes;
                             }
                         %>
                         <tr class="bottom2">

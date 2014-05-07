@@ -9,9 +9,9 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Transaction;
 import org.hibernate.Session;
-import otros.cUtilitarios;
 import tablas.HibernateUtil;
 import tablas.VentaCredito;
+import utilitarios.cOtros;
 
 /**
  *
@@ -32,6 +32,7 @@ public class cVentaCredito {
 
     public cVentaCredito() {
         this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
+        this.error = null;
     }
 
     public int Crear(VentaCredito objVentaCredito) {
@@ -107,7 +108,7 @@ public class cVentaCredito {
         }
         return objVC;
     }
-    
+
     /**
      * Retorna los detalles de una venta aun estando eliminada ademas la
      * conexion se cierra.
@@ -148,12 +149,10 @@ public class cVentaCredito {
     }
 
     public boolean actualizar_registro(int codVentaCredito, String estado, String user) {
-        cUtilitarios objUtilitarios = new cUtilitarios();
-        setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
         sesion.getTransaction().begin();
         VentaCredito obj = (VentaCredito) sesion.get(VentaCredito.class, codVentaCredito);
-        obj.setRegistro(objUtilitarios.registro(estado, user));
+        obj.setRegistro(new cOtros().registro(estado, user));
         try {
             sesion.update(obj);
             sesion.getTransaction().commit();

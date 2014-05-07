@@ -74,3 +74,19 @@ function fTrim(str) {
     str = str.toString();
     return str.replace(/^\s+|\s+$/g, "");
 }
+
+function f_validar_menorIgual(valor, marca) {
+    if (!$.isNumeric(valor)) {
+        return false;
+    }
+    return valor <= marca;
+}
+;
+
+function f_validarPositivo(valor) {
+    if (!$.isNumeric(valor)) {
+        return false;
+    }
+    return valor >= 0;
+}
+;

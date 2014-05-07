@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 10/04/2014 10:20:21 AM by Hibernate Tools 3.6.0 -->
+<!-- Generated 29/04/2014 10:30:26 AM by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
     <class name="tablas.Almacen" table="almacen" catalog="proyecto_001">
         <id name="codAlmacen" type="java.lang.Integer">

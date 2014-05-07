@@ -74,6 +74,13 @@ $(document).ready(function() {
 $(function() {
 
     $("#ulMenu").menu();
+    
+    $('.fecha_datepicker').datepicker({
+        showAnim: 'drop',
+        changeMonth: true,
+        changeYear: true,
+        numberOfMonths: 2
+    });
 
 //<editor-fold defaultstate="collapsed" desc="dialog's. Clic en el signo + de la izquierda para mas detalles.">
     $('#dEquipoTrabajo').dialog({

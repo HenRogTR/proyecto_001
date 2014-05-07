@@ -4,9 +4,9 @@
     Author     : Henrri
 --%>
 
+<%@page import="utilitarios.cOtros"%>
 <%@page import="tablas.VentasDetalle"%>
 <%@page import="java.util.Iterator"%>
-<%@page import="otros.cUtilitarios"%>
 <%@page import="ventaClases.cVentasDetalle"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
@@ -31,7 +31,6 @@
         out.print("[]");
         return;
     }
-    cUtilitarios objcUtilitarios = new cUtilitarios();
     int cont = 0;
     Iterator iVentasDetalle = lVentasDetalle.iterator();
     out.print("[");
@@ -42,12 +41,12 @@
         }
         out.print("{"
                 + "\"item\":" + objVentasDetalle.getItem()
-                + ",\"codArticuloProducto\":\"" + objcUtilitarios.agregarCeros_int(objVentasDetalle.getArticuloProducto().getCodArticuloProducto(), 8) + "\""
+                + ",\"codArticuloProducto\":\"" + new cOtros().agregarCeros_int(objVentasDetalle.getArticuloProducto().getCodArticuloProducto(), 8) + "\""
                 + ",\"cantidad\":" + objVentasDetalle.getCantidad()
                 + ",\"unidadMedida\":\"" + objVentasDetalle.getArticuloProducto().getUnidadMedida() + "\""
-                + ",\"descripcion\":\"" + objcUtilitarios.replace_comillas_comillasD_barraInvertida(objVentasDetalle.getDescripcion()) + "\""
-                + ",\"precioVenta\":\"" + objcUtilitarios.agregarCerosNumeroFormato(objVentasDetalle.getPrecioVenta(), 2) + "\""
-                + ",\"valorVenta\":\"" + objcUtilitarios.agregarCerosNumeroFormato(objVentasDetalle.getValorVenta(), 2) + "\""
+                + ",\"descripcion\":\"" + new cOtros().replace_comillas_comillasD_barraInvertida(objVentasDetalle.getDescripcion()) + "\""
+                + ",\"precioVenta\":\"" + new cOtros().decimalFormato(objVentasDetalle.getPrecioVenta(), 2) + "\""
+                + ",\"valorVenta\":\"" + new cOtros().decimalFormato(objVentasDetalle.getValorVenta(), 2) + "\""
                 + "}");
     }
     out.print("]");

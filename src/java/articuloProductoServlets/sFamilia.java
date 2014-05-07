@@ -13,9 +13,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import otros.cUtilitarios;
 import tablas.Familia;
 import tablas.Usuario;
+import utilitarios.cOtros;
 
 /**
  *
@@ -43,7 +43,7 @@ public class sFamilia extends HttpServlet {
         Usuario objUsuario = (Usuario) session.getAttribute("usuario");
 
         cFamilia objcFamilia = new cFamilia();
-        cUtilitarios objcUtilitarios = new cUtilitarios();
+        cOtros objcOtros = new cOtros();
         if (accion == null) {
             session.removeAttribute("codFamiliaMantenimiento");
             response.sendRedirect("articuloProducto/familiaMantenimiento.jsp");
@@ -53,7 +53,7 @@ public class sFamilia extends HttpServlet {
                     Familia objFamilia = new Familia();
                     objFamilia.setFamilia(request.getParameter("familia"));
                     objFamilia.setObservacion(request.getParameter("observacion"));
-                    objFamilia.setRegistro(objcUtilitarios.registro("1", objUsuario.getCodUsuario().toString()));
+                    objFamilia.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
                     int codFamilia = objcFamilia.Crear(objFamilia);
                     if (codFamilia != 0) {
                         out.print(codFamilia);
@@ -75,7 +75,7 @@ public class sFamilia extends HttpServlet {
                     objFamilia.setCodFamilia(Integer.parseInt(request.getParameter("codFamilia")));
                     objFamilia.setFamilia(request.getParameter("familia"));
                     objFamilia.setObservacion(request.getParameter("observacion"));
-                    objFamilia.setRegistro(objcUtilitarios.registro("1", objUsuario.getCodUsuario().toString()));
+                    objFamilia.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
                     if (objcFamilia.actualizar(objFamilia)) {
                         out.print(objFamilia.getCodFamilia());
                     } else {

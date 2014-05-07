@@ -13,9 +13,9 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import otros.cUtilitarios;
 import tablas.Compra;
 import tablas.HibernateUtil;
+import utilitarios.cOtros;
 
 public class cCompra {
 
@@ -275,12 +275,10 @@ public class cCompra {
     }
 
     public boolean actualizar_est(int codCompra, String estado, String user) {
-        cUtilitarios objUtilitarios = new cUtilitarios();
-        setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
         sesion.getTransaction().begin();
         Compra objCompra = (Compra) sesion.get(Compra.class, codCompra);
-        objCompra.setRegistro(objUtilitarios.registro(estado, user));
+        objCompra.setRegistro(new cOtros().registro(estado, user));
         try {
             sesion.update(objCompra);
             sesion.getTransaction().commit();

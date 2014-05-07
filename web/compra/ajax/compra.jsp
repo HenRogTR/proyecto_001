@@ -4,7 +4,8 @@
     Author     : henrri
 --%>
 
-<%@page import="otros.cUtilitarios"%>
+<%@page import="utilitarios.cManejoFechas"%>
+<%@page import="utilitarios.cOtros"%>
 <%@page import="compraClases.cCompra"%>
 <%@page import="tablas.Compra"%>
 <%
@@ -19,7 +20,6 @@
     };
     Compra objCompra = new Compra();
     cCompra objcCompra = new cCompra();
-    cUtilitarios objcUtilitarios = new cUtilitarios();
     switch (codCompra) {
         case -1://primero
             objCompra = objcCompra.leer_primero();
@@ -53,24 +53,24 @@
     out.print("[");
     if (objCompra != null) {
         out.print("{"
-                + "\"codCompra\":\"" + objcUtilitarios.agregarCeros_int(objCompra.getCodCompra(), 8) + "\""
+                + "\"codCompra\":\"" + new cOtros().agregarCeros_int(objCompra.getCodCompra(), 8) + "\""
                 + ",\"tipo\" : \"" + objCompra.getTipo() + "\""
                 + ",\"item\" : " + objCompra.getItemCantidad()
                 + ",\"docSerieNumero\" : \"" + objCompra.getDocSerieNumero() + "\""
-                + ",\"fechaFactura\" : \"" + objcUtilitarios.fechaDateToString(objCompra.getFechaFactura()) + "\""
-                + ",\"fechaVencimiento\" : \"" + objcUtilitarios.fechaDateToString(objCompra.getFechaVencimiento()) + "\""
-                + ",\"fechaLlegada\" : \"" + objcUtilitarios.fechaDateToString(objCompra.getFechaLlegada()) + "\""
-                + ",\"subTotal\" : \"" + objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(objCompra.getSubTotal(), 2), 2) + "\""
-                + ",\"total\" : \"" + objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(objCompra.getTotal(), 2), 2) + "\""
-                + ",\"montoIgv\" : \"" + objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(objCompra.getMontoIgv(), 2), 2) + "\""
-                + ",\"neto\" : \"" + objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(objCompra.getNeto(), 2), 2) + "\""
+                + ",\"fechaFactura\" : \"" + new cManejoFechas().DateAString(objCompra.getFechaFactura()) + "\""
+                + ",\"fechaVencimiento\" : \"" + new cManejoFechas().DateAString(objCompra.getFechaVencimiento()) + "\""
+                + ",\"fechaLlegada\" : \"" + new cManejoFechas().DateAString(objCompra.getFechaLlegada()) + "\""
+                + ",\"subTotal\" : \"" + new cOtros().decimalFormato(objCompra.getSubTotal(), 2) + "\""
+                + ",\"total\" : \"" + new cOtros().decimalFormato(objCompra.getTotal(), 2) + "\""
+                + ",\"montoIgv\" : \"" + new cOtros().decimalFormato(objCompra.getMontoIgv(), 2) + "\""
+                + ",\"neto\" : \"" + new cOtros().decimalFormato(objCompra.getNeto(), 2) + "\""
                 + ",\"son\" : \"" + objCompra.getSon() + "\""
                 + ",\"moneda\" : \"" + objCompra.getMoneda() + "\""
-                + ",\"observacion\" : \"" + objcUtilitarios.replace_comillas_comillasD_barraInvertida(objCompra.getObservacion()) + "\""
+                + ",\"observacion\" : \"" + new cOtros().replace_comillas_comillasD_barraInvertida(objCompra.getObservacion()) + "\""
                 + ",\"codProveedor\" : " + objCompra.getProveedor().getCodProveedor()
                 + ",\"ruc\" : \"" + objCompra.getProveedor().getRuc() + "\""
-                + ",\"razonSocial\" : \"" + objcUtilitarios.replace_comillas_comillasD_barraInvertida(objCompra.getProveedor().getRazonSocial()) + "\""
-                + ",\"direccion\" : \"" + objcUtilitarios.replace_comillas_comillasD_barraInvertida(objCompra.getProveedor().getDireccion()) + "\""
+                + ",\"razonSocial\" : \"" + new cOtros().replace_comillas_comillasD_barraInvertida(objCompra.getProveedor().getRazonSocial()) + "\""
+                + ",\"direccion\" : \"" + new cOtros().replace_comillas_comillasD_barraInvertida(objCompra.getProveedor().getDireccion()) + "\""
                 + "}");
     }
     out.print("]");

@@ -4,11 +4,12 @@
     Author     : Henrri
 --%>
 
-<%@page import="otros.cManejoFechas"%>
-<%@page import="otros.cNumeroLetra"%>
+
+<%@page import="utilitarios.cManejoFechas"%>
+<%@page import="utilitarios.cNumeroLetra"%>
+<%@page import="utilitarios.cOtros"%>
 <%@page import="tablas.VentaCreditoLetra"%>
 <%@page import="tablas.VentaCredito"%>
-<%@page import="otros.cUtilitarios"%>
 <%@page import="tablas.VentasDetalle"%>
 <%@page import="tablas.VentasSerieNumero"%>
 <%@page import="ventaClases.cVenta"%>
@@ -38,7 +39,7 @@
         <title>Contrato CompraVenta</title>
         <link rel="stylesheet" type="text/css" href="contratoCompraVenta.css" media="print"/>
         <link rel="stylesheet" type="text/css" href="contratoCompraVenta.css" media="screen"/>
-        <script type="text/javascript" src="../../lib/jquery/jquery-1.8.1.min.js"></script>
+        <script type="text/javascript" src="../../librerias/jquery/jquery-1.8.1.min.js"></script>
     </head>
     <body>
         <script>
@@ -126,13 +127,13 @@
                                 del comprador los productos antes señalados.
                                 <br><br><b>TERCERO:</b><br>
                                 El Comprador se compromete a cancelar el precio pactado por el total de 
-                                <b>S/. <%=new cUtilitarios().agregarCerosNumeroFormato(objVentas.getNeto(), 2)%> <%=objVentas.getSon()%></b><br>
+                                <b>S/. <%=new cOtros().decimalFormato(objVentas.getNeto(), 2)%> <%=objVentas.getSon()%></b><br>
                                 <%
                                     if (objVentas.getTipo().equals("CREDITO")) {
                                         VentaCredito objVentaCredito = objVentas.getVentaCreditos().iterator().next();
                                 %>
-                                <br>En <b><%=objVentaCredito.getCantidadLetras()%></b> cuota(s) mensuales por el valor de <b>S/. <%=new cUtilitarios().agregarCerosNumeroFormato(objVentaCredito.getMontoLetra(), 2)%></b> mensual(es) con 
-                                INICIAL de <b>S/. <%=new cUtilitarios().agregarCerosNumeroFormato(objVentaCredito.getMontoInicial(), 2)%></b>.
+                                <br>En <b><%=objVentaCredito.getCantidadLetras()%></b> cuota(s) mensuales por el valor de <b>S/. <%=new cOtros().decimalFormato(objVentaCredito.getMontoLetra(), 2)%></b> mensual(es) con 
+                                INICIAL de <b>S/. <%=new cOtros().decimalFormato(objVentaCredito.getMontoInicial(), 2)%></b>.
 
                                 <br><br><b>CUARTO:</b> De las responsabilidades.-<br> 
                                 <b>“EL (LOS) COMPRADOR (ES)”</b> y/o <b>“EL (LOS) FIADORES)”,</b> 
@@ -176,16 +177,16 @@
 
                                 <br><br><b>SEPTIMO.-</b><br>
                                 En señal de conformidad de todas las cláusulas del presente contrato, firman ambos contratantes
-                                en la ciudad de Pucallpa a los  <b><%=new cNumeroLetra().numeroALetra(new cUtilitarios().dia(objVentas.getFecha()), true)%></b> 
-                                dias del mes de <b><%=new cUtilitarios().mesNombre(objVentas.getFecha()).toUpperCase()%></b> del <b><%=new cNumeroLetra().numeroALetra(String.valueOf(new cUtilitarios().anio(objVentas.getFecha())), true)%></b>.
+                                en la ciudad de Pucallpa a los  <b><%=new cNumeroLetra().numeroALetra(new cManejoFechas().dia(objVentas.getFecha()), true)%></b> 
+                                dias del mes de <b><%=new cManejoFechas().mesNombre(objVentas.getFecha()).toUpperCase()%></b> del <b><%=new cNumeroLetra().numeroALetra(String.valueOf(new cManejoFechas().anio(objVentas.getFecha())), true)%></b>.
 
                                 <%
                                 } else {
                                 %>
                                 <br><br><b>CUARTO:</b><br>
                                 En señal de conformidad de todas las cláusulas del presente contrato, firman ambos contratantes
-                                en la ciudad de Pucallpa a los  <b><%=new cNumeroLetra().numeroALetra(new cUtilitarios().dia(objVentas.getFecha()), true)%></b> 
-                                dias del mes de <b><%=new cUtilitarios().mesNombre(objVentas.getFecha()).toUpperCase()%></b> del <b><%=new cNumeroLetra().numeroALetra(String.valueOf(new cUtilitarios().anio(objVentas.getFecha())), true)%></b>.
+                                en la ciudad de Pucallpa a los  <b><%=new cNumeroLetra().numeroALetra(new cManejoFechas().dia(objVentas.getFecha()), true)%></b> 
+                                dias del mes de <b><%=new cManejoFechas().mesNombre(objVentas.getFecha()).toUpperCase()%></b> del <b><%=new cNumeroLetra().numeroALetra(String.valueOf(new cManejoFechas().anio(objVentas.getFecha())), true)%></b>.
 
                                 <%                                            }
                                 %>

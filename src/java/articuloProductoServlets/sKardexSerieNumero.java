@@ -13,10 +13,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import otros.cUtilitarios;
 import tablas.KardexArticuloProducto;
 import tablas.KardexSerieNumero;
 import tablas.Usuario;
+import utilitarios.cOtros;
 
 /**
  *
@@ -26,9 +26,8 @@ import tablas.Usuario;
 public class sKardexSerieNumero extends HttpServlet {
 
     /**
-     * Processes requests for both HTTP
-     * <code>GET</code> and
-     * <code>POST</code> methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
      *
      * @param request servlet request
      * @param response servlet response
@@ -55,11 +54,11 @@ public class sKardexSerieNumero extends HttpServlet {
             objKardexSerieNumero.setKardexArticuloProducto(objKardexArticuloProducto);
             objKardexSerieNumero.setSerieNumero(request.getParameter("serieNumero"));
             objKardexSerieNumero.setObservacion(request.getParameter("observacion"));
-            objKardexSerieNumero.setRegistro(new cUtilitarios().registro("1", objUsuario.getCodUsuario().toString()));
+            objKardexSerieNumero.setRegistro(new cOtros().registro("1", objUsuario.getCodUsuario().toString()));
 
             if (new cKardexSerieNumero().actualizar(objKardexSerieNumero)) {
-                response.sendRedirect("articuloProducto/articuloProductoStock.jsp?codArticuloProducto="+codArticuloProducto);
-            }else{
+                response.sendRedirect("articuloProducto/articuloProductoStock.jsp?codArticuloProducto=" + codArticuloProducto);
+            } else {
                 out.print("error");
             }
         }
@@ -68,8 +67,7 @@ public class sKardexSerieNumero extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP
-     * <code>GET</code> method.
+     * Handles the HTTP <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -83,8 +81,7 @@ public class sKardexSerieNumero extends HttpServlet {
     }
 
     /**
-     * Handles the HTTP
-     * <code>POST</code> method.
+     * Handles the HTTP <code>POST</code> method.
      *
      * @param request servlet request
      * @param response servlet response

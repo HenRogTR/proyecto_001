@@ -8,9 +8,9 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import otros.cUtilitarios;
 import tablas.HibernateUtil;
 import tablas.PrecioVenta;
+import utilitarios.cOtros;
 
 /**
  *
@@ -107,11 +107,11 @@ public class cPrecioVenta {
     }
 
     public boolean actualizar_registro(int codPrecioVenta, String estado, String user) {
-        cUtilitarios objUtilitarios = new cUtilitarios();
+        cOtros objcOtros = new cOtros();
         sesion = HibernateUtil.getSessionFactory().openSession();
         sesion.getTransaction().begin();
         PrecioVenta obj = (PrecioVenta) sesion.get(PrecioVenta.class, codPrecioVenta);
-        obj.setRegistro(objUtilitarios.registro(estado, user));
+        obj.setRegistro(objcOtros.registro(estado, user));
         try {
             sesion.update(obj);
             sesion.getTransaction().commit();

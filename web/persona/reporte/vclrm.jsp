@@ -5,10 +5,11 @@
 --%>
 
 
+<%@page import="utilitarios.cOtros"%>
+<%@page import="utilitarios.cManejoFechas"%>
 <%@page import="personaClases.cDatosCliente"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.util.Iterator"%>
-<%@page import="otros.cUtilitarios"%>
 <%@page import="personaClases.cPersona"%>
 <%@page import="ventaClases.cVentaCreditoLetra"%>
 <%@page import="tablas.Persona"%>
@@ -21,7 +22,6 @@
         out.print("Error en parámteros");
         return;
     }
-    cUtilitarios objcUtilitarios = new cUtilitarios();
     Persona objPersona = new cPersona().leer_cod(new cDatosCliente().leer_cod(codCliente).getPersona().getCodPersona());
 
 %>
@@ -40,7 +40,7 @@
                 <table class="tabla-imprimir" style="width: 650px;">
                     <thead>
                         <tr class="bottom2">
-                            <th colspan="5"><%=objPersona.getNombresC()%> <label style="float: right;"><%=objcUtilitarios.fechaHoraActual()%></label></th>
+                            <th colspan="5"><%=objPersona.getNombresC()%> <label style="float: right;"><%=new cManejoFechas().fechaHoraActual()%></label></th>
                         </tr>
                         <tr class="bottom2">
                             <th style="width: 120px;" class="centrado">MES/AÑO</th>
@@ -63,21 +63,21 @@
                                 mTotalSaldo += (Double) temRP[5];
                         %>
                         <tr>
-                            <td style="text-align: right;padding-right: 20px;"><%=objcUtilitarios.mesNombreCorto((Date) temRP[6]).toUpperCase() + "-" + temRP[1].toString().substring(2, 4)%></td>
-                            <td style="text-align: right;padding-right: 20px;"><%=objcUtilitarios.agregarCerosNumeroFormato(Double.parseDouble(temRP[2].toString()), 2)%></td>
-                            <td style="text-align: right;padding-right: 20px;"><%=objcUtilitarios.agregarCerosNumeroFormato(Double.parseDouble(temRP[3].toString()), 2)%></td>
-                            <td style="text-align: right;padding-right: 20px;"><%=objcUtilitarios.agregarCerosNumeroFormato(Double.parseDouble(temRP[4].toString()), 2)%></td>
-                            <td style="text-align: right;padding-right: 20px;"><%=objcUtilitarios.agregarCerosNumeroFormato(Double.parseDouble(temRP[5].toString()), 2)%></td>
+                            <td style="text-align: right;padding-right: 20px;"><%=new cManejoFechas().mesNombreCorto((Date) temRP[6]).toUpperCase() + "-" + temRP[1].toString().substring(2, 4)%></td>
+                            <td style="text-align: right;padding-right: 20px;"><%=new cOtros().decimalFormato(Double.parseDouble(temRP[2].toString()), 2)%></td>
+                            <td style="text-align: right;padding-right: 20px;"><%=new cOtros().decimalFormato(Double.parseDouble(temRP[3].toString()), 2)%></td>
+                            <td style="text-align: right;padding-right: 20px;"><%=new cOtros().decimalFormato(Double.parseDouble(temRP[4].toString()), 2)%></td>
+                            <td style="text-align: right;padding-right: 20px;"><%=new cOtros().decimalFormato(Double.parseDouble(temRP[5].toString()), 2)%></td>
                         </tr>
                         <%
                             }
                         %>
                         <tr class="top2 bottom2">
                             <th class="centrado">T. GENERAL</th>
-                            <th style="text-align: right;padding-right: 20px;"><%=objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(mTotalMes, 2), 2)%></th>
-                            <th style="text-align: right;padding-right: 20px;"><%=objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(mTotalInteres, 2), 2)%></th>
-                            <th style="text-align: right;padding-right: 20px;"><%=objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(mTotalPago, 2), 2)%></th>
-                            <th style="text-align: right;padding-right: 20px;"><%=objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(mTotalSaldo, 2), 2)%></th>
+                            <th style="text-align: right;padding-right: 20px;"><%=new cOtros().decimalFormato(mTotalMes,  2)%></th>
+                            <th style="text-align: right;padding-right: 20px;"><%=new cOtros().decimalFormato(mTotalInteres,  2)%></th>
+                            <th style="text-align: right;padding-right: 20px;"><%=new cOtros().decimalFormato(mTotalPago, 2)%></th>
+                            <th style="text-align: right;padding-right: 20px;"><%=new cOtros().decimalFormato(mTotalSaldo,  2)%></th>
                         </tr>
                     </tbody>
                 </table>

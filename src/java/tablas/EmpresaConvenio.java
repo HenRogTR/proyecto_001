@@ -1,5 +1,5 @@
 package tablas;
-// Generated 10/04/2014 10:20:20 AM by Hibernate Tools 3.6.0
+// Generated 29/04/2014 10:30:26 AM by Hibernate Tools 3.6.0
 
 
 import java.util.HashSet;
@@ -15,6 +15,8 @@ public class EmpresaConvenio  implements java.io.Serializable {
      private String nombre;
      private String abreviatura;
      private String codCobranza;
+     private boolean interesAsigando;
+     private boolean interesAutomatico;
      private String registro;
      private Set<DatosCliente> datosClientes = new HashSet<DatosCliente>(0);
      private Set<OtrosCC> otrosCCs = new HashSet<OtrosCC>(0);
@@ -23,15 +25,19 @@ public class EmpresaConvenio  implements java.io.Serializable {
     }
 
 	
-    public EmpresaConvenio(String nombre, String codCobranza, String registro) {
+    public EmpresaConvenio(String nombre, String codCobranza, boolean interesAsigando, boolean interesAutomatico, String registro) {
         this.nombre = nombre;
         this.codCobranza = codCobranza;
+        this.interesAsigando = interesAsigando;
+        this.interesAutomatico = interesAutomatico;
         this.registro = registro;
     }
-    public EmpresaConvenio(String nombre, String abreviatura, String codCobranza, String registro, Set<DatosCliente> datosClientes, Set<OtrosCC> otrosCCs) {
+    public EmpresaConvenio(String nombre, String abreviatura, String codCobranza, boolean interesAsigando, boolean interesAutomatico, String registro, Set<DatosCliente> datosClientes, Set<OtrosCC> otrosCCs) {
        this.nombre = nombre;
        this.abreviatura = abreviatura;
        this.codCobranza = codCobranza;
+       this.interesAsigando = interesAsigando;
+       this.interesAutomatico = interesAutomatico;
        this.registro = registro;
        this.datosClientes = datosClientes;
        this.otrosCCs = otrosCCs;
@@ -64,6 +70,20 @@ public class EmpresaConvenio  implements java.io.Serializable {
     
     public void setCodCobranza(String codCobranza) {
         this.codCobranza = codCobranza;
+    }
+    public boolean isInteresAsigando() {
+        return this.interesAsigando;
+    }
+    
+    public void setInteresAsigando(boolean interesAsigando) {
+        this.interesAsigando = interesAsigando;
+    }
+    public boolean isInteresAutomatico() {
+        return this.interesAutomatico;
+    }
+    
+    public void setInteresAutomatico(boolean interesAutomatico) {
+        this.interesAutomatico = interesAutomatico;
     }
     public String getRegistro() {
         return this.registro;

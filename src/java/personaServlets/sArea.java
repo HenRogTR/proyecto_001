@@ -12,10 +12,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import otros.cUtilitarios;
 import personaClases.cArea;
 import tablas.Area;
 import tablas.Usuario;
+import utilitarios.cOtros;
 
 /**
  *
@@ -25,9 +25,8 @@ import tablas.Usuario;
 public class sArea extends HttpServlet {
 
     /**
-     * Processes requests for both HTTP
-     * <code>GET</code> and
-     * <code>POST</code> methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
      *
      * @param request servlet request
      * @param response servlet response
@@ -42,12 +41,9 @@ public class sArea extends HttpServlet {
         HttpSession session = request.getSession();
         String accion = request.getParameter("accionArea");
 
-//        Area objArea=new Area();
         Usuario objUsuario = (Usuario) session.getAttribute("usuario");
 
         cArea objcArea = new cArea();
-        cUtilitarios objcUtilitarios = new cUtilitarios();
-
 
         int codArea;
         String area;
@@ -79,7 +75,7 @@ public class sArea extends HttpServlet {
                 Area objArea = new Area();
                 objArea.setArea(request.getParameter("area"));
                 objArea.setDetalle(request.getParameter("detalle").equals("") ? "sd" : request.getParameter("detalle"));
-                objArea.setRegistro(objcUtilitarios.registro("1", objUsuario.getCodUsuario().toString()));
+                objArea.setRegistro(new cOtros().registro("1", objUsuario.getCodUsuario().toString()));
                 if (objcArea.Crear(objArea) != 0) {
                     out.print("1");
                 } else {
@@ -91,7 +87,7 @@ public class sArea extends HttpServlet {
                 codArea = Integer.parseInt(request.getParameter("codArea"));
                 area = request.getParameter("area");
                 detalle = request.getParameter("detalle");
-                objArea = new Area(area, detalle, objcUtilitarios.registro("1", objUsuario.getCodUsuario().toString()));
+                objArea = new Area(area, detalle, new cOtros().registro("1", objUsuario.getCodUsuario().toString()));
                 objArea.setCodArea(codArea);
                 if (objcArea.actualizar(objArea)) {
                     session.removeAttribute("codArea");
@@ -104,8 +100,7 @@ public class sArea extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP
-     * <code>GET</code> method.
+     * Handles the HTTP <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -119,8 +114,7 @@ public class sArea extends HttpServlet {
     }
 
     /**
-     * Handles the HTTP
-     * <code>POST</code> method.
+     * Handles the HTTP <code>POST</code> method.
      *
      * @param request servlet request
      * @param response servlet response

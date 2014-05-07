@@ -15,12 +15,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import otros.cUtilitarios;
 import tablas.ArticuloProducto;
 import tablas.Familia;
 import tablas.Marca;
 import tablas.PrecioVenta;
 import tablas.Usuario;
+import utilitarios.cOtros;
 
 /**
  *
@@ -51,7 +51,7 @@ public class sArticuloProducto extends HttpServlet {
             out.print("Estimado usuario, es necesario que se loguee.<a href=\"#\" id=\"aIniciarSesion\"> Clic aqui.</a>");
             return;
         }
-        cUtilitarios objcUtilitarios = new cUtilitarios();
+        cOtros objcOtros = new cOtros();
         cArticuloProducto objcArticuloProducto = new cArticuloProducto();
         cPrecioVenta objcPrecioVenta = new cPrecioVenta();
         int codArticuloProducto = 0;
@@ -84,7 +84,7 @@ public class sArticuloProducto extends HttpServlet {
                 objArticuloProducto.setReintegroTributario(request.getParameter("reintegroTributario").equals("1") ? true : false);  //6
                 objArticuloProducto.setObservaciones(request.getParameter("observacion"));    //7
                 objArticuloProducto.setFoto(request.getParameter("foto"));  //8
-                objArticuloProducto.setRegistro(objcUtilitarios.registro("1", objUsuario.getCodUsuario().toString()));  //9
+                objArticuloProducto.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));  //9
                 codArticuloProducto = objcArticuloProducto.Crear(objArticuloProducto);
                 if (codArticuloProducto != 0) {
                     out.print(codArticuloProducto);
@@ -129,7 +129,7 @@ public class sArticuloProducto extends HttpServlet {
                 objArticuloProductoNuevo.setReintegroTributario(request.getParameter("reintegroTributario").equals("1") ? true : false);  //6
                 objArticuloProductoNuevo.setObservaciones(request.getParameter("observaciones"));    //7
                 objArticuloProductoNuevo.setFoto(request.getParameter("foto"));  //8
-                objArticuloProductoNuevo.setRegistro(objcUtilitarios.registro("1", objUsuario.getCodUsuario().toString()));  //9
+                objArticuloProductoNuevo.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));  //9
 
                 //verificar que no haya el mismo artículo dos veces.
                 Iterator iArticuloProducto = objcArticuloProducto.leer_descripcion(objArticuloProductoNuevo.getDescripcion()).iterator();
@@ -164,9 +164,9 @@ public class sArticuloProducto extends HttpServlet {
                 PrecioVenta objPrecioVenta = new PrecioVenta();
                 objPrecioVenta.setCodCompraDetalle(0);
                 objPrecioVenta.setPrecioVenta(precioVenta);
-                objPrecioVenta.setObservacion("Actualización Manual(" + objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(precioVenta, 2), 2) + ")");
+                objPrecioVenta.setObservacion("Actualización Manual(" + objcOtros.agregarCerosNumeroFormato(objcOtros.redondearDecimales(precioVenta, 2), 2) + ")");
                 objPrecioVenta.setArticuloProducto(objcArticuloProducto.leer_cod(codArticuloProducto));
-                objPrecioVenta.setRegistro(objcUtilitarios.registro("1", objUsuario.getCodUsuario().toString()));
+                objPrecioVenta.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
                 objcPrecioVenta.crear(objPrecioVenta);
                 out.print(codArticuloProducto);
             }

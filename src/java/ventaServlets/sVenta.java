@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import otrasTablasClases.cDatosExtras;
-import otros.cUtilitarios;
 import personaClases.cPersona;
 import tablas.Almacen;
 import tablas.KardexArticuloProducto;
@@ -76,7 +75,7 @@ public class sVenta extends HttpServlet {
         cKardexArticuloProducto objcKardexArticuloProducto = new cKardexArticuloProducto();
         cKardexSerieNumero objcKardexSerieNumero = new cKardexSerieNumero();
         Almacen objAlmacen = new cAlmacen().leer_cod(1);
-        cUtilitarios objcUtilitarios = new cUtilitarios();
+        cOtros objcOtros = new cOtros();
         cVenta objcVenta = new cVenta();
         cVentasDetalle objcVentasDetalle = new cVentasDetalle();
 
@@ -129,7 +128,7 @@ public class sVenta extends HttpServlet {
                         objKardexArticuloProductoNuevo.setPrecioPonderado(objKardexArticuloProductoAlmacen.getPrecioPonderado());
                         objKardexArticuloProductoNuevo.setTotal(objKardexArticuloProductoNuevo.getPrecioPonderado() * objKardexArticuloProductoNuevo.getStock());
                         objKardexArticuloProductoNuevo.setAlmacen(objAlmacen);
-                        objKardexArticuloProductoNuevo.setRegistro(objcUtilitarios.registro("1", objUsuario.getCodUsuario().toString()));
+                        objKardexArticuloProductoNuevo.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
                         int codKardexArticuloProducto = objcKardexArticuloProducto.crear(objKardexArticuloProductoNuevo);
                         //out.print(objKardexArticuloProductoNuevo.getDetalle());
                         if (codKardexArticuloProducto != 0) {
@@ -139,7 +138,7 @@ public class sVenta extends HttpServlet {
                             for (KardexSerieNumero objKardexSerieNumero : objKardexArticuloProductoAlmacen.getKardexSerieNumeros()) {
                                 objKardexSerieNumero.setCodKardexSerieNumero(null);
                                 objKardexSerieNumero.setKardexArticuloProducto(objKardexArticuloProductoNuevo);
-                                objKardexSerieNumero.setRegistro(objcUtilitarios.registro("1", objUsuario.getCodUsuario().toString()));
+                                objKardexSerieNumero.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
                                 objcKardexSerieNumero.crear(objKardexSerieNumero);
                             }
 
@@ -149,7 +148,7 @@ public class sVenta extends HttpServlet {
                                 objKardexSerieNumeroReposicion.setKardexArticuloProducto(objKardexArticuloProductoNuevo);
                                 objKardexSerieNumeroReposicion.setSerieNumero(objVentasSerieNumero.getSerieNumero());
                                 objKardexSerieNumeroReposicion.setObservacion(objVentasSerieNumero.getObservacion());
-                                objKardexSerieNumeroReposicion.setRegistro(objcUtilitarios.registro("1", objUsuario.getCodUsuario().toString()));
+                                objKardexSerieNumeroReposicion.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
                                 objcKardexSerieNumero.crear(objKardexSerieNumeroReposicion);
                             }
                         }//fin de registros de series
@@ -157,7 +156,7 @@ public class sVenta extends HttpServlet {
                         //actualizar datos
                         objcVentasDetalle.actualizar_valorVenta(objVentaDetalle.getCodVentasDetalle(), 0.00);
                     }
-                    objcVenta.actualizar_anularVenta(objVentas.getCodVentas(), 0.00, 0.00, 0.00, 0.00, 0.00, "*** DOCUMENTO ANULADO ***", objcUtilitarios.registro("0", objUsuario.getCodUsuario().toString()));
+                    objcVenta.actualizar_anularVenta(objVentas.getCodVentas(), 0.00, 0.00, 0.00, 0.00, 0.00, "*** DOCUMENTO ANULADO ***", objcOtros.registro("0", objUsuario.getCodUsuario().toString()));
                     out.print(objVentas.getCodVentas());
                 }//fin tipo de venta contado
                 if (objVentas.getTipo().equals("CREDITO")) {
@@ -202,7 +201,7 @@ public class sVenta extends HttpServlet {
                             objKardexArticuloProductoNuevo.setPrecioPonderado(objKardexArticuloProductoAlmacen.getPrecioPonderado());
                             objKardexArticuloProductoNuevo.setTotal(objKardexArticuloProductoNuevo.getPrecioPonderado() * objKardexArticuloProductoNuevo.getStock());
                             objKardexArticuloProductoNuevo.setAlmacen(objAlmacen);
-                            objKardexArticuloProductoNuevo.setRegistro(objcUtilitarios.registro("1", objUsuario.getCodUsuario().toString()));
+                            objKardexArticuloProductoNuevo.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
                             int codKardexArticuloProducto = objcKardexArticuloProducto.crear(objKardexArticuloProductoNuevo);
                             //out.print(objKardexArticuloProductoNuevo.getDetalle());
                             if (codKardexArticuloProducto != 0) {
@@ -212,7 +211,7 @@ public class sVenta extends HttpServlet {
                                 for (KardexSerieNumero objKardexSerieNumero : objKardexArticuloProductoAlmacen.getKardexSerieNumeros()) {
                                     objKardexSerieNumero.setCodKardexSerieNumero(null);
                                     objKardexSerieNumero.setKardexArticuloProducto(objKardexArticuloProductoNuevo);
-                                    objKardexSerieNumero.setRegistro(objcUtilitarios.registro("1", objUsuario.getCodUsuario().toString()));
+                                    objKardexSerieNumero.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
                                     objcKardexSerieNumero.crear(objKardexSerieNumero);
                                 }
 
@@ -222,7 +221,7 @@ public class sVenta extends HttpServlet {
                                     objKardexSerieNumeroReposicion.setKardexArticuloProducto(objKardexArticuloProductoNuevo);
                                     objKardexSerieNumeroReposicion.setSerieNumero(objVentasSerieNumero.getSerieNumero());
                                     objKardexSerieNumeroReposicion.setObservacion(objVentasSerieNumero.getObservacion());
-                                    objKardexSerieNumeroReposicion.setRegistro(objcUtilitarios.registro("1", objUsuario.getCodUsuario().toString()));
+                                    objKardexSerieNumeroReposicion.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
                                     objcKardexSerieNumero.crear(objKardexSerieNumeroReposicion);
                                 }
                             }//fin de registros de series
@@ -232,7 +231,7 @@ public class sVenta extends HttpServlet {
 
                             //actualizar datos
                             objcVentasDetalle.actualizar_valorVenta(objVentaDetalle.getCodVentasDetalle(), 0.00);
-                            objcVenta.actualizar_anularVenta(objVentas.getCodVentas(), 0.00, 0.00, 0.00, 0.00, 0.00, "*** DOCUMENTO ANULADO ***", objcUtilitarios.registro("0", objUsuario.getCodUsuario().toString()));
+                            objcVenta.actualizar_anularVenta(objVentas.getCodVentas(), 0.00, 0.00, 0.00, 0.00, 0.00, "*** DOCUMENTO ANULADO ***", objcOtros.registro("0", objUsuario.getCodUsuario().toString()));
                         }
                         out.print(objVentas.getCodVentas());
                     } else {
@@ -297,11 +296,15 @@ public class sVenta extends HttpServlet {
                         objVentaDetalle.setCantidad(Integer.parseInt(request.getParameter("cantidad" + i)));
                         objVentaDetalle.setPrecioProforma(Double.parseDouble(request.getParameter("precioContado" + i)));
                         objVentaDetalle.setPrecioVenta(Double.parseDouble(request.getParameter("precioVenta" + i)));
+                        //viendo que no sea mayor el precio de proforma al precio de venta
+                        if (objVentaDetalle.getPrecioProforma() > objVentaDetalle.getPrecioVenta()) {
+                            objVentaDetalle.setPrecioProforma(objVentaDetalle.getPrecioVenta());
+                        }
                         objVentaDetalle.setValorVenta(objVentaDetalle.getCantidad() * objVentaDetalle.getPrecioVenta());
                         objVentaDetalle.setArticuloProducto(new cArticuloProducto().leer_cod(Integer.parseInt(request.getParameter("codArticuloProducto" + i))));
                         objVentaDetalle.setPrecioReal(objVentaDetalle.getArticuloProducto().getPrecioVenta());
                         objVentaDetalle.setDescripcion(objVentaDetalle.getArticuloProducto().getDescripcion());
-                        objVentaDetalle.setRegistro(objcUtilitarios.registro("1", objUsuario.getCodUsuario().toString()));
+                        objVentaDetalle.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
 //
                         objVenta.setSubTotal(objVenta.getSubTotal() + objVentaDetalle.getValorVenta()); //vamos sumando los precios
                         objVenta.setTotal(objVenta.getSubTotal() - objVenta.getDescuento());
@@ -337,7 +340,7 @@ public class sVenta extends HttpServlet {
                                 objVentasSerieNumero.setCodVentasSerieNumero(objKardexSerieNumero.getCodKardexSerieNumero());
                                 objVentasSerieNumero.setSerieNumero(objKardexSerieNumero.getSerieNumero());
                                 objVentasSerieNumero.setObservacion(objKardexSerieNumero.getObservacion());
-                                objVentasSerieNumero.setRegistro(objcUtilitarios.registro("1", objUsuario.getCodUsuario().toString()));
+                                objVentasSerieNumero.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
                                 lVentaSerieNumeroItem.add(objVentasSerieNumero);
                                 if (verificarSerieList.contains(objKardexSerieNumero.getCodKardexSerieNumero())) {
                                     out.print("Se esta intentando vender una misma serie (" + objKardexSerieNumero.getSerieNumero() + ")<br>");
@@ -353,7 +356,7 @@ public class sVenta extends HttpServlet {
                     //si en caso es al credito
                     if (objVenta.getTipo().equals("CREDITO")) {
                         Double neto = objVenta.getNeto();
-                        Double montoLetra = objcUtilitarios.redondearDecimales((neto - montoInicialLetra) / cantidadLetras, 1);
+                        Double montoLetra = objcOtros.redondearDecimales((neto - montoInicialLetra) / cantidadLetras, 1);
                         Double acumulado = 0.0;
 //
                         objVentaCredito.setPersonaCodGarante(0);
@@ -363,14 +366,14 @@ public class sVenta extends HttpServlet {
                         objVentaCredito.setEstado(true);
                         objVentaCredito.setDuracion(periodoLetra);
                         objVentaCredito.setFechaVencimientoLetra(fechaInicioLetras);
-                        objVentaCredito.setRegistro(objcUtilitarios.registro("1", objUsuario.getCodUsuario().toString()));
+                        objVentaCredito.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
                         objVentaCredito.setMontoLetra(montoLetra);
                         for (int m = 0; m <= cantidadLetras; m++) {
                             VentaCreditoLetra objVentaCreditoLetra = new VentaCreditoLetra();
                             objVentaCreditoLetra.setTotalPago(0.00);
                             objVentaCreditoLetra.setMoneda(objVenta.getMoneda().equals("soles") ? 0 : 1);
                             objVentaCreditoLetra.setInteres(0.00);
-                            objVentaCreditoLetra.setRegistro(objcUtilitarios.registro("1", objUsuario.getCodUsuario().toString()));
+                            objVentaCreditoLetra.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
                             if (m == 0) {
                                 objVentaCreditoLetra.setNumeroLetra(m);
                                 objVentaCreditoLetra.setDetalleLetra("Pago inicial");
@@ -441,7 +444,7 @@ public class sVenta extends HttpServlet {
                             objKardexAPNuevo.setTotal(objKardexAPNuevo.getPrecioPonderado() * objKardexAPNuevo.getStock());
                             objKardexAPNuevo.setAlmacen(objAlmacen);
                             objKardexAPNuevo.setObservacion("");
-                            objKardexAPNuevo.setRegistro(objcUtilitarios.registro("1", objUsuario.getCodUsuario().toString()));
+                            objKardexAPNuevo.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
                             int codKardexAPNuevo = objcKardexArticuloProducto.crear(objKardexAPNuevo);//cerar kardex
                             objKardexAPNuevo.setCodKardexArticuloProducto(codKardexAPNuevo);
 
@@ -460,7 +463,7 @@ public class sVenta extends HttpServlet {
                                 if (marcaSerie == 0) {
                                     objKardexSerieNumero.setCodKardexSerieNumero(null);
                                     objKardexSerieNumero.setKardexArticuloProducto(objKardexAPNuevo);
-                                    objKardexSerieNumero.setRegistro(objcUtilitarios.registro("1", objUsuario.getCodUsuario().toString()));
+                                    objKardexSerieNumero.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
                                     objcKardexSerieNumero.crear(objKardexSerieNumero);
                                 }
                             }
