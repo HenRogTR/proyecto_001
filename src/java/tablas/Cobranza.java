@@ -1,5 +1,5 @@
 package tablas;
-// Generated 29/04/2014 10:30:26 AM by Hibernate Tools 3.6.0
+// Generated 08/05/2014 09:52:36 AM by Hibernate Tools 3.6.0
 
 
 import java.util.Date;
@@ -19,6 +19,7 @@ public class Cobranza  implements java.io.Serializable {
      private double saldoAnterior;
      private double importe;
      private double saldo;
+     private Double montoPagado;
      private String observacion;
      private String registro;
      private Set<CobranzaDetalle> cobranzaDetalles = new HashSet<CobranzaDetalle>(0);
@@ -35,13 +36,14 @@ public class Cobranza  implements java.io.Serializable {
         this.saldo = saldo;
         this.registro = registro;
     }
-    public Cobranza(Persona persona, Date fechaCobranza, String docSerieNumero, double saldoAnterior, double importe, double saldo, String observacion, String registro, Set<CobranzaDetalle> cobranzaDetalles) {
+    public Cobranza(Persona persona, Date fechaCobranza, String docSerieNumero, double saldoAnterior, double importe, double saldo, Double montoPagado, String observacion, String registro, Set<CobranzaDetalle> cobranzaDetalles) {
        this.persona = persona;
        this.fechaCobranza = fechaCobranza;
        this.docSerieNumero = docSerieNumero;
        this.saldoAnterior = saldoAnterior;
        this.importe = importe;
        this.saldo = saldo;
+       this.montoPagado = montoPagado;
        this.observacion = observacion;
        this.registro = registro;
        this.cobranzaDetalles = cobranzaDetalles;
@@ -95,6 +97,13 @@ public class Cobranza  implements java.io.Serializable {
     
     public void setSaldo(double saldo) {
         this.saldo = saldo;
+    }
+    public Double getMontoPagado() {
+        return this.montoPagado;
+    }
+    
+    public void setMontoPagado(Double montoPagado) {
+        this.montoPagado = montoPagado;
     }
     public String getObservacion() {
         return this.observacion;

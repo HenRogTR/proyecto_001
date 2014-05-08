@@ -425,6 +425,7 @@ public class cVentaCreditoLetra {
                     .setParameter("codPersona", codPersona)
                     .setParameter("codVentas", codVentas);
             deuda = (Double) q.list().iterator().next();
+            deuda = deuda == null ? 0.00 : deuda;
         } catch (Exception e) {
             e.printStackTrace();
             setError(e.getMessage());

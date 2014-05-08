@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 29/04/2014 10:30:26 AM by Hibernate Tools 3.6.0 -->
+<!-- Generated 08/05/2014 09:52:37 AM by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
     <class name="tablas.CobranzaDetalle" table="cobranza_detalle" catalog="proyecto_001">
         <id name="codCobranzaDetalle" type="java.lang.Integer">
@@ -16,6 +16,9 @@
         </many-to-one>
         <property name="importe" type="java.lang.Double">
             <column name="importe" precision="10" />
+        </property>
+        <property name="interes" type="java.lang.Double">
+            <column name="interes" precision="10" />
         </property>
         <property name="observacion" type="string">
             <column name="observacion" length="65535" />

@@ -156,6 +156,7 @@ public class sCobranza extends HttpServlet {
                         docSerieNumero = objCPD.getDocSerieNumero();
                     }
                 }
+                //si el pago es anticipo
                 if (tipoPago.equals("anticipo")) {
                     if (saldoFavorUsar.equals("0") & !tipoCobro.equals("manual")) {//que no sea un saldo a favor y que no sea manual
                         objcComprobantePagoDetalle.actualizar_estado(objCPD.getCodComprobantePagoDetalle(), true);
@@ -171,7 +172,8 @@ public class sCobranza extends HttpServlet {
                         objCobranza.setSaldoAnterior(0.00);
                         objCobranza.setImporte(0.00);
                         objCobranza.setSaldo(montoAmortizar);
-                        objCobranza.setObservacion("Anticipo "+new cOtros().decimalFormato(montoAmortizar, 2));
+                        objCobranza.setMontoPagado(montoAmortizar);
+                        objCobranza.setObservacion("Anticipo " + new cOtros().decimalFormato(montoAmortizar, 2));
                         objCobranza.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
                         int codCobranza = new cCobranza().crear(objCobranza);
                         if (codCobranza != 0) {
@@ -181,158 +183,90 @@ public class sCobranza extends HttpServlet {
                         out.print("Error en registro contacte con el AD del sistema.");
                     }
                 } else {//es un pago normal
-                    if (codVenta == 0) {//indica que no se filtrara                        
 
-                        String observacion = "";//para actualizar la observacion del objCobranza
-                        Cobranza objCobranza = new Cobranza();
-                        Persona objPersona = new Persona();
-                        objPersona.setCodPersona(objCliente.getPersona().getCodPersona());
-                        objCobranza.setPersona(objPersona);
-                        objCobranza.setFechaCobranza(fechaCobranza);
-                        objCobranza.setDocSerieNumero(docSerieNumero);
-                        objCobranza.setSaldoAnterior(0.00);
-                        objCobranza.setImporte(montoAmortizar);
-                        objCobranza.setSaldo(0.00);
-                        objCobranza.setObservacion("");
-                        objCobranza.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
-                        //que no sea un saldo a favor y que no sea manual
-                        if (saldoFavorUsar.equals("0") & !tipoCobro.equals("manual")) {
-                            objcComprobantePagoDetalle.actualizar_estado(objCPD.getCodComprobantePagoDetalle(), true);
-                        }
-
-                        int codCobranza = new cCobranza().crear(objCobranza);
-                        objCobranza.setCodCobranza(codCobranza);
-                        Double montoAmortizarAux = montoAmortizar;
-                        while (montoAmortizarAux > 0) {
-                            VentaCreditoLetra objVentaCreditoLetra = new cVentaCreditoLetra().leer_letraVencidaAntigua(objCliente.getPersona().getCodPersona());//letra actual
-                            if (objVentaCreditoLetra == null) {//en caso ya no hayan letras por pagar
-                                break;
-                            }
-                            Double deudaLetra = objVentaCreditoLetra.getMonto() - objVentaCreditoLetra.getTotalPago();//obtenemos la deuda para esta letra
-                            if (montoAmortizarAux > deudaLetra) {//se cancela toda la letra actual
-                                //*******creamos cobranzaDetalle
-                                CobranzaDetalle objCobranzaDetalle = new CobranzaDetalle();
-                                objCobranzaDetalle.setCobranza(objCobranza);
-                                objCobranzaDetalle.setImporte(deudaLetra);
-                                objCobranzaDetalle.setObservacion(objVentaCreditoLetra.getDetalleLetra());
-                                observacion += objVentaCreditoLetra.getDetalleLetra() + " " + objVentaCreditoLetra.getVentaCredito().getVentas().getDocSerieNumero() + " " + objcOtros.agregarCerosNumeroFormato(objcOtros.redondearDecimales(deudaLetra, 2), 2) + "\n";
-                                objCobranzaDetalle.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
-                                objCobranzaDetalle.setVentaCreditoLetra(objVentaCreditoLetra);
-                                new cCobranzaDetalle().crear(objCobranzaDetalle);//creamos el detalle de la cobranza
-                                new cVentaCreditoLetra().actualizar_totalPago(objVentaCreditoLetra.getCodVentaCreditoLetra(), deudaLetra, fechaCobranza);
-                                montoAmortizarAux -= deudaLetra;//quitamos el moto
-                            } else {
-                                CobranzaDetalle objCobranzaDetalle = new CobranzaDetalle();
-                                objCobranzaDetalle.setCobranza(objCobranza);
-                                objCobranzaDetalle.setImporte(montoAmortizarAux);//se asigna el monto restante
-                                objCobranzaDetalle.setObservacion(objVentaCreditoLetra.getDetalleLetra());
-                                observacion += objVentaCreditoLetra.getDetalleLetra() + " " + objVentaCreditoLetra.getVentaCredito().getVentas().getDocSerieNumero() + " " + objcOtros.agregarCerosNumeroFormato(objcOtros.redondearDecimales(montoAmortizarAux, 2), 2) + "\n";
-                                objCobranzaDetalle.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
-                                objCobranzaDetalle.setVentaCreditoLetra(objVentaCreditoLetra);
-                                new cCobranzaDetalle().crear(objCobranzaDetalle);//creamos el detalle de la cobranza
-                                new cVentaCreditoLetra().actualizar_totalPago(objVentaCreditoLetra.getCodVentaCreditoLetra(), montoAmortizarAux, fechaCobranza);
-                                montoAmortizarAux = 0.00;//no queda saldo
-                            }
-                        }
-                        if (saldoFavorUsar.equals("0")) {
-                            if (montoAmortizarAux > 0) {//decimos que sobro y se tiene que poner como saldo a favor
-                                observacion += "Anticipo";
-                                new cDatosCliente().actualizar_saldoFavor(objCliente.getCodDatosCliente(), montoAmortizarAux);//actualizamos saldo a favor cliente
-                                new cCobranza().actualizar_observacion_saldo(codCobranza, observacion, montoAmortizar - montoAmortizarAux, montoAmortizarAux);
-                            } else {//si en caso no hay saldo a favor
-                                new cCobranza().actualizar_observacion_saldo(codCobranza, observacion, montoAmortizar, montoAmortizarAux);
-                            }
-                        } else {
-                            if (montoAmortizarAux > 0) {//decimos que sobro y se tiene que poner como saldo a favor
-//                        observacion += "Anticipo";
-                                new cDatosCliente().actualizar_saldoFavor(objCliente.getCodDatosCliente(), -(montoAmortizar - montoAmortizarAux));//aactualizamod saldo a favor cliente
-                                new cCobranza().actualizar_observacion_saldo(codCobranza, observacion, montoAmortizar - montoAmortizarAux, montoAmortizarAux);
-                            } else {//si en caso no hay saldo a favor
-                                new cDatosCliente().actualizar_saldoFavor(objCliente.getCodDatosCliente(), -montoAmortizar);
-                                new cCobranza().actualizar_observacion_saldo(codCobranza, observacion, montoAmortizar, montoAmortizarAux);
-                            }
-                        }
-                        out.print(codCliente);
-                    } else {//indica que se efectuara pagos solo para una venta, la cual debe ser menor o igual al monto a en deuda
-
-                        String observacion = "";//para actualizar la observacion del objCobranza
-                        Cobranza objCobranza = new Cobranza();
-                        Persona objPersona = new Persona();
-                        objPersona.setCodPersona(objCliente.getPersona().getCodPersona());
-                        objCobranza.setPersona(objPersona);
-                        objCobranza.setFechaCobranza(fechaCobranza);
-                        objCobranza.setDocSerieNumero(docSerieNumero);
-                        objCobranza.setSaldoAnterior(0.00);
-                        objCobranza.setImporte(montoAmortizar);
-                        objCobranza.setSaldo(0.00);
-                        objCobranza.setObservacion("");
-                        objCobranza.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
-
-                        Double deudaClientePorVenta = new cVentaCreditoLetra().leer_deudaCliente_codCliente_codVentas_SC(objCliente.getPersona().getCodPersona(), codVenta);
-                        if (deudaClientePorVenta == 0) {
-                            out.print("El cliente no tiene deuda alguna, ingrese como anticipo");
-                            return;
-                        }
-                        if (saldoFavorUsar.equals("0") & !tipoCobro.equals("manual")) {
-                            objcComprobantePagoDetalle.actualizar_estado(objCPD.getCodComprobantePagoDetalle(), true);
-                        }
-                        int codCobranza = new cCobranza().crear(objCobranza);
-                        objCobranza.setCodCobranza(codCobranza);
-                        Double montoAmortizarAux = montoAmortizar;
-                        while (montoAmortizarAux > 0) {
-                            VentaCreditoLetra objVentaCreditoLetra = new cVentaCreditoLetra().leer_letraVencidaAntigua_codVenta(objCliente.getPersona().getCodPersona(), codVenta);//letra actual
-                            if (objVentaCreditoLetra == null) {//en caso ya no hayan letras por pagar
-                                break;
-                            }
-                            Double deudaLetra = objVentaCreditoLetra.getMonto() - objVentaCreditoLetra.getTotalPago();//obtenemos la deuda para esta letra
-                            if (montoAmortizarAux > deudaLetra) {//se cancela toda la letra actual
-                                //*******creamos cobranzaDetalle
-                                CobranzaDetalle objCobranzaDetalle = new CobranzaDetalle();
-                                objCobranzaDetalle.setCobranza(objCobranza);
-                                objCobranzaDetalle.setImporte(deudaLetra);
-                                objCobranzaDetalle.setObservacion(objVentaCreditoLetra.getDetalleLetra());
-                                observacion += objVentaCreditoLetra.getDetalleLetra() + " " + objVentaCreditoLetra.getVentaCredito().getVentas().getDocSerieNumero() + " " + objcOtros.agregarCerosNumeroFormato(objcOtros.redondearDecimales(deudaLetra, 2), 2) + "\n";
-                                objCobranzaDetalle.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
-                                objCobranzaDetalle.setVentaCreditoLetra(objVentaCreditoLetra);
-                                new cCobranzaDetalle().crear(objCobranzaDetalle);//creamos el detalle de la cobranza
-                                new cVentaCreditoLetra().actualizar_totalPago(objVentaCreditoLetra.getCodVentaCreditoLetra(), deudaLetra, fechaCobranza);
-                                montoAmortizarAux -= deudaLetra;//quitamos el moto
-                            } else {
-                                CobranzaDetalle objCobranzaDetalle = new CobranzaDetalle();
-                                objCobranzaDetalle.setCobranza(objCobranza);
-                                objCobranzaDetalle.setImporte(montoAmortizarAux);//se asigna el monto restante
-                                objCobranzaDetalle.setObservacion(objVentaCreditoLetra.getDetalleLetra());
-                                observacion += objVentaCreditoLetra.getDetalleLetra() + " " + objVentaCreditoLetra.getVentaCredito().getVentas().getDocSerieNumero() + " " + objcOtros.agregarCerosNumeroFormato(objcOtros.redondearDecimales(montoAmortizarAux, 2), 2) + "\n";
-                                objCobranzaDetalle.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
-                                objCobranzaDetalle.setVentaCreditoLetra(objVentaCreditoLetra);
-                                new cCobranzaDetalle().crear(objCobranzaDetalle);//creamos el detalle de la cobranza
-                                new cVentaCreditoLetra().actualizar_totalPago(objVentaCreditoLetra.getCodVentaCreditoLetra(), montoAmortizarAux, fechaCobranza);
-                                montoAmortizarAux = 0.00;//no queda saldo
-                            }
-                        }
-                        if (saldoFavorUsar.equals("0")) {
-                            if (montoAmortizarAux > 0) {//decimos que sobro y se tiene que poner como saldo a favor
-                                observacion += "Anticipo";
-                                new cDatosCliente().actualizar_saldoFavor(objCliente.getCodDatosCliente(), montoAmortizarAux);//aactualizamod saldo a favor cliente
-                                new cCobranza().actualizar_observacion_saldo(codCobranza, observacion, montoAmortizar - montoAmortizarAux, montoAmortizarAux);
-                            } else {//si en caso no hay saldo a favor
-                                new cCobranza().actualizar_observacion_saldo(codCobranza, observacion, montoAmortizar, montoAmortizarAux);
-                            }
-                        } else {
-                            if (montoAmortizarAux > 0) {//decimos que sobro y se tiene que poner como saldo a favor
-                                observacion += "Saldo ->anticipo";
-                                new cDatosCliente().actualizar_saldoFavor(objCliente.getCodDatosCliente(), -(montoAmortizar - montoAmortizarAux));//aactualizamod saldo a favor cliente
-                                new cCobranza().actualizar_observacion_saldo(codCobranza, observacion, montoAmortizar - montoAmortizarAux, montoAmortizarAux);
-                            } else {//si en caso no hay saldo a favor
-                                new cDatosCliente().actualizar_saldoFavor(objCliente.getCodDatosCliente(), -montoAmortizar);
-                                new cCobranza().actualizar_observacion_saldo(codCobranza, observacion, montoAmortizar, montoAmortizarAux);
-                            }
-                        }
-                        out.print(codCliente);
+                    String observacion = "";//para actualizar la observacion del objCobranza
+                    Cobranza objCobranza = new Cobranza();
+                    Persona objPersona = new Persona();
+                    objPersona.setCodPersona(objCliente.getPersona().getCodPersona());
+                    objCobranza.setPersona(objPersona);
+                    objCobranza.setFechaCobranza(fechaCobranza);
+                    objCobranza.setDocSerieNumero(docSerieNumero);
+                    objCobranza.setSaldoAnterior(0.00);
+                    objCobranza.setImporte(montoAmortizar);
+                    objCobranza.setMontoPagado(montoAmortizar);
+                    objCobranza.setSaldo(0.00);
+                    objCobranza.setObservacion("");
+                    objCobranza.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
+                    Double deudaClientePorVenta = new cVentaCreditoLetra().leer_deudaCliente_codCliente_codVentas_SC(objCliente.getPersona().getCodPersona(), codVenta);
+                    if (codVenta != 0 & deudaClientePorVenta == 0) {
+                        out.print("El cliente no tiene deuda alguna, ingrese como anticipo.");
+                        return;
                     }
+                    if (saldoFavorUsar.equals("0") & !tipoCobro.equals("manual")) {
+                        objcComprobantePagoDetalle.actualizar_estado(objCPD.getCodComprobantePagoDetalle(), true);
+                    }
+                    int codCobranza = new cCobranza().crear(objCobranza);
+                    objCobranza.setCodCobranza(codCobranza);
+                    Double montoAmortizarAux = montoAmortizar;
+                    while (montoAmortizarAux > 0) {
+                        VentaCreditoLetra objVentaCreditoLetra = null;
+                        //si esta por venta el filtro
+                        if (codVenta != 0) {
+                            objVentaCreditoLetra = new cVentaCreditoLetra().leer_letraVencidaAntigua_codVenta(objCliente.getPersona().getCodPersona(), codVenta);//letra actual
+                        } else {    //si es general
+                            objVentaCreditoLetra = new cVentaCreditoLetra().leer_letraVencidaAntigua(objCliente.getPersona().getCodPersona());//letra actual
+                        }
+                        if (objVentaCreditoLetra == null) {//en caso ya no hayan letras por pagar
+                            break;
+                        }
+                        Double deudaLetra = objVentaCreditoLetra.getMonto() - objVentaCreditoLetra.getTotalPago();//obtenemos la deuda para esta letra
+                        if (montoAmortizarAux > deudaLetra) {//se cancela toda la letra actual
+                            //*******creamos cobranzaDetalle
+                            CobranzaDetalle objCobranzaDetalle = new CobranzaDetalle();
+                            objCobranzaDetalle.setCobranza(objCobranza);
+                            objCobranzaDetalle.setImporte(deudaLetra);
+                            objCobranzaDetalle.setObservacion(objVentaCreditoLetra.getDetalleLetra());
+                            observacion += objVentaCreditoLetra.getDetalleLetra() + " " + objVentaCreditoLetra.getVentaCredito().getVentas().getDocSerieNumero() + " " + objcOtros.agregarCerosNumeroFormato(objcOtros.redondearDecimales(deudaLetra, 2), 2) + "\n";
+                            objCobranzaDetalle.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
+                            objCobranzaDetalle.setVentaCreditoLetra(objVentaCreditoLetra);
+                            new cCobranzaDetalle().crear(objCobranzaDetalle);//creamos el detalle de la cobranza
+                            new cVentaCreditoLetra().actualizar_totalPago(objVentaCreditoLetra.getCodVentaCreditoLetra(), deudaLetra, fechaCobranza);
+                            montoAmortizarAux -= deudaLetra;//quitamos el moto
+                        } else {
+                            CobranzaDetalle objCobranzaDetalle = new CobranzaDetalle();
+                            objCobranzaDetalle.setCobranza(objCobranza);
+                            objCobranzaDetalle.setImporte(montoAmortizarAux);//se asigna el monto restante
+                            objCobranzaDetalle.setObservacion(objVentaCreditoLetra.getDetalleLetra());
+                            observacion += objVentaCreditoLetra.getDetalleLetra() + " " + objVentaCreditoLetra.getVentaCredito().getVentas().getDocSerieNumero() + " " + objcOtros.agregarCerosNumeroFormato(objcOtros.redondearDecimales(montoAmortizarAux, 2), 2) + "\n";
+                            objCobranzaDetalle.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
+                            objCobranzaDetalle.setVentaCreditoLetra(objVentaCreditoLetra);
+                            new cCobranzaDetalle().crear(objCobranzaDetalle);//creamos el detalle de la cobranza
+                            new cVentaCreditoLetra().actualizar_totalPago(objVentaCreditoLetra.getCodVentaCreditoLetra(), montoAmortizarAux, fechaCobranza);
+                            montoAmortizarAux = 0.00;//no queda saldo
+                        }
+                    }
+                    if (saldoFavorUsar.equals("0")) {
+                        if (montoAmortizarAux > 0) {//decimos que sobro y se tiene que poner como saldo a favor
+                            observacion += "Anticipo";
+                            new cDatosCliente().actualizar_saldoFavor(objCliente.getCodDatosCliente(), montoAmortizarAux);//aactualizamod saldo a favor cliente
+                            new cCobranza().actualizar_observacion_saldo(codCobranza, observacion, montoAmortizar - montoAmortizarAux, montoAmortizarAux);
+                        } else {//si en caso no hay saldo a favor
+                            new cCobranza().actualizar_observacion_saldo(codCobranza, observacion, montoAmortizar, montoAmortizarAux);
+                        }
+                    } else {
+                        if (montoAmortizarAux > 0) {//decimos que sobro y se tiene que poner como saldo a favor
+                            observacion += "Saldo ->anticipo";
+                            new cDatosCliente().actualizar_saldoFavor(objCliente.getCodDatosCliente(), -(montoAmortizar - montoAmortizarAux));//aactualizamod saldo a favor cliente
+                            new cCobranza().actualizar_observacion_saldo(codCobranza, observacion, montoAmortizar - montoAmortizarAux, montoAmortizarAux);
+                        } else {//si en caso no hay saldo a favor
+                            new cDatosCliente().actualizar_saldoFavor(objCliente.getCodDatosCliente(), -montoAmortizar);
+                            new cCobranza().actualizar_observacion_saldo(codCobranza, observacion, montoAmortizar, montoAmortizarAux);
+                        }
+                    }
+                    out.print(codCliente);
                 }
             } catch (Exception e) {
-                out.print("Error en parametros");
+                out.print("Error en parametros. " + e.getMessage());
                 return;
             }
 

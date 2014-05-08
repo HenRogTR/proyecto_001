@@ -1,5 +1,5 @@
 package tablas;
-// Generated 29/04/2014 10:30:26 AM by Hibernate Tools 3.6.0
+// Generated 08/05/2014 09:52:36 AM by Hibernate Tools 3.6.0
 
 
 
@@ -13,6 +13,7 @@ public class CobranzaDetalle  implements java.io.Serializable {
      private Cobranza cobranza;
      private VentaCreditoLetra ventaCreditoLetra;
      private Double importe;
+     private Double interes;
      private String observacion;
      private String registro;
 
@@ -25,10 +26,11 @@ public class CobranzaDetalle  implements java.io.Serializable {
         this.ventaCreditoLetra = ventaCreditoLetra;
         this.registro = registro;
     }
-    public CobranzaDetalle(Cobranza cobranza, VentaCreditoLetra ventaCreditoLetra, Double importe, String observacion, String registro) {
+    public CobranzaDetalle(Cobranza cobranza, VentaCreditoLetra ventaCreditoLetra, Double importe, Double interes, String observacion, String registro) {
        this.cobranza = cobranza;
        this.ventaCreditoLetra = ventaCreditoLetra;
        this.importe = importe;
+       this.interes = interes;
        this.observacion = observacion;
        this.registro = registro;
     }
@@ -60,6 +62,13 @@ public class CobranzaDetalle  implements java.io.Serializable {
     
     public void setImporte(Double importe) {
         this.importe = importe;
+    }
+    public Double getInteres() {
+        return this.interes;
+    }
+    
+    public void setInteres(Double interes) {
+        this.interes = interes;
     }
     public String getObservacion() {
         return this.observacion;
