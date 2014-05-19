@@ -1068,48 +1068,7 @@ public class cCobranza {
         }
         return null;
     }
-    //</editor-fold>    
-
-    public List leer_cobranzaGeneral(Date fechaInicio, Date fechaFin) {
-        setError(null);
-        sesion = HibernateUtil.getSessionFactory().openSession();
-        try {
-            Query q = sesion.createQuery("from Cobranza c "
-                    + "where c.fechaCobranza>=:fechaInicio "
-                    + "and c.fechaCobranza<=:fechaFin "
-                    + "and (substring(c.registro,1,1)=1 or substring(c.registro,1,1)=0) "
-                    + "and c.docSerieNumero not like 'X%' "
-                    + "order by c.persona.nombresC, c.fechaCobranza")
-                    .setParameter("fechaInicio", fechaInicio)
-                    .setParameter("fechaFin", fechaFin);
-            return q.list();
-        } catch (Exception e) {
-            setError(e.getMessage());
-        }
-        return null;
-    }
-
-    public List leer_codCobrador_cobranzaGeneral(Date fechaInicio, Date fechaFin, int codCobrador) {
-        setError(null);
-        sesion = HibernateUtil.getSessionFactory().openSession();
-        try {
-            Query q = sesion.createQuery("select c from Cobranza c, DatosCliente dc "
-                    + "where c.persona=dc.persona "
-                    + "and c.fechaCobranza>=:fechaInicio "
-                    + "and c.fechaCobranza<=:fechaFin "
-                    + "and (substring(c.registro,1,1)=1 or substring(c.registro,1,1)=0) "
-                    + "and c.docSerieNumero not like 'X%' "
-                    + "and dc.codCobrador=:codCobrador "
-                    + "order by c.persona.nombresC, c.fechaCobranza")
-                    .setParameter("fechaInicio", fechaInicio)
-                    .setParameter("fechaFin", fechaFin)
-                    .setParameter("codCobrador", codCobrador);
-            return q.list();
-        } catch (Exception e) {
-            setError(e.getMessage());
-        }
-        return null;
-    }
+    //</editor-fold>
 
     public List leer_admin() {
         setError(null);

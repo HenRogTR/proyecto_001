@@ -159,10 +159,9 @@ public class cVentaCreditoLetra {
 
     public Object[] leer_resumen(int codPersona) {
         Object[] resumen = null;
-        setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
-            Query q = sesion.createQuery("select sum(vcl.monto),sum(vcl.totalPago),(sum(vcl.monto)-sum(vcl.totalPago)) "
+            Query q = sesion.createQuery("select sum(vcl.monto+ vcl.interes),sum(vcl.totalPago+vcl.interesPagado),(sum(vcl.monto)-sum(vcl.totalPago)+sum(vcl.interes)-sum(vcl.interesPagado)) "
                     + "from VentaCreditoLetra vcl where substring(vcl.registro,1,1)=1 "
                     + "and vcl.ventaCredito.ventas.persona.codPersona=:codPersona")
                     .setParameter("codPersona", codPersona);
@@ -171,6 +170,7 @@ public class cVentaCreditoLetra {
             sesion.close();
         } catch (Exception e) {
             setError(e.getMessage());
+            e.printStackTrace();
         }
         return resumen;
     }
@@ -181,58 +181,18 @@ public class cVentaCreditoLetra {
     }
 
     /**
-     * Retorna todas las letras de credito a vencerse de las empresas
-     * afectada/no afectadas al interes.
+     * Listara todas la letras de credito de un cliente donde los interes no
+     * esten actualizados ademas de estar vencidos.
      *
-     * 0:codVentaCreditoLetra, 1:fechaVencimiento, 2:monto, 3:interes,
-     * 4:fechaPago, 5:totalPago
-     *
-     * @param fechaVencimiento
-     * @param interesAsigando
-     * @return
-     */
-    public List letrasVencidas_todos_empresaAfectada_ordenNombresC_SC(Date fechaVencimiento, boolean interesAsigando) {
-        List l = null;
-        Transaction trns = null;
-        sesion = HibernateUtil.getSessionFactory().openSession();
-        try {
-            trns = sesion.beginTransaction();
-            Query q = sesion.createQuery("select vcl.codVentaCreditoLetra, "
-                    + "vcl.fechaVencimiento, vcl.monto, vcl.interes, "
-                    + "vcl.fechaPago, vcl.totalPago "
-                    + "from VentaCreditoLetra vcl, DatosCliente dc, EmpresaConvenio ec "
-                    + "where vcl.ventaCredito.ventas.persona = dc.persona "
-                    + "and dc.empresaConvenio = ec "
-                    + "and substring(vcl.registro,1,1) = 1 "
-                    + "and vcl.fechaVencimiento <= :par1 "
-                    + "and (vcl.monto-vcl.totalPago) > 0 "
-                    + "and ec.interesAsigando = :par2 ") //empresas afectadas nada mas                    
-                    .setParameter("par1", fechaVencimiento)
-                    .setBoolean("par2", interesAsigando);
-            l = q.list();
-        } catch (Exception e) {
-            e.printStackTrace();
-            setError(e.getMessage());
-        } finally {
-            sesion.flush();
-            sesion.close();
-        }
-        return l;
-    }
-
-    /**
-     * Retorna todas las letras de credito a vencerse de las empresas
-     * afectada/no afectadas al interes para un cliente dado.
-     *
-     * 0:codVentaCreditoLetra, 1:fechaVencimiento, 2:monto, 3:interes,
-     * 4:fechaPago, 5:totalPago
-     *
-     * @param fechaVencimiento
-     * @param interesAsigando
+     * @param fechaVencimiento fecha en la que se sacará las letras vencidas
+     * fechaBase - diaEspera
+     * @param fechaBase fecha actual
+     * @param interesAsigando si está o no afectada a los interes.
      * @param codCliente
-     * @return
+     * @return <b>[0:codVCL, 1:fechaVencimiento, 2:monto, 3:interes,
+     * 4:fechaPago, 5:totalPago, 6:interesPagado, 7:interesUltimoCalculo]</b>
      */
-    public List letrasVencidas_cliente_empresaAfectada_ordenNombresC_SC(Date fechaVencimiento, boolean interesAsigando, int codCliente) {
+    public List leer_cliente_interesSinActualizar(Date fechaVencimiento, Date fechaBase, boolean interesAsigando, int codCliente) {
         List l = null;
         Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
@@ -240,18 +200,21 @@ public class cVentaCreditoLetra {
             trns = sesion.beginTransaction();
             Query q = sesion.createQuery("select vcl.codVentaCreditoLetra, "
                     + "vcl.fechaVencimiento, vcl.monto, vcl.interes, "
-                    + "vcl.fechaPago, vcl.totalPago "
+                    + "vcl.fechaPago, vcl.totalPago, vcl.interesPagado, "
+                    + "vcl.interesUltimoCalculo "
                     + "from VentaCreditoLetra vcl, DatosCliente dc, EmpresaConvenio ec "
                     + "where vcl.ventaCredito.ventas.persona = dc.persona "
                     + "and dc.empresaConvenio = ec "
                     + "and substring(vcl.registro,1,1) = 1 "
-                    + "and vcl.fechaVencimiento <= :par1 "
-                    + "and (vcl.monto-vcl.totalPago) > 0 "
-                    + "and ec.interesAsigando = :par2 " //empresas afectadas nada mas     
-                    + "and dc = :par3 ")
-                    .setParameter("par1", fechaVencimiento)
-                    .setBoolean("par2", interesAsigando).
-                    setInteger("par3", codCliente);
+                    + "and vcl.monto- vcl.totalPago > 0 " //que tengan deuda de capital
+                    + "and (vcl.interesUltimoCalculo is NULL or vcl.interesUltimoCalculo < :par1 ) " //si es NULL o la fecha ultima de actualizacion sea menor a la actual
+                    + "and vcl.fechaVencimiento < :par2 " //todas las letras vencidas    < porque si se vence el primiero y se consulta el 1 este marcara como vencido
+                    + "and ec.interesAsigando = :par3 " //empresas afectadas nada mas     
+                    + "and dc = :par4 ")
+                    .setDate("par1", fechaBase)
+                    .setDate("par2", fechaVencimiento)
+                    .setBoolean("par3", interesAsigando)
+                    .setInteger("par4", codCliente);
             l = q.list();
         } catch (Exception e) {
             e.printStackTrace();
@@ -264,47 +227,57 @@ public class cVentaCreditoLetra {
     }
 
     /**
-     * Función que me actualiza los intereses.
+     * Actualiza los interes. Calcula la cantidad de dias que no se ha generado
+     * los intereses y los va generando.
      *
-     * @param lista <0:codVentaCreditoLetra, 1:fechaVencimiento, 2:monto,
-     * 3:interes, 4:fechaPago, 5:totalPago>
-     * @param fechaDate
+     * @param lista
+     * @param fechaDate restamos un dia
      * @return
      */
     public boolean actualizar_interes(List lista, Date fechaDate) {
-        Boolean est = false;
+        boolean est = false;
         Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
             trns = sesion.beginTransaction();
+            double factorInteres = (new cDatosExtras().leer_interesFactor().getDecimalDato() / 100) / 30;
 
             Integer codVentaCreditoLetra = 0;
             Date fechaVencimiento = null;
             Double monto = 0.00;
-            Double interes = 0.00;
+//            Double interes = 0.00;
             Date fechaPago = null;
             Double totalPago = 0.00;
+//            Double interesPagado = 0.00;
+            Date interesUltimoCalculo = null;
 
-            int diasRetraso = 0;
-            Double interesNuevo = 0.00;
-            Double deuda = 0.00;
-            Double factorInteres = ((new cDatosExtras().leer_interesFactor().getDecimalDato()) / 100) / 30;
+            Integer diaRetraso = 0;
+            Double interesSumar = 0.00;
+
             for (Iterator it = lista.iterator(); it.hasNext();) {
-                Object dato[] = (Object[]) it.next();
-                codVentaCreditoLetra = (Integer) dato[0];
-                fechaVencimiento = (Date) dato[1];
-                monto = (Double) dato[2];
-                interes = (Double) dato[3];
-                fechaPago = (Date) dato[4];
-                totalPago = (Double) dato[5];
-                //calcular dias atrasados
-                diasRetraso = new cManejoFechas().diferenciaDosDias(fechaDate, (fechaPago == null ? fechaVencimiento : fechaPago));
-                deuda = monto - totalPago;
-                interesNuevo = deuda * factorInteres * diasRetraso;
-
+                Object vCLetraObject[] = (Object[]) it.next();
+                codVentaCreditoLetra = (Integer) vCLetraObject[0];
+                fechaVencimiento = (Date) vCLetraObject[1];
+                monto = (Double) vCLetraObject[2];
+//                interes = (Double) vCLetraObject[3];
+                fechaPago = (Date) vCLetraObject[4];
+                totalPago = (Double) vCLetraObject[5];
+//                interesPagado = (Double) vCLetraObject[6];
+                interesUltimoCalculo = (Date) vCLetraObject[7];
+                if (interesUltimoCalculo == null) {//se tomara el ultimo pago o la fecha de vencimiento
+                    diaRetraso = new cManejoFechas().diferenciaDosDias(fechaDate, fechaPago != null ? fechaPago : fechaVencimiento);
+                } else {
+                    diaRetraso = new cManejoFechas().diferenciaDosDias(fechaDate, interesUltimoCalculo);
+                }
+                System.out.println(diaRetraso);
+                //aun falta solucionar
+                diaRetraso = diaRetraso < 0 ? 0 : diaRetraso;
+                interesSumar = (monto - totalPago) * factorInteres * diaRetraso;
                 //procedemos a actualizar
                 VentaCreditoLetra objVentaCreditoLetra = (VentaCreditoLetra) sesion.get(VentaCreditoLetra.class, codVentaCreditoLetra);
-                objVentaCreditoLetra.setInteres(interesNuevo);
+                objVentaCreditoLetra.setInteres(objVentaCreditoLetra.getInteres() + interesSumar);
+                //actualizamos fecha de interes
+                objVentaCreditoLetra.setInteresUltimoCalculo(fechaDate);
                 sesion.persist(objVentaCreditoLetra);
             }
             sesion.getTransaction().commit();
@@ -325,33 +298,42 @@ public class cVentaCreditoLetra {
     /**
      * Lista de todas las letras que un cliente tiene.
      *
+     * @param codCliente
+     * @return
+     */
+    public List leer_codCliente(int codCliente) {
+        List l = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select vcl"
+                    + " from VentaCreditoLetra vcl join vcl.ventaCredito.ventas.persona.datosClientes dc"
+                    + " where substring(vcl.registro, 1, 1)= 1"
+                    + " and dc= :par1"
+                    + " order by vcl.codVentaCreditoLetra asc, vcl.ventaCredito.ventas asc")
+                    .setInteger("par1", codCliente);
+            l = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+        }
+        return l;
+    }
+
+    /**
+     *
      * @param codPersona
      * @return
      */
-    public List leer_porCodCliente(int codPersona) {
-        setError(null);
-        sesion = HibernateUtil.getSessionFactory().openSession();
-        try {
-//            session.beginTransaction();
-//            session.flush();
-            Query q = sesion.createQuery("from VentaCreditoLetra v "
-                    + "where v.ventaCredito.ventas.persona.codPersona=:codPersona "
-                    + "and substring(v.registro,1,1)=1 "
-                    + "order by codVentaCreditoLetra asc")
-                    .setParameter("codPersona", codPersona);
-            return q.list();
-        } catch (Exception e) {
-            setError(e.getMessage());
-        }
-        return null;
-    }
-
     public List leer_resumenPagos(int codPersona) {
         List l = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
             Query q = sesion.createQuery("select month(vcl.fechaVencimiento), year(vcl.fechaVencimiento), "
-                    + "sum(vcl.monto), sum(interes), sum(vcl.totalPago), sum(vcl.monto)-sum(vcl.totalPago), vcl.fechaVencimiento "
+                    + "sum(vcl.monto), sum(interes), sum(vcl.totalPago+vcl.interesPagado), sum(vcl.monto)-sum(vcl.totalPago)+sum(vcl.interes)-sum(vcl.interesPagado), vcl.fechaVencimiento "
                     + "from VentaCreditoLetra vcl "
                     + "where substring(vcl.registro,1,1)=1 "
                     + "and vcl.ventaCredito.ventas.persona.codPersona=:codPersona "
@@ -372,8 +354,8 @@ public class cVentaCreditoLetra {
     /**
      *
      * @param codCliente
-     * @return 0:monto(mensual), 1:interes(mensual), 2:totalPago(mensual),
-     * 3:saldo(mensual), 4:fechaVencimiento
+     * @return 0:fechaVencimiento, 1:monto(mensual), 2:interes(mensual),
+     * 3:totalPago(mensual), 4:interesPagado(mensual)
      */
     public List leer_deudaMes(int codCliente) {
         List l = null;
@@ -381,11 +363,11 @@ public class cVentaCreditoLetra {
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
             trns = sesion.beginTransaction();
-            Query q = sesion.createQuery("select sum(vcl.monto)"
+            Query q = sesion.createQuery("select vcl.fechaVencimiento"
+                    + ", sum(vcl.monto)"
                     + ", sum(vcl.interes)"
                     + ", sum(vcl.totalPago)"
-                    + ", (sum(vcl.monto)-sum(vcl.totalPago))"
-                    + ", vcl.fechaVencimiento "
+                    + ", sum(vcl.interesPagado)"
                     + " from VentaCreditoLetra vcl join vcl.ventaCredito.ventas.persona.datosClientes dc"
                     + " where substring(vcl.registro,1,1) = 1 "
                     + " and dc = :par1"
@@ -416,7 +398,8 @@ public class cVentaCreditoLetra {
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
             trns = sesion.beginTransaction();
-            Query q = sesion.createQuery("select sum(monto-totalPago) from VentaCreditoLetra v "
+            Query q = sesion.createQuery("select sum(v.monto- v.totalPago+ v.interes- v.interesPagado)"
+                    + " from VentaCreditoLetra v "
                     + "where v.ventaCredito.ventas.persona.codPersona=:codPersona "
                     + "and v.monto-v.totalPago>0 "
                     + "and v.ventaCredito.ventas.codVentas=:codVentas "
@@ -450,7 +433,7 @@ public class cVentaCreditoLetra {
             trns = sesion.beginTransaction();
             Query q = sesion.createQuery("from VentaCreditoLetra v "
                     + "where v.ventaCredito.ventas.persona.codPersona=:codPersona "
-                    + "and v.monto-v.totalPago>0 "
+                    + "and (v.monto- v.totalPago> 0 or v.interes- v.interesPagado> 0 )"
                     + "and substring(v.registro,1,1)=1 "
                     + "order by v.fechaVencimiento asc")
                     .setParameter("codPersona", codPersona);
@@ -480,7 +463,7 @@ public class cVentaCreditoLetra {
             trns = sesion.beginTransaction();
             Query q = sesion.createQuery("from VentaCreditoLetra v "
                     + "where v.ventaCredito.ventas.persona.codPersona=:codPersona "
-                    + "and v.monto-v.totalPago>0 "
+                    + "and (v.monto- v.totalPago> 0 or v.interes- v.interesPagado> 0 )"
                     + "and v.ventaCredito.ventas.codVentas=:codVentas "
                     + "and substring(v.registro,1,1)=1 "
                     + "order by v.fechaVencimiento asc")
@@ -536,6 +519,42 @@ public class cVentaCreditoLetra {
         return false;
     }
 
+    /**
+     * La letra se cancela en su totalidad, de manera que los interes e
+     * interesPagado = 0.00
+     *
+     * @param codVentaCreditoLetra
+     * @param montoAmortizar
+     * @param interesAmortizar
+     * @param fechaPago
+     * @return
+     */
+    public boolean actualizar_pago(int codVentaCreditoLetra, Double montoAmortizar, Double interesAmortizar, Date fechaPago) {
+        boolean est = false;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            VentaCreditoLetra obj = (VentaCreditoLetra) sesion.get(VentaCreditoLetra.class, codVentaCreditoLetra);
+            obj.setTotalPago(obj.getTotalPago() + montoAmortizar);
+            obj.setFechaPago(fechaPago == null ? obj.getFechaPago() : fechaPago);//si es null cogemos el que tiene en la bd
+            obj.setInteresPagado(obj.getInteresPagado() + interesAmortizar);
+            sesion.update(obj);
+            sesion.getTransaction().commit();
+            est = true;
+        } catch (Exception e) {
+            if (trns != null) {
+                trns.rollback();
+            }
+            setError("VentaCreditoLetra_actualizar_registro: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return est;
+    }
+
     public boolean actualizar_totalPago(int codVentaCreditoLetra, Double montoAmortizar, Date fechaPago) {
         boolean est = false;
         Transaction trns = null;
@@ -588,7 +607,8 @@ public class cVentaCreditoLetra {
                         if (temp == null) {
                             temp = objCobranzaDetalle.getCobranza().getFechaCobranza();
                         }
-                        if (temp.compareTo(objCobranzaDetalle.getCobranza().getFechaCobranza()) <= 0) {
+                        //si en caso solo fue interes no se toma la fecha de cobranza
+                        if (temp.compareTo(objCobranzaDetalle.getCobranza().getFechaCobranza()) <= 0 & objCobranzaDetalle.getImporte() > 0) {
                             temp = objCobranzaDetalle.getCobranza().getFechaCobranza();
                         }
                     }
@@ -611,38 +631,4 @@ public class cVentaCreditoLetra {
         return est;
     }
 
-    /**
-     *
-     * @param VCLetraList
-     * @return
-     */
-    public boolean actualizar_interesCero(List VCLetraList) {
-        boolean est = false;
-        Transaction trns = null;
-        sesion = HibernateUtil.getSessionFactory().openSession();
-        try {
-            trns = sesion.beginTransaction();
-
-            Integer codVentaCreditoLetra = 0;
-            for (Iterator it = VCLetraList.iterator(); it.hasNext();) {
-                Object dato = (Object) it.next();
-                codVentaCreditoLetra = (Integer) dato;
-                VentaCreditoLetra objVentaCreditoLetra = (VentaCreditoLetra) sesion.get(VentaCreditoLetra.class, codVentaCreditoLetra);
-                objVentaCreditoLetra.setInteres(0.00);
-                sesion.persist(objVentaCreditoLetra);
-            }
-            sesion.getTransaction().commit();
-            est = true;
-        } catch (Exception e) {
-            if (trns != null) {
-                trns.rollback();
-            }
-            setError("VentaCreditoLetra_actualizar_registro: " + e.getMessage());
-            e.printStackTrace();
-        } finally {
-            sesion.flush();
-            sesion.close();
-        }
-        return est;
-    }
 }

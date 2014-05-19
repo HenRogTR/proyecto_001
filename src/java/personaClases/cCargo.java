@@ -29,8 +29,7 @@ public class cCargo {
     public cCargo() {
         this.sesion = HibernateUtil.getSessionFactory().getCurrentSession();
     }
-
-    //***************************************************************************
+    
     public List leer() {
         setError(null);
         try {
@@ -54,5 +53,4 @@ public class cCargo {
         }
         return null;
     }
-    //***************************************************************************
 }

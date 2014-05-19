@@ -58,9 +58,6 @@
                 <%@include file="../menu2.jsp" %>
             </div>
             <div id="right">
-                <%
-                    cUtilitarios objcUtilitarios = new cUtilitarios();
-                %>
                 <h3 class="titulo">EDICIÓN DE SERIE/NÚMERO</h3>
                 <form action="../sKardexSerieNumero" method="get">
                     <table class="reporte-tabla-1" style="margin-top: 10px;">

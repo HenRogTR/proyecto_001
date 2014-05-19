@@ -12,7 +12,6 @@
 <%@page import="cobranzaClases.cCobranza"%>
 <%@page import="java.util.List"%>
 
-
 [
 <%
     List l = new cCobranza().leer_codPersona_SC(1);    

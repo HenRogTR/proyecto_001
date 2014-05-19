@@ -184,7 +184,7 @@ $(function() {
                 $("#tVentaCreditoLetra tbody tr").each(function(index) {
                     var $tr = $(this);
                     if ($tr.hasClass(docSerieNumero)) {
-                        deudaTotal += parseFloat($tr.find('td.montoLetra').text());
+                        deudaTotal += parseFloat($tr.find('td.montoLetra').text()) + parseFloat($tr.find('td.interes').text());
                         pagadoTotal += parseFloat($tr.find('td.pagoLetra').text());
                         saldoTotal += parseFloat($tr.find('td.saldoLetra').text());
                     } else {
@@ -568,17 +568,17 @@ function fVentaCreditoLetraResumen(codCliente) {
                     var $td2 = $('<td/>', {html: VCLResumenItem.detalleLetra, 'class': VCLResumenItem.finalVenta, css: {'width': 72, 'background-color': VCLResumenItem.estilo}}).appendTo($tr);
                     var $td3 = $('<td/>', {html: VCLResumenItem.fechaVencimiento, 'class': VCLResumenItem.finalVenta, css: {'width': 60, 'background-color': VCLResumenItem.estilo}}).appendTo($tr);
                     var $td4 = $('<td/>', {html: VCLResumenItem.monto, 'class': VCLResumenItem.finalVenta + ' derecha montoLetra', css: {'width': 45, 'background-color': VCLResumenItem.estilo}}).appendTo($tr);
-                    var $td5 = $('<td/>', {html: VCLResumenItem.totalPago, 'class': VCLResumenItem.finalVenta + ' derecha pagoLetra', css: {'width': 45, 'background-color': VCLResumenItem.estilo}}).appendTo($tr);
-                    var $td6 = $('<td/>', {html: VCLResumenItem.fechaPago, 'class': VCLResumenItem.finalVenta + ' derecha', css: {'width': 60, 'background-color': VCLResumenItem.estilo}}).appendTo($tr);
-                    var $td7 = $('<td/>', {html: VCLResumenItem.diasRetraso, 'class': VCLResumenItem.finalVenta + ' derecha', css: {'width': 25, 'background-color': VCLResumenItem.estilo}}).appendTo($tr);
-                    var $td8 = $('<td/>', {html: VCLResumenItem.interes, 'class': VCLResumenItem.finalVenta + ' derecha', css: {'width': 45, 'background-color': VCLResumenItem.estilo}}).appendTo($tr);
+                    var $td5 = $('<td/>', {html: VCLResumenItem.interes, 'class': VCLResumenItem.finalVenta + ' derecha interes', css: {'width': 45, 'background-color': VCLResumenItem.estilo}}).appendTo($tr);
+                    var $td6 = $('<td/>', {html: VCLResumenItem.totalPago, 'class': VCLResumenItem.finalVenta + ' derecha pagoLetra', css: {'width': 45, 'background-color': VCLResumenItem.estilo}}).appendTo($tr);
+                    var $td7 = $('<td/>', {html: VCLResumenItem.fechaPago, 'class': VCLResumenItem.finalVenta + ' derecha', css: {'width': 60, 'background-color': VCLResumenItem.estilo}}).appendTo($tr);
+                    var $td8 = $('<td/>', {html: VCLResumenItem.diasRetraso, 'class': VCLResumenItem.finalVenta + ' derecha', css: {'width': 25, 'background-color': VCLResumenItem.estilo}}).appendTo($tr);
                     var $td9 = $('<td/>', {html: VCLResumenItem.saldo, 'class': VCLResumenItem.finalVenta + ' derecha saldoLetra', css: {'background-color': VCLResumenItem.estilo}}).appendTo($tr);
                     //asigna al 6 pq marcaba error
-                    var $codVenta = $('<span/>', {'class': 'codVenta ocultar', html: VCLResumenItem.codVenta}).appendTo($td6);
+                    var $codVenta = $('<span/>', {'class': 'codVenta ocultar', html: VCLResumenItem.codVenta}).appendTo($td7);
                     if (i == 0) {
                         f_ventaCreditoLetra_click($tr);
                     }
-                    deudaTotal += parseFloat(VCLResumenItem.monto);
+                    deudaTotal += (parseFloat(VCLResumenItem.monto) + parseFloat(VCLResumenItem.interes));
                     pagadoTotal += parseFloat(VCLResumenItem.totalPago);
                     saldoTotal += parseFloat(VCLResumenItem.saldo);
                 }
@@ -646,7 +646,7 @@ function fDeudaMes(codCliente) {
             },
             statusCode: {
                 404: function() {
-                    $('#lServidorError').text('Página no encontrada(ventaCreditoLetraResumenMensual.jsp).');
+                    $('#lServidorError').text('Página no encontrada(deudaMes_codCliente.jsp).');
                     $('#dServidorError').dialog('open');
                 }
             }

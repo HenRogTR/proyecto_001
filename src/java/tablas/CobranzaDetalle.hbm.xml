@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 08/05/2014 09:52:37 AM by Hibernate Tools 3.6.0 -->
+<!-- Generated 14/05/2014 01:19:02 PM by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
     <class name="tablas.CobranzaDetalle" table="cobranza_detalle" catalog="proyecto_001">
         <id name="codCobranzaDetalle" type="java.lang.Integer">
             <column name="cod_cobranza_detalle" />
             <generator class="identity" />
         </id>
-        <many-to-one name="cobranza" class="tablas.Cobranza" fetch="select">
-            <column name="cobranza_cod_cobranza" not-null="true" />
-        </many-to-one>
         <many-to-one name="ventaCreditoLetra" class="tablas.VentaCreditoLetra" fetch="select">
             <column name="venta_credito_letra_cod_venta_credito_letra" not-null="true" />
+        </many-to-one>
+        <many-to-one name="cobranza" class="tablas.Cobranza" fetch="select">
+            <column name="cobranza_cod_cobranza" not-null="true" />
         </many-to-one>
         <property name="importe" type="java.lang.Double">
             <column name="importe" precision="10" />

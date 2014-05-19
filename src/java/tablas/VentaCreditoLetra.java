@@ -1,5 +1,5 @@
 package tablas;
-// Generated 08/05/2014 09:52:36 AM by Hibernate Tools 3.6.0
+// Generated 14/05/2014 01:19:00 PM by Hibernate Tools 3.6.0
 
 
 import java.util.Date;
@@ -20,9 +20,10 @@ public class VentaCreditoLetra  implements java.io.Serializable {
      private Date fechaVencimiento;
      private Double monto;
      private Double interes;
-     private Double interesPagado;
      private Date fechaPago;
      private Double totalPago;
+     private Double interesPagado;
+     private Date interesUltimoCalculo;
      private String registro;
      private Set<CobranzaDetalle> cobranzaDetalles = new HashSet<CobranzaDetalle>(0);
 
@@ -34,7 +35,7 @@ public class VentaCreditoLetra  implements java.io.Serializable {
         this.ventaCredito = ventaCredito;
         this.registro = registro;
     }
-    public VentaCreditoLetra(VentaCredito ventaCredito, Integer moneda, Integer numeroLetra, String detalleLetra, Date fechaVencimiento, Double monto, Double interes, Double interesPagado, Date fechaPago, Double totalPago, String registro, Set<CobranzaDetalle> cobranzaDetalles) {
+    public VentaCreditoLetra(VentaCredito ventaCredito, Integer moneda, Integer numeroLetra, String detalleLetra, Date fechaVencimiento, Double monto, Double interes, Date fechaPago, Double totalPago, Double interesPagado, Date interesUltimoCalculo, String registro, Set<CobranzaDetalle> cobranzaDetalles) {
        this.ventaCredito = ventaCredito;
        this.moneda = moneda;
        this.numeroLetra = numeroLetra;
@@ -42,9 +43,10 @@ public class VentaCreditoLetra  implements java.io.Serializable {
        this.fechaVencimiento = fechaVencimiento;
        this.monto = monto;
        this.interes = interes;
-       this.interesPagado = interesPagado;
        this.fechaPago = fechaPago;
        this.totalPago = totalPago;
+       this.interesPagado = interesPagado;
+       this.interesUltimoCalculo = interesUltimoCalculo;
        this.registro = registro;
        this.cobranzaDetalles = cobranzaDetalles;
     }
@@ -105,13 +107,6 @@ public class VentaCreditoLetra  implements java.io.Serializable {
     public void setInteres(Double interes) {
         this.interes = interes;
     }
-    public Double getInteresPagado() {
-        return this.interesPagado;
-    }
-    
-    public void setInteresPagado(Double interesPagado) {
-        this.interesPagado = interesPagado;
-    }
     public Date getFechaPago() {
         return this.fechaPago;
     }
@@ -125,6 +120,20 @@ public class VentaCreditoLetra  implements java.io.Serializable {
     
     public void setTotalPago(Double totalPago) {
         this.totalPago = totalPago;
+    }
+    public Double getInteresPagado() {
+        return this.interesPagado;
+    }
+    
+    public void setInteresPagado(Double interesPagado) {
+        this.interesPagado = interesPagado;
+    }
+    public Date getInteresUltimoCalculo() {
+        return this.interesUltimoCalculo;
+    }
+    
+    public void setInteresUltimoCalculo(Date interesUltimoCalculo) {
+        this.interesUltimoCalculo = interesUltimoCalculo;
     }
     public String getRegistro() {
         return this.registro;

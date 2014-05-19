@@ -2,7 +2,11 @@
     Document   : ventaCreditoLetraResumenLeer
     Created on : 05/10/2013, 11:09:42 AM
     Author     : Henrri
---%><%@page import="utilitarios.cManejoFechas"%>
+--%>
+
+<%@page import="otrasTablasClases.cDatosExtras"%>
+<%@page import="java.util.Date"%>
+<%@page import="utilitarios.cManejoFechas"%>
 <%@page import="utilitarios.cOtros"%>
 <%@page import="tablas.VentaCreditoLetra"%>
 <%@page import="java.util.Iterator"%>
@@ -18,7 +22,14 @@
     String margen = "";
     try {
         codCliente = Integer.parseInt(request.getParameter("codCliente"));
-        List lVentaCreditoLetra = new cVentaCreditoLetra().leer_porCodCliente(new cDatosCliente().leer_cod(codCliente).getPersona().getCodPersona());
+        //actualizamos letras pendientes interes
+        Date fechaVencimiento = new Date();
+        int diaEspera = new cDatosExtras().leer_diaEspera().getEntero();
+        Date fechaVencimientoEspera = new cManejoFechas().StringADate(new cManejoFechas().fechaSumarDias(fechaVencimiento, -diaEspera));
+        List VCLetra = new cVentaCreditoLetra().leer_cliente_interesSinActualizar(fechaVencimientoEspera, fechaVencimiento, true, codCliente);
+        new cVentaCreditoLetra().actualizar_interes(VCLetra, fechaVencimiento);
+
+        List lVentaCreditoLetra = new cVentaCreditoLetra().leer_codCliente(codCliente);
         cOtros objcOtros = new cOtros();
         cManejoFechas objcManejoFechas = new cManejoFechas();
         if (lVentaCreditoLetra != null) {
@@ -36,7 +47,7 @@
                 } else {
                     margen = "";
                 }
-                double saldo = objVentaCreditoLetra.getMonto() - objVentaCreditoLetra.getTotalPago();
+                double saldo = objVentaCreditoLetra.getMonto() - objVentaCreditoLetra.getTotalPago() + objVentaCreditoLetra.getInteres() - objVentaCreditoLetra.getInteresPagado();
                 int diasRetraso = objcManejoFechas.diferenciaDias(objVentaCreditoLetra.getFechaVencimiento());
                 if (saldo > 0 & diasRetraso > 0) {
                     dias = String.valueOf(diasRetraso);
@@ -54,15 +65,14 @@
                         + ",\"numeroLetras\":\"" + objVentaCreditoLetra.getNumeroLetra() + "\""
                         + ",\"detalleLetra\":\"" + objVentaCreditoLetra.getDetalleLetra() + "\""
                         + ",\"fechaVencimiento\":\"" + objcManejoFechas.DateAString(objVentaCreditoLetra.getFechaVencimiento()) + "\""
-                        + ",\"monto\":\"" + objcOtros.agregarCerosNumeroFormato(objVentaCreditoLetra.getMonto(), 2) + "\""
-                        + ",\"interes\":\"" + objcOtros.agregarCerosNumeroFormato(objVentaCreditoLetra.getInteres(), 2) + "\""
-                        + ",\"totalPago\":\"" + objcOtros.agregarCerosNumeroFormato(objVentaCreditoLetra.getTotalPago(), 2) + "\""
+                        + ",\"monto\":\"" + objcOtros.decimalFormato(objVentaCreditoLetra.getMonto(), 2) + "\""
+                        + ",\"interes\":\"" + objcOtros.decimalFormato(objVentaCreditoLetra.getInteres(), 2) + "\""
+                        + ",\"totalPago\":\"" + objcOtros.decimalFormato(objVentaCreditoLetra.getTotalPago() + objVentaCreditoLetra.getInteresPagado(), 2) + "\""
                         + ",\"fechaPago\":\"" + objcManejoFechas.DateAString(objVentaCreditoLetra.getFechaPago()) + "\""
-                        + ",\"saldo\":\"" + new cOtros().decimalFormato(saldo + objVentaCreditoLetra.getInteres(), 2) + "\""
+                        + ",\"saldo\":\"" + new cOtros().decimalFormato(saldo, 2) + "\""
                         + ",\"diasRetraso\":\"" + dias + "\""
                         + ",\"estilo\":\"" + estilo + "\""
                         + ",\"finalVenta\":\"" + margen + "\""
-                        //datos de venta
                         + ",\"codVenta\":" + objVentaCreditoLetra.getVentaCredito().getVentas().getCodVentas()
                         + ",\"docNumeroSerie\":\"" + objVentaCreditoLetra.getVentaCredito().getVentas().getDocSerieNumero() + "\""
                         + "}");

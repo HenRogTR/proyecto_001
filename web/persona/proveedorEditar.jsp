@@ -4,11 +4,11 @@
     Author     : Henrri
 --%>
 
+<%@page import="utilitarios.cOtros"%>
 <%@page import="personaClases.cProveedor"%>
 <%@page import="tablas.Proveedor"%>
 <%@page import="tablas.Usuario"%>
-<%
-    Usuario objUsuario = (Usuario) session.getAttribute("usuario");
+<%    Usuario objUsuario = (Usuario) session.getAttribute("usuario");
     if (objUsuario == null) {
         session.removeAttribute("direccion");
         session.setAttribute("direccion", "persona/proveedorListar");
@@ -18,7 +18,6 @@
 
         Proveedor objProveedor = new Proveedor();
         cProveedor objcProveedor = new cProveedor();
-        cUtilitarios objcUtilitarios = new cUtilitarios();
         try {
             codProveedor = (Integer) session.getAttribute("codProveedorEditar");
             objProveedor = objcProveedor.leer_cod(codProveedor);
@@ -83,7 +82,7 @@
                         <tbody>
                             <tr>
                                 <th style="width: 120px;"><label>Código</label></th>
-                                <td style="width: 200px;"><input type="text" name="codProveedor" id="codProveedor" value="<%=objcUtilitarios.agregarCeros_int(objProveedor.getCodProveedor(), 8)%>" class="tamanio lectura" readonly=""/></td>
+                                <td style="width: 200px;"><input type="text" name="codProveedor" id="codProveedor" value="<%=new cOtros().agregarCeros_int(objProveedor.getCodProveedor(), 8)%>" class="tamanio lectura" readonly=""/></td>
                                 <th style="width: 80px;"><label>Ruc*</label></th>
                                 <td style="width: 200px;"><input type="text" name="ruc" id="ruc" class="tamanio" placeholder="20123456782" value="<%=objProveedor.getRuc()%>"/></td>
                             </tr>

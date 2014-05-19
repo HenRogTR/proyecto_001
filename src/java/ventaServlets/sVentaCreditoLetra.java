@@ -52,35 +52,6 @@ public class sVentaCreditoLetra extends HttpServlet {
             return;
         }
 
-        if (accion.equals("interesActualizar")) {
-            String fechaString = "";
-            Date fechaDate = null;
-            int esperaDia = 0;
-            try {
-                fechaString = request.getParameter("fecha");
-                esperaDia = Integer.parseInt(request.getParameter("esperaDia"));
-                if (!new cValidacion().validarFecha(fechaString)) {
-                    out.print("Fecha y/o formato de fecha incorrecta.");
-                    return;
-                }
-                fechaDate = new cManejoFechas().StringADate(fechaString);
-                fechaDate = new cManejoFechas().StringADate(new cManejoFechas().fechaSumarDias(fechaDate, -esperaDia));
-
-                //actualizar todos los intereses a cero
-                if (!new cVentaCreditoLetra().actualizar_interesCero(new cVentaCreditoLetra().leer_letraConDeuda())) {
-                    out.print("Error en actualizacion.");
-                    return;
-                }
-                //listar los que se venceran
-                List VCLetraList = new cVentaCreditoLetra().letrasVencidas_todos_empresaAfectada_ordenNombresC_SC(fechaDate, true);
-
-                out.print(new cVentaCreditoLetra().actualizar_interes(VCLetraList, fechaDate) ? "1" : "Error al actualizar");
-            } catch (Exception e) {
-                out.println("Error en parámetros.");
-            }
-            return;
-        }
-
         out.print("La acción (" + accion + ") no ha sido implementada.");
     }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 08/05/2014 09:52:37 AM by Hibernate Tools 3.6.0 -->
+<!-- Generated 14/05/2014 01:19:02 PM by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
     <class name="tablas.Persona" table="persona" catalog="proyecto_001">
         <id name="codPersona" type="java.lang.Integer">
@@ -56,12 +56,6 @@
         <property name="registro" type="string">
             <column name="registro" length="65535" not-null="true" />
         </property>
-        <set name="personals" table="personal" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="persona_cod_persona" not-null="true" />
-            </key>
-            <one-to-many class="tablas.Personal" />
-        </set>
         <set name="PNaturals" table="p_natural" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="persona_cod_persona" not-null="true" />
@@ -74,17 +68,23 @@
             </key>
             <one-to-many class="tablas.Usuario" />
         </set>
+        <set name="cobranzas" table="cobranza" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="persona_cod_persona" not-null="true" />
+            </key>
+            <one-to-many class="tablas.Cobranza" />
+        </set>
         <set name="ventases" table="ventas" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="persona_cod_persona" not-null="true" />
             </key>
             <one-to-many class="tablas.Ventas" />
         </set>
-        <set name="cobranzas" table="cobranza" inverse="true" lazy="true" fetch="select">
+        <set name="personals" table="personal" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="persona_cod_persona" not-null="true" />
             </key>
-            <one-to-many class="tablas.Cobranza" />
+            <one-to-many class="tablas.Personal" />
         </set>
         <set name="datosClientes" table="datos_cliente" inverse="true" lazy="true" fetch="select">
             <key>

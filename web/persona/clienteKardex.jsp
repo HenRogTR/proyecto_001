@@ -5,9 +5,6 @@
 --%>
 
 <%@page import="utilitarios.cManejoFechas"%>
-<%
-    cManejoFechas objcManejoFechas = new cManejoFechas();
-%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -22,7 +19,7 @@
         <!--cambios-->
         <%@include file="../principal/inclusiones.jsp" %>
         <!--propio-->
-        <script type="text/javascript" src="../librerias/persona/cliente/clienteKardex.js?v14.01.17"></script>
+        <script type="text/javascript" src="../librerias/persona/cliente/clienteKardex.js?v14.05.15"></script>
         <script type="text/javascript" src="../librerias/plugin/mask/jquery.mask.min.js"></script>
         <style>
             .ui-autocomplete {
@@ -44,7 +41,7 @@
         <input type="hidden" name="paginaActualPermiso" id="permisoPaginaP2" value="" title="KARDEX DE CLIENTES"/>
         <div id="wrap">
             <div id="header">
-                <label class="horaCabecera"><%=objcManejoFechas.fechaCabecera()%></label>
+                <label class="horaCabecera"><%=new cManejoFechas().fechaCabecera()%></label>
             </div>
             <div id="right" style="width: 1024px;">
                 <div id="rightSub1" class="ocultar">
@@ -117,10 +114,10 @@
                                             <th style="width: 90px;"><span>Detalle</span></th>
                                             <th style="width: 70px;"><span>F. Venc.</span></th>
                                             <th style="width: 60px;"><span>Cuota</span></th>
+                                            <th style="width: 60px;"><span>I(%)</span></th>
                                             <th style="width: 60px;"><span>Pagado</span></th>
                                             <th style="width: 70px;"><span>F. Pago</span></th>
                                             <th style="width: 40px;"><span>Días A.</span></th>
-                                            <th style="width: 60px;"><span>I(%)</span></th>
                                             <th><span>Saldo</span></th>
                                         </tr>
                                     </thead>

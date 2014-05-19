@@ -53,8 +53,18 @@ public class sDatosExtras extends HttpServlet {
         if (accion.equals("interesFactorActualizar")) {
             try {
                 Double interesFactor = Double.parseDouble(request.getParameter("interesNuevo"));
-                DatosExtras objDatosExtras=new cDatosExtras().leer_interesFactor();
-                out.print((new cDatosExtras().actualizar_interesFactor(objDatosExtras.getCodDatosExtras(),interesFactor)) ? interesFactor : "Error en actualización");
+                DatosExtras objDatosExtras = new cDatosExtras().leer_interesFactor();
+                out.print((new cDatosExtras().actualizar_interesFactor(objDatosExtras.getCodDatosExtras(), interesFactor)) ? interesFactor : "Error en actualización");
+            } catch (Exception e) {
+                out.print("Error de parámetros (" + e.getMessage() + ")");
+            }
+            return;
+        }
+        if (accion.equals("diaEspera_actualizar")) {
+            try {
+                int diaEspera = Integer.parseInt(request.getParameter("diaEspera"));
+                DatosExtras objDatosExtras = new cDatosExtras().leer_diaEspera();
+                out.print((new cDatosExtras().actualizar_diaEspera(objDatosExtras.getCodDatosExtras(), diaEspera)) ? objDatosExtras.getCodDatosExtras() : "Error en actualización");
             } catch (Exception e) {
                 out.print("Error de parámetros (" + e.getMessage() + ")");
             }

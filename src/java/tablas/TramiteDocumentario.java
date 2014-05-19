@@ -1,5 +1,5 @@
 package tablas;
-// Generated 08/05/2014 09:52:36 AM by Hibernate Tools 3.6.0
+// Generated 14/05/2014 01:19:00 PM by Hibernate Tools 3.6.0
 
 
 import java.util.Date;
@@ -11,9 +11,9 @@ public class TramiteDocumentario  implements java.io.Serializable {
 
 
      private Integer codTramiteDocumentario;
-     private TipoDocumento tipoDocumento;
-     private Ventas ventas;
      private EstadoDocumento estadoDocumento;
+     private Ventas ventas;
+     private TipoDocumento tipoDocumento;
      private Date fechaSolicitud;
      private Date fechaProbableEntrega;
      private Date fechaEntrega;
@@ -24,19 +24,19 @@ public class TramiteDocumentario  implements java.io.Serializable {
     }
 
 	
-    public TramiteDocumentario(TipoDocumento tipoDocumento, Ventas ventas, EstadoDocumento estadoDocumento, Date fechaSolicitud, Date fechaProbableEntrega, Date fechaEntrega, String registro) {
-        this.tipoDocumento = tipoDocumento;
-        this.ventas = ventas;
+    public TramiteDocumentario(EstadoDocumento estadoDocumento, Ventas ventas, TipoDocumento tipoDocumento, Date fechaSolicitud, Date fechaProbableEntrega, Date fechaEntrega, String registro) {
         this.estadoDocumento = estadoDocumento;
+        this.ventas = ventas;
+        this.tipoDocumento = tipoDocumento;
         this.fechaSolicitud = fechaSolicitud;
         this.fechaProbableEntrega = fechaProbableEntrega;
         this.fechaEntrega = fechaEntrega;
         this.registro = registro;
     }
-    public TramiteDocumentario(TipoDocumento tipoDocumento, Ventas ventas, EstadoDocumento estadoDocumento, Date fechaSolicitud, Date fechaProbableEntrega, Date fechaEntrega, String detalle, String registro) {
-       this.tipoDocumento = tipoDocumento;
-       this.ventas = ventas;
+    public TramiteDocumentario(EstadoDocumento estadoDocumento, Ventas ventas, TipoDocumento tipoDocumento, Date fechaSolicitud, Date fechaProbableEntrega, Date fechaEntrega, String detalle, String registro) {
        this.estadoDocumento = estadoDocumento;
+       this.ventas = ventas;
+       this.tipoDocumento = tipoDocumento;
        this.fechaSolicitud = fechaSolicitud;
        this.fechaProbableEntrega = fechaProbableEntrega;
        this.fechaEntrega = fechaEntrega;
@@ -51,12 +51,12 @@ public class TramiteDocumentario  implements java.io.Serializable {
     public void setCodTramiteDocumentario(Integer codTramiteDocumentario) {
         this.codTramiteDocumentario = codTramiteDocumentario;
     }
-    public TipoDocumento getTipoDocumento() {
-        return this.tipoDocumento;
+    public EstadoDocumento getEstadoDocumento() {
+        return this.estadoDocumento;
     }
     
-    public void setTipoDocumento(TipoDocumento tipoDocumento) {
-        this.tipoDocumento = tipoDocumento;
+    public void setEstadoDocumento(EstadoDocumento estadoDocumento) {
+        this.estadoDocumento = estadoDocumento;
     }
     public Ventas getVentas() {
         return this.ventas;
@@ -65,12 +65,12 @@ public class TramiteDocumentario  implements java.io.Serializable {
     public void setVentas(Ventas ventas) {
         this.ventas = ventas;
     }
-    public EstadoDocumento getEstadoDocumento() {
-        return this.estadoDocumento;
+    public TipoDocumento getTipoDocumento() {
+        return this.tipoDocumento;
     }
     
-    public void setEstadoDocumento(EstadoDocumento estadoDocumento) {
-        this.estadoDocumento = estadoDocumento;
+    public void setTipoDocumento(TipoDocumento tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
     }
     public Date getFechaSolicitud() {
         return this.fechaSolicitud;

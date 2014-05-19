@@ -4,6 +4,7 @@
     Author     : Henrri
 --%>
 
+<%@page import="otrasTablasClases.cDatosExtras"%>
 <%@page import="tablas.VentasDetalle"%>
 <%@page import="ventaClases.cVentasDetalle"%>
 <%@page import="utilitarios.cOtros"%>
@@ -411,6 +412,13 @@
                             Double interes = 0.00;
                             Date fechaPago = null;
                             Double totalPago = 0.00;
+                            Double interesPagado = 0.00;
+                            Date interesUltimoCalculo = null;
+
+                            Integer diaRetraso = 0;
+                            Double interesSumar = 0.00;
+                            double factorInteres = (new cDatosExtras().leer_interesFactor().getDecimalDato() / 100) / 30;
+                            int diaEspera = new cDatosExtras().leer_diaEspera().getEntero();
 
                             Integer codClienteAux = 0;
                             Integer codVentaAux = 0;
@@ -437,6 +445,18 @@
                                 interes = (Double) dato[18];
                                 fechaPago = (Date) dato[19];
                                 totalPago = (Double) dato[20];
+                                interesPagado = (Double) dato[21];
+                                interesUltimoCalculo = (Date) dato[22];
+
+                                if (interesUltimoCalculo == null) {//se tomara el ultimo pago o la fecha de vencimiento
+                                    diaRetraso = new cManejoFechas().diferenciaDosDias(fechaDate, fechaPago != null ? fechaPago : fechaVencimiento);
+                                } else {
+                                    diaRetraso = new cManejoFechas().diferenciaDosDias(fechaDate, interesUltimoCalculo);
+                                }
+                                diaRetraso = diaRetraso < 0 ? 0 : diaRetraso;
+                                diaRetraso = diaRetraso <= diaEspera ? 0 : diaRetraso;      //todos aquellos dentro de los dias de espera no se generan intereses.
+                                interesSumar = (monto - totalPago) * factorInteres * diaRetraso;    //solo se genera interes del capital
+                                interes += interesSumar;
 
                                 if (!codClienteAux.equals(codCliente)) {
                                     codClienteAux = codCliente;
@@ -491,12 +511,12 @@
                             <td><%=new cManejoFechas().DateAString(fechaVencimiento)%></td>
                             <td class="derecha"><div style="padding-right: 5px;"><%=new cOtros().decimalFormato(monto, 2)%></div></td>
                             <td class="derecha"><div style="padding-right: 5px;"><%=new cOtros().decimalFormato(interes, 2)%></div></td>
-                            <td class="derecha"><div style="padding-right: 5px;"><%=new cOtros().decimalFormato(totalPago, 2)%></div></td>
-                            <td class="derecha"><div style="padding-right: 5px;"><%=new cOtros().decimalFormato((monto - totalPago + interes), 2)%></div></td>
+                            <td class="derecha"><div style="padding-right: 5px;"><%=new cOtros().decimalFormato(totalPago + interesPagado, 2)%></div></td>
+                            <td class="derecha"><div style="padding-right: 5px;"><%=new cOtros().decimalFormato((monto - totalPago + interes - interesPagado), 2)%></div></td>
                             <td><%=new cManejoFechas().DateAString(fechaPago)%></td>
                         </tr>
                         <%
-                                totalDeudaAux += monto - totalPago + interes;
+                                totalDeudaAux += monto - totalPago + interes - interesPagado;
                             }
                         %>
                         <tr class="bottom2">

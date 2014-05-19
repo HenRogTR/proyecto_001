@@ -45,26 +45,18 @@
                                 <tbody>
                                     <tr>
                                         <th class="ancho140px"><span>Factor Interés M. </span><span id="b_interesCambiar" class="boton iconoSoloPequenio edit">&nbsp;</span></th>
-                                        <td class="ancho140px">
+                                        <td class="ancho60px">
                                             <span id="interesFactor" class="vaciar">0.00</span>
                                             <span class="esperando">&nbsp;</span><span>%</span>
                                         </td>
                                     </tr>
                                     <tr>
                                         <th>
-                                            <span>Dias de espera.</span>
+                                            <span>Dias de espera.</span><span id="b_diaEspera_cambiar" class="boton iconoSoloPequenio edit">&nbsp;</span>
                                         </th>
-                                        <td>
-                                            <input type="text" id="esperaDia" value="8" class="derecha entrada ancho100px"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            <span>Act. Manual (Todos)</span>
-                                        </th>
-                                        <td>                                            
-                                            <input type="text" id="fecha_interesFijar" value="" class="fecha_datepicker entrada ancho80px"/>
-                                            <span id="b_interes_actualizar" class="boton iconoSoloPequenio update">&nbsp;</span>
+                                        <td class="derecha">
+                                            <span id="diaEspera" class="vaciar derecha ocultar" style="padding-right: 20px;">0</span>
+                                            <span class="esperando">&nbsp;</span>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -90,6 +82,7 @@
                             </table>
                         </div>
                     </div>
+                    <!--dialog-->
                     <div id="d_interesCambiar" title="Cambiar tasa de interés.">
                         <table class="reporte-tabla-1 anchoTotal">
                             <tr>
@@ -110,13 +103,25 @@
                             </tr>
                         </table>
                     </div>
-                    <div id="d_interesGeneralActualizar" title="Actualización de intereses.">
-                        <div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
-                            <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                                <strong>¡Alerta!</strong><br> Actualizar la información solicitada tomara su tiempo, 
-                                pedimos no cerrar o recargar la página. Sólo se actualizará de aquellos clientes que
-                                pertenecen a una empresa que tengan el check marcado.</p>
-                        </div>
+                    <div id="d_diaEspera_cambiar" title="Cambiar dias de espera.">
+                        <table class="reporte-tabla-1 anchoTotal">
+                            <tr>
+                                <th class="ancho140px">
+                                    <span>D. ESPERA ANTERIOR</span>
+                                </th>
+                                <td class="contenedorEntrada derecha">
+                                    <span id="diaEspera_anterior" class="vaciar">0</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <span>D. ESPERA NUEVO</span>
+                                </th>
+                                <td class="contenedorEntrada">
+                                    <input type="text" id="diaEspera_nuevo" name="diaEspera_nuevo" class="anchoTotal entrada derecha limpiar"/>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
                 <%@include file="../principal/div2.jsp" %>

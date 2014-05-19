@@ -373,6 +373,7 @@ public class sVenta extends HttpServlet {
                             objVentaCreditoLetra.setTotalPago(0.00);
                             objVentaCreditoLetra.setMoneda(objVenta.getMoneda().equals("soles") ? 0 : 1);
                             objVentaCreditoLetra.setInteres(0.00);
+                            objVentaCreditoLetra.setInteresPagado(0.00);
                             objVentaCreditoLetra.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
                             if (m == 0) {
                                 objVentaCreditoLetra.setNumeroLetra(m);

@@ -4,6 +4,7 @@
     Author     : Henrri
 --%>
 
+<%@page import="otrasTablasClases.cDatosExtras"%>
 <%@page import="utilitarios.cOtros"%>
 <%@page import="java.util.Date"%>
 <%@page import="utilitarios.cManejoFechas"%>
@@ -13,6 +14,13 @@
 <%@page import="ventaClases.cVentaCreditoLetra"%>
 <%
     int codCliente = Integer.parseInt(request.getParameter("codCliente"));
+    //actualizamos letras pendientes interes.
+    Date fechaBase = new Date();
+    int diaEspera = new cDatosExtras().leer_diaEspera().getEntero();
+    Date fechaVencimientoEspera = new cManejoFechas().StringADate(new cManejoFechas().fechaSumarDias(fechaBase, -diaEspera));
+    List VCLetra = new cVentaCreditoLetra().leer_cliente_interesSinActualizar(fechaVencimientoEspera, fechaBase, true, codCliente);
+    new cVentaCreditoLetra().actualizar_interes(VCLetra, fechaBase);
+    
     List VCLRMList = new cVentaCreditoLetra().leer_resumenPagos(new cDatosCliente().leer_cod(codCliente).getPersona().getCodPersona());
 %>
 <table class="reporte-tabla-2 anchoTotal" style="font-size: 9px;">

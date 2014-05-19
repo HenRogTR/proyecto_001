@@ -4,7 +4,9 @@
     Author     : Henrri
 --%>
 
-
+<%@page import="ventaClases.cVentaCreditoLetra"%>
+<%@page import="otrasTablasClases.cDatosExtras"%>
+<%@page import="java.util.Date"%>
 <%@page import="tablas.VentasSerieNumero"%>
 <%@page import="tablas.VentasDetalle"%>
 <%@page import="tablas.VentaCreditoLetra"%>
@@ -22,13 +24,18 @@
     List ventaList = null;
     try {
         codCliente = Integer.parseInt(request.getParameter("codCliente"));
+        //actualizamos letras pendientes interes
+        Date fechaVencimiento = new Date();
+        int diaEspera = new cDatosExtras().leer_diaEspera().getEntero();
+        Date fechaVencimientoEspera = new cManejoFechas().StringADate(new cManejoFechas().fechaSumarDias(fechaVencimiento, -diaEspera));
+        List VCLetra = new cVentaCreditoLetra().leer_cliente_interesSinActualizar(fechaVencimientoEspera, fechaVencimiento, true, codCliente);
+        new cVentaCreditoLetra().actualizar_interes(VCLetra, fechaVencimiento);
+
         ventaList = new cVenta().leer_codPersona_orderByAsc(new cDatosCliente().leer_cod(codCliente).getPersona().getCodPersona());
     } catch (Exception e) {
         return;
     }
     int a = ventaList.size();
-%>
-<%
     if (a != 0) {
 %>            
 <table class="reporte-tabla-2 anchoTotal" style="font-size: 9px;">
@@ -39,6 +46,8 @@
             String numeroLetra = "";
             String amortizado = "";
             String deuda = "";
+            Double interes = 0.00;
+            Double interesPagado = 0.00;
             String fondoAnulado = objVenta.getRegistro().substring(0, 1).equals("0") ? "#ff6666" : "";//estilo a las ventas anuladas
             if (objVenta.getTipo().equals("CREDITO")) {
                 VentaCredito objVentaCredito = new cVentaCredito().leer_codVenta_01(objVenta.getCodVentas());
@@ -46,9 +55,11 @@
                 Double montoAmortizado = 0.00;
                 for (VentaCreditoLetra objVentaCreditoLetra : objVentaCredito.getVentaCreditoLetras()) {
                     montoAmortizado += objVentaCreditoLetra.getTotalPago();
+                    interes += objVentaCreditoLetra.getInteres();
+                    interesPagado += objVentaCreditoLetra.getInteresPagado();
                 }
-                Double deudaTotal = objVenta.getNeto() - montoAmortizado;
-                amortizado = objcOtros.decimalFormato(montoAmortizado, 2);
+                Double deudaTotal = objVenta.getNeto() - montoAmortizado + interes - interesPagado;
+                amortizado = objcOtros.decimalFormato(montoAmortizado + interesPagado, 2);
                 deuda = objcOtros.decimalFormato(deudaTotal, 2);
             }
             String serie = "";
@@ -62,7 +73,7 @@
         <td style="width: 80px; background-color: <%=fondoAnulado%>"><span><a href="../sVenta?accionVenta=mantenimiento&codVenta=<%=objVenta.getCodVentas()%>" target="_blank"><%=objVenta.getDocSerieNumero()%></span></a></td>
         <td style="width: 80px; background-color: <%=fondoAnulado%>"><span><%=new cManejoFechas().DateAString(objVenta.getFecha())%></span></td>
         <td style="width: 60px; background-color: <%=fondoAnulado%>" class="derecha"><span style="padding-right: 2px"><%=objcOtros.agregarCerosNumeroFormato(objVenta.getNeto(), 2)%></span></td>
-        <td style="width: 60px; background-color: <%=fondoAnulado%>" class="derecha"><span style="padding-right: 2px">0.00</span></td>
+        <td style="width: 60px; background-color: <%=fondoAnulado%>" class="derecha"><span style="padding-right: 2px"><%=new cOtros().decimalFormato(interes, 2)%></span></td>
         <td style="width: 60px; background-color: <%=fondoAnulado%>" class="derecha"><span style="padding-right: 2px"><%=amortizado%></span></td>
         <td style="width: 60px; background-color: <%=fondoAnulado%>" class="derecha"><span style="padding-right: 2px"><%=deuda%></span></td>
         <td style="width: 50px; background-color: <%=fondoAnulado%>" class="derecha"><span style="padding-right: 2px"><%=numeroLetra%></span></td>
@@ -72,7 +83,6 @@
     <%
         }
     %>
-
 </table>
 <%
     }

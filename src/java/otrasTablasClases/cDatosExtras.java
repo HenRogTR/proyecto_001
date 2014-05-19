@@ -205,6 +205,50 @@ public class cDatosExtras {
         }
         return est;
     }
+    
+    public DatosExtras leer_diaEspera() {
+        DatosExtras obj = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("from DatosExtras de"
+                    + " where substring(de.registro,1,1) = 1"
+                    + " and de.descripcionDato = 'diaEspera'");
+            obj = (DatosExtras) q.list().get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return obj;
+    }
+    
+    public boolean actualizar_diaEspera(int codDatosExtras, int diaEspera) {
+        Boolean est = false;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            DatosExtras obj = (DatosExtras) sesion.get(DatosExtras.class, codDatosExtras);
+            obj.setEntero(diaEspera);
+            trns = sesion.beginTransaction();
+            sesion.update(obj);
+            sesion.getTransaction().commit();
+            est = true;
+        } catch (Exception e) {
+            if (trns != null) {
+                setError(e.getMessage());
+                trns.rollback();
+                e.printStackTrace();
+            }
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return est;
+    }
 
     public DatosExtras nombreEmpresa() {
         sesion = HibernateUtil.getSessionFactory().openSession();

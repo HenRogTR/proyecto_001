@@ -124,40 +124,6 @@ public class cCompraDetalle {
         }
         return list;
     }
-//    public List leer_compraDetalle_codCompra(int codCompra) {
-//        List l=new ArrayList();
-//        setError(null);
-//        try {
-//            sesion = HibernateUtil.getSessionFactory().openSession();
-//            Query q = sesion.createQuery("from CompraDetalle a where substring(registro,1,1)=1 and "
-//                    + "a.compra.codCompra=:codCompra")
-//                    .setParameter("codCompra", codCompra);
-//            l= q.list();
-//            sesion.disconnect();
-//        } catch (Exception e) {
-//            setError(e.getMessage());
-//            return null;
-//        }
-//        return l;
-//    }
-
-    public List leer_fechaInicio_fechaFin_orderByFechaCompra(Date fechaInicio, Date fechaFin, int codArticuloProducto) {
-        setError(null);
-        try {
-            sesion = HibernateUtil.getSessionFactory().openSession();
-            Query q = sesion.createQuery("from CompraDetalle a where a.compra.fechaFactura>=:fechaInicio and "
-                    + "a.compra.fechaFactura<=:fechaFin and "
-                    + "a.articuloProducto.codArticuloProducto=:codArticuloProducto and "
-                    + "substring(registro,1,1)=1 order by a.compra.fechaFactura")
-                    .setParameter("fechaInicio", fechaInicio)
-                    .setParameter("fechaFin", fechaFin)
-                    .setParameter("codArticuloProducto", codArticuloProducto);
-            return (List) q.list();
-        } catch (Exception e) {
-            setError(e.getMessage());
-        }
-        return new ArrayList();
-    }
 
     public List leer_admin() {
         setError(null);

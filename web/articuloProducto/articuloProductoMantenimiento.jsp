@@ -93,23 +93,25 @@
                                     </tr>
                                     <tr>
                                         <th class="medio">
-                                            STOCK <button id="bStock" class="boton iconoSoloPequenio info disabled" disabled="">&nbsp;</button>
+                                            STOCK <button id="bStock" class="boton iconoSoloPequenio info">&nbsp;</button>
                                         </th>
                                         <td id="lStock" class="vaciar"></td>
                                         <th class="medio">
-                                            PRECIO VENTA <button id="bPrecioVentaModificar" class="boton iconoSoloPequenio edit" disabled="">&nbsp;</button>
+                                            P. VENTA CONT.<button id="bPrecioVentaModificar" class="boton iconoSoloPequenio edit" disabled="">&nbsp;</button>
                                         </th>
                                         <td id="lPrecioVenta" class="vaciar"></td>
                                     </tr>
                                     <tr>
                                         <th>HABILITAR S/N</th>
                                         <td id="lUsarSerieNumero" class="vaciar"></td>
-                                        <th>UNIDAD DE MEDIDA</th>
-                                        <td id="lUnidadMedida" class="vaciar"></td>
+                                        <th>P. VENTA CASH <button id="bPrecioCashModificar" class="boton iconoSoloPequenio edit" disabled="">&nbsp;</button></th>
+                                        <td id="lPrecioCash" class="vaciar"></td>
                                     </tr>
                                     <tr>
                                         <th>REINTEGRO TRIBUTARIO</th>
                                         <td id="lReintegroTributario" class="vaciar"></td>
+                                        <th>UNIDAD DE MEDIDA</th>
+                                        <td id="lUnidadMedida" class="vaciar"></td>
                                     </tr>
                                     <tr>
                                         <th>FAMILIA</th>

@@ -4,17 +4,13 @@
     Author     : Henrri
 --%>
 
-<%@page import="utilitarios.cEmpresa"%>
 <%@page import="utilitarios.cManejoFechas"%>
-<%
-    cManejoFechas objcManejoFechas = new cManejoFechas();
-%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title><%=new cEmpresa().getAbreviatura()%> Zona mantenimiento</title>
+        <title>Zona mantenimiento</title>
         <!--todos-->
         <script type="text/javascript" src="../librerias/jquery/jquery-1.9.0-min.js" ></script>
         <script type="text/javascript" src="../librerias/jquery/jquery.timer-min.js" ></script>
@@ -29,7 +25,7 @@
         <input type="hidden" name="paginaActualPermiso" id="permisoPaginaP16" value="" title="MANTENIMIENTO DE ZONA"/>
         <div id="wrap">
             <div id="header">
-                <label class="horaCabecera"><%=objcManejoFechas.fechaCabecera()%></label>
+                <label class="horaCabecera"><%=new cManejoFechas().fechaCabecera()%></label>
             </div>
             <div id="right">
                 <div id="rightSub1" class="ocultar">

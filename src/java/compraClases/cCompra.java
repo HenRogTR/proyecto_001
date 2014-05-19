@@ -128,20 +128,6 @@ public class cCompra {
         return null;
     }
 
-    public List leer_fechaInicio_fechafin_orderByFechaCompra(Date fechaInicio, Date fechaFin) {
-        setError(null);
-        try {
-            sesion = HibernateUtil.getSessionFactory().openSession();
-            Query q = sesion.createQuery("from Compra where fechaFactura >= :fechaInicio and fechaFactura <= :fechaFin and substring(registro,1,1)='1' order by fechaFactura")
-                    .setParameter("fechaInicio", fechaInicio)
-                    .setParameter("fechaFin", fechaFin);
-            return (List) q.list();
-        } catch (Exception e) {
-            setError(e.getMessage());
-        }
-        return null;
-    }
-
     /**
      *
      * @param fechaInicio
@@ -241,25 +227,6 @@ public class cCompra {
             sesion.close();
         }
         return l;
-    }
-
-    public List leer_fechaInicio_fechafin_codProveedor_orderByFechaCompra(Date fechaInicio, Date fechaFin, int codProveedor) {
-        setError(null);
-        try {
-            sesion = HibernateUtil.getSessionFactory().openSession();
-            Query q = sesion.createQuery("from Compra a where "
-                    + "a.fechaFactura>=:fechaInicio and "
-                    + "a.fechaFactura<=:fechaFin and "
-                    + "a.proveedor.codProveedor=:codProveedor and "
-                    + "substring(registro,1,1)=1")
-                    .setParameter("fechaInicio", fechaInicio)
-                    .setParameter("fechaFin", fechaFin)
-                    .setParameter("codProveedor", codProveedor);
-            return (List) q.list();
-        } catch (Exception e) {
-            setError(e.getMessage());
-        }
-        return null;
     }
 
     public List leer_admin() {

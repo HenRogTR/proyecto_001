@@ -119,21 +119,6 @@ public class cDatosCliente {
         return null;
     }
 
-    public List leer_nombresC_autocompletado(String nombresC) {
-        setError(null);
-        sesion = HibernateUtil.getSessionFactory().openSession();
-        try {
-            Query q = sesion.createQuery("from DatosCliente dc where substring(dc.registro,1,1)=1 "
-                    + "and substring(dc.persona.registro,1,1)=1 "
-                    + "and dc.persona.nombresC like :nombresC")
-                    .setParameter("nombresC", "%" + nombresC + "%");
-            return q.list();
-        } catch (Exception e) {
-            setError("Error en consulta datos clientes: " + e.getMessage());
-        }
-        return null;
-    }
-
     public List leer_nombresC_autocompletado_ordenadoNombresCAsc(String nombresC) {
         setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
@@ -243,8 +228,7 @@ public class cDatosCliente {
         }
         return clienteList;
     }
-
-    //***************************************************
+    
     public int Crear(DatosCliente objDatosCliente) {
         setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();

@@ -61,8 +61,7 @@
         </script>
     </head>
     <body>
-        <%
-            Usuario objUsuario = (Usuario) session.getAttribute("usuario");
+        <%            Usuario objUsuario = (Usuario) session.getAttribute("usuario");
             if (objUsuario == null) {
                 session.removeAttribute("direccion");
                 session.setAttribute("direccion", "articuloProducto/marcaFrm.jsp");
@@ -81,8 +80,6 @@
 
             <div id="right">
                 <%
-//                    cUtilitarios objcUtilitarios = new cUtilitarios();
-
                     Marca objMarca = new Marca();
                     String accion = (String) session.getAttribute("accionMarca");
                     if (accion == null) {
@@ -95,7 +92,7 @@
                             codigo = String.valueOf(codMarca);
                         }
                 %>
-                <h3 class="titulo"><%=accion2.toUpperCase() %> MARCA</h3>
+                <h3 class="titulo"><%=accion2.toUpperCase()%> MARCA</h3>
                 <br>
                 <form id="marcaFrm" action="../sMarca">
                     <table class="tinytable">
@@ -109,7 +106,7 @@
                             <tr>
                                 <th><label>*Nombre :</label></th>
                                 <td>
-                                    <input type="text" id="descripcion" name="descripcion" value="<%=objMarca.getDescripcion()==null?"":objMarca.getDescripcion() %>" />
+                                    <input type="text" id="descripcion" name="descripcion" value="<%=objMarca.getDescripcion() == null ? "" : objMarca.getDescripcion()%>" />
                                 </td>
                             </tr>
                             <tr>
@@ -143,95 +140,95 @@
                 <script src="../librerias/jquery.validate/1.11.1/jquery.validate.min.js" type="text/javascript"></script>
                 <script src="../librerias/jquery.validate/1.11.1/localization/messages_es.js" type="text/javascript"></script>
                 <script type="text/javascript">
-                    $(document).ready(function() {
-                        $("input,textarea").blur(function() {
-                            $(this).val($(this).val().toUpperCase());
-                        });
-                        $("input,textarea").blur(function() {
-                            $(this).val($.trim($(this).val()));
-                        });
+            $(document).ready(function() {
+                $("input,textarea").blur(function() {
+                    $(this).val($(this).val().toUpperCase());
+                });
+                $("input,textarea").blur(function() {
+                    $(this).val($.trim($(this).val()));
+                });
+            });
+            $.validator.setDefaults({
+                submitHandler: function() {
+                    $("#cancelar").attr("disabled", "disabled").addClass("disabled");
+                    $("#restaurar").attr("disabled", "disabled").addClass("disabled");
+                    $("#accion").attr("disabled", "disabled").addClass("disabled");
+                    var form = $("#marcaFrm");
+                    var url = form.attr('action');  //la url del action del formulario
+                    var datos = form.serialize(); // los datos del formulario
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        data: datos,
+                        beforeSend: mostrarLoader, //funciones que definimos más abajo
+                        error: callback_error,
+                        success: mostrarRespuesta  //funciones que definimos más abajo
                     });
-                    $.validator.setDefaults({
-                        submitHandler: function() {
-                            $("#cancelar").attr("disabled", "disabled").addClass("disabled");
-                            $("#restaurar").attr("disabled", "disabled").addClass("disabled");
-                            $("#accion").attr("disabled", "disabled").addClass("disabled");
-                            var form = $("#marcaFrm");
-                            var url = form.attr('action');  //la url del action del formulario
-                            var datos = form.serialize(); // los datos del formulario
-                            $.ajax({
-                                type: 'POST',
-                                url: url,
-                                data: datos,
-                                beforeSend: mostrarLoader, //funciones que definimos más abajo
-                                error: callback_error,
-                                success: mostrarRespuesta  //funciones que definimos más abajo
-                            });
-                        },
-                        showErrors: function(map, list) {
-                            var focussed = document.activeElement;
-                            if (focussed && $(focussed).is("input, textarea")) {
-                                $(this.currentForm).tooltip("close", {currentTarget: focussed}, true)
-                            }
-                            this.currentElements.removeAttr("title").removeClass("ui-state-highlight");
-                            $.each(list, function(index, error) {
-                                $(error.element).attr("title", error.message).addClass("ui-state-highlight");
-                            });
-                            if (focussed && $(focussed).is("input, textarea")) {
-                                $(this.currentForm).tooltip("open", {target: focussed});
-                            }
-                        }
+                },
+                showErrors: function(map, list) {
+                    var focussed = document.activeElement;
+                    if (focussed && $(focussed).is("input, textarea")) {
+                        $(this.currentForm).tooltip("close", {currentTarget: focussed}, true)
+                    }
+                    this.currentElements.removeAttr("title").removeClass("ui-state-highlight");
+                    $.each(list, function(index, error) {
+                        $(error.element).attr("title", error.message).addClass("ui-state-highlight");
                     });
-                    (function() {
-                        $("#marcaFrm").tooltip({
-                            show: false,
-                            hide: false
-                        });
-                        $("#marcaFrm").validate({
-                            rules: {
-                                descripcion: {
-                                    required: true,
-                                    minlength: 2,
-                                    remote: "marcaVerificar.jsp"
-                                }
-                            },
-                            messages: {
-                                descripcion: {
-                                    required: "Por favor, introduzca un nombre de <b>Marca</b>",
-                                    minlength: "El nombre de Marca debe consistir de por lo menos <b>{0}</b> caracteres",
-                                    remote: "La marca ya existe"
-                                }
-                            }
-                        });
-                    })();
-                    function mostrarLoader() {
-                        $('#loader_gif').fadeIn("slow");
-                        $('#men').fadeIn("slow");
+                    if (focussed && $(focussed).is("input, textarea")) {
+                        $(this.currentForm).tooltip("open", {target: focussed});
                     }
-                    ;
-                    function callback_error(XMLHttpRequest, textStatus, errorThrown) {
-                        $("#loader_gif").fadeOut("slow");
-                        $("#men").fadeOut("slow");
-                        $("#mensaje").text("Error en el servidor, contacte al administrador");
-                        $("#basic-modal-content").modal();
-                    }
-                    ;
-                    function mostrarRespuesta(respuesta) {
-                        $("#loader_gif").fadeOut("slow");
-                        $("#men").fadeOut("slow");
-                        $("#descripcion").val("");
-                        $("#cancelar").removeAttr("disabled").removeClass("disabled");
-                        $("#restaurar").removeAttr("disabled").removeClass("disabled");
-                        $("#accion").removeAttr("disabled").removeClass("disabled");
-                        if (respuesta == "true") {
-                            $("#mensaje").text("Registro exitoso");
-                            $("#basic-modal-content").modal();
+                }
+            });
+            (function() {
+                $("#marcaFrm").tooltip({
+                    show: false,
+                    hide: false
+                });
+                $("#marcaFrm").validate({
+                    rules: {
+                        descripcion: {
+                            required: true,
+                            minlength: 2,
+                            remote: "marcaVerificar.jsp"
                         }
-                        else {
-                            $("#mensaje").text("Falló el registro");
-                            $("#basic-modal-content").modal();
+                    },
+                    messages: {
+                        descripcion: {
+                            required: "Por favor, introduzca un nombre de <b>Marca</b>",
+                            minlength: "El nombre de Marca debe consistir de por lo menos <b>{0}</b> caracteres",
+                            remote: "La marca ya existe"
                         }
                     }
+                });
+            })();
+            function mostrarLoader() {
+                $('#loader_gif').fadeIn("slow");
+                $('#men').fadeIn("slow");
+            }
+            ;
+            function callback_error(XMLHttpRequest, textStatus, errorThrown) {
+                $("#loader_gif").fadeOut("slow");
+                $("#men").fadeOut("slow");
+                $("#mensaje").text("Error en el servidor, contacte al administrador");
+                $("#basic-modal-content").modal();
+            }
+            ;
+            function mostrarRespuesta(respuesta) {
+                $("#loader_gif").fadeOut("slow");
+                $("#men").fadeOut("slow");
+                $("#descripcion").val("");
+                $("#cancelar").removeAttr("disabled").removeClass("disabled");
+                $("#restaurar").removeAttr("disabled").removeClass("disabled");
+                $("#accion").removeAttr("disabled").removeClass("disabled");
+                if (respuesta == "true") {
+                    $("#mensaje").text("Registro exitoso");
+                    $("#basic-modal-content").modal();
+                }
+                else {
+                    $("#mensaje").text("Falló el registro");
+                    $("#basic-modal-content").modal();
+                }
+            }
                 </script>
                 <%
                     }

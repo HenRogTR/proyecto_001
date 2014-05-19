@@ -1,5 +1,5 @@
 package tablas;
-// Generated 08/05/2014 09:52:36 AM by Hibernate Tools 3.6.0
+// Generated 14/05/2014 01:19:00 PM by Hibernate Tools 3.6.0
 
 
 
@@ -10,8 +10,8 @@ public class CobranzaDetalle  implements java.io.Serializable {
 
 
      private Integer codCobranzaDetalle;
-     private Cobranza cobranza;
      private VentaCreditoLetra ventaCreditoLetra;
+     private Cobranza cobranza;
      private Double importe;
      private Double interes;
      private String observacion;
@@ -21,14 +21,14 @@ public class CobranzaDetalle  implements java.io.Serializable {
     }
 
 	
-    public CobranzaDetalle(Cobranza cobranza, VentaCreditoLetra ventaCreditoLetra, String registro) {
-        this.cobranza = cobranza;
+    public CobranzaDetalle(VentaCreditoLetra ventaCreditoLetra, Cobranza cobranza, String registro) {
         this.ventaCreditoLetra = ventaCreditoLetra;
+        this.cobranza = cobranza;
         this.registro = registro;
     }
-    public CobranzaDetalle(Cobranza cobranza, VentaCreditoLetra ventaCreditoLetra, Double importe, Double interes, String observacion, String registro) {
-       this.cobranza = cobranza;
+    public CobranzaDetalle(VentaCreditoLetra ventaCreditoLetra, Cobranza cobranza, Double importe, Double interes, String observacion, String registro) {
        this.ventaCreditoLetra = ventaCreditoLetra;
+       this.cobranza = cobranza;
        this.importe = importe;
        this.interes = interes;
        this.observacion = observacion;
@@ -42,19 +42,19 @@ public class CobranzaDetalle  implements java.io.Serializable {
     public void setCodCobranzaDetalle(Integer codCobranzaDetalle) {
         this.codCobranzaDetalle = codCobranzaDetalle;
     }
-    public Cobranza getCobranza() {
-        return this.cobranza;
-    }
-    
-    public void setCobranza(Cobranza cobranza) {
-        this.cobranza = cobranza;
-    }
     public VentaCreditoLetra getVentaCreditoLetra() {
         return this.ventaCreditoLetra;
     }
     
     public void setVentaCreditoLetra(VentaCreditoLetra ventaCreditoLetra) {
         this.ventaCreditoLetra = ventaCreditoLetra;
+    }
+    public Cobranza getCobranza() {
+        return this.cobranza;
+    }
+    
+    public void setCobranza(Cobranza cobranza) {
+        this.cobranza = cobranza;
     }
     public Double getImporte() {
         return this.importe;

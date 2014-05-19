@@ -1,5 +1,5 @@
 package tablas;
-// Generated 08/05/2014 09:52:36 AM by Hibernate Tools 3.6.0
+// Generated 14/05/2014 01:19:00 PM by Hibernate Tools 3.6.0
 
 
 import java.util.Date;
@@ -11,8 +11,8 @@ public class Personal  implements java.io.Serializable {
 
 
      private Integer codPersonal;
-     private Area area;
      private Cargo cargo;
+     private Area area;
      private Persona persona;
      private Date fechaInicioActividades;
      private Date fechaFinActividades;
@@ -24,15 +24,15 @@ public class Personal  implements java.io.Serializable {
     }
 
 	
-    public Personal(Area area, Cargo cargo, Persona persona, String registro) {
-        this.area = area;
+    public Personal(Cargo cargo, Area area, Persona persona, String registro) {
         this.cargo = cargo;
+        this.area = area;
         this.persona = persona;
         this.registro = registro;
     }
-    public Personal(Area area, Cargo cargo, Persona persona, Date fechaInicioActividades, Date fechaFinActividades, Boolean estado, String observacion, String registro) {
-       this.area = area;
+    public Personal(Cargo cargo, Area area, Persona persona, Date fechaInicioActividades, Date fechaFinActividades, Boolean estado, String observacion, String registro) {
        this.cargo = cargo;
+       this.area = area;
        this.persona = persona;
        this.fechaInicioActividades = fechaInicioActividades;
        this.fechaFinActividades = fechaFinActividades;
@@ -48,19 +48,19 @@ public class Personal  implements java.io.Serializable {
     public void setCodPersonal(Integer codPersonal) {
         this.codPersonal = codPersonal;
     }
-    public Area getArea() {
-        return this.area;
-    }
-    
-    public void setArea(Area area) {
-        this.area = area;
-    }
     public Cargo getCargo() {
         return this.cargo;
     }
     
     public void setCargo(Cargo cargo) {
         this.cargo = cargo;
+    }
+    public Area getArea() {
+        return this.area;
+    }
+    
+    public void setArea(Area area) {
+        this.area = area;
     }
     public Persona getPersona() {
         return this.persona;

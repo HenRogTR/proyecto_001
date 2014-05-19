@@ -1,5 +1,5 @@
 package tablas;
-// Generated 08/05/2014 09:52:36 AM by Hibernate Tools 3.6.0
+// Generated 14/05/2014 01:19:00 PM by Hibernate Tools 3.6.0
 
 
 import java.util.HashSet;
@@ -12,8 +12,8 @@ public class KardexArticuloProducto  implements java.io.Serializable {
 
 
      private Integer codKardexArticuloProducto;
-     private Almacen almacen;
      private ArticuloProducto articuloProducto;
+     private Almacen almacen;
      private int codOperacion;
      private int codOperacionDetalle;
      private int tipoOperacion;
@@ -32,17 +32,17 @@ public class KardexArticuloProducto  implements java.io.Serializable {
     }
 
 	
-    public KardexArticuloProducto(Almacen almacen, ArticuloProducto articuloProducto, int codOperacion, int codOperacionDetalle, int tipoOperacion, String registro) {
-        this.almacen = almacen;
+    public KardexArticuloProducto(ArticuloProducto articuloProducto, Almacen almacen, int codOperacion, int codOperacionDetalle, int tipoOperacion, String registro) {
         this.articuloProducto = articuloProducto;
+        this.almacen = almacen;
         this.codOperacion = codOperacion;
         this.codOperacionDetalle = codOperacionDetalle;
         this.tipoOperacion = tipoOperacion;
         this.registro = registro;
     }
-    public KardexArticuloProducto(Almacen almacen, ArticuloProducto articuloProducto, int codOperacion, int codOperacionDetalle, int tipoOperacion, String detalle, Integer entrada, Integer salida, Integer stock, Double precio, Double precioPonderado, Double total, String observacion, String registro, Set<KardexSerieNumero> kardexSerieNumeros) {
-       this.almacen = almacen;
+    public KardexArticuloProducto(ArticuloProducto articuloProducto, Almacen almacen, int codOperacion, int codOperacionDetalle, int tipoOperacion, String detalle, Integer entrada, Integer salida, Integer stock, Double precio, Double precioPonderado, Double total, String observacion, String registro, Set<KardexSerieNumero> kardexSerieNumeros) {
        this.articuloProducto = articuloProducto;
+       this.almacen = almacen;
        this.codOperacion = codOperacion;
        this.codOperacionDetalle = codOperacionDetalle;
        this.tipoOperacion = tipoOperacion;
@@ -65,19 +65,19 @@ public class KardexArticuloProducto  implements java.io.Serializable {
     public void setCodKardexArticuloProducto(Integer codKardexArticuloProducto) {
         this.codKardexArticuloProducto = codKardexArticuloProducto;
     }
-    public Almacen getAlmacen() {
-        return this.almacen;
-    }
-    
-    public void setAlmacen(Almacen almacen) {
-        this.almacen = almacen;
-    }
     public ArticuloProducto getArticuloProducto() {
         return this.articuloProducto;
     }
     
     public void setArticuloProducto(ArticuloProducto articuloProducto) {
         this.articuloProducto = articuloProducto;
+    }
+    public Almacen getAlmacen() {
+        return this.almacen;
+    }
+    
+    public void setAlmacen(Almacen almacen) {
+        this.almacen = almacen;
     }
     public int getCodOperacion() {
         return this.codOperacion;

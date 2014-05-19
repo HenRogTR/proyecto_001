@@ -796,29 +796,6 @@ public class cArticuloProducto {
 
     //<editor-fold defaultstate="collapsed" desc="Haga clic en el signo + para mostrar descripción">
     /**
-     * Obtener un listado de todos los articulos de una determinada familia
-     *
-     * @param codFamilia
-     * @return
-     */
-    //</editor-fold>
-    public List leer_familia(int codFamilia) {
-        setError(null);
-        try {
-            sesion = HibernateUtil.getSessionFactory().openSession();
-            Query q = sesion.createQuery("from ArticuloProducto a where "
-                    + "a.familia.codFamilia=:codFamilia and "
-                    + "substring(registro,1,1)=1")
-                    .setParameter("codFamilia", codFamilia);
-            return (List) q.list();
-        } catch (Exception e) {
-            setError(e.getMessage());
-        }
-        return null;
-    }
-
-    //<editor-fold defaultstate="collapsed" desc="Haga clic en el signo + para mostrar descripción">
-    /**
      * Retorna una lista de articulos con coincidencias dadas en la la
      * descripción del artículo.
      *
@@ -837,50 +814,6 @@ public class cArticuloProducto {
             return (List) q.list();
         } catch (Exception e) {
             setError("Error leer x descripcion: " + e.getMessage());
-        }
-        return null;
-    }
-
-    //<editor-fold defaultstate="collapsed" desc="Haga clic en el signo + para mostrar descripción">
-    /**
-     * Listar articulos ordenados alfabeticamente
-     *
-     * @return
-     */
-    //</editor-fold>
-    public List leer_orderByDescripcion() {
-        setError(null);
-        try {
-            sesion = HibernateUtil.getSessionFactory().openSession();
-            Query q = sesion.createQuery("from ArticuloProducto a where "
-                    + "substring(registro,1,1)=1 "
-                    + "order by a.descripcion asc");
-            return (List) q.list();
-        } catch (Exception e) {
-            setError(e.getMessage());
-        }
-        return null;
-    }
-
-    //<editor-fold defaultstate="collapsed" desc="Haga clic en el signo + para mostrar descripción">
-    /**
-     *
-     * @param codFamilia
-     * @return
-     */
-    //</editor-fold>
-    public List leer_familia_orderByDescripcion(int codFamilia) {
-        setError(null);
-        try {
-            sesion = HibernateUtil.getSessionFactory().openSession();
-            Query q = sesion.createQuery("from ArticuloProducto a where "
-                    + "a.familia.codFamilia=:codFamilia and "
-                    + "substring(registro,1,1)=1 "
-                    + "order by a.descripcion asc")
-                    .setParameter("codFamilia", codFamilia);
-            return (List) q.list();
-        } catch (Exception e) {
-            setError(e.getMessage());
         }
         return null;
     }

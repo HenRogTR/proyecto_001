@@ -6,7 +6,7 @@
 
 <%
     out.print("[");
-    if (objeto != null) {
+    if (null != null) {
         out.print("{"
                 + "\"\":\"" + "" + "\""
                 + ", \"\":\"" + "" + "\""

@@ -62,7 +62,6 @@
                 + ",\"interes\":\"" + new cOtros().decimalFormato(objVentaCreditoLetra.getInteres(), 2) + "\""
                 + ",\"totalPago\":\"" + new cOtros().decimalFormato(objVentaCreditoLetra.getTotalPago(), 2) + "\""
                 + ",\"fechaPago\":\"" + new cManejoFechas().DateAString(objVentaCreditoLetra.getFechaPago()) + "\""
-                //                + ",\"saldo\":\"" + objcUtilitarios.agregarCerosNumeroFormato(objcUtilitarios.redondearDecimales(objVentaCreditoLetra.getMonto() - objVentaCreditoLetra.getTotalPago(), 2), 2) + "\""
                 + ",\"saldo\":\"" + new cOtros().decimalFormato(saldo, 2) + "\""
                 + ",\"diasRetraso\":\"" + dias + "\""
                 + ",\"estilo\":\"" + estilo + "\""

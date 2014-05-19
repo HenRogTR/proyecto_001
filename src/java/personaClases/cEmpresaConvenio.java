@@ -95,19 +95,6 @@ public class cEmpresaConvenio {
         }
     }
 
-    public List leer_ordeandoCodCobranza() {
-        setError(null);
-        try {
-            sesion = HibernateUtil.getSessionFactory().openSession();
-            Query q = sesion.createQuery("from EmpresaConvenio ec where substring(ec.registro,1,1)=1 "
-                    + "order by ec.codCobranza");
-            return (List) q.list();
-        } catch (Exception e) {
-            setError(e.getMessage());
-        }
-        return null;
-    }
-
     public EmpresaConvenio leer_cod(int codEmpresaConvenio) {
         sesion = HibernateUtil.getSessionFactory().openSession();
         return (EmpresaConvenio) sesion.get(EmpresaConvenio.class, codEmpresaConvenio);

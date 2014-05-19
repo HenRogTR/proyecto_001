@@ -11,9 +11,6 @@
 <%@page import="java.util.List"%>
 <%@page import="java.util.Date"%>
 <%@page import="utilitarios.cManejoFechas"%>
-<%
-    cManejoFechas objcManejoFechas = new cManejoFechas();
-%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -53,7 +50,7 @@
         <input type="hidden" name="paginaActualPermiso" id="permisoPaginaP19" value="" title=""/>
         <div id="wrap">
             <div id="header">
-                <label class="horaCabecera"><%=objcManejoFechas.fechaCabecera()%></label>
+                <label class="horaCabecera"><%=new cManejoFechas().fechaCabecera()%></label>
             </div>
             <div id="right" style="width: 1024px;">
                 <div id="rightSub1" class="ocultar">

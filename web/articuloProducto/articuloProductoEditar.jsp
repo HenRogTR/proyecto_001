@@ -4,6 +4,7 @@
     Author     : Henrri
 --%>
 
+<%@page import="utilitarios.cOtros"%>
 <%@page import="tablas.CompraDetalle"%>
 <%@page import="tablas.Marca"%>
 <%@page import="articuloProductoClases.cMarca"%>
@@ -14,8 +15,7 @@
 <%@page import="articuloProductoClases.cArticuloProducto"%>
 <%@page import="tablas.ArticuloProducto"%>
 <%@page import="tablas.Usuario"%>
-<%
-    Usuario objUsuario = (Usuario) session.getAttribute("usuario");
+<%    Usuario objUsuario = (Usuario) session.getAttribute("usuario");
     if (objUsuario == null) {
         session.removeAttribute("direccion");
         session.setAttribute("direccion", "articuloProducto/articuloProductoMantenimiento.jsp");
@@ -64,7 +64,6 @@
             </div>
             <div id="right">
                 <%
-                    cUtilitarios objcUtilitarios = new cUtilitarios();
                     cFamilia objcFamilia = new cFamilia();
                     cMarca objcMarca = new cMarca();
                 %>
@@ -96,7 +95,7 @@
                         <tbody>
                             <tr>
                                 <th style="width: 160px;"><label>Código</label></th>
-                                <td style="width: 200px;"><input type="text" name="codArticuloProducto" id="codArticuloProducto" class="lectura" value="<%=objcUtilitarios.agregarCeros_int(objArticuloProducto.getCodArticuloProducto(), 8)%>" readonly=""/></td>
+                                <td style="width: 200px;"><input type="text" name="codArticuloProducto" id="codArticuloProducto" class="lectura" value="<%=new cOtros().agregarCeros_int(objArticuloProducto.getCodArticuloProducto(), 8)%>" readonly=""/></td>
                                 <th style="width: 160px;"><label>Código de referencia</label></th>
                                 <td style="width: 200px;"><input type="text" name="codReferencia" id="codReferencia" class="tamanio"/></td>
                             </tr>

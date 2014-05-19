@@ -11,8 +11,7 @@
 <%@page import="compraClases.cCompraSerieNumero"%>
 <%@page import="java.util.List"%>
 <%@page import="tablas.Usuario"%>
-<%
-    Usuario objUsuario = (Usuario) session.getAttribute("usuario");
+<%    Usuario objUsuario = (Usuario) session.getAttribute("usuario");
     if (objUsuario == null) {
         session.removeAttribute("direccion");
         session.setAttribute("direccion", "articuloProducto/kardexArticuloProductoPorSN.jsp");
@@ -49,8 +48,7 @@
             <div id="right">
                 <h3 class="titulo">KARDEX DE ARTICULO X S/N</h3>
                 <br>
-                <%
-                    String serieNumero = request.getParameter("serieNumero") == null ? "" : request.getParameter("serieNumero").toUpperCase();
+                <%                    String serieNumero = request.getParameter("serieNumero") == null ? "" : request.getParameter("serieNumero").toUpperCase();
                 %>
                 <form action="kardexArticuloProductoPorSN.jsp">
                     <input type="text" name="serieNumero" value="<%=serieNumero%>" placeholder="S/N aquí" style="width: 400px;"/>
@@ -59,7 +57,6 @@
                 <br>
                 <%
                     if (!serieNumero.equals("")) {
-                        cUtilitarios objcUtilitarios = new cUtilitarios();
                         List lCompraSerieNumero = new cCompraSerieNumero().leer_serieNumero(serieNumero);
                 %>
                 <table class="reporte-tabla-1">
@@ -88,9 +85,9 @@
                         %>
                         <tr>
                             <td><%=objCompraSerieNumero.getCompraDetalle().getCompra().getDocSerieNumero()%></td>
-                            <td><%=objcUtilitarios.fechaDateToString(objCompraSerieNumero.getCompraDetalle().getCompra().getFechaFactura())%></td>
+                            <td><%=new cManejoFechas().DateAString(objCompraSerieNumero.getCompraDetalle().getCompra().getFechaFactura())%></td>
                             <td><%=objCompraSerieNumero.getCompraDetalle().getDescripcion()%></td>
-                            <td><%=objCompraSerieNumero.getSerieNumero() %></td>
+                            <td><%=objCompraSerieNumero.getSerieNumero()%></td>
                         </tr>
                         <%
                                 }
@@ -98,7 +95,7 @@
                         %>
                     </tbody>
                 </table>
-                    <br>
+                <br>
                 <%
                     //fin buscar compraSerieNumero
                     List lVentasSerieNumero = new cVentasSerieNumero().leer_serieNumero(serieNumero);
@@ -129,9 +126,9 @@
                         %>
                         <tr>
                             <td><%=objVentasSerieNumero.getVentasDetalle().getVentas().getDocSerieNumero()%></td>
-                            <td><%=objcUtilitarios.fechaDateToString(objVentasSerieNumero.getVentasDetalle().getVentas().getFecha())%></td>
+                            <td><%=new cManejoFechas().DateAString(objVentasSerieNumero.getVentasDetalle().getVentas().getFecha())%></td>
                             <td><%=objVentasSerieNumero.getVentasDetalle().getDescripcion()%></td>
-                            <td><%=objVentasSerieNumero.getSerieNumero() %></td>
+                            <td><%=objVentasSerieNumero.getSerieNumero()%></td>
                         </tr>
                         <%
                                 }

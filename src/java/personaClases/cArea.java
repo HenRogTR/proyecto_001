@@ -52,7 +52,6 @@ public class cArea {
         }
         return null;
     }
-    //*************************************************************************
 
     public int Crear(Area objArea) {
         setError(null);

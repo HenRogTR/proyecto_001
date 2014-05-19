@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 08/05/2014 09:52:37 AM by Hibernate Tools 3.6.0 -->
+<!-- Generated 14/05/2014 01:19:02 PM by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
     <class name="tablas.Almacen" table="almacen" catalog="proyecto_001">
         <id name="codAlmacen" type="java.lang.Integer">
@@ -20,17 +20,17 @@
         <property name="registro" type="string">
             <column name="registro" length="65535" not-null="true" />
         </property>
-        <set name="kardexArticuloProductos" table="kardex_articulo_producto" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="almacen_cod_almacen" not-null="true" />
-            </key>
-            <one-to-many class="tablas.KardexArticuloProducto" />
-        </set>
         <set name="compraDetalles" table="compra_detalle" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="almacen_cod_almacen" not-null="true" />
             </key>
             <one-to-many class="tablas.CompraDetalle" />
+        </set>
+        <set name="kardexArticuloProductos" table="kardex_articulo_producto" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="almacen_cod_almacen" not-null="true" />
+            </key>
+            <one-to-many class="tablas.KardexArticuloProducto" />
         </set>
     </class>
 </hibernate-mapping>

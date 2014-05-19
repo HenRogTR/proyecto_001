@@ -152,7 +152,7 @@ function fVenta(codCliente) {
                         var id = $(this).attr('id');
                         var tam = id.length;
                         var codVenta = id.substring(9, tam);
-                        fVentaCreditoLetra(codVenta);
+                        fVentaCreditoLetra(codVenta, codCliente);
                         fVentaDetalle(codVenta);
                     });
                     $('.tr_venta').bind('dblclick', function(event) {
@@ -163,7 +163,7 @@ function fVenta(codCliente) {
                     var id = $primero.attr('id');
                     var tam = id.length;
                     var codVenta = id.substring(9, tam);
-                    fVentaCreditoLetra(codVenta);
+                    fVentaCreditoLetra(codVenta, codCliente);
                     fVentaDetalle(codVenta);
                 } else {
                     $('#dVenta').empty();
@@ -219,8 +219,8 @@ function fVentaDetalle(codVenta) {
 }
 ;
 
-function fVentaCreditoLetra(codVenta) {
-    var data = {codVenta: codVenta};
+function fVentaCreditoLetra(codVenta, codCliente) {
+    var data = {codVenta: codVenta, codCliente: codCliente};
     var url = 'ajax/clienteKardex/ventaCreditoLetra.jsp';
     try {
         $.ajax({

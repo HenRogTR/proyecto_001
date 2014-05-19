@@ -6,18 +6,6 @@
 
 $(document).ready(function() {
 
-
-    $('#fecha_interesFijar')
-            .mask('00/00/0000')
-            .blur(function(e) {
-                if (!fValidarFecha(this.value)) {
-                    this.value = '';
-                }
-            })
-            .val($('#fechaActual').val());
-
-    $('#esperaDia').mask('#', {maxlength: false});
-
     $('#b_interesCambiar').click(function(e) {
         $('#interesAnterior').text($('#interesFactor').text());
         $('#interesNuevo').val('');
@@ -25,16 +13,10 @@ $(document).ready(function() {
         e.preventDefault();
     });
 
-    $('#b_interes_actualizar').click(function(e) {
-        if (!fValidarFecha($('#fecha_interesFijar').val())) {
-            $.growl.warning({title: 'Éxito', message: 'Formato de fecha incorrecta o no ingresada.', size: 'large'});
-            return;
-        }
-        if (!f_validarPositivo($('#esperaDia').val())) {
-            $.growl.warning({title: 'Éxito', message: 'Ingrese dias de espera.', size: 'large'});
-            return;
-        }
-        $('#d_interesGeneralActualizar').dialog('open');
+    $('#b_diaEspera_cambiar').click(function(e) {
+        $('#diaEspera_anterior').text($('#diaEspera').text());
+        $('#diaEspera_nuevo').val('');
+        $('#d_diaEspera_cambiar').dialog('open');
         e.preventDefault();
     });
 
@@ -45,6 +27,8 @@ $(document).ready(function() {
                     this.value = fNumeroFormato(this.value, 2, false);
                 }
             });
+
+    $('#diaEspera_nuevo').mask('#', {maxlength: false});
 });
 
 $(function() {
@@ -85,18 +69,33 @@ $(function() {
             $(this).dialog('close');
         }
     });
-    $('#d_interesGeneralActualizar').dialog({
+
+    $('#d_diaEspera_cambiar').dialog({
         autoOpen: false,
         modal: true,
         resizable: false,
-        height: 250,
-        width: 400,
+        height: 180,
+        width: 250,
         buttons: {
-            Cerrar: function() {
-                $(this).dialog('close');
-            },
             Continuar: function() {
-                f_interesActualizar();
+                var $diaEsperaNuevo = $('#diaEspera_nuevo');
+                if (!fValidarRequerido($diaEsperaNuevo.val())) {
+                    $.growl.warning({title: 'Alerta', message: 'Ingrese un valor válido.', size: 'large'});
+                    $diaEsperaNuevo.focus();
+                    return;
+                }
+                f_diaEspera_actualizar(
+                        $diaEsperaNuevo.val(),
+                        function(estado, mensaje) {
+                            if (estado) {
+                                $('#diaEspera').text($diaEsperaNuevo.val());
+                                $.growl.notice({title: 'Éxito', message: 'El día de espera se cambio con éxito.', size: 'large'});
+                                $('#d_diaEspera_cambiar').dialog('close');
+                            } else {
+                                $.growl.error({title: 'Error', message: mensaje, size: 'large'});
+                            }
+                        }
+                );
             }
         },
         close: function() {
@@ -160,7 +159,7 @@ function f_empresaConvenio() {
 ;
 //</editor-fold>
 
-//<editor-fold defaultstate="collapsed" desc="function f_interesFactor(). Clic en + para mas detalles.">
+//<editor-fold defaultstate="collapsed" desc="function f_interesFactorLeer(). Clic en + para mas detalles.">
 function f_interesFactorLeer() {
     $('#interesFactor').addClass('ocultar').next().removeClass('ocultar');
     var url = 'ajax/interesFactor.jsp';
@@ -191,6 +190,7 @@ function f_interesFactorLeer() {
 ;
 //</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="function f_interesFactorActualizar(interesNuevo, callback). Clic en + para mas detalles.">
 function f_interesFactorActualizar(interesNuevo, callback) {
     var data = {
         accion: 'interesFactorActualizar',
@@ -226,6 +226,76 @@ function f_interesFactorActualizar(interesNuevo, callback) {
     }
 }
 ;
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="function f_diaEsperaLeer(). Clic en + para mas detalles.">
+function f_diaEsperaLeer() {
+    $('#diaEspera').addClass('ocultar').next().removeClass('ocultar');
+    var url = 'ajax/diaEspera.jsp';
+    try {
+        $.ajax({
+            type: 'post',
+            url: url,
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                $('#lServidorError').text(errorThrown + '()');
+                $('#dServidorError').dialog('open');
+            },
+            success: function(ajaxResponse, textStatus) {
+                $('#diaEspera').text(ajaxResponse).removeClass('ocultar').next().addClass('ocultar');
+            },
+            statusCode: {
+                404: function() {
+                    $('#lServidorError').text('Página no encontrada().');
+                    $('#dServidorError').dialog('open');
+                }
+            }
+        });
+    }
+    catch (ex) {
+        $('#lServidorError').text(ex);
+        $('#dServidorError').dialog('open');
+    }
+}
+;
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="function f_diaEspera_actualizar(interesNuevo, callback). Clic en + para mas detalles.">
+function f_diaEspera_actualizar(diaEsperaNuevo, callback) {
+    var data = {
+        accion: 'diaEspera_actualizar',
+        diaEspera: diaEsperaNuevo
+    };
+    var url = '../sDatosExtras';
+    try {
+        $.ajax({
+            type: 'post',
+            url: url,
+            data: data,
+            beforeSend: function() {
+
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                $('#lServidorError').text(errorThrown + '()');
+                $('#dServidorError').dialog('open');
+            },
+            success: function(ajaxResponse, textStatus) {
+                callback($.isNumeric(ajaxResponse), ajaxResponse);
+            },
+            statusCode: {
+                404: function() {
+                    $('#lServidorError').text('Página no encontrada().');
+                    $('#dServidorError').dialog('open');
+                }
+            }
+        });
+    }
+    catch (ex) {
+        $('#lServidorError').text(ex);
+        $('#dServidorError').dialog('open');
+    }
+}
+;
+//</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="funcion f_interesAsigando_click(). Clic en + para mas detalles.">
 /**
@@ -382,53 +452,6 @@ function f_interesAutomatico_actualizar(cEC, estadoChecked) {
 ;
 //</editor-fold>
 
-//<editor-fold defaultstate="collapsed" desc="function f_interesActualizar(). Clic en + para mas detalles.">
-function f_interesActualizar() {
-    fProcesandoPeticion('No cierre ni actualize la página.');
-    $('#d_interesGeneralActualizar').dialog('close');
-    var data = {
-        accion: 'interesActualizar',
-        esperaDia: $('#esperaDia').val(),
-        fecha: $('#fecha_interesFijar').val()
-    };
-    var url = '../sVentaCreditoLetra';
-    try {
-        $.ajax({
-            type: 'post',
-            url: url,
-            data: data,
-            beforeSend: function() {
-
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                $('#lServidorError').text(errorThrown + '()');
-                $('#dServidorError').dialog('open');
-            },
-            success: function(ajaxResponse, textStatus) {
-                fProcesandoPeticionCerrar();
-                if($.isNumeric(ajaxResponse)){
-                    $.growl.notice({title: 'Éxito', message: 'Se actualizó con exito' , size: 'large'});
-                }else{
-                    $.growl.error({title: 'Éxito', message: ajaxResponse, size: 'large'});
-                }
-                
-            },
-            statusCode: {
-                404: function() {
-                    $('#lServidorError').text('Página no encontrada().');
-                    $('#dServidorError').dialog('open');
-                }
-            }
-        });
-    }
-    catch (ex) {
-        $('#lServidorError').text(ex);
-        $('#dServidorError').dialog('open');
-    }
-}
-;
-//</editor-fold>
-
 //<editor-fold defaultstate="collapsed" desc="function fPaginaActual(). Clic en + para mas detalles.">
 /**
  * 
@@ -437,6 +460,7 @@ function f_interesActualizar() {
 function fPaginaActual() {
     fProcesandoPeticion();
     f_interesFactorLeer();
+    f_diaEsperaLeer();
     f_empresaConvenio();
 }
 ;

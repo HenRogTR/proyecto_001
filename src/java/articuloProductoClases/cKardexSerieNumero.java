@@ -86,10 +86,6 @@ public class cKardexSerieNumero {
         return l;
     }
 
-    public List leer_admin() {
-        return null;
-    }
-
     public boolean actualizar(KardexSerieNumero objKardexSerieNumero) {
         sesion = HibernateUtil.getSessionFactory().openSession();
         sesion.getTransaction().begin();

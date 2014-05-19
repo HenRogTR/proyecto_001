@@ -4,6 +4,7 @@
     Author     : Henrri
 --%>
 
+<%@page import="utilitarios.cOtros"%>
 <%@page import="tablas.KardexSerieNumero"%>
 <%@page import="articuloProductoClases.cKardexArticuloProducto"%>
 <%@page import="tablas.KardexArticuloProducto"%>
@@ -54,8 +55,7 @@
                 <%@include file="../menu2.jsp" %>
             </div>
             <div id="right">
-                <%
-                    cUtilitarios objcUtilitarios = new cUtilitarios();
+                <%                    
                     KardexArticuloProducto objKardexArticuloProducto = new cKardexArticuloProducto().leer_articuloProductoStock(codArticuloProducto, 1);
                 %>
                 <h3 class="titulo">SERIES EN STOCK</h3>
@@ -63,7 +63,7 @@
                     <thead>
                         <tr>
                             <th style="width: 60px;"><label>CÓDIGO</label></th>
-                            <td style="width: 120px;"><%=objcUtilitarios.agregarCeros_int(objKardexArticuloProducto.getArticuloProducto().getCodArticuloProducto(), 8)%></td>
+                            <td style="width: 120px;"><%=new cOtros().agregarCeros_int(objKardexArticuloProducto.getArticuloProducto().getCodArticuloProducto(), 8)%></td>
                             <th style="width: 120px;"><label>DESCRIPCIÓN</label></th>
                             <td><%=objKardexArticuloProducto.getArticuloProducto().getDescripcion()%></td>
                             <th><label>OPCIÓN</label></th>

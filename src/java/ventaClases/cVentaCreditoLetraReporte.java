@@ -69,7 +69,8 @@ public class cVentaCreditoLetraReporte {
      * 5:telefono1, 6:telefono2, 7:codDatosCliente, 8:codVentas,
      * 9:docSerieNumero, 10:fecha, 11:itemCantidad, 12:cantidadLetras,
      * 13:codVentaCreditoLetra, 14:numeroLetra, 15:detalleLetra,
-     * 16:fechaVencimiento, 17:monto, 18:interes, 19:fechaPago, 20:totalPago
+     * 16:fechaVencimiento, 17:monto, 18:interes, 19:fechaPago, 20:totalPago,
+     * 21:interesPagado, 22:interesUltimoCalculo
      *
      * @param fechaVencimiento
      * @return
@@ -91,11 +92,12 @@ public class cVentaCreditoLetraReporte {
                     + "vcl.ventaCredito.cantidadLetras, vcl.codVentaCreditoLetra, "
                     + "vcl.numeroLetra, vcl.detalleLetra, vcl.fechaVencimiento, "
                     + "vcl.monto, vcl.interes, vcl.fechaPago, vcl.totalPago "
+                    + " ,vcl.interesPagado, vcl.interesUltimoCalculo "
                     + "from VentaCreditoLetra vcl, DatosCliente dc "
                     + "where vcl.ventaCredito.ventas.persona=dc.persona "
                     + "and substring(vcl.registro,1,1) = 1 "
-                    + "and vcl.fechaVencimiento <= :fechaVencimiento "
-                    + "and (vcl.monto-vcl.totalPago) > 0 "
+                    + "and vcl.fechaVencimiento < :fechaVencimiento "
+                    + "and (vcl.monto- vcl.totalPago> 0 or vcl.interes- vcl.interesPagado> 0) "
                     + "order by dc.persona.nombresC, dc.codDatosCliente, vcl.ventaCredito.codVentaCredito, vcl.numeroLetra")
                     .setParameter("fechaVencimiento", fechaVencimiento);
             l = q.list();
@@ -114,7 +116,8 @@ public class cVentaCreditoLetraReporte {
      * 5:telefono1, 6:telefono2, 7:codDatosCliente, 8:codVentas,
      * 9:docSerieNumero, 10:fecha, 11:itemCantidad, 12:cantidadLetras,
      * 13:codVentaCreditoLetra, 14:numeroLetra, 15:detalleLetra,
-     * 16:fechaVencimiento, 17:monto, 18:interes, 19:fechaPago, 20:totalPago
+     * 16:fechaVencimiento, 17:monto, 18:interes, 19:fechaPago, 20:totalPago,
+     * 21:interesPagado, 22:interesUltimoCalculo
      *
      * @param fechaVencimiento
      * @return
@@ -136,11 +139,12 @@ public class cVentaCreditoLetraReporte {
                     + "vcl.ventaCredito.cantidadLetras, vcl.codVentaCreditoLetra, "
                     + "vcl.numeroLetra, vcl.detalleLetra, vcl.fechaVencimiento, "
                     + "vcl.monto, vcl.interes, vcl.fechaPago, vcl.totalPago "
+                    + " ,vcl.interesPagado, vcl.interesUltimoCalculo "
                     + "from VentaCreditoLetra vcl, DatosCliente dc "
                     + "where vcl.ventaCredito.ventas.persona=dc.persona "
                     + "and substring(vcl.registro,1,1) = 1 "
-                    + "and vcl.fechaVencimiento <= :fechaVencimiento "
-                    + "and (vcl.monto-vcl.totalPago) > 0 "
+                    + "and vcl.fechaVencimiento < :fechaVencimiento "
+                    + "and (vcl.monto- vcl.totalPago> 0 or vcl.interes- vcl.interesPagado> 0) "
                     + "order by dc.persona.direccion, dc.codDatosCliente, vcl.ventaCredito.codVentaCredito, vcl.numeroLetra")
                     .setParameter("fechaVencimiento", fechaVencimiento);
             l = q.list();
@@ -159,7 +163,8 @@ public class cVentaCreditoLetraReporte {
      * 5:telefono1, 6:telefono2, 7:codDatosCliente, 8:codVentas,
      * 9:docSerieNumero, 10:fecha, 11:itemCantidad, 12:cantidadLetras,
      * 13:codVentaCreditoLetra, 14:numeroLetra, 15:detalleLetra,
-     * 16:fechaVencimiento, 17:monto, 18:interes, 19:fechaPago, 20:totalPago
+     * 16:fechaVencimiento, 17:monto, 18:interes, 19:fechaPago, 20:totalPago,
+     * 21:interesPagado, 22:interesUltimoCalculo
      *
      * @param fechaVencimiento
      * @param codCobrador
@@ -182,12 +187,13 @@ public class cVentaCreditoLetraReporte {
                     + "vcl.ventaCredito.ventas.itemCantidad, "
                     + "vcl.ventaCredito.cantidadLetras, vcl.codVentaCreditoLetra, "
                     + "vcl.numeroLetra, vcl.detalleLetra, vcl.fechaVencimiento, "
-                    + "vcl.monto, vcl.interes, vcl.fechaPago, vcl.totalPago "
+                    + "vcl.monto, vcl.interes, vcl.fechaPago, vcl.totalPago " 
+                    + " ,vcl.interesPagado, vcl.interesUltimoCalculo "
                     + "from VentaCreditoLetra vcl, DatosCliente dc "
                     + "where vcl.ventaCredito.ventas.persona=dc.persona "
                     + "and substring(vcl.registro,1,1) = 1 "
-                    + "and vcl.fechaVencimiento <= :fechaVencimiento "
-                    + "and (vcl.monto-vcl.totalPago) > 0 "
+                    + "and vcl.fechaVencimiento < :fechaVencimiento "
+                    + "and (vcl.monto- vcl.totalPago> 0 or vcl.interes- vcl.interesPagado> 0) "
                     + "and dc.codCobrador = :codCobrador "
                     + "order by dc.persona.nombresC, dc.codDatosCliente, vcl.ventaCredito.codVentaCredito, vcl.numeroLetra")
                     .setParameter("fechaVencimiento", fechaVencimiento)
@@ -207,7 +213,8 @@ public class cVentaCreditoLetraReporte {
      * 5:telefono1, 6:telefono2, 7:codDatosCliente, 8:codVentas,
      * 9:docSerieNumero, 10:fecha, 11:itemCantidad, 12:cantidadLetras,
      * 13:codVentaCreditoLetra, 14:numeroLetra, 15:detalleLetra,
-     * 16:fechaVencimiento, 17:monto, 18:interes, 19:fechaPago, 20:totalPago
+     * 16:fechaVencimiento, 17:monto, 18:interes, 19:fechaPago, 20:totalPago,
+     * 21:interesPagado, 22:interesUltimoCalculo
      *
      * @param fechaVencimiento
      * @param codCobrador
@@ -231,11 +238,12 @@ public class cVentaCreditoLetraReporte {
                     + "vcl.ventaCredito.cantidadLetras, vcl.codVentaCreditoLetra, "
                     + "vcl.numeroLetra, vcl.detalleLetra, vcl.fechaVencimiento, "
                     + "vcl.monto, vcl.interes, vcl.fechaPago, vcl.totalPago "
+                    + " ,vcl.interesPagado, vcl.interesUltimoCalculo "
                     + "from VentaCreditoLetra vcl, DatosCliente dc "
                     + "where vcl.ventaCredito.ventas.persona=dc.persona "
                     + "and substring(vcl.registro,1,1) = 1 "
-                    + "and vcl.fechaVencimiento <= :fechaVencimiento "
-                    + "and (vcl.monto-vcl.totalPago) > 0 "
+                    + "and vcl.fechaVencimiento < :fechaVencimiento "
+                    + "and (vcl.monto- vcl.totalPago> 0 or vcl.interes- vcl.interesPagado> 0) "
                     + "and dc.codCobrador = :codCobrador "
                     + "order by dc.persona.direccion, dc.codDatosCliente, vcl.ventaCredito.codVentaCredito, vcl.numeroLetra")
                     .setParameter("fechaVencimiento", fechaVencimiento)
@@ -255,7 +263,8 @@ public class cVentaCreditoLetraReporte {
      * 5:telefono1, 6:telefono2, 7:codDatosCliente, 8:codVentas,
      * 9:docSerieNumero, 10:fecha, 11:itemCantidad, 12:cantidadLetras,
      * 13:codVentaCreditoLetra, 14:numeroLetra, 15:detalleLetra,
-     * 16:fechaVencimiento, 17:monto, 18:interes, 19:fechaPago, 20:totalPago
+     * 16:fechaVencimiento, 17:monto, 18:interes, 19:fechaPago, 20:totalPago,
+     * 21:interesPagado, 22:interesUltimoCalculo
      *
      * @param fechaVencimiento
      * @param codEmpresaConvenio
@@ -279,11 +288,12 @@ public class cVentaCreditoLetraReporte {
                     + "vcl.ventaCredito.cantidadLetras, vcl.codVentaCreditoLetra, "
                     + "vcl.numeroLetra, vcl.detalleLetra, vcl.fechaVencimiento, "
                     + "vcl.monto, vcl.interes, vcl.fechaPago, vcl.totalPago "
+                    + " ,vcl.interesPagado, vcl.interesUltimoCalculo "
                     + "from VentaCreditoLetra vcl, DatosCliente dc "
                     + "where vcl.ventaCredito.ventas.persona=dc.persona "
                     + "and substring(vcl.registro,1,1) = 1 "
-                    + "and vcl.fechaVencimiento <= :fechaVencimiento "
-                    + "and (vcl.monto-vcl.totalPago) > 0 "
+                    + "and vcl.fechaVencimiento < :fechaVencimiento "
+                    + "and (vcl.monto- vcl.totalPago> 0 or vcl.interes- vcl.interesPagado> 0) "
                     + "and dc.empresaConvenio.codEmpresaConvenio = :codEmpresaConvenio "
                     + "order by dc.persona.nombresC, dc.codDatosCliente, vcl.ventaCredito.codVentaCredito, vcl.numeroLetra")
                     .setParameter("fechaVencimiento", fechaVencimiento)
@@ -304,7 +314,8 @@ public class cVentaCreditoLetraReporte {
      * 5:telefono1, 6:telefono2, 7:codDatosCliente, 8:codVentas,
      * 9:docSerieNumero, 10:fecha, 11:itemCantidad, 12:cantidadLetras,
      * 13:codVentaCreditoLetra, 14:numeroLetra, 15:detalleLetra,
-     * 16:fechaVencimiento, 17:monto, 18:interes, 19:fechaPago, 20:totalPago
+     * 16:fechaVencimiento, 17:monto, 18:interes, 19:fechaPago, 20:totalPago,
+     * 21:interesPagado, 22:interesUltimoCalculo
      *
      * @param fechaVencimiento
      * @param codEmpresaConvenio
@@ -328,11 +339,12 @@ public class cVentaCreditoLetraReporte {
                     + "vcl.ventaCredito.cantidadLetras, vcl.codVentaCreditoLetra, "
                     + "vcl.numeroLetra, vcl.detalleLetra, vcl.fechaVencimiento, "
                     + "vcl.monto, vcl.interes, vcl.fechaPago, vcl.totalPago "
+                    + " ,vcl.interesPagado, vcl.interesUltimoCalculo "
                     + "from VentaCreditoLetra vcl, DatosCliente dc "
                     + "where vcl.ventaCredito.ventas.persona=dc.persona "
                     + "and substring(vcl.registro,1,1) = 1 "
-                    + "and vcl.fechaVencimiento <= :fechaVencimiento "
-                    + "and (vcl.monto-vcl.totalPago) > 0 "
+                    + "and vcl.fechaVencimiento < :fechaVencimiento "
+                    + "and (vcl.monto- vcl.totalPago> 0 or vcl.interes- vcl.interesPagado> 0) "
                     + "and dc.empresaConvenio.codEmpresaConvenio = :codEmpresaConvenio "
                     + "order by dc.persona.direccion, dc.codDatosCliente, vcl.ventaCredito.codVentaCredito, vcl.numeroLetra")
                     .setParameter("fechaVencimiento", fechaVencimiento)
@@ -353,7 +365,8 @@ public class cVentaCreditoLetraReporte {
      * 5:telefono1, 6:telefono2, 7:codDatosCliente, 8:codVentas,
      * 9:docSerieNumero, 10:fecha, 11:itemCantidad, 12:cantidadLetras,
      * 13:codVentaCreditoLetra, 14:numeroLetra, 15:detalleLetra,
-     * 16:fechaVencimiento, 17:monto, 18:interes, 19:fechaPago, 20:totalPago
+     * 16:fechaVencimiento, 17:monto, 18:interes, 19:fechaPago, 20:totalPago,
+     * 21:interesPagado, 22:interesUltimoCalculo
      *
      * @param fechaVencimiento
      * @param codEmpresaConvenio
@@ -378,11 +391,12 @@ public class cVentaCreditoLetraReporte {
                     + "vcl.ventaCredito.cantidadLetras, vcl.codVentaCreditoLetra, "
                     + "vcl.numeroLetra, vcl.detalleLetra, vcl.fechaVencimiento, "
                     + "vcl.monto, vcl.interes, vcl.fechaPago, vcl.totalPago "
+                    + " ,vcl.interesPagado, vcl.interesUltimoCalculo "
                     + "from VentaCreditoLetra vcl, DatosCliente dc "
                     + "where vcl.ventaCredito.ventas.persona=dc.persona "
                     + "and substring(vcl.registro,1,1) = 1 "
-                    + "and vcl.fechaVencimiento <= :fechaVencimiento "
-                    + "and (vcl.monto-vcl.totalPago) > 0 "
+                    + "and vcl.fechaVencimiento < :fechaVencimiento "
+                    + "and (vcl.monto- vcl.totalPago> 0 or vcl.interes- vcl.interesPagado> 0) "
                     + "and dc.empresaConvenio.codEmpresaConvenio = :codEmpresaConvenio "
                     + "and dc.codCobrador = :codCobrador "
                     + "order by dc.persona.nombresC, dc.codDatosCliente, vcl.ventaCredito.codVentaCredito, vcl.numeroLetra")
@@ -405,7 +419,8 @@ public class cVentaCreditoLetraReporte {
      * 5:telefono1, 6:telefono2, 7:codDatosCliente, 8:codVentas,
      * 9:docSerieNumero, 10:fecha, 11:itemCantidad, 12:cantidadLetras,
      * 13:codVentaCreditoLetra, 14:numeroLetra, 15:detalleLetra,
-     * 16:fechaVencimiento, 17:monto, 18:interes, 19:fechaPago, 20:totalPago
+     * 16:fechaVencimiento, 17:monto, 18:interes, 19:fechaPago, 20:totalPago,
+     * 21:interesPagado, 22:interesUltimoCalculo
      *
      * @param fechaVencimiento
      * @param codEmpresaConvenio
@@ -430,11 +445,12 @@ public class cVentaCreditoLetraReporte {
                     + "vcl.ventaCredito.cantidadLetras, vcl.codVentaCreditoLetra, "
                     + "vcl.numeroLetra, vcl.detalleLetra, vcl.fechaVencimiento, "
                     + "vcl.monto, vcl.interes, vcl.fechaPago, vcl.totalPago "
+                    + " ,vcl.interesPagado, vcl.interesUltimoCalculo "
                     + "from VentaCreditoLetra vcl, DatosCliente dc "
                     + "where vcl.ventaCredito.ventas.persona=dc.persona "
                     + "and substring(vcl.registro,1,1) = 1 "
-                    + "and vcl.fechaVencimiento <= :fechaVencimiento "
-                    + "and (vcl.monto-vcl.totalPago) > 0 "
+                    + "and vcl.fechaVencimiento < :fechaVencimiento "
+                    + "and (vcl.monto- vcl.totalPago> 0 or vcl.interes- vcl.interesPagado> 0) "
                     + "and dc.empresaConvenio.codEmpresaConvenio = :codEmpresaConvenio "
                     + "and dc.codCobrador = :codCobrador "
                     + "order by dc.persona.direccion, dc.codDatosCliente, vcl.ventaCredito.codVentaCredito, vcl.numeroLetra")
@@ -457,7 +473,8 @@ public class cVentaCreditoLetraReporte {
      * 5:telefono1, 6:telefono2, 7:codDatosCliente, 8:codVentas,
      * 9:docSerieNumero, 10:fecha, 11:itemCantidad, 12:cantidadLetras,
      * 13:codVentaCreditoLetra, 14:numeroLetra, 15:detalleLetra,
-     * 16:fechaVencimiento, 17:monto, 18:interes, 19:fechaPago, 20:totalPago
+     * 16:fechaVencimiento, 17:monto, 18:interes, 19:fechaPago, 20:totalPago,
+     * 21:interesPagado, 22:interesUltimoCalculo
      *
      * @param fechaVencimiento
      * @param codEmpresaConvenio
@@ -482,11 +499,12 @@ public class cVentaCreditoLetraReporte {
                     + "vcl.ventaCredito.cantidadLetras, vcl.codVentaCreditoLetra, "
                     + "vcl.numeroLetra, vcl.detalleLetra, vcl.fechaVencimiento, "
                     + "vcl.monto, vcl.interes, vcl.fechaPago, vcl.totalPago "
+                    + " ,vcl.interesPagado, vcl.interesUltimoCalculo "
                     + "from VentaCreditoLetra vcl, DatosCliente dc "
                     + "where vcl.ventaCredito.ventas.persona=dc.persona "
                     + "and substring(vcl.registro,1,1) = 1 "
-                    + "and vcl.fechaVencimiento <= :fechaVencimiento "
-                    + "and (vcl.monto-vcl.totalPago) > 0 "
+                    + "and vcl.fechaVencimiento < :fechaVencimiento "
+                    + "and (vcl.monto- vcl.totalPago> 0 or vcl.interes- vcl.interesPagado> 0) "
                     + "and dc.empresaConvenio.codEmpresaConvenio = :codEmpresaConvenio "
                     + "and dc.tipo = :tipo "
                     + "order by dc.persona.nombresC, dc.codDatosCliente, vcl.ventaCredito.codVentaCredito, vcl.numeroLetra")
@@ -509,7 +527,8 @@ public class cVentaCreditoLetraReporte {
      * 5:telefono1, 6:telefono2, 7:codDatosCliente, 8:codVentas,
      * 9:docSerieNumero, 10:fecha, 11:itemCantidad, 12:cantidadLetras,
      * 13:codVentaCreditoLetra, 14:numeroLetra, 15:detalleLetra,
-     * 16:fechaVencimiento, 17:monto, 18:interes, 19:fechaPago, 20:totalPago
+     * 16:fechaVencimiento, 17:monto, 18:interes, 19:fechaPago, 20:totalPago,
+     * 21:interesPagado, 22:interesUltimoCalculo
      *
      * @param fechaVencimiento
      * @param codEmpresaConvenio
@@ -534,11 +553,12 @@ public class cVentaCreditoLetraReporte {
                     + "vcl.ventaCredito.cantidadLetras, vcl.codVentaCreditoLetra, "
                     + "vcl.numeroLetra, vcl.detalleLetra, vcl.fechaVencimiento, "
                     + "vcl.monto, vcl.interes, vcl.fechaPago, vcl.totalPago "
+                    + " ,vcl.interesPagado, vcl.interesUltimoCalculo "
                     + "from VentaCreditoLetra vcl, DatosCliente dc "
                     + "where vcl.ventaCredito.ventas.persona=dc.persona "
                     + "and substring(vcl.registro,1,1) = 1 "
-                    + "and vcl.fechaVencimiento <= :fechaVencimiento "
-                    + "and (vcl.monto-vcl.totalPago) > 0 "
+                    + "and vcl.fechaVencimiento < :fechaVencimiento "
+                    + "and (vcl.monto- vcl.totalPago> 0 or vcl.interes- vcl.interesPagado> 0) "
                     + "and dc.empresaConvenio.codEmpresaConvenio = :codEmpresaConvenio "
                     + "and dc.tipo = :tipo "
                     + "order by dc.persona.direccion, dc.codDatosCliente, vcl.ventaCredito.codVentaCredito, vcl.numeroLetra")
@@ -561,7 +581,8 @@ public class cVentaCreditoLetraReporte {
      * 5:telefono1, 6:telefono2, 7:codDatosCliente, 8:codVentas,
      * 9:docSerieNumero, 10:fecha, 11:itemCantidad, 12:cantidadLetras,
      * 13:codVentaCreditoLetra, 14:numeroLetra, 15:detalleLetra,
-     * 16:fechaVencimiento, 17:monto, 18:interes, 19:fechaPago, 20:totalPago
+     * 16:fechaVencimiento, 17:monto, 18:interes, 19:fechaPago, 20:totalPago,
+     * 21:interesPagado, 22:interesUltimoCalculo
      *
      * @param fechaVencimiento
      * @param codEmpresaConvenio
@@ -587,11 +608,12 @@ public class cVentaCreditoLetraReporte {
                     + "vcl.ventaCredito.cantidadLetras, vcl.codVentaCreditoLetra, "
                     + "vcl.numeroLetra, vcl.detalleLetra, vcl.fechaVencimiento, "
                     + "vcl.monto, vcl.interes, vcl.fechaPago, vcl.totalPago "
+                    + " ,vcl.interesPagado, vcl.interesUltimoCalculo "
                     + "from VentaCreditoLetra vcl, DatosCliente dc "
                     + "where vcl.ventaCredito.ventas.persona=dc.persona "
                     + "and substring(vcl.registro,1,1) = 1 "
-                    + "and vcl.fechaVencimiento <= :fechaVencimiento "
-                    + "and (vcl.monto-vcl.totalPago) > 0 "
+                    + "and vcl.fechaVencimiento < :fechaVencimiento "
+                    + "and (vcl.monto- vcl.totalPago> 0 or vcl.interes- vcl.interesPagado> 0) "
                     + "and dc.empresaConvenio.codEmpresaConvenio = :codEmpresaConvenio "
                     + "and dc.codCobrador = :codCobrador "
                     + "and dc.tipo = :tipo "
@@ -616,7 +638,8 @@ public class cVentaCreditoLetraReporte {
      * 5:telefono1, 6:telefono2, 7:codDatosCliente, 8:codVentas,
      * 9:docSerieNumero, 10:fecha, 11:itemCantidad, 12:cantidadLetras,
      * 13:codVentaCreditoLetra, 14:numeroLetra, 15:detalleLetra,
-     * 16:fechaVencimiento, 17:monto, 18:interes, 19:fechaPago, 20:totalPago
+     * 16:fechaVencimiento, 17:monto, 18:interes, 19:fechaPago, 20:totalPago,
+     * 21:interesPagado, 22:interesUltimoCalculo
      *
      * @param fechaVencimiento
      * @param codEmpresaConvenio
@@ -642,11 +665,12 @@ public class cVentaCreditoLetraReporte {
                     + "vcl.ventaCredito.cantidadLetras, vcl.codVentaCreditoLetra, "
                     + "vcl.numeroLetra, vcl.detalleLetra, vcl.fechaVencimiento, "
                     + "vcl.monto, vcl.interes, vcl.fechaPago, vcl.totalPago "
+                    + " ,vcl.interesPagado, vcl.interesUltimoCalculo "
                     + "from VentaCreditoLetra vcl, DatosCliente dc "
                     + "where vcl.ventaCredito.ventas.persona=dc.persona "
                     + "and substring(vcl.registro,1,1) = 1 "
-                    + "and vcl.fechaVencimiento <= :fechaVencimiento "
-                    + "and (vcl.monto-vcl.totalPago) > 0 "
+                    + "and vcl.fechaVencimiento < :fechaVencimiento "
+                    + "and (vcl.monto- vcl.totalPago> 0 or vcl.interes- vcl.interesPagado> 0) "
                     + "and dc.empresaConvenio.codEmpresaConvenio = :codEmpresaConvenio "
                     + "and dc.codCobrador = :codCobrador "
                     + "and dc.tipo = :tipo "
@@ -671,7 +695,8 @@ public class cVentaCreditoLetraReporte {
      * 5:telefono1, 6:telefono2, 7:codDatosCliente, 8:codVentas,
      * 9:docSerieNumero, 10:fecha, 11:itemCantidad, 12:cantidadLetras,
      * 13:codVentaCreditoLetra, 14:numeroLetra, 15:detalleLetra,
-     * 16:fechaVencimiento, 17:monto, 18:interes, 19:fechaPago, 20:totalPago
+     * 16:fechaVencimiento, 17:monto, 18:interes, 19:fechaPago, 20:totalPago,
+     * 21:interesPagado, 22:interesUltimoCalculo
      *
      * @param fechaVencimiento
      * @param codEmpresaConvenio
@@ -697,11 +722,12 @@ public class cVentaCreditoLetraReporte {
                     + "vcl.ventaCredito.cantidadLetras, vcl.codVentaCreditoLetra, "
                     + "vcl.numeroLetra, vcl.detalleLetra, vcl.fechaVencimiento, "
                     + "vcl.monto, vcl.interes, vcl.fechaPago, vcl.totalPago "
+                    + " ,vcl.interesPagado, vcl.interesUltimoCalculo "
                     + "from VentaCreditoLetra vcl, DatosCliente dc "
                     + "where vcl.ventaCredito.ventas.persona=dc.persona "
                     + "and substring(vcl.registro,1,1) = 1 "
-                    + "and vcl.fechaVencimiento <= :fechaVencimiento "
-                    + "and (vcl.monto-vcl.totalPago) > 0 "
+                    + "and vcl.fechaVencimiento < :fechaVencimiento "
+                    + "and (vcl.monto- vcl.totalPago> 0 or vcl.interes- vcl.interesPagado> 0) "
                     + "and dc.empresaConvenio.codEmpresaConvenio = :codEmpresaConvenio "
                     + "and dc.tipo = :tipo "
                     + "and dc.condicion = :condicion "
@@ -726,7 +752,8 @@ public class cVentaCreditoLetraReporte {
      * 5:telefono1, 6:telefono2, 7:codDatosCliente, 8:codVentas,
      * 9:docSerieNumero, 10:fecha, 11:itemCantidad, 12:cantidadLetras,
      * 13:codVentaCreditoLetra, 14:numeroLetra, 15:detalleLetra,
-     * 16:fechaVencimiento, 17:monto, 18:interes, 19:fechaPago, 20:totalPago
+     * 16:fechaVencimiento, 17:monto, 18:interes, 19:fechaPago, 20:totalPago,
+     * 21:interesPagado, 22:interesUltimoCalculo
      *
      * @param fechaVencimiento
      * @param codEmpresaConvenio
@@ -752,11 +779,12 @@ public class cVentaCreditoLetraReporte {
                     + "vcl.ventaCredito.cantidadLetras, vcl.codVentaCreditoLetra, "
                     + "vcl.numeroLetra, vcl.detalleLetra, vcl.fechaVencimiento, "
                     + "vcl.monto, vcl.interes, vcl.fechaPago, vcl.totalPago "
+                    + " ,vcl.interesPagado, vcl.interesUltimoCalculo "
                     + "from VentaCreditoLetra vcl, DatosCliente dc "
                     + "where vcl.ventaCredito.ventas.persona=dc.persona "
                     + "and substring(vcl.registro,1,1) = 1 "
-                    + "and vcl.fechaVencimiento <= :fechaVencimiento "
-                    + "and (vcl.monto-vcl.totalPago) > 0 "
+                    + "and vcl.fechaVencimiento < :fechaVencimiento "
+                    + "and (vcl.monto- vcl.totalPago> 0 or vcl.interes- vcl.interesPagado> 0) "
                     + "and dc.empresaConvenio.codEmpresaConvenio = :codEmpresaConvenio "
                     + "and dc.tipo = :tipo "
                     + "and dc.condicion = :condicion "
@@ -781,7 +809,8 @@ public class cVentaCreditoLetraReporte {
      * 5:telefono1, 6:telefono2, 7:codDatosCliente, 8:codVentas,
      * 9:docSerieNumero, 10:fecha, 11:itemCantidad, 12:cantidadLetras,
      * 13:codVentaCreditoLetra, 14:numeroLetra, 15:detalleLetra,
-     * 16:fechaVencimiento, 17:monto, 18:interes, 19:fechaPago, 20:totalPago
+     * 16:fechaVencimiento, 17:monto, 18:interes, 19:fechaPago, 20:totalPago,
+     * 21:interesPagado, 22:interesUltimoCalculo
      *
      * @param fechaVencimiento
      * @param codEmpresaConvenio
@@ -808,11 +837,12 @@ public class cVentaCreditoLetraReporte {
                     + "vcl.ventaCredito.cantidadLetras, vcl.codVentaCreditoLetra, "
                     + "vcl.numeroLetra, vcl.detalleLetra, vcl.fechaVencimiento, "
                     + "vcl.monto, vcl.interes, vcl.fechaPago, vcl.totalPago "
+                    + " ,vcl.interesPagado, vcl.interesUltimoCalculo "
                     + "from VentaCreditoLetra vcl, DatosCliente dc "
                     + "where vcl.ventaCredito.ventas.persona=dc.persona "
                     + "and substring(vcl.registro,1,1) = 1 "
-                    + "and vcl.fechaVencimiento <= :fechaVencimiento "
-                    + "and (vcl.monto-vcl.totalPago) > 0 "
+                    + "and vcl.fechaVencimiento < :fechaVencimiento "
+                    + "and (vcl.monto- vcl.totalPago> 0 or vcl.interes- vcl.interesPagado> 0) "
                     + "and dc.empresaConvenio.codEmpresaConvenio = :codEmpresaConvenio "
                     + "and dc.codCobrador = :codCobrador "
                     + "and dc.tipo = :tipo "
@@ -839,7 +869,8 @@ public class cVentaCreditoLetraReporte {
      * 5:telefono1, 6:telefono2, 7:codDatosCliente, 8:codVentas,
      * 9:docSerieNumero, 10:fecha, 11:itemCantidad, 12:cantidadLetras,
      * 13:codVentaCreditoLetra, 14:numeroLetra, 15:detalleLetra,
-     * 16:fechaVencimiento, 17:monto, 18:interes, 19:fechaPago, 20:totalPago
+     * 16:fechaVencimiento, 17:monto, 18:interes, 19:fechaPago, 20:totalPago,
+     * 21:interesPagado, 22:interesUltimoCalculo
      *
      * @param fechaVencimiento
      * @param codEmpresaConvenio
@@ -866,11 +897,12 @@ public class cVentaCreditoLetraReporte {
                     + "vcl.ventaCredito.cantidadLetras, vcl.codVentaCreditoLetra, "
                     + "vcl.numeroLetra, vcl.detalleLetra, vcl.fechaVencimiento, "
                     + "vcl.monto, vcl.interes, vcl.fechaPago, vcl.totalPago "
+                    + " ,vcl.interesPagado, vcl.interesUltimoCalculo "
                     + "from VentaCreditoLetra vcl, DatosCliente dc "
                     + "where vcl.ventaCredito.ventas.persona=dc.persona "
                     + "and substring(vcl.registro,1,1) = 1 "
-                    + "and vcl.fechaVencimiento <= :fechaVencimiento "
-                    + "and (vcl.monto-vcl.totalPago) > 0 "
+                    + "and vcl.fechaVencimiento < :fechaVencimiento "
+                    + "and (vcl.monto- vcl.totalPago> 0 or vcl.interes- vcl.interesPagado> 0) "
                     + "and dc.empresaConvenio.codEmpresaConvenio = :codEmpresaConvenio "
                     + "and dc.codCobrador = :codCobrador "
                     + "and dc.tipo = :tipo "
