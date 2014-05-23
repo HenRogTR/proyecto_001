@@ -55,7 +55,7 @@ body {
     color: #fff; 
     background: #009999; 
     font-size: 1.2em; 
-    height: 28px; 
+    height: 25px; 
     line-height: 24px;
     vertical-align: middle;
 }
@@ -352,6 +352,9 @@ fieldset legend {
     border-top: 1px solid #fff;
     color: #000;
     border: 1px solid #fff;
+}
+tfoot.thFondoTd th{
+    background: #F1F1F7;
 }
 
 .manoPuntero{

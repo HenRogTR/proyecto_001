@@ -174,7 +174,7 @@
     <body>
         <div id="documento">
             <div id="contenido">
-                <table class="anchoTotal">
+                <table class="anchoTotal" style="font-size: 10px;">
                     <thead>
                         <tr>
                             <th colspan="4">REPORTE GENERAL DE VENTAS (<%=tipo_%>) PERIODO <%=fechaInicioString%> - <%=fechaFinString%></th>
@@ -182,13 +182,14 @@
                         </tr>
                         <%=cabeceraString%>
                         <tr class="top2 bottom2" style="font-size: 10px;">                            
-                            <th style="width: 80px;">COMPROBANTE</th>
-                            <th style="width: 60px;">C. CLIENTE</th>
+                            <th style="width: 70px;">COMPROB.</th>
+                            <th style="width: 50px;">C. CLIEN</th>
                             <th>NOMBRE/RAZÓN SOCIAL</th>
                             <th style="width: 60px; text-align: center;">P.SIST.</th>
-                            <th style="width: 60px; text-align: center;">P.PROFOR.</th>
-                            <th style="width: 60px; text-align: center;">CONTADO</th>
-                            <th style="width: 60px; text-align: center;">CRÉDITO</th>
+                            <th style="width: 60px; text-align: center;">P.CASH</th>
+                            <th style="width: 60px; text-align: center;">P.PROF.</th>
+                            <th style="width: 60px; text-align: center;">CONT.</th>
+                            <th style="width: 60px; text-align: center;">CRÉD.</th>
                             <th style="width: 60px; text-align: center;">DIF.</th>
                             <th style="width: 60px; text-align: center;">INICIAL</th>
                             <th style="width: 30px; text-align: center;">LET.</th>
@@ -208,11 +209,12 @@
                             Double montoInicial = 0.00;
                             Object cantidadLetras = "";
                             Double precioProforma = 0.00;
+                            Double precioCash = 0.00;
 
                             Date fechaAuxDate = null;
 
-                            Double precioRealPeriodo = 0.00, precioProformaPeriodo = 0.00, precioContadoPeriodo = 0.00, diferenciaPeriodo = 0.00, creditoPeriodo = 0.00, inicialPeriodo = 0.00;//precios acumulados periodos
-                            Double precioRealTotalDia = 0.00, precioProformaTotalDia = 0.00, precioContadoTotalDia = 0.00, diferenciaDia = 0.00, creditoTotalDia = 0.00, inicialTotalDia = 0.00;//precios acumulados periodos
+                            Double precioRealPeriodo = 0.00, precioCashPeriodo = 0.00, precioProformaPeriodo = 0.00, precioContadoPeriodo = 0.00, diferenciaPeriodo = 0.00, creditoPeriodo = 0.00, inicialPeriodo = 0.00;//precios acumulados periodos
+                            Double precioRealTotalDia = 0.00, precioCashTotalDia = 0.00, precioProformaTotalDia = 0.00, precioContadoTotalDia = 0.00, diferenciaDia = 0.00, creditoTotalDia = 0.00, inicialTotalDia = 0.00;//precios acumulados periodos
                             for (Iterator it = VList.iterator(); it.hasNext();) {
                                 Object dato[] = (Object[]) it.next();
 
@@ -228,6 +230,7 @@
                                 montoInicial = (Double) dato[9];
                                 cantidadLetras = dato[10];
                                 precioProforma = (Double) dato[11];
+                                precioCash=(Double)dato[12];
 
                                 if (fechaAuxDate == null || fechaAuxDate.compareTo(fecha) < 0) {
                                     if (fechaAuxDate != null) {
@@ -237,6 +240,7 @@
                             <td></td>
                             <td></td>
                             <th style="text-align: right;"><%=new cOtros().decimalFormato(precioRealTotalDia, 2)%></th>
+                            <th style="text-align: right;"><%=new cOtros().decimalFormato(precioCashTotalDia, 2)%></th>
                             <th style="text-align: right;"><%=new cOtros().decimalFormato(precioProformaTotalDia, 2)%></th>
                             <th style="text-align: right;"><%=new cOtros().decimalFormato(precioContadoTotalDia, 2)%></th>
                             <th style="text-align: right;"><%=new cOtros().decimalFormato(creditoTotalDia, 2)%></th>
@@ -255,6 +259,7 @@
                                 fechaAuxDate = fecha;
 
                                 precioRealPeriodo += precioRealTotalDia;
+                                precioCashPeriodo += precioCashTotalDia;
                                 precioProformaPeriodo += precioProformaTotalDia;
                                 precioContadoPeriodo += precioContadoTotalDia;
                                 diferenciaPeriodo += diferenciaDia;
@@ -262,6 +267,7 @@
                                 inicialPeriodo += inicialTotalDia;
 
                                 precioRealTotalDia = 0.00;
+                                precioCashTotalDia = 0.00;
                                 precioProformaTotalDia = 0.00;
                                 precioContadoTotalDia = 0.00;
                                 diferenciaDia = 0.00;
@@ -277,6 +283,7 @@
                             <td><%=new cOtros().agregarCeros_int(codCliente, 8)%></td>
                             <td style="font-size: 11px;"><%=nombresC%></td>
                             <td class="derecha"><%=new cOtros().decimalFormato(precioReal, 2)%></td>
+                            <td class="derecha"><%=new cOtros().decimalFormato(precioCash, 2)%></td>
                             <td class="derecha"><%=new cOtros().decimalFormato(precioProforma, 2)%></td>
                             <%
                                 if (tipo.equals("CREDITO")) {
@@ -299,8 +306,9 @@
                             <%
                                     precioContadoTotalDia += neto;
                                 }
+                                precioCashTotalDia += precioCash;
                                 precioProformaTotalDia += precioProforma;
-                                diferenciaDia+= neto - precioProforma;
+                                diferenciaDia += neto - precioProforma;
                             } else {
                             %>
                             <td colspan="9" style="font-size: 11px; font-weight: bold;">*********** DOCUMENTO ANULADO *********</td>
@@ -311,6 +319,7 @@
                                 precioRealTotalDia += precioReal;
                             }
                             precioRealPeriodo += precioRealTotalDia;
+                            precioCashPeriodo += precioCashTotalDia;
                             precioProformaPeriodo += precioProformaTotalDia;
                             precioContadoPeriodo += precioContadoTotalDia;
                             diferenciaPeriodo += diferenciaDia;
@@ -322,6 +331,7 @@
                             <td></td>
                             <td></td>
                             <th style="text-align: right;"><%=new cOtros().decimalFormato(precioRealTotalDia, 2)%></th>
+                            <th style="text-align: right;"><%=new cOtros().decimalFormato(precioCashTotalDia, 2)%></th>
                             <th style="text-align: right;"><%=new cOtros().decimalFormato(precioProformaTotalDia, 2)%></th>
                             <th style="text-align: right;"><%=new cOtros().decimalFormato(precioContadoTotalDia, 2)%></th>
                             <th style="text-align: right;"><%=new cOtros().decimalFormato(creditoTotalDia, 2)%></th>
@@ -334,6 +344,7 @@
                             <td></td>
                             <th>TOTAL GENERAL</th>
                             <th style="text-align: right;"><%=new cOtros().decimalFormato(precioRealPeriodo, 2)%></th>
+                            <th style="text-align: right;"><%=new cOtros().decimalFormato(precioCashPeriodo, 2)%></th>
                             <th style="text-align: right;"><%=new cOtros().decimalFormato(precioProformaPeriodo, 2)%></th>
                             <th style="text-align: right;"><%=new cOtros().decimalFormato(precioContadoPeriodo, 2)%></th>
                             <th style="text-align: right;"><%=new cOtros().decimalFormato(creditoPeriodo, 2)%></th>

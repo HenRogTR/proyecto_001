@@ -38,9 +38,30 @@ $(document).ready(function() {
             event.preventDefault();
         }
     });
+
+    $('.fechaEntrada')
+            .mask('00/00/0000')
+            .change(function(e) {
+                if (!fValidarFecha(this.value)) {
+                    this.value = '';
+                }
+            })
+            .val($('#fechaActual').val());
+
+    $('#b_interesEvitarEditar').click(function(event) {
+        $('#d_interesEvitar_editar').dialog('open');
+        event.preventDefault();
+    });
 });
 
 $(function() {
+    $('.fechaEntrada').datepicker({
+        showAnim: 'drop',
+        changeMonth: true,
+        changeYear: true,
+        numberOfMonths: 2
+    });
+
     $('#dClienteBuscar').dialog({
         autoOpen: false,
         modal: true,
@@ -56,6 +77,27 @@ $(function() {
             $(this).dialog('close');
         }
     });
+
+    $('#d_interesEvitar_editar').dialog({
+        autoOpen: false,
+        modal: true,
+        resizable: true,
+        height: 200,
+        width: 340,
+        buttons: {
+            Habilitar: function() {
+                f_interesEvitar_habilitar();
+            }, Deshabilitar: function() {
+                f_interesEvitar_modificar();
+            }, Cancelar: function() {
+                $(this).dialog("close");
+            }
+        },
+        close: function() {
+            $(this).dialog("close");
+        }
+    });
+
     $('#dniPasaporteRucNombresCBuscar').autocomplete({
         source: 'autocompletado/kardexCliente/dniPasaporteRucNombresCBuscar.jsp',
         minLength: 4,
@@ -103,7 +145,9 @@ function fCliente(codCliente) {
                     $dCobranza.find('.temp').remove();
                 } else {
                     $('#codCliente').val(codCliente);
-                    $('#lNombresC').text(ajaxResponse);
+                    var dato = ajaxResponse.split(':');
+                    $('#lNombresC').text(dato[0]);
+                    $('#interesEvitar_estado').text(dato[1]);
                     fClienteKardex(codCliente);
                 }
             },
@@ -371,6 +415,106 @@ function fVentaCreditoLetraResumenMensual(codCliente) {
         });
     }
     catch (ex) {
+        $('#lServidorError').text(ex);
+        $('#dServidorError').dialog('open');
+    }
+}
+;
+
+function f_interesEvitar_modificar() {
+    var codCliente = $('#codCliente').val();
+    var fechaEvitar = $('#fechaEvitar').val();
+
+    if (!$.isNumeric(codCliente)) {
+        fAlerta('Primero busque cliente.');
+        return;
+    }
+    if (!fValidarFecha(fechaEvitar)) {
+        fAlerta('Seleccione fecha.');
+        return;
+    }
+    var data = {
+        codCliente: codCliente,
+        accionDatoCliente: 'actualizar_interesEvitar',
+        fecha: fechaEvitar
+    };
+    var url = '../sDatoCliente';
+    try {
+        $.ajax({
+            type: 'post',
+            url: url,
+            data: data,
+            beforeSend: function() {
+                fProcesandoPeticion();
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                $('#lServidorError').text(errorThrown + '()');
+                $('#dServidorError').dialog('open');
+            },
+            success: function(ajaxResponse, textStatus) {
+                if ($.isNumeric(ajaxResponse)) {
+                    fAlerta('Exito');
+                } else {
+                    fAlerta(ajaxResponse);
+                }
+                fProcesandoPeticionCerrar();
+                $('#d_interesEvitar_editar').dialog('close');
+            },
+            statusCode: {
+                404: function() {
+                    $('#lServidorError').text('Página no encontrada().');
+                    $('#dServidorError').dialog('open');
+                }
+            }
+        });
+    } catch (ex) {
+        $('#lServidorError').text(ex);
+        $('#dServidorError').dialog('open');
+    }
+}
+;
+
+function f_interesEvitar_habilitar() {
+    var codCliente = $('#codCliente').val();
+
+    if (!$.isNumeric(codCliente)) {
+        fAlerta('Primero busque cliente.');
+        return;
+    }
+    var data = {
+        codCliente: codCliente,
+        accionDatoCliente: 'interesEvitar_habilitar'
+    };
+    var url = '../sDatoCliente';
+    try {
+        $.ajax({
+            type: 'post',
+            url: url,
+            data: data,
+            beforeSend: function() {
+                fProcesandoPeticion();
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                $('#lServidorError').text(errorThrown + '()');
+                $('#dServidorError').dialog('open');
+            },
+            success: function(ajaxResponse, textStatus) {
+                if ($.isNumeric(ajaxResponse)) {
+                    fAlerta('Exito');
+                } else {
+                    fAlerta(ajaxResponse);
+                }
+                fProcesandoPeticionCerrar();
+                $('#d_interesEvitar_editar').dialog('close');
+            },
+            statusCode: {
+                404: function() {
+                    $('#lServidorError').text('Página no encontrada().');
+                    $('#dServidorError').dialog('open');
+                }
+            }
+        });
+    } catch (ex) {
         $('#lServidorError').text(ex);
         $('#dServidorError').dialog('open');
     }

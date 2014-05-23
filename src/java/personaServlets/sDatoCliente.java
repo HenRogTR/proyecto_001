@@ -6,6 +6,7 @@ package personaServlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import personaClases.cDatosCliente;
 import tablas.Usuario;
+import utilitarios.cManejoFechas;
 import utilitarios.cOtros;
 
 /**
@@ -58,7 +60,7 @@ public class sDatoCliente extends HttpServlet {
             //editar el cobrador del cliente
             if (accion.equals("editarCobrador")) {
                 if (!objUsuario.getP29()) {
-                    out.print("No tiene permisos para esre acción.");
+                    out.print("No tiene permisos para esta acción.");
                     return;
                 }
                 int codCobrador = 0;
@@ -87,6 +89,38 @@ public class sDatoCliente extends HttpServlet {
                 session.setAttribute("codDatoClienteMantenimiento", codPersona);
                 response.sendRedirect("persona/clienteMantenimiento.jsp");
             }
+            if (accion.equals("actualizar_interesEvitar")) {
+                if (!objUsuario.getP51()) {
+                    out.print("No tiene permisos para esta acción.");
+                    return;
+                }
+                int codCliente = 0;
+                Date fecha = null;
+                try {
+                    codCliente = Integer.parseInt(request.getParameter("codCliente"));
+                    fecha = new cManejoFechas().StringADate(request.getParameter("fecha"));
+                    out.print(new cDatosCliente().actualizar_interesEvitar(codCliente, fecha) ? codCliente : "Error al registrar");
+                } catch (Exception e) {
+                    out.print("Error en parámetros.");
+                }
+
+            }
+            if (accion.equals("interesEvitar_habilitar")) {
+                if (!objUsuario.getP51()) {
+                    out.print("No tiene permisos para esta acción.");
+                    return;
+                }
+                int codCliente = 0;
+                Date fecha = null;
+                try {
+                    codCliente = Integer.parseInt(request.getParameter("codCliente"));
+                    out.print(new cDatosCliente().actualizar_interesEvitar(codCliente, fecha) ? codCliente : "Error al registrar");
+                } catch (Exception e) {
+                    out.print("Error en parámetros.");
+                }
+
+            }
+            
         }
     }
 

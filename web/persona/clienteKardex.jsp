@@ -4,6 +4,7 @@
     Author     : Henrri
 --%>
 
+<%@page import="java.util.Date"%>
 <%@page import="utilitarios.cManejoFechas"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -19,8 +20,10 @@
         <!--cambios-->
         <%@include file="../principal/inclusiones.jsp" %>
         <!--propio-->
-        <script type="text/javascript" src="../librerias/persona/cliente/clienteKardex.js?v14.05.15"></script>
+        <script type="text/javascript" src="../librerias/jquery-ui/jquery-ui-1.10.3.custom/js/i18n/jquery.ui.datepicker-es-min.js"></script>
+        <script type="text/javascript" src="../librerias/persona/cliente/clienteKardex.js?v14.05.22"></script>
         <script type="text/javascript" src="../librerias/plugin/mask/jquery.mask.min.js"></script>
+        <script type="text/javascript" src="../librerias/utilitarios/validaciones.js"></script>
         <style>
             .ui-autocomplete {
                 /*width: 400px;*/
@@ -50,10 +53,12 @@
                         <span>KARDEX DE CLIENTES</span>
                         <button class="sexybutton sexyicononly sexysimple sexypropio sexysmall" id="bClienteBuscar" type="button"><span class="search"></span></button>
                         <a id="bClienteInfo" class="sexybutton" href="#"><span><span><span class="info">Cliente</span></span></span></a>
-                        <span id="lNombresC" style="font-size: 16px;font-weight: bold; margin-top: 5px;"></span>
+                        <span id="lNombresC" style="font-size: 16px;font-weight: bold; margin-top: 5px;"></span> | Interés: <span id="interesEvitar_estado">No definido</span>
+                        <a id="b_interesEvitarEditar" class="boton iconoSoloPequenio edit" disabled="">&nbsp;</a>
                     </h3>                    
                     <!--Inicio de div general-->
                     <div class="ocultar">
+                        <input type="text" name="fechaActual" id="fechaActual" value="<%=new cManejoFechas().DateAString(new Date())%>" class="ocultar" />
                         <input type="text" name="codCliente" id="codCliente" value="" />
                     </div>                    
                     <div>
@@ -212,6 +217,20 @@
                             </tbody>
                         </table>
                         <label id="lMensajeBuscarCliente" style="color: red; font-size: 10px;"></label>
+                    </div>                    
+                    <div id="d_interesEvitar_editar" style="padding: 20px;" title="Buscar">
+                        <table class="reporte-tabla-1 anchoTotal">
+                            <thead>
+                                <tr>
+                                    <th>Fecha donde no se cobrará intereses.</th>
+                                </tr>
+                            </thead>
+                            <tr>
+                                <td class="contenedorEntrada">
+                                    <input type="text" name="fechaEvitar" id="fechaEvitar" value="" class="anchoTotal entrada fechaEntrada"/>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                     <!--fin dialog's-->
                 </div>

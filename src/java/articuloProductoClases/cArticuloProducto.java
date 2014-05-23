@@ -888,6 +888,29 @@ public class cArticuloProducto {
         return est;
     }
 
+    public boolean actualizar_precioCash(int codArticuloProducto, Double precioCash) {
+        Boolean est = false;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            ArticuloProducto obj = (ArticuloProducto) sesion.get(ArticuloProducto.class, codArticuloProducto);
+            obj.setPrecioCash(precioCash);
+            sesion.update(obj);
+            sesion.getTransaction().commit();
+            est = true;
+        } catch (Exception e) {
+            if (trns != null) {
+                trns.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return est;
+    }
+
     /**
      *
      * @param objArticuloProducto

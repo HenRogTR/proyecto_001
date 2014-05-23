@@ -196,11 +196,15 @@ public class cManejoFechas {
         }
         return anio;
     }
-    
+
     public String fechaFormato(String fecha) {
         return fecha.substring(1, 5) + "/" + fecha.substring(5, 7) + "/"
                 + fecha.substring(7, 9) + " " + fecha.substring(9, 11) + ":"
                 + fecha.substring(11, 13) + ":" + fecha.substring(13, 15);
 //        return fecha;
+    }
+
+    public Date fecha_actual() {
+        return StringADate(DateAString(new Date()));
     }
 }

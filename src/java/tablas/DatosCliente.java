@@ -1,7 +1,8 @@
 package tablas;
-// Generated 14/05/2014 01:19:00 PM by Hibernate Tools 3.6.0
+// Generated 22/05/2014 10:20:56 AM by Hibernate Tools 3.6.0
 
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,6 +22,7 @@ public class DatosCliente  implements java.io.Serializable {
      private Integer condicion;
      private double creditoMax;
      private double saldoFavor;
+     private Date interesEvitar;
      private String observaciones;
      private int codCobrador;
      private int personaCodGarante;
@@ -41,7 +43,7 @@ public class DatosCliente  implements java.io.Serializable {
         this.personaCodGarante = personaCodGarante;
         this.registro = registro;
     }
-    public DatosCliente(EmpresaConvenio empresaConvenio, Persona persona, Integer tipoCliente, String centroTrabajo, String telefono, int tipo, Integer condicion, double creditoMax, double saldoFavor, String observaciones, int codCobrador, int personaCodGarante, String registro, Set<DocumentoNotificacion> documentoNotificacions) {
+    public DatosCliente(EmpresaConvenio empresaConvenio, Persona persona, Integer tipoCliente, String centroTrabajo, String telefono, int tipo, Integer condicion, double creditoMax, double saldoFavor, Date interesEvitar, String observaciones, int codCobrador, int personaCodGarante, String registro, Set<DocumentoNotificacion> documentoNotificacions) {
        this.empresaConvenio = empresaConvenio;
        this.persona = persona;
        this.tipoCliente = tipoCliente;
@@ -51,6 +53,7 @@ public class DatosCliente  implements java.io.Serializable {
        this.condicion = condicion;
        this.creditoMax = creditoMax;
        this.saldoFavor = saldoFavor;
+       this.interesEvitar = interesEvitar;
        this.observaciones = observaciones;
        this.codCobrador = codCobrador;
        this.personaCodGarante = personaCodGarante;
@@ -127,6 +130,13 @@ public class DatosCliente  implements java.io.Serializable {
     
     public void setSaldoFavor(double saldoFavor) {
         this.saldoFavor = saldoFavor;
+    }
+    public Date getInteresEvitar() {
+        return this.interesEvitar;
+    }
+    
+    public void setInteresEvitar(Date interesEvitar) {
+        this.interesEvitar = interesEvitar;
     }
     public String getObservaciones() {
         return this.observaciones;

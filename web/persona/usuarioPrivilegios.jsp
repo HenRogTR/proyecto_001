@@ -57,6 +57,10 @@
                                         <input type="checkbox" class="checkall" name="p2" id="p2" value="ON"/>
                                         <label for="p2">KARDEX</label>                           
                                     </div>
+                                    <div>
+                                        <input type="checkbox" class="checkall" name="p51" id="p51" value="ON"/>
+                                        <label for="p51">HABILITAR INTERESES</label>                           
+                                    </div>
                                 </fieldset>
                                 <fieldset class="ancho240px">
                                     <legend>Empresa/Convenio</legend>
@@ -258,6 +262,10 @@
                                     <div>
                                         <input type="checkbox" class="checkall" name="p27" id="p27" value="ON"/>
                                         <label for="p27">EDITAR PRECIO VENTA</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" class="checkall" name="p52" id="p52" value="ON"/>
+                                        <label for="p52">EDITAR PRECIO CASH</label>
                                     </div>
                                 </fieldset>
                                 <fieldset class="ancho240px">

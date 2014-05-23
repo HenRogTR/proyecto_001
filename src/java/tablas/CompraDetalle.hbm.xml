@@ -1,21 +1,21 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 14/05/2014 01:19:02 PM by Hibernate Tools 3.6.0 -->
+<!-- Generated 22/05/2014 10:20:57 AM by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
     <class name="tablas.CompraDetalle" table="compra_detalle" catalog="proyecto_001">
         <id name="codCompraDetalle" type="java.lang.Integer">
             <column name="cod_compra_detalle" />
             <generator class="identity" />
         </id>
-        <many-to-one name="articuloProducto" class="tablas.ArticuloProducto" fetch="select">
-            <column name="articulo_producto_cod_articulo_producto" not-null="true" />
+        <many-to-one name="almacen" class="tablas.Almacen" fetch="select">
+            <column name="almacen_cod_almacen" not-null="true" />
         </many-to-one>
         <many-to-one name="compra" class="tablas.Compra" fetch="select">
             <column name="compra_cod_compra" not-null="true" />
         </many-to-one>
-        <many-to-one name="almacen" class="tablas.Almacen" fetch="select">
-            <column name="almacen_cod_almacen" not-null="true" />
+        <many-to-one name="articuloProducto" class="tablas.ArticuloProducto" fetch="select">
+            <column name="articulo_producto_cod_articulo_producto" not-null="true" />
         </many-to-one>
         <property name="cantidad" type="int">
             <column name="cantidad" not-null="true" />

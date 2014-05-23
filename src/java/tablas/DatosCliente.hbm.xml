@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 14/05/2014 01:19:02 PM by Hibernate Tools 3.6.0 -->
+<!-- Generated 22/05/2014 10:20:57 AM by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
     <class name="tablas.DatosCliente" table="datos_cliente" catalog="proyecto_001">
         <id name="codDatosCliente" type="java.lang.Integer">
@@ -34,6 +34,9 @@
         </property>
         <property name="saldoFavor" type="double">
             <column name="saldo_favor" precision="10" not-null="true" />
+        </property>
+        <property name="interesEvitar" type="date">
+            <column name="interes_evitar" length="10" />
         </property>
         <property name="observaciones" type="string">
             <column name="observaciones" length="65535" />

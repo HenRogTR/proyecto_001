@@ -303,6 +303,7 @@ public class sVenta extends HttpServlet {
                         objVentaDetalle.setValorVenta(objVentaDetalle.getCantidad() * objVentaDetalle.getPrecioVenta());
                         objVentaDetalle.setArticuloProducto(new cArticuloProducto().leer_cod(Integer.parseInt(request.getParameter("codArticuloProducto" + i))));
                         objVentaDetalle.setPrecioReal(objVentaDetalle.getArticuloProducto().getPrecioVenta());
+                        objVentaDetalle.setPrecioCash(objVentaDetalle.getArticuloProducto().getPrecioCash());
                         objVentaDetalle.setDescripcion(objVentaDetalle.getArticuloProducto().getDescripcion());
                         objVentaDetalle.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
 //

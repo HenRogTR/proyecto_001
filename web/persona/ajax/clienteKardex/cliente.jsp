@@ -4,6 +4,7 @@
     Author     : Henrri
 --%>
 
+<%@page import="utilitarios.cManejoFechas"%>
 <%@page import="personaClases.cDatosCliente"%>
 <%@page import="tablas.DatosCliente"%>
 <%
@@ -13,7 +14,8 @@
         codCliente = Integer.parseInt(request.getParameter("codCliente"));
         objCliente = new cDatosCliente().leer_cod(codCliente);
         if (objCliente != null) {
-            out.print(objCliente.getPersona().getNombresC());
+            boolean cobrarInteres = objCliente.getInteresEvitar() == null ? true : objCliente.getInteresEvitar().compareTo(new cManejoFechas().fecha_actual()) != 0;
+            out.print(objCliente.getPersona().getNombresC() + ":" + (cobrarInteres ? "HABILITADO" : "DESHABILITADO"));
         }
     } catch (Exception e) {
 

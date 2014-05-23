@@ -6,6 +6,7 @@
 
 
 
+<%@page import="otrasTablasClases.cDatosExtras"%>
 <%@page import="utilitarios.cManejoFechas"%>
 <%@page import="utilitarios.cOtros"%>
 <%@page import="tablas.Usuario"%>
@@ -131,6 +132,15 @@
                             <td style="text-align: right;padding-right: 10px;"><%=objcOtros.agregarCerosNumeroFormato(objcOtros.redondearDecimales(pagado, 2), 2)%></td>
                             <td></td>
                             <td style="text-align: right;padding-right: 10px;"><%=objcOtros.agregarCerosNumeroFormato(objcOtros.redondearDecimales(objVentaCreditoLetra0.getVentaCredito().getVentas().getNeto() - pagado, 2), 2)%></td>
+                        </tr>
+                        <tr>
+                            <td style="height: 20px;"></td>
+                            <td colspan="5" style="vertical-align: bottom; font-size: 8px;">
+                                *Pasado <%=new cDatosExtras().leer_diaEspera().getEntero() %> día(s) después de la fecha de vencimiento
+                                se cobrarán intereses.<br>
+                                **Pague puntual y evite el cargo de intereses.
+                            </td>
+                            <td></td>
                         </tr>
                     </tbody>
                 </table>

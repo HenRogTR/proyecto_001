@@ -29,7 +29,7 @@
         <script type="text/javascript" src="../librerias/persona/usuario/contraseniaCambiar.js"></script>
     </head>
     <body>
-        <input type="hidden" name="paginaActualPermiso" id="permisoPaginaP1" value="" title=""/>
+        <input type="hidden" name="paginaActualPermiso" value="1" title=""/>
         <div id="wrap">
             <div id="header">
                 <label class="horaCabecera"><%=objcManejoFechas.fechaCabecera()%></label>

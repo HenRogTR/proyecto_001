@@ -66,6 +66,8 @@ body {
 }
 td,th{
     vertical-align: top;
+    padding: 0px;
+    margin-top: 0px;
 }
 tbody tr:hover td{background: #d0dafd;}
 .espaciado5{

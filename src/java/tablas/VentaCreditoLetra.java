@@ -1,5 +1,5 @@
 package tablas;
-// Generated 14/05/2014 01:19:00 PM by Hibernate Tools 3.6.0
+// Generated 22/05/2014 10:20:56 AM by Hibernate Tools 3.6.0
 
 
 import java.util.Date;
@@ -23,6 +23,7 @@ public class VentaCreditoLetra  implements java.io.Serializable {
      private Date fechaPago;
      private Double totalPago;
      private Double interesPagado;
+     private Double interesPendiente;
      private Date interesUltimoCalculo;
      private String registro;
      private Set<CobranzaDetalle> cobranzaDetalles = new HashSet<CobranzaDetalle>(0);
@@ -35,7 +36,7 @@ public class VentaCreditoLetra  implements java.io.Serializable {
         this.ventaCredito = ventaCredito;
         this.registro = registro;
     }
-    public VentaCreditoLetra(VentaCredito ventaCredito, Integer moneda, Integer numeroLetra, String detalleLetra, Date fechaVencimiento, Double monto, Double interes, Date fechaPago, Double totalPago, Double interesPagado, Date interesUltimoCalculo, String registro, Set<CobranzaDetalle> cobranzaDetalles) {
+    public VentaCreditoLetra(VentaCredito ventaCredito, Integer moneda, Integer numeroLetra, String detalleLetra, Date fechaVencimiento, Double monto, Double interes, Date fechaPago, Double totalPago, Double interesPagado, Double interesPendiente, Date interesUltimoCalculo, String registro, Set<CobranzaDetalle> cobranzaDetalles) {
        this.ventaCredito = ventaCredito;
        this.moneda = moneda;
        this.numeroLetra = numeroLetra;
@@ -46,6 +47,7 @@ public class VentaCreditoLetra  implements java.io.Serializable {
        this.fechaPago = fechaPago;
        this.totalPago = totalPago;
        this.interesPagado = interesPagado;
+       this.interesPendiente = interesPendiente;
        this.interesUltimoCalculo = interesUltimoCalculo;
        this.registro = registro;
        this.cobranzaDetalles = cobranzaDetalles;
@@ -127,6 +129,13 @@ public class VentaCreditoLetra  implements java.io.Serializable {
     
     public void setInteresPagado(Double interesPagado) {
         this.interesPagado = interesPagado;
+    }
+    public Double getInteresPendiente() {
+        return this.interesPendiente;
+    }
+    
+    public void setInteresPendiente(Double interesPendiente) {
+        this.interesPendiente = interesPendiente;
     }
     public Date getInteresUltimoCalculo() {
         return this.interesUltimoCalculo;

@@ -1,5 +1,5 @@
 package tablas;
-// Generated 14/05/2014 01:19:00 PM by Hibernate Tools 3.6.0
+// Generated 22/05/2014 10:20:56 AM by Hibernate Tools 3.6.0
 
 
 import java.util.HashSet;
@@ -19,6 +19,7 @@ public class VentasDetalle  implements java.io.Serializable {
      private String descripcion;
      private double precioReal;
      private double precioProforma;
+     private Double precioCash;
      private double precioVenta;
      private double valorVenta;
      private String registro;
@@ -37,7 +38,7 @@ public class VentasDetalle  implements java.io.Serializable {
         this.valorVenta = valorVenta;
         this.registro = registro;
     }
-    public VentasDetalle(ArticuloProducto articuloProducto, Ventas ventas, Integer item, Integer cantidad, String descripcion, double precioReal, double precioProforma, double precioVenta, double valorVenta, String registro, Set<VentasSerieNumero> ventasSerieNumeros) {
+    public VentasDetalle(ArticuloProducto articuloProducto, Ventas ventas, Integer item, Integer cantidad, String descripcion, double precioReal, double precioProforma, Double precioCash, double precioVenta, double valorVenta, String registro, Set<VentasSerieNumero> ventasSerieNumeros) {
        this.articuloProducto = articuloProducto;
        this.ventas = ventas;
        this.item = item;
@@ -45,6 +46,7 @@ public class VentasDetalle  implements java.io.Serializable {
        this.descripcion = descripcion;
        this.precioReal = precioReal;
        this.precioProforma = precioProforma;
+       this.precioCash = precioCash;
        this.precioVenta = precioVenta;
        this.valorVenta = valorVenta;
        this.registro = registro;
@@ -106,6 +108,13 @@ public class VentasDetalle  implements java.io.Serializable {
     
     public void setPrecioProforma(double precioProforma) {
         this.precioProforma = precioProforma;
+    }
+    public Double getPrecioCash() {
+        return this.precioCash;
+    }
+    
+    public void setPrecioCash(Double precioCash) {
+        this.precioCash = precioCash;
     }
     public double getPrecioVenta() {
         return this.precioVenta;

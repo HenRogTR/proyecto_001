@@ -22,7 +22,7 @@
         <!--propio-->
         <script type="text/javascript" src="../librerias/utilitarios/manejoFecha.js"></script>
         <script type="text/javascript" src="../librerias/utilitarios/formatoDecimal.js"></script>
-        <script type="text/javascript" src="../librerias/cobranza/cobranza.js?v.14.05.15"></script>
+        <script type="text/javascript" src="../librerias/cobranza/cobranza.js?v.14.05.23"></script>
         <script type="text/javascript" src="../librerias/plugin/mask/jquery.mask.min.js"></script>
         <script type="text/javascript" src="../librerias/utilitarios/validaciones.js"></script>
         <script type="text/javascript" src="../librerias/jquery-ui/jquery-ui-1.10.3.custom/js/i18n/jquery.ui.datepicker-es-min.js"></script>
@@ -86,7 +86,8 @@
                                                 <span class="esperando">&nbsp;</span>
                                             </td>
                                             <td colspan="3">
-                                                <span id="sNombresC" class="vaciar">Nombres/Razón Social</span>
+                                                <span id="sNombresC" class="vaciar">Nombres/Razón Social</span><br>
+                                                <span id="sInteresEvitar" class="vaciar" style="font-size: 10px; font-weight: bold;">Interés</span>
                                                 <span class="esperando">&nbsp;</span>
                                             </td>
                                         </tr>
@@ -215,7 +216,7 @@
                                         </thead>
                                     </table>
                                 </div>
-                                <div id="d_ventaDetalle" class="fondoDivSecundario" style="overflow: auto;height: 100px;">
+                                <div id="d_ventaDetalle" class="fondoDivSecundario" style="overflow: auto;height: 108px;">
                                     <table id="t_ventaDetalle" class="tabla9px anchoTotal tabla_dato">
 
                                     </table>
@@ -360,7 +361,7 @@
                                                 <input type="text" name="montoAmortizar" value="" id="montoAmortizar" class="anchoTotal derecha entrada" style="font-size: 16px;" /> 
                                             </td>
                                             <td class="centrado medio">                                                
-                                                <a id="bAmortizar" class="boton iconoSoloPequenio save">&nbsp;</a>
+                                                <a id="bAmortizar" href="#" class="boton iconoSoloPequenio save">&nbsp;</a>
                                             </td>
                                         </tr>
                                         <tr>
@@ -371,7 +372,7 @@
                                             </th>
                                             <td colspan="3">
                                                 <a id="cobranzaImprimir" class="boton botonNormal print">Matricial</a>
-                                                <a id="bImprimirTicket" class="boton botonNormal print">Ticket</a>
+                                                <a id="bImprimirTicket" href="#" class="boton botonNormal print">Ticket</a>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -384,17 +385,17 @@
                         <table class="reporte-tabla-1 anchoTotal" >
                             <thead>
                                 <tr>
-                                    <th class="ancho120px"><label>COD. CLIENTE</label></th>
                                     <th style=""><label>DNI-PASPORTE/RUC APELLIDOS-NOMBRES/RAZÓN SOCIAL</label></th>
+                                    <th class="ancho120px"><label>COD. CLIENTE</label></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td class="contenedorEntrada">
-                                        <input type="text" name="codClienteBuscar" id="codClienteBuscar" value="" class="entrada anchoTotal derecha" />
+                                        <input type="text" name="nombresCDniPasaporteRucBuscar" id="nombresCDniPasaporteRucBuscar" value="" class="entrada anchoTotal"/>
                                     </td>
                                     <td class="contenedorEntrada">
-                                        <input type="text" name="nombresCDniPasaporteRucBuscar" id="nombresCDniPasaporteRucBuscar" value="" class="entrada anchoTotal"/>
+                                        <input type="text" name="codClienteBuscar" id="codClienteBuscar" value="" class="entrada anchoTotal derecha" />
                                     </td>
                                 </tr>
                             </tbody>

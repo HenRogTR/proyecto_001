@@ -28,6 +28,14 @@ $(document).ready(function(e) {
                 if (this.value != '') {
                     this.value = fNumeroFormato(this.value, 2, false);
                 }
+            })
+            .keypress(function(e) {
+                var key = e.charCode ? e.charCode : (e.keyCode ? e.keyCode : 0);
+                //pasar el foco a bAmortizar
+                if (key == 13) {
+                    $('#bAmortizar').focus();
+                    e.preventDefault();
+                }
             });
     //permite una letra seguido de 2 letras-números+...
     $('#docSerieNumero').mask('SZZ-000-000000', {translation: {'Z': {pattern: /[a-zA-Z0-9]/, optional: true}}});
@@ -66,8 +74,8 @@ $(document).ready(function(e) {
             fVerificarDatos();
         } else {
             fAlerta($('#d_estadoProceso').html());
-            e.preventDefault();
         }
+        e.preventDefault();
     });
     //boton saldo a favor
     $('#bSaldoFavorUsar').click(function(event) {
@@ -82,7 +90,7 @@ $(document).ready(function(e) {
     $('#bImprimirTicket').click(function(event) {
         event.preventDefault();
         var $auxCodCobranza2 = $('#auxCodCobranza2');
-        if (!$.isNumeric($auxCodCobranza2.val()) || $auxCodCobranza2.val() > 0) {
+        if (!$.isNumeric($auxCodCobranza2.val()) || $auxCodCobranza2.val() <= 0) {
             fAlerta('Ticket no seleccionado/cliente sin pago realizado.');
             return;
         }
@@ -347,6 +355,7 @@ function fClienteLeer(codCliente) {
                     $('#codCliente').val(clienteItem.codCliente);
                     $('#sCodCliente').text(clienteItem.codCliente);
                     $('#sNombresC').text(clienteItem.nombresC);
+                    $('#sInteresEvitar').text(clienteItem.interesEvitar);
                     $('#sDireccion').text(clienteItem.direccion);
                     $('#sEmpresaConvenio').text(clienteItem.empresaConvenio);
                     $('#sCodCobranza').text(clienteItem.codCobranza);

@@ -4,6 +4,7 @@
  */
 package personaClases;
 
+import java.util.Date;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -77,6 +78,7 @@ public class cDatosCliente {
                     + ", dc.tipoCliente"
                     + ", dc.condicion"
                     + ", dc.saldoFavor"
+                    + ", dc.interesEvitar"
                     + " from DatosCliente dc"
                     + " where dc = :par1")
                     .setInteger("par1", codCliente);
@@ -228,7 +230,7 @@ public class cDatosCliente {
         }
         return clienteList;
     }
-    
+
     public int Crear(DatosCliente objDatosCliente) {
         setError(null);
         sesion = HibernateUtil.getSessionFactory().openSession();
@@ -604,7 +606,30 @@ public class cDatosCliente {
             }
             setError(e.getMessage());
             e.printStackTrace();
-            System.out.println("***************************" + e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return estado;
+    }
+
+    public boolean actualizar_interesEvitar(int codCliente, Date fecha) {
+        boolean estado = false;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            DatosCliente obj = (DatosCliente) sesion.get(DatosCliente.class, codCliente);
+            obj.setInteresEvitar(fecha);
+            sesion.update(obj);
+            sesion.getTransaction().commit();
+            estado = true;
+        } catch (Exception e) {
+            if (trns != null) {
+                trns.rollback();
+            }
+            setError(e.getMessage());
+            e.printStackTrace();
         } finally {
             sesion.flush();
             sesion.close();

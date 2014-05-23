@@ -421,6 +421,7 @@ public class cVentaCreditoLetra {
 
     /**
      * Retonra la letra mas vencida de un cliente buscado por codigo;
+     * Saldo=deudaNormal+interesDeuda
      *
      * @param codPersona
      * @return
@@ -448,8 +449,37 @@ public class cVentaCreditoLetra {
     }
 
     /**
-     * Retonra la letra mas vencida de un cliente buscado por codigo y por venta
-     * hecha
+     * Retonra la letra mas vencida de un cliente buscado por codigo;
+     * Saldo=deudaNormal+interesDeuda
+     *
+     * @param codPersona
+     * @return
+     */
+    public VentaCreditoLetra leer_letraVencidaAntigua_interesEvitar(int codPersona) {
+        VentaCreditoLetra objVCL = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("from VentaCreditoLetra v "
+                    + "where v.ventaCredito.ventas.persona.codPersona=:codPersona "
+                    + "and v.monto- v.totalPago> 0"
+                    + "and substring(v.registro,1,1)=1 "
+                    + "order by v.fechaVencimiento asc")
+                    .setParameter("codPersona", codPersona);
+            objVCL = (VentaCreditoLetra) q.list().get(0);
+        } catch (Exception e) {
+            setError(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            sesion.flush();
+        }
+        return objVCL;
+    }
+
+    /**
+     * Retorna la letra mas vencida de un cliente buscado por codigo y por venta
+     * hecha. Saldo=deudaNormal+interesDeuda
      *
      * @param codPersona
      * @param codVentas
@@ -477,6 +507,137 @@ public class cVentaCreditoLetra {
             sesion.flush();
         }
         return obj;
+    }
+
+    /**
+     * Retorna la letra mas vencida de un cliente buscado por codigo y por venta
+     * hecha. Saldo=deudaNormal
+     *
+     * @param codPersona
+     * @param codVentas
+     * @return
+     */
+    public VentaCreditoLetra leer_letraVencidaAntigua_interesEvitar_codVenta(int codPersona, int codVentas) {
+        VentaCreditoLetra obj = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("from VentaCreditoLetra v "
+                    + "where v.ventaCredito.ventas.persona.codPersona=:codPersona "
+                    + "and v.monto- v.totalPago> 0"
+                    + "and v.ventaCredito.ventas.codVentas=:codVentas "
+                    + "and substring(v.registro,1,1)=1 "
+                    + "order by v.fechaVencimiento asc")
+                    .setParameter("codPersona", codPersona)
+                    .setParameter("codVentas", codVentas);
+            obj = (VentaCreditoLetra) q.list().get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+        }
+        return obj;
+    }
+
+    /**
+     * Retorna la letra mas vencida de un cliente buscado por codigo y por venta
+     * hecha. Saldo=deudaNormal+interesDeuda
+     *
+     * @param codCliente
+     * @return
+     */
+    public List leer_letras_deudaSoloInteres_SC(int codCliente) {
+        List lista = null;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Query q = sesion.createQuery("select vcl.codVentaCreditoLetra"
+                    + " from VentaCreditoLetra vcl join vcl.ventaCredito.ventas.persona.datosClientes dc"
+                    + " where dc.codDatosCliente= :par1 and vcl.monto- vcl.totalPago= 0"
+                    + " and vcl.interes- vcl.interesPagado> 0"
+                    + " and substring(vcl.registro,1,1)=1")
+                    .setParameter("par1", codCliente);
+            lista = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return lista;
+    }
+
+    /**
+     * Actualiza los interes. Calcula la cantidad de dias que no se ha generado
+     * los intereses y los va generando.
+     *
+     * @param lista
+     * @return
+     */
+    public boolean actualizar_interesPendiente(List lista) {
+        boolean est = false;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+
+            Integer codVentaCreditoLetra = 0;
+
+            for (Iterator it = lista.iterator(); it.hasNext();) {
+                Object vCLetraObject = (Object) it.next();
+                codVentaCreditoLetra = (Integer) vCLetraObject;
+                VentaCreditoLetra objVentaCreditoLetra = (VentaCreditoLetra) sesion.get(VentaCreditoLetra.class, codVentaCreditoLetra);
+                //obtenemos los intereses no pagados
+                Double deudaInteresPendiente = objVentaCreditoLetra.getInteres() - objVentaCreditoLetra.getInteresPagado();
+                objVentaCreditoLetra.setInteresPendiente(deudaInteresPendiente);
+                //igualamos interese pagados con generados
+                objVentaCreditoLetra.setInteres(objVentaCreditoLetra.getInteresPagado());
+                sesion.persist(objVentaCreditoLetra);
+            }
+            sesion.getTransaction().commit();
+            est = true;
+        } catch (Exception e) {
+            if (trns != null) {
+                trns.rollback();
+            }
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return est;
+    }
+
+    public boolean actualizar_interesPendiente_retornar(int codVCL) {
+        boolean est = false;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            VentaCreditoLetra objVentaCreditoLetra = (VentaCreditoLetra) sesion.get(VentaCreditoLetra.class, codVCL);
+            //sumamos el interes
+            objVentaCreditoLetra.setInteres(objVentaCreditoLetra.getInteres() + objVentaCreditoLetra.getInteresPendiente());
+            //ponemos a cero para no volver a generar denuevo
+            objVentaCreditoLetra.setInteresPendiente(0.00);
+            sesion.save(objVentaCreditoLetra);
+            sesion.getTransaction().commit();
+            est = true;
+        } catch (Exception e) {
+            if (trns != null) {
+                trns.rollback();
+            }
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return est;
     }
 
     public String moneda(int moneda) {

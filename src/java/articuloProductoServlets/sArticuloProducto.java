@@ -30,9 +30,8 @@ import utilitarios.cOtros;
 public class sArticuloProducto extends HttpServlet {
 
     /**
-     * Processes requests for both HTTP
-     * <code>GET</code> and
-     * <code>POST</code> methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
      *
      * @param request servlet request
      * @param response servlet response
@@ -142,7 +141,7 @@ public class sArticuloProducto extends HttpServlet {
                 }
                 if (!objcArticuloProducto.actualizar(objArticuloProductoNuevo)) {
                     out.print("Error al actualizar: " + objcArticuloProducto.getError() + "<br>");
-                }                
+                }
                 out.print(objArticuloProductoNuevo.getCodArticuloProducto());
             }
             if (accion.equals("editarPrecioVenta")) {
@@ -150,7 +149,6 @@ public class sArticuloProducto extends HttpServlet {
                     out.print("No tiene permisos para realizar esta acción.");
                     return;
                 }
-//                int codArticuloProducto = 0;
                 double precioVenta = 0;
                 try {
                     codArticuloProducto = Integer.parseInt(request.getParameter("codArticuloProducto"));
@@ -170,13 +168,28 @@ public class sArticuloProducto extends HttpServlet {
                 objcPrecioVenta.crear(objPrecioVenta);
                 out.print(codArticuloProducto);
             }
+
+            if (accion.equals("editarPrecioCash")) {
+                if (!objUsuario.getP52()) {
+                    out.print("No tiene permisos para realizar esta acción.");
+                    return;
+                }
+                double precioVenta = 0;
+                try {
+                    codArticuloProducto = Integer.parseInt(request.getParameter("codArticuloProducto"));
+                    precioVenta = Double.parseDouble(request.getParameter("precioCash"));
+                } catch (Exception e) {
+                    out.print("Error en parametros");
+                    return;
+                }
+                out.print(objcArticuloProducto.actualizar_precioCash(codArticuloProducto, precioVenta) ? codArticuloProducto : "Error al registrar.");
+            }
         }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP
-     * <code>GET</code> method.
+     * Handles the HTTP <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -190,8 +203,7 @@ public class sArticuloProducto extends HttpServlet {
     }
 
     /**
-     * Handles the HTTP
-     * <code>POST</code> method.
+     * Handles the HTTP <code>POST</code> method.
      *
      * @param request servlet request
      * @param response servlet response

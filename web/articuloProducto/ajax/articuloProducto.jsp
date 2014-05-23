@@ -55,7 +55,6 @@
 
     }
 
-
     out.print("[");
     if (objArticuloProducto != null) {
         session.removeAttribute("codArticuloProductoMantenimiento");
@@ -72,6 +71,7 @@
                 + ",\"codReferencia\" : \"" + (objArticuloProducto.getCodReferencia() == null ? "" : objArticuloProducto.getCodReferencia()) + "\" "
                 + ",\"descripcion\" : \"" + objcOtros.replace_comillas_comillasD_barraInvertida(objArticuloProducto.getDescripcion()) + "\" "
                 + ",\"precioVenta\":\"" + objcOtros.agregarCerosNumeroFormato(objArticuloProducto.getPrecioVenta(), 2) + "\""
+                + ",\"precioCash\":\"" + objcOtros.decimalFormato(objArticuloProducto.getPrecioCash(), 2) + "\""
                 + ",\"familia\" : \"" + objArticuloProducto.getFamilia().getFamilia() + "\" "
                 + ",\"marca\" : \"" + objArticuloProducto.getMarca().getDescripcion() + "\" "
                 + ",\"unidadMedida\" : \"" + objArticuloProducto.getUnidadMedida() + "\" "

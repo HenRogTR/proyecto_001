@@ -3,10 +3,6 @@
  * and open the template in the editor.
  */
 $(document).ready(function() {
-    $('#dAPAccordion').accordion({
-        heightStyle: "content",
-        collapsible: true
-    });
     $('#bPrimero').click(function(event) {
         fAPLeer(-1, '');
         event.preventDefault();
@@ -36,12 +32,60 @@ $(document).ready(function() {
         event.preventDefault();
     });
 
-    $('#precioNuevo').numeric({negative: false});
+    $('#precioNuevo')
+            .mask('0999999999999.99')
+            .blur(function(event) {
+                //si no esta vacio, se de formato al número ingresado (0.00)
+                if (this.value != '') {
+                    this.value = fNumeroFormato(this.value, 2, false);
+                }
+            });
+
+    $('#precioCashNuevo')
+            .mask('0999999999999.99')
+            .blur(function(event) {
+                //si no esta vacio, se de formato al número ingresado (0.00)
+                if (this.value != '') {
+                    this.value = fNumeroFormato(this.value, 2, false);
+                }
+            });
     $('#bPrecioVentaModificar').click(function(event) {
         $('#precioNuevo').val('');
         $('#dPrecioVentaModificar').dialog('open');
         event.preventDefault();
     });
+    $('#bPrecioCashModificar').click(function(event) {
+        $('#precioCashNuevo').val('');
+        $('#dPrecioCashModificar').dialog('open');
+        event.preventDefault();
+    });
+    $('#codArticuloProductoBuscar')
+            //solo permite números enteros
+            .mask('#', {maxlength: false})
+            .keyup(function(e) {
+                var key = e.charCode ? e.charCode : (e.keyCode ? e.keyCode : 0);
+                if (key == 13) {
+                    //si existe un número en la entrada se busca cliente
+                    if ($.isNumeric(this.value)) {
+                        fAPLeer(parseInt(this.value, 10), '');
+                        $(this).val('');
+                    }
+                    e.preventDefault();
+                }
+            });
+    $('#bStock').click(function(event) {
+        fKAPSNStock();
+        event.preventDefault();
+    });
+});
+
+//<editor-fold defaultstate="collapsed" desc="$(function() {}). Clic en  + para más detalles.">
+$(function() {
+    $('#dAPAccordion').accordion({
+        heightStyle: "content",
+        collapsible: true
+    });
+
     $('#dPrecioVentaModificar').dialog({
         autoOpen: false,
         modal: true,
@@ -59,6 +103,24 @@ $(document).ready(function() {
             $(this).dialog("close");
         }
     });
+    $('#dPrecioCashModificar').dialog({
+        autoOpen: false,
+        modal: true,
+        resizable: true,
+        height: 180,
+        width: 340,
+        buttons: {
+            Modificar: function() {
+                precioCashModificar();
+            }, Cancelar: function() {
+                $(this).dialog("close");
+            }
+        },
+        close: function() {
+            $(this).dialog("close");
+        }
+    });
+
     $('#dAPBuscar').dialog({
         autoOpen: false,
         modal: true,
@@ -74,16 +136,6 @@ $(document).ready(function() {
             $(this).dialog("close");
         }
     });
-    $('#codArticuloProductoBuscar').numeric({negative: false, decimal: false});
-    $('#codArticuloProductoBuscar').keypress(function(e) {
-        var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
-        if (key == 13) {
-            if (!isNaN($(this).val()) & $(this).val() > 0) {
-                fAPLeer($(this).val(), '');
-                $('#codArticuloProductoBuscar').val('').focus();
-            }
-        }
-    });
 
     $('#descripcionBuscar').autocomplete({
         source: 'autocompletado/articuloProductoDescripcion.jsp',
@@ -91,12 +143,8 @@ $(document).ready(function() {
         select: fAPSeleccionado,
         focus: fAPMarcado
     });
-
-    $('#bStock').click(function(event) {
-        fKAPSNStock();
-        event.preventDefault();
-    });
 });
+//</editor-fold>
 
 function fAPSeleccionado(event, ui) {
     var articuloProducto = ui.item.value;
@@ -142,7 +190,10 @@ function fAPLeer(codAP, parametro) {
                     $("#lDescripcion").append(aPItem.descripcion);
                     $('#lPrecioVenta').append('S/. ' + aPItem.precioVenta);
                     $('#lPrecioActualAux').append('S/. ' + aPItem.precioVenta);
-                    $('#bPrecioVentaModificar').removeAttr('disabled').removeClass('disabled');
+                    $('#lPrecioCash').append('S/. ' + aPItem.precioCash);
+                    $('#lPrecioCashAux').append('S/. ' + aPItem.precioCash);
+                    $('#bPrecioVentaModificar').prop('disabled', false).removeClass('disabled');
+                    $('#bPrecioCashModificar').prop('disabled', false).removeClass('disabled');
                     $("#lCodReferencia").append(aPItem.codReferencia);
                     $("#lUsarSerieNumero").append(aPItem.usarSerieNumero);
                     aPItem.usarSerieNumero == 'HABILITADO' ? ($('#bStock').removeClass('disabled').prop('disabled', false)) : ($('#bStock').addClass('disabled').prop('disabled', true));
@@ -198,6 +249,50 @@ function precioVentaModificar() {
                     $('#lPrecioVenta').empty().append('S/. ' + $('#precioNuevo').val());
                     $('#lPrecioActualAux').text($('#precioNuevo').val());
                     $('#dPrecioVentaModificar').dialog('close');
+                }
+            },
+            statusCode: {
+                404: function() {
+                    $('#dProcesandoPeticion').dialog('close');
+                    $('#lServidorError').text('Página no encontrada(articuloProducto.jsp).');
+                    $('#dServidorError').dialog('open');
+                }
+            }
+        });
+    } catch (ex) {
+        $('#lErrorServidor').text(ex);
+        $('#dErrorServidor').dialog('open');
+    }
+}
+;
+
+function precioCashModificar() {
+    var data = {
+        codArticuloProducto: $('#codArticuloProducto').val(),
+        precioCash: $('#precioCashNuevo').val(),
+        accionArticuloProducto: 'editarPrecioCash'
+    };
+    if (!$.isNumeric(data.precioCash)) {
+        fAlerta('Ingrese precio cash.');
+        return;
+    }
+    try {
+        $.ajax({
+            type: "post",
+            url: "../sArticuloProducto",
+            data: data,
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                $('#dProcesandoPeticion').dialog('close');
+                $('#lServidorError').text(errorThrown);
+                $('#dServidorError').dialog('open');
+            },
+            success: function(ajaxResponse, textStatus) {
+                if ($.isNumeric(ajaxResponse)) {
+                    $('#lPrecioCash').empty().append('S/. ' + $('#precioCashNuevo').val());
+                    $('#lPrecioCashAux').text($('#precioCashNuevo').val());
+                    $('#dPrecioCashModificar').dialog('close');
+                } else {
+                    fAlerta(ajaxResponse);
                 }
             },
             statusCode: {

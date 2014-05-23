@@ -1,5 +1,5 @@
 package tablas;
-// Generated 14/05/2014 01:19:00 PM by Hibernate Tools 3.6.0
+// Generated 22/05/2014 10:20:56 AM by Hibernate Tools 3.6.0
 
 
 import java.util.Date;
@@ -35,8 +35,8 @@ public class Ventas  implements java.io.Serializable {
      private String direccion2;
      private String direccion3;
      private String registro;
-     private Set<VentasDetalle> ventasDetalles = new HashSet<VentasDetalle>(0);
      private Set<VentaCredito> ventaCreditos = new HashSet<VentaCredito>(0);
+     private Set<VentasDetalle> ventasDetalles = new HashSet<VentasDetalle>(0);
      private Set<TramiteDocumentario> tramiteDocumentarios = new HashSet<TramiteDocumentario>(0);
 
     public Ventas() {
@@ -55,7 +55,7 @@ public class Ventas  implements java.io.Serializable {
         this.personaCodVendedor = personaCodVendedor;
         this.registro = registro;
     }
-    public Ventas(Persona persona, Integer itemCantidad, String docSerieNumero, String tipo, Date fecha, String moneda, double subTotal, double descuento, double total, double valorIgv, double neto, String son, int personaCodVendedor, Boolean estado, String observacion, String cliente, String identificacion, String direccion, String docSerieNumeroGuia, String direccion2, String direccion3, String registro, Set<VentasDetalle> ventasDetalles, Set<VentaCredito> ventaCreditos, Set<TramiteDocumentario> tramiteDocumentarios) {
+    public Ventas(Persona persona, Integer itemCantidad, String docSerieNumero, String tipo, Date fecha, String moneda, double subTotal, double descuento, double total, double valorIgv, double neto, String son, int personaCodVendedor, Boolean estado, String observacion, String cliente, String identificacion, String direccion, String docSerieNumeroGuia, String direccion2, String direccion3, String registro, Set<VentaCredito> ventaCreditos, Set<VentasDetalle> ventasDetalles, Set<TramiteDocumentario> tramiteDocumentarios) {
        this.persona = persona;
        this.itemCantidad = itemCantidad;
        this.docSerieNumero = docSerieNumero;
@@ -78,8 +78,8 @@ public class Ventas  implements java.io.Serializable {
        this.direccion2 = direccion2;
        this.direccion3 = direccion3;
        this.registro = registro;
-       this.ventasDetalles = ventasDetalles;
        this.ventaCreditos = ventaCreditos;
+       this.ventasDetalles = ventasDetalles;
        this.tramiteDocumentarios = tramiteDocumentarios;
     }
    
@@ -244,19 +244,19 @@ public class Ventas  implements java.io.Serializable {
     public void setRegistro(String registro) {
         this.registro = registro;
     }
-    public Set<VentasDetalle> getVentasDetalles() {
-        return this.ventasDetalles;
-    }
-    
-    public void setVentasDetalles(Set<VentasDetalle> ventasDetalles) {
-        this.ventasDetalles = ventasDetalles;
-    }
     public Set<VentaCredito> getVentaCreditos() {
         return this.ventaCreditos;
     }
     
     public void setVentaCreditos(Set<VentaCredito> ventaCreditos) {
         this.ventaCreditos = ventaCreditos;
+    }
+    public Set<VentasDetalle> getVentasDetalles() {
+        return this.ventasDetalles;
+    }
+    
+    public void setVentasDetalles(Set<VentasDetalle> ventasDetalles) {
+        this.ventasDetalles = ventasDetalles;
     }
     public Set<TramiteDocumentario> getTramiteDocumentarios() {
         return this.tramiteDocumentarios;

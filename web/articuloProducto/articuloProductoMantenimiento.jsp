@@ -5,9 +5,6 @@
 --%>
 
 <%@page import="utilitarios.cManejoFechas"%>
-<%
-    cManejoFechas objcManejoFechas = new cManejoFechas();
-%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -22,8 +19,9 @@
         <!--cambios-->
         <%@include file="../principal/inclusiones.jsp" %>
         <!--propio-->
-        <script type="text/javascript" src="../librerias/articuloProducto/articuloProductoMantenimiento.js?v13.12.30"></script>
-        <script type="text/javascript" src="../librerias/jquery/jquery.numeric-min.js"></script>
+        <script type="text/javascript" src="../librerias/articuloProducto/articuloProductoMantenimiento.js?v.14.05.22"></script>
+        <script type="text/javascript" src="../librerias/utilitarios/formatoDecimal.js"></script>        
+        <script type="text/javascript" src="../librerias/plugin/mask/jquery.mask.min.js"></script>
         <style>
             .ui-autocomplete {
                 width: 400px;
@@ -44,7 +42,7 @@
         <input type="hidden" name="paginaActualPermiso" id="permisoPaginaP4" value="" title="MANTENIMIENTO DE ARTÍCULOS"/>
         <div id="wrap">
             <div id="header">
-                <label class="horaCabecera"><%=objcManejoFechas.fechaCabecera()%></label>
+                <label class="horaCabecera"><%=new cManejoFechas().fechaCabecera()%></label>
             </div>
             <div id="right">
                 <div id="rightSub1" class="ocultar">                    
@@ -177,6 +175,18 @@
                             <tr>
                                 <th>NUEVO PRECIO</th>
                                 <td>S/. <input id="precioNuevo" name="precioNuevo" style="width: 80px;"/></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="dPrecioCashModificar" title="Modificar precio cash">
+                        <table class="reporte-tabla-1 anchoTotal" style="font-size: 13px;">
+                            <tr>
+                                <th style="width: 100px;">P. CASH ACTUAL</th>
+                                <td style="width: 140px;" id="lPrecioCashAux" class="vaciar"></td>
+                            </tr>
+                            <tr>
+                                <th>NUEVO PRECIO</th>
+                                <td>S/. <input id="precioCashNuevo" name="precioCashNuevo" style="width: 80px;"/></td>
                             </tr>
                         </table>
                     </div>
