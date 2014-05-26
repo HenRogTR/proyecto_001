@@ -210,6 +210,7 @@ public class sCobranza extends HttpServlet {
                     boolean cobrarInteres = objCliente.getInteresEvitar() == null ? true : (objCliente.getInteresEvitar().compareTo(new cManejoFechas().fecha_actual()) != 0);
                     Double montoAmortizarAux = montoAmortizar;
                     while (montoAmortizarAux > 0) {
+                        System.out.println(montoAmortizarAux);
                         VentaCreditoLetra objVentaCreditoLetra = null;
                         //se buscan deuda con intereses
                         if (cobrarInteres) {
@@ -236,10 +237,11 @@ public class sCobranza extends HttpServlet {
 
                         //si se cobran intereses
                         if (cobrarInteres) {
-
+                            System.out.println("Se cobran intereses.");
                             //se cancela toda la letra actual y los interes
                             //se actualiza la fecha de pago
                             if (montoAmortizarAux >= deudaLetra + interesDeuda) {
+                                System.out.println("se cancela toda la deuda");
                                 CobranzaDetalle objCobranzaDetalle = new CobranzaDetalle();
                                 objCobranzaDetalle.setCobranza(objCobranza);
                                 objCobranzaDetalle.setImporte(deudaLetra);
@@ -260,6 +262,7 @@ public class sCobranza extends HttpServlet {
                                 //y actualizamos la fecha de pago. Usamos > para indicar que se amortizara la letra ya sea en un centimo
                                 //teniendo en cuenta que el monto queda en 0.00
                             } else if (montoAmortizarAux >= interesDeuda) {
+                                System.out.println("Se cancela todo los interes");
                                 CobranzaDetalle objCobranzaDetalle = new CobranzaDetalle();
                                 objCobranzaDetalle.setCobranza(objCobranza);
                                 objCobranzaDetalle.setImporte(montoAmortizarAux - interesDeuda);
@@ -278,6 +281,7 @@ public class sCobranza extends HttpServlet {
 
                                 //solo pagamos parte de la deudaInteres sin actualizar la fecha de pago
                             } else {
+                                System.out.println("se paga parte de los intereses");
                                 CobranzaDetalle objCobranzaDetalle = new CobranzaDetalle();
                                 objCobranzaDetalle.setCobranza(objCobranza);
                                 objCobranzaDetalle.setImporte(0.00);
@@ -295,6 +299,7 @@ public class sCobranza extends HttpServlet {
                                 montoAmortizarAux = 0.00;//quitamos el monto
                             }
                         } else {
+                            System.out.println("No se cobran intereses.");
                             //si no se cobran intereses
                             if (montoAmortizarAux >= deudaLetra) {
                                 //*******creamos cobranzaDetalle
@@ -323,6 +328,8 @@ public class sCobranza extends HttpServlet {
                                 montoAmortizarAux = 0.00;//no queda saldo
                             }
                         }
+                        //solucion temporal
+                        montoAmortizarAux = Double.parseDouble(new cOtros().decimalFormato(montoAmortizarAux, 2));
                     }
                     //Una vez concluido los pagos se proceden a actualizar los interes y agregamos intereses pendientes. Solo para las letras con 0 de deuda.
                     if (!cobrarInteres) {

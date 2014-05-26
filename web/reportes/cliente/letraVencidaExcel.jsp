@@ -436,7 +436,7 @@
                                 interesUltimoCalculo = (Date) dato[22];
 
                                 if (interesUltimoCalculo == null) {//se tomara el ultimo pago o la fecha de vencimiento
-                                    diaRetraso = new cManejoFechas().diferenciaDosDias(fechaDate, fechaPago != null ? fechaPago : fechaVencimiento);
+                                    diaRetraso = new cManejoFechas().diferenciaDosDias(fechaDate, fechaPago != null ? (fechaPago.before(fechaVencimiento) ? fechaVencimiento : fechaPago) : fechaVencimiento);
                                 } else {
                                     diaRetraso = new cManejoFechas().diferenciaDosDias(fechaDate, interesUltimoCalculo);
                                 }

@@ -185,7 +185,7 @@
                             <th style="width: 70px;">COMPROB.</th>
                             <th style="width: 50px;">C. CLIEN</th>
                             <th>NOMBRE/RAZÓN SOCIAL</th>
-                            <th style="width: 60px; text-align: center;">P.SIST.</th>
+                            <th style="width: 60px; text-align: center;">P.CONT.</th>
                             <th style="width: 60px; text-align: center;">P.CASH</th>
                             <th style="width: 60px; text-align: center;">P.PROF.</th>
                             <th style="width: 60px; text-align: center;">CONT.</th>

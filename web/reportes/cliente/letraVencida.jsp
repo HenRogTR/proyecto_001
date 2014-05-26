@@ -449,13 +449,20 @@
                                 interesUltimoCalculo = (Date) dato[22];
 
                                 if (interesUltimoCalculo == null) {//se tomara el ultimo pago o la fecha de vencimiento
-                                    diaRetraso = new cManejoFechas().diferenciaDosDias(fechaDate, fechaPago != null ? fechaPago : fechaVencimiento);
+                                    //error al haber una fecha de pago anterior a la fecha de vencimiento
+                                    diaRetraso = new cManejoFechas().diferenciaDosDias(fechaDate, fechaPago != null ? (fechaPago.before(fechaVencimiento) ? fechaVencimiento : fechaPago) : fechaVencimiento);
                                 } else {
                                     diaRetraso = new cManejoFechas().diferenciaDosDias(fechaDate, interesUltimoCalculo);
                                 }
                                 diaRetraso = diaRetraso < 0 ? 0 : diaRetraso;
+                                if (codCliente.equals(218)) {
+                                    out.print("****" + diaEspera);
+                                }
                                 diaRetraso = diaRetraso <= diaEspera ? 0 : diaRetraso;      //todos aquellos dentro de los dias de espera no se generan intereses.
                                 interesSumar = (monto - totalPago) * factorInteres * diaRetraso;    //solo se genera interes del capital
+                                if (codCliente.equals(218)) {
+                                    out.print("****" + interesSumar);
+                                }
                                 interes += interesSumar;
 
                                 if (!codClienteAux.equals(codCliente)) {
