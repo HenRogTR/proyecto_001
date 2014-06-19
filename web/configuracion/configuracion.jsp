@@ -20,7 +20,7 @@
         <!--cambios-->
         <%@include file="../principal/inclusiones.jsp" %>
         <!--propio-->
-        <script type="text/javascript" src="../librerias/configuracion/configuracion.js"></script>        
+        <script type="text/javascript" src="../librerias/configuracion/configuracion.js"></script>
         <script type="text/javascript" src="../librerias/plugin/jquery.growl/javascripts/jquery.growl.min.js"></script>
         <link rel="stylesheet" type="text/css" href="../librerias/plugin/jquery.growl/stylesheets/jquery.growl.min.css" media="all"/>
         <script type="text/javascript" src="../librerias/plugin/mask/jquery.mask.min.js"></script>        

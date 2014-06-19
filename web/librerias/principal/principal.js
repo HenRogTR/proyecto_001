@@ -74,7 +74,7 @@ $(document).ready(function() {
 $(function() {
 
     $("#ulMenu").menu();
-    
+
     $('.fecha_datepicker').datepicker({
         showAnim: 'drop',
         changeMonth: true,

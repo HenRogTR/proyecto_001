@@ -2,9 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package tablas;
+package HiberanteUtil;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.stat.Statistics;
 
@@ -25,7 +26,7 @@ public class HibernateUtil {
             // config file.
             // sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
             Configuration cfg = new Configuration();
-            
+
             sessionFactory = cfg.configure("hibernate.cfg.xml").buildSessionFactory();
             stats = sessionFactory.getStatistics();
             stats.setStatisticsEnabled(true);
@@ -37,6 +38,13 @@ public class HibernateUtil {
     }
 
     public static SessionFactory getSessionFactory() {
+//        if(sessionFactory==null){
+//            synchronized (HibernateUtil.class){
+//                if(sessionFactory==null){
+//                    sessionFactory=new AnnotationConfiguration().configure().buildSessionFactory();
+//                }
+//            }
+//        }
         return sessionFactory;
     }
 }

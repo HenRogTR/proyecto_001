@@ -33,7 +33,7 @@
         String dni = objPersonal.getPersona().getDniPasaporte().equals("") ? "" : "DNI " + objPersonal.getPersona().getDniPasaporte();
         String ruc = objPersonal.getPersona().getRuc().equals("") ? "" : "RUC " + objPersonal.getPersona().getRuc();
         out.println("{ "
-                + "\"label\" : \"" + dni + " " + ruc + " " + nombresC + "\", "
+                + "\"label\": \"" + dni + " " + ruc + " " + nombresC + "\", "
                 + "\"value\" : { "
                 + "\"codPersona\" : " + objPersonal.getPersona().getCodPersona()
                 + ",\"nombresC\" : \"" + objPersonal.getPersona().getNombresC() + "\""

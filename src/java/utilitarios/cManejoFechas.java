@@ -42,7 +42,7 @@ public class cManejoFechas {
      * @param fecha
      * @return
      */
-    public String DateAString(Date fecha) {
+    public static String DateAString(Date fecha) {
         try {
             SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
             return formato.format(fecha);
@@ -92,6 +92,22 @@ public class cManejoFechas {
     public int diferenciaDias(Date fecha) {
         final long MILLSECS_PER_DAY = 24 * 60 * 60 * 1000; //Milisegundos al día
         return (int) ((new Date().getTime() - fecha.getTime()) / MILLSECS_PER_DAY);
+    }
+
+    /**
+     * Se obtiene la cantidad de dias de firencias entre una fecha base y otra a
+     * comparar ambas fechas en formato dd/mm/aaaa
+     *
+     * @param fechaBase
+     * @param fechaComparar
+     * @return
+     */
+    public static int diasDiferencia(Date fechaBase, Date fechaComparar) {
+        //quitar hora,minuto y segundos
+        fechaBase = new cManejoFechas().StringADate(new cManejoFechas().DateAString2(fechaBase));
+        fechaComparar = new cManejoFechas().StringADate(new cManejoFechas().DateAString2(fechaComparar));
+        final long MILLSECS_PER_DAY = 24 * 60 * 60 * 1000; //Milisegundos al día
+        return (int) ((fechaBase.getTime() - fechaComparar.getTime()) / MILLSECS_PER_DAY);
     }
 
     public int diferenciaDosDias(Date fechaActual, Date fechaVencimiento) {
@@ -151,8 +167,10 @@ public class cManejoFechas {
                 + registro.substring(11, 13) + ":" + registro.substring(13, 15);
     }
 
-    public String mesNombreCorto(Date fecha) {
-        return mesesCorto[fecha.getMonth()];
+    public static String mesNombreCorto(Date fecha) {
+        //obtenemos una copia
+        String[] mesCorto = new cManejoFechas().mesesCorto;
+        return mesCorto[fecha.getMonth()];
     }
 
     public String fechaHoraActual() {
@@ -186,7 +204,7 @@ public class cManejoFechas {
         return fecha.getYear() + 1900;
     }
 
-    public String anioCorto(Date fecha) {
+    public static String anioCorto(Date fecha) {
         String anio = "";
         try {
             SimpleDateFormat formato = new SimpleDateFormat("yy");  //tipo de formato de salida
@@ -206,5 +224,17 @@ public class cManejoFechas {
 
     public Date fecha_actual() {
         return StringADate(DateAString(new Date()));
+    }
+
+    public static Date fechaActual() {
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");  //tipo de formato de salida
+        String a = formato.format(new Date());
+        return new Date();
+    }
+
+    public static String fHDateAFString(Date fechaHora) {
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        String fechaString = formato.format(fechaHora);
+        return fechaString;
     }
 }

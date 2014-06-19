@@ -1,17 +1,16 @@
 <%-- 
-    Document   : clienteKardex
-    Created on : 06/01/2014, 09:28:23 AM
+    Document   : clienteKardex_
+    Created on : 19/05/2014, 08:44:43 PM
     Author     : Henrri
 --%>
 
-<%@page import="java.util.Date"%>
 <%@page import="utilitarios.cManejoFechas"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title></title>
+        <title> kardex cliente</title>
         <!--todos-->
         <script type="text/javascript" src="../librerias/jquery/jquery-1.9.0-min.js" ></script>
         <script type="text/javascript" src="../librerias/jquery/jquery.timer-min.js" ></script>
@@ -20,10 +19,12 @@
         <!--cambios-->
         <%@include file="../principal/inclusiones.jsp" %>
         <!--propio-->
-        <script type="text/javascript" src="../librerias/jquery-ui/jquery-ui-1.10.3.custom/js/i18n/jquery.ui.datepicker-es-min.js"></script>
-        <script type="text/javascript" src="../librerias/persona/cliente/clienteKardex.js?v14.05.22"></script>
-        <script type="text/javascript" src="../librerias/plugin/mask/jquery.mask.min.js"></script>
         <script type="text/javascript" src="../librerias/utilitarios/validaciones.js"></script>
+        <script type="text/javascript" src="../librerias/utilitarios/formatoDecimal.js"></script>
+        <script type="text/javascript" src="../librerias/plugin/jquery.growl/javascripts/jquery.growl.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="../librerias/plugin/jquery.growl/stylesheets/jquery.growl.min.css" media="all"/>
+        <script type="text/javascript" src="../librerias/persona/cliente/clienteKardex_.js?v14.06.19"></script>
+        <script type="text/javascript" src="../librerias/plugin/mask/jquery.mask.min.js"></script>
         <style>
             .ui-autocomplete {
                 /*width: 400px;*/
@@ -49,197 +50,306 @@
             <div id="right" style="width: 1024px;">
                 <div id="rightSub1" class="ocultar">
                     <h3 class="titulo">
-                        <a href="../index.jsp" class="sexybutton"><span><span><span class="home">Inicio</span></span></span></a>
-                        <span>KARDEX DE CLIENTES</span>
-                        <button class="sexybutton sexyicononly sexysimple sexypropio sexysmall" id="bClienteBuscar" type="button"><span class="search"></span></button>
-                        <a id="bClienteInfo" class="sexybutton" href="#"><span><span><span class="info">Cliente</span></span></span></a>
-                        <span id="lNombresC" style="font-size: 16px;font-weight: bold; margin-top: 5px;"></span> | Interés: <span id="interesEvitar_estado">No definido</span>
-                        <a id="b_interesEvitarEditar" class="boton iconoSoloPequenio edit" disabled="">&nbsp;</a>
-                    </h3>                    
-                    <!--Inicio de div general-->
-                    <div class="ocultar">
-                        <input type="text" name="fechaActual" id="fechaActual" value="<%=new cManejoFechas().DateAString(new Date())%>" class="ocultar" />
+                        <a href="../" class="boton botonNormal home">Inicio</a> <span>KARDEX DE CLIENTES</span> 
+                        <a href="#" id="bClienteBuscar" class="boton iconoSoloPequenio search">&nbsp;</a>
+                        <span id="sCodCliente" class="datoMostrar ocultar">00000000</span>
+                        <span class="esperando">&nbsp;</span> : 
+                        <span id="sNombresC" class="datoMostrar ocultar">APELLIDOS Y NOMBRES</span>
+                        <span class="esperando">&nbsp;</span> (
+                        <span id="sInteresEvitarEstado" class="datoMostrar ocultar" style="font-size: 11px; font-weight: bold;">Detalle de afecto de interés</span>
+                        <span class="esperando">&nbsp;</span> <a href="#" id="bInteresEvitarEditar" class="boton iconoSoloPequenio edit">&nbsp;</a>)
+                    </h3>
+                    <div class="d_variables ocultar">
                         <input type="text" name="codCliente" id="codCliente" value="" />
-                    </div>                    
-                    <div>
-                        <div><!--Inicio div superior-->
-                            <div style="width: 60%; float: left;">
-                                <table class="reporte-tabla-2 anchoTotal" style="font-size: 9px;">
-                                    <thead>
-                                        <tr>
-                                            <th colspan="9"><span>VENTAS</span> <a id="" href="#"><img src="../librerias/botonesIconos/images/icons/silk/printer.png"/></a></th>
-                                        </tr>
-                                        <tr>
-                                            <th style="width: 80px;"><span>Documento</span></th>
-                                            <th style="width: 80px;"><span>Fecha</span></th>
-                                            <th style="width: 60px;"><span>Total</span></th>
-                                            <th style="width: 60px;"><span>INT %</span></th>
-                                            <th style="width: 60px;"><span>Amort.</span></th>
-                                            <th style="width: 60px;"><span>Deuda</span></th>
-                                            <th style="width: 50px;"><span>N° Letras</span></th>
-                                            <th style="width: 50px;"><span>T. Venta</span></th>
-                                            <th><span>T. Cambio</span></th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                                <div id="dVenta" style="width: 100%;height: 150px; overflow: auto;">
-
+                        <div id="clienteArray"></div>
+                    </div>
+                    <div class="contenedorGeneral">
+                        <div class="divSuperior">
+                            <div class="divIzquierdo" style="width: 60%; float: left;">
+                                <div>
+                                    <table class="tabla9px anchoTotal">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="9" class="centrado"><span>VENTAS</span> <a id="" class="boton iconoSoloPequenio print">&nbsp;</a></th>
+                                            </tr>
+                                            <tr>
+                                                <th style="width: 80px;"><span>Documento</span></th>
+                                                <th style="width: 80px;"><span>Fecha</span></th>
+                                                <th style="width: 60px;"><span>Total</span></th>
+                                                <th style="width: 60px;"><span>INT %</span></th>
+                                                <th style="width: 60px;"><span>Amort.</span></th>
+                                                <th style="width: 60px;"><span>Deuda</span></th>
+                                                <th style="width: 40px;"><span>N° Let</span></th>
+                                                <th style="width: 60px;"><span>T. Venta</span></th>
+                                                <th><span>T. Cambio</span></th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="fondoDivSecundario" style="overflow: auto;height: 150px;">
+                                    <table id="tVenta" class="tabla9px anchoTotal">
+                                        <tbody class="tbDato">                                            
+                                        </tbody>
+                                        <tfoot class="thFondoTd tfContenedor">
+                                            <tr>
+                                                <th style="width: 80px;"><span class="esperando">&nbsp;</span></th>
+                                                <th style="width: 80px;"><span class="esperando">&nbsp;</span></th>
+                                                <th style="width: 60px;"><span class="esperando">&nbsp;</span></th>
+                                                <th style="width: 60px;"><span class="esperando">&nbsp;</span></th>
+                                                <th style="width: 60px;"><span class="esperando">&nbsp;</span></th>
+                                                <th style="width: 60px;"><span class="esperando">&nbsp;</span></th>
+                                                <th style="width: 40px;"><span class="esperando">&nbsp;</span></th>
+                                                <th style="width: 60px;"><span class="esperando">&nbsp;</span></th>
+                                                <th><span class="esperando">&nbsp;</span></th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
                                 </div>
                             </div>
-                            <div style="width: 39%; float: right;">
-                                <table class="reporte-tabla-2 anchoTotal" style="font-size: 9px;">
-                                    <thead>
-                                        <tr>
-                                            <th colspan="5"><span>RESUMEN DE PAGOS</span> <a id="bVCLRM" href="#"><img src="../librerias/botonesIconos/images/icons/silk/printer.png"/></a></th>
-                                        </tr>
-                                        <tr>
-                                            <th style="width: 70px;"><span>Mes/Año</span></th>
-                                            <th style="width: 70px;"><span>Monto</span></th>
-                                            <th style="width: 70px;"><span>Inter.</span></th>
-                                            <th style="width: 70px;"><span>M. Pago</span></th>
-                                            <th><span>Saldo</span></th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                                <div id="dVentaCreditoLetraResumenMensual" style="width: 100%;height: 150px; overflow: auto;">
+                            <div class="divDerecho" style="width: 39%; float: right;">
+                                <div>
+                                    <table class="tabla9px anchoTotal">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="5"><span>RESUMEN DE DEUDA</span> <a id="bVentaCreditoLetraResumen" href="#" class="boton iconoSoloPequenio print">&nbsp;</a></th>
+                                            </tr>
+                                            <tr>
+                                                <th style="width: 70px;"><span>Mes/Año</span></th>
+                                                <th style="width: 70px;"><span>Monto</span></th>
+                                                <th style="width: 70px;"><span>Inter.</span></th>
+                                                <th style="width: 70px;"><span>M. Pagado</span></th>
+                                                <th><span>Saldo</span></th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="fondoDivSecundario" style="overflow: auto;height: 150px;">
+                                    <table id="tVentaCreditoLetraResumen" class="tabla9px anchoTotal">
+                                        <tbody class="tbDato">
 
+                                        </tbody>
+                                        <tfoot class="thFondoTd tfContenedor">
+                                            <tr>
+                                                <th style="width: 70px;"><span class="esperando">&nbsp;</span></th>
+                                                <th style="width: 70px;"><span class="esperando">&nbsp;</span></th>
+                                                <th style="width: 70px;"><span class="esperando">&nbsp;</span></th>
+                                                <th style="width: 70px;"><span class="esperando">&nbsp;</span></th>
+                                                <th><span class="esperando">&nbsp;</span></th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
                                 </div>
                             </div>
                         </div>
                         <div style="clear: both; padding-top: 10px;"></div>
-                        <div><!--Inicio div inferior-->
-                            <div style="width: 65%; float: left;"><!--Inicio div izquierdo-->
-                                <table class="reporte-tabla-2 anchoTotal" style="font-size: 9px;">
-                                    <thead>
-                                        <tr>
-                                            <th colspan="9"><span>CUOTAS DE PAGOS</span> <a id="" href="#"><img src="../librerias/botonesIconos/images/icons/silk/printer.png"/></a></th>
-                                        </tr>
-                                        <tr>
-                                            <th style="width: 90px;"><span>Documento</span></th>
-                                            <th style="width: 90px;"><span>Detalle</span></th>
-                                            <th style="width: 70px;"><span>F. Venc.</span></th>
-                                            <th style="width: 60px;"><span>Cuota</span></th>
-                                            <th style="width: 60px;"><span>I(%)</span></th>
-                                            <th style="width: 60px;"><span>Pagado</span></th>
-                                            <th style="width: 70px;"><span>F. Pago</span></th>
-                                            <th style="width: 40px;"><span>Días A.</span></th>
-                                            <th><span>Saldo</span></th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                                <div id="dVentaCreditoLetra" style="width: 100%;height: 150px; overflow: auto;">
-
-                                </div>
-                                <table class="reporte-tabla-2 anchoTotal">
-                                    <tbody>
-                                        <tr>
-                                            <th class="ancho120px derecha"><span>TOTAL</span></th>
-                                            <td class="derecha"><span id="lTotal" style="padding-right: 2px;" class="vaciar"></span></td>
-                                            <th class="ancho120px derecha"><span>AMORTIZADO</span></th>
-                                            <td class="derecha"><span id="lAmortizado" style="padding-right: 2px;" class="vaciar"></span></td>
-                                            <th class="ancho120px derecha"><span>SALDO</span></th>
-                                            <td class="derecha"><span id="lSaldo" style="padding-right: 2px;" class="vaciar"></span></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <div style="clear: both; padding-top: 10px;"></div>
-                                <table class="reporte-tabla-2 anchoTotal" style="font-size: 9px;">
-                                    <thead>
-                                        <tr>
-                                            <th colspan="5"><span>DETALLE DE VENTAS</span> <a id="" href="#"><img src="../librerias/botonesIconos/images/icons/silk/printer.png"/></a></th>
-                                        </tr>
-                                        <tr>
-                                            <th style="width: 90px;"><span>Documento</span></th>
-                                            <th style="width: 40px;"><span>Cant.</span></th>
-                                            <th style="width: 350px;"><span>Producto</span></th>
-                                            <th style="width: 70px;"><span>P.U.</span></th>
-                                            <th><span>Total</label></th>
-                                        </tr>
-                                    </thead>
-                                </table>                                
-                                <div id="dVentaDetalle" style="width: 100%;height: 150px; overflow: auto;">
-
-                                </div>
-                            </div><!--Fin div izquierdo-->
-                            <div style="width: 34%; float: right;"><!--Inicio div derecho-->
-                                <table class="reporte-tabla-2 anchoTotal" style="font-size: 9px;">
-                                    <thead>
-                                        <tr>
-                                            <th colspan="4"><span>PAGOS REALIZADOS</span> <a id="" href="#"><img src="../librerias/botonesIconos/images/icons/silk/printer.png"/></a></th>
-                                        </tr>
-                                        <tr>
-                                            <th style="width: 110px;"><span>Documento</span></th>
-                                            <th style="width: 70px;"><span>Monto</span></th>
-                                            <th style="width: 70px;"><span>Fecha</span></th>
-                                            <th><span>Anticipo</span></th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                                <div id="dCobranza" style="width: 100%;height: 270px; overflow: auto;">
-
-                                </div>
-                                <div style="clear: both; padding-top: 5px;"></div>
-                                <table class="reporte-tabla-2 anchoTotal" style="font-size: 9px;">
-                                    <thead>
-                                        <tr>
-                                            <th colspan="4"><span>DETALLE RECIBO</span></th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                                <div style="width: 100%;height: 70px; overflow: auto;">
-                                    <table id="tCobranzaDetalle" class="reporte-tabla-2 anchoTotal"  style="font-size: 9px;">
-
+                        <div class="divInferior">
+                            <div class="divIzquierdo" style="width: 65%; float: left;">
+                                <div>
+                                    <table class="tabla9px anchoTotal">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="9"><span>CUOTAS DE PAGOS</span> <a id="" class="boton iconoSoloPequenio print">&nbsp;</a></th>
+                                            </tr>
+                                            <tr>
+                                                <th style="width: 90px;"><span>Documento</span></th>
+                                                <th style="width: 90px;"><span>Detalle</span></th>
+                                                <th style="width: 70px;"><span>F. Venc.</span></th>
+                                                <th style="width: 60px;"><span>Cuota</span></th>
+                                                <th style="width: 60px;"><span>I(%)</span></th>
+                                                <th style="width: 60px;"><span>Pagado</span></th>
+                                                <th style="width: 70px;"><span>F. Pago</span></th>
+                                                <th style="width: 40px;"><span>Días A.</span></th>
+                                                <th><span>Saldo</span></th>
+                                            </tr>
+                                        </thead>
                                     </table>
                                 </div>
-                            </div><!--Fin div derecho-->
+                                <div class="fondoDivSecundario" style="overflow: auto; height: 150px;">
+                                    <table id="tVentaCreditoLetra" class="tabla9px anchoTotal">
+                                        <tbody class="tbDato">
+
+                                        </tbody>
+                                        <tfoot class="thFondoTd tfContenedor">
+                                            <tr>
+                                                <th style="width: 90px;"><span class="esperando">&nbsp;</span></th>
+                                                <th style="width: 90px;"><span class="esperando">&nbsp;</span></th>
+                                                <th style="width: 70px;"><span class="esperando">&nbsp;</span></th>
+                                                <th style="width: 60px;"><span class="esperando">&nbsp;</span></th>
+                                                <th style="width: 60px;"><span class="esperando">&nbsp;</span></th>
+                                                <th style="width: 60px;"><span class="esperando">&nbsp;</span></th>
+                                                <th style="width: 70px;"><span class="esperando">&nbsp;</span></th>
+                                                <th style="width: 40px;"><span class="esperando">&nbsp;</span></th>
+                                                <th><span class="esperando">&nbsp;</span></th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                                <div>
+                                    <table class="tabla11px anchoTotal">
+                                        <tbody>
+                                            <tr>
+                                                <th class="ancho60px derecha">
+                                                    <span>TOTAL</span>
+                                                </th>
+                                                <td class="derecha ancho80px">
+                                                    <span id="lTotal"  style="padding-right: 2px;" class="datoMostrar ocultar"></span><span class="esperando">&nbsp;</span>
+                                                </td>
+                                                <th class="ancho80px">
+                                                    <span>INTERÉS</span>
+                                                </th>
+                                                <td class="derecha ancho80px">
+                                                    <span id="lInteres"  style="padding-right: 2px;" class="datoMostrar ocultar"></span><span class="esperando">&nbsp;</span>
+                                                </td>
+                                                <th class="ancho80px derecha">
+                                                    <span>AMORTIZADO</span>
+                                                </th>
+                                                <td class="derecha ancho80px">
+                                                    <span id="lAmortizado" style="padding-right: 2px;" class="datoMostrar ocultar"></span><span class="esperando">&nbsp;</span>
+                                                </td>
+                                                <th class="ancho80px derecha">
+                                                    <span>SALDO</span>
+                                                </th>
+                                                <td class="derecha">
+                                                    <span id="lSaldo" style="padding-right: 2px;" class="datoMostrar ocultar"></span><span class="esperando">&nbsp;</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div style="clear: both; padding-top: 10px;"></div>
+                                <div>
+                                    <table class="tabla9px anchoTotal">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="5"><span>DETALLE DE VENTAS</span> <a id="" class="boton iconoSoloPequenio print">&nbsp;</a></th>
+                                            </tr>
+                                            <tr>
+                                                <th style="width: 80px;"><span>Documento</span></th>
+                                                <th style="width: 40px;"><span>Cant.</span></th>
+                                                <th style="width: 380px;"><span>Producto</span></th>
+                                                <th style="width: 70px;"><span>P.U.</span></th>
+                                                <th><span>Total</label></th>
+                                            </tr>
+                                        </thead>
+                                    </table>    
+                                </div>
+                                <div class="fondoDivSecundario" style="overflow: auto; height: 150px;">
+                                    <table id="tVentaDetalle" class="tabla9px anchoTotal">
+                                        <tbody class="tbDato">
+
+                                        </tbody>
+                                        <tfoot class="thFondoTd tfContenedor">
+                                            <tr>
+                                                <th style="width: 80px;"><span class="esperando">&nbsp;</span></th>
+                                                <th style="width: 40px;"><span class="esperando">&nbsp;</span></th>
+                                                <th style="width: 380px;"><span class="esperando">&nbsp;</span></th>
+                                                <th style="width: 70px;"><span class="esperando">&nbsp;</span></th>
+                                                <th><span class="esperando">&nbsp;</span></th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="divDerecho" style="width: 34%; float: right;">
+                                <div>
+                                    <table class="tabla9px anchoTotal">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="4"><span>PAGOS REALIZADOS</span> <a id="" class="boton iconoSoloPequenio print">&nbsp;</a></th>
+                                            </tr>
+                                            <tr>
+                                                <th style="width: 110px;"><span>Documento</span></th>
+                                                <th style="width: 70px;"><span>Monto</span></th>
+                                                <th style="width: 70px;"><span>Fecha</span></th>
+                                                <th><span>Anticipo</span></th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="fondoDivSecundario" style="overflow: auto; height: 270px;">
+                                    <table id="tCobranza" class="tabla9px anchoTotal">
+                                        <tbody class="tbDato">
+
+                                        </tbody>
+                                        <tfoot class="thFondoTd tfContenedor">
+                                            <tr>
+                                                <th style="width: 110px;"><span class="esperando">&nbsp;</span></th>
+                                                <th style="width: 70px;"><span class="esperando">&nbsp;</span></th>
+                                                <th style="width: 70px;"><span class="esperando">&nbsp;</span></th>
+                                                <th><span class="esperando">&nbsp;</span></th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                                <div style="clear: both; padding-top: 10px;"></div>
+                                <div>
+                                    <table class="tabla9px anchoTotal">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="2"><span>DETALLE RECIBO</span></th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="fondoDivSecundario" style="overflow: auto; height: 70px;">
+                                    <table id="tCobranzaDetalle" class="tabla9px anchoTotal">
+                                        <tbody class="tbDato">
+
+                                        </tbody>
+                                        <tfoot class="thFondoTd">
+                                            <tr>
+                                                <th style="width: 110px;"><span class="esperando">&nbsp;</span></th>
+                                                <th><span class="esperando">&nbsp;</span></th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <!--Fin de div general-->
                     <div style="clear: both;"></div>
-                    <!--inicio dialog's-->
-                    <div id="dClienteBuscar" title="Buscar cliente">
-                        <table class="reporte-tabla-1 anchoTotal">
+                    <!--dialog d_clienteBuscar-->
+                    <div id="d_clienteBuscar" title="BUSCAR CLIENTE" style="padding: 20px;">
+                        <table class="reporte-tabla-1 anchoTotal" >
                             <thead>
-                                <tr>
-                                    <th class="ancho120px"><span>Cod Cliente</span></th>
-                                    <th><span>Dni-Pasaporte/Ruc Apellidos y nombres</span></th>
+                                <tr>                                    
+                                    <th><a id="bClienteActualizar" href="#" class="boton iconoSoloPequenio update">&nbsp;</a> <label>DNI-PASPORTE/RUC APELLIDOS-NOMBRES/RAZÓN SOCIAL</label></th>
+                                    <th class="ancho120px"><label>COD. CLIENTE</label></th>
                                 </tr>
                             </thead>
-                            <tbody
+                            <tbody>
                                 <tr>
                                     <td class="contenedorEntrada">
-                                        <input type="text" name="codClienteBuscar" id="codClienteBuscar" value="" class="anchoTotal entrada derecha"/>
+                                        <input type="text" name="dniPasaporteRucNombresCBuscar" id="dniPasaporteRucNombresCBuscar" value="" class="entrada anchoTotal"/>
                                     </td>
                                     <td class="contenedorEntrada">
-                                        <input type="text" name="dniPasaporteRucNombresCBuscar" id="dniPasaporteRucNombresCBuscar" value="" class="anchoTotal entrada mayuscula"/>
+                                        <input type="text" name="codClienteBuscar" id="codClienteBuscar" value="" class="entrada anchoTotal derecha" />
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
-                        <label id="lMensajeBuscarCliente" style="color: red; font-size: 10px;"></label>
-                    </div>                    
-                    <div id="d_interesEvitar_editar" style="padding: 20px;" title="Buscar">
-                        <table class="reporte-tabla-1 anchoTotal">
-                            <thead>
-                                <tr>
-                                    <th>Fecha donde no se cobrará intereses.</th>
-                                </tr>
-                            </thead>
-                            <tr>
-                                <td class="contenedorEntrada">
-                                    <input type="text" name="fechaEvitar" id="fechaEvitar" value="" class="anchoTotal entrada fechaEntrada"/>
-                                </td>
-                            </tr>
-                        </table>
                     </div>
-                    <!--fin dialog's-->
+                    <div id="dInteresAsignadoEditar">
+                        <div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em; text-align: justify">
+                            <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                                <strong>¡Alerta!</strong><br><br> 
+                                <span><strong>Deshabilitar intereses:</strong> 
+                                    Indica que toda pago/amortización realizada 
+                                    no se cobrarán intereses (afectado a día actual). 
+                                    Al culminar el día se cobrarán interes.</span>
+                                <br>
+                                <br>
+                                <span><strong>Habilitar intereses:</strong> 
+                                    El pago/amortización estará afectado por intereses.</span></p>
+                        </div>
+                    </div>
                 </div>
                 <%@include file="../principal/div2.jsp" %>
             </div>
             <div id="left" class="ocultar">
                 <div class="acceso">
                     <h3 class="titulo">INICIE SESIÓN</h3>                    
-                    <button class="sexybutton" id="bAccesoAbrir" type="button"><span><span><img src="../librerias/botonesIconos/images/icons/silk/key_go.png">Ejecutar SICCI</span></span></button>
+                    <a id="bAccesoAbrir" class="boton botonNormal key">Ejecutar SICCI</a>
                 </div>
                 <div id="menu" class="ocultar">
                     <%@include file="../principal/menu.jsp" %>

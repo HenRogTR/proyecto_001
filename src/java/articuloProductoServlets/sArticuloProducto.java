@@ -72,6 +72,7 @@ public class sArticuloProducto extends HttpServlet {
                 objArticuloProducto.setCodReferencia(request.getParameter("codReferencia"));
                 objArticuloProducto.setDescripcion(request.getParameter("descripcion"));    //  2
                 objArticuloProducto.setPrecioVenta(0.00);
+                objArticuloProducto.setPrecioCash(0.00);
                 Familia objFamilia = new Familia();
                 objFamilia.setCodFamilia(Integer.parseInt(request.getParameter("codFamilia")));
                 objArticuloProducto.setFamilia(objFamilia); //  3

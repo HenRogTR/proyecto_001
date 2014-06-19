@@ -10,7 +10,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import tablas.ArticuloProducto;
-import tablas.HibernateUtil;
+import HiberanteUtil.HibernateUtil;
 import utilitarios.cOtros;
 
 /**

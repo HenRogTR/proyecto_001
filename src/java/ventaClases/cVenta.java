@@ -9,7 +9,7 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import tablas.HibernateUtil;
+import HiberanteUtil.HibernateUtil;
 import tablas.Ventas;
 import utilitarios.cOtros;
 

@@ -186,6 +186,8 @@ label.error:before{
 .altoTotal{height: 100%;}
 .contenedorEntrada{padding-right: 15px !important;}
 
+.ancho20px{width: 20px;}
+.ancho30px{width: 30px;}
 .ancho40px{width: 40px;}
 .ancho50px{width: 50px;}
 .ancho60px{width: 60px;}
@@ -359,4 +361,16 @@ tfoot.thFondoTd th{
 
 .manoPuntero{
     cursor: help;
+}
+
+.fondoVentaAnulada td{
+    background-color: #ff6666 !important;
+}
+
+.ventaCreditoLetraVencida td{
+    background-color: tomato !important;
+}
+
+.ventaCreditoLetraPorVencer td{
+    background-color: #ffcccc !important;
 }

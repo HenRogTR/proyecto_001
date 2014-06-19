@@ -4,8 +4,8 @@
     Author     : Henrri
 --%>
 
+<%@page import="HiberanteUtil.HibernateUtil"%>
 <%@page import="org.hibernate.stat.Statistics"%>
-<%@page import="tablas.HibernateUtil"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

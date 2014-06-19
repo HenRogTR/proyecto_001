@@ -82,6 +82,13 @@ function f_validar_menorIgual(valor, marca) {
     return valor <= marca;
 }
 ;
+function f_validar_mayorIgual(valor, marca) {
+    if (!$.isNumeric(valor)) {
+        return false;
+    }
+    return valor >= marca;
+}
+;
 
 function f_validarPositivo(valor) {
     if (!$.isNumeric(valor)) {

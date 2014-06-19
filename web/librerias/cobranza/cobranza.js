@@ -131,6 +131,11 @@ $(document).ready(function(e) {
             $('#dServidorError').dialog('open');
         }
     });
+    //modificar el interes evitar
+    $('#bInteresEvitarEditar').click(function(e) {
+        $('#dInteresAsignadoEditar').dialog('open');
+        e.preventDefault();
+    });
     // input código cliente buscar
     $('#codClienteBuscar')
             //solo permite números enteros
@@ -146,6 +151,11 @@ $(document).ready(function(e) {
                     e.preventDefault();
                 }
             });
+
+    $('#docRecDesc').change(function(e) {
+        //lo seleccionado debe de guardarse
+        $('#docRecDescFoco').val(this.value);
+    });
 });
 
 //<editor-fold defaultstate="collapsed" desc="$(function() {}). Clic en  + para más detalles.">
@@ -309,6 +319,25 @@ $(function() {
         close: function() {
         }
     });
+    //interesAsignar
+    $('#dInteresAsignadoEditar').dialog({
+        autoOpen: false,
+        modal: true,
+        resizable: false,
+        height: 280,
+        width: 500,
+        buttons: {
+            'Deshabilitar interes': function() {
+                fInteresAsigandoDeshabilitar();
+            },
+            'Habilitar intereses': function() {
+                fInteresAsigandoHabilitar();
+            }
+        },
+        close: function() {
+            $(this).dialog('close');
+        }
+    });
 
     $('#nombresCDniPasaporteRucBuscar').autocomplete({
         source: 'autocompletado/dniPasaporteRucNombresCBuscar.jsp',
@@ -355,7 +384,7 @@ function fClienteLeer(codCliente) {
                     $('#codCliente').val(clienteItem.codCliente);
                     $('#sCodCliente').text(clienteItem.codCliente);
                     $('#sNombresC').text(clienteItem.nombresC);
-                    $('#sInteresEvitar').text(clienteItem.interesEvitar);
+                    $('#sInteresEvitarEstado').text(clienteItem.interesEvitar);
                     $('#sDireccion').text(clienteItem.direccion);
                     $('#sEmpresaConvenio').text(clienteItem.empresaConvenio);
                     $('#sCodCobranza').text(clienteItem.codCobranza);
@@ -378,6 +407,8 @@ function fClienteLeer(codCliente) {
                     fVentaCreditoLetraResumen(clienteItem.codCliente);
                     fDeudaMes(clienteItem.codCliente);
                     $('#dClienteBuscar').dialog('close');
+                    //foco en monto amortizar
+                    $('#montoAmortizar').focus();
                 }
             },
             statusCode: {
@@ -469,6 +500,7 @@ function fCodCobranzaOtrosBuscar(codEmpresaConvenio) {
                     var item = array[i];
                     var $op = $('<option/>', {value: item.tipo, text: item.tipo}).appendTo($serieSelect);
                 }
+                $serieSelect.val($('#docRecDescFoco').val());
             },
             statusCode: {
                 404: function() {
@@ -989,48 +1021,6 @@ function fTipoCambiar(tipo) {
 ;
 //</editor-fold>
 
-//<editor-fold defaultstate="collapsed" desc="function fCodCobranzaOtrosBuscar(codEmpresaConvenio). Clic en  + para más detalles.">
-function fCodCobranzaOtrosBuscar(codEmpresaConvenio) {
-    var data = {codEmpresaConvenio: codEmpresaConvenio};
-    var url = 'ajax/codCobranzaOtros.jsp';
-    try {
-        $.ajax({
-            type: 'post',
-            url: url,
-            data: data,
-            beforeSend: function() {
-
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                $('#lServidorError').text(errorThrown + '()');
-                $('#dServidorError').dialog('open');
-            },
-            success: function(ajaxResponse, textStatus) {
-                var $serieSelect = $('#docRecDesc');
-                var array = procesarRespuesta(ajaxResponse);
-                for (var i = 0; i < array.length; i++) {
-                    var item = array[i];
-                    $serieSelect.append(
-                            '<option value="' + item.tipo + '">' + item.tipo + '</option>'
-                            );
-                }
-            },
-            statusCode: {
-                404: function() {
-                    $('#lServidorError').text('Página no encontrada().');
-                    $('#dServidorError').dialog('open');
-                }
-            }
-        });
-    }
-    catch (ex) {
-        $('#lServidorError').text(ex);
-        $('#dServidorError').dialog('open');
-    }
-}
-;
-//</editor-fold>
-
 //<editor-fold defaultstate="collapsed" desc="function fReiniciarCobranza(). Clic en  + para más detalles.">
 function fReiniciarCobranza() {
     $('#tipo1').prop('checked', true);
@@ -1115,6 +1105,102 @@ function clienteSeleccionado(event, ui) {
 }
 ;
 //</editor-fold>
+
+function fInteresAsigandoHabilitar() {
+    var codCliente = $('#codCliente').val();
+    if (!$.isNumeric(codCliente)) {
+        $.growl.warning({title: 'Alerta', message: 'Cliente no seleccionado', size: 'large'});
+        return;
+    }
+    var data = {
+        codCliente: codCliente,
+        accionCliente: 'actualizarInteresAsignar',
+        estado: 'habilitar'
+    };
+    var url = '../sCliente';
+    try {
+        $.ajax({
+            type: 'post',
+            url: url,
+            data: data,
+            beforeSend: function() {
+                fProcesandoPeticion();
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                $('#lServidorError').text(errorThrown + '()');
+                $('#dServidorError').dialog('open');
+            },
+            success: function(ajaxResponse, textStatus) {
+                if ($.isNumeric(ajaxResponse)) {
+                    $('#sInteresEvitarEstado').text('Afectado a pago de intereses.');
+                    $('#dInteresAsignadoEditar').dialog('close');
+                } else {
+                    $.growl.warning({title: 'Alerta', message: ajaxResponse, size: 'large'});
+                }
+                fProcesandoPeticionCerrar();
+                $('#montoAmortizar').focus();
+            },
+            statusCode: {
+                404: function() {
+                    $('#lServidorError').text('Página no encontrada(' + url + ').');
+                    $('#dServidorError').dialog('open');
+                }
+            }
+        });
+    } catch (ex) {
+        $('#lServidorError').text(ex);
+        $('#dServidorError').dialog('open');
+    }
+}
+;
+
+function fInteresAsigandoDeshabilitar() {
+    var codCliente = $('#codCliente').val();
+    if (!$.isNumeric(codCliente)) {
+        $.growl.warning({title: 'Alerta', message: 'Cliente no seleccionado', size: 'large'});
+        return;
+    }
+    var data = {
+        codCliente: codCliente,
+        accionCliente: 'actualizarInteresAsignar',
+        estado: 'deshabilitar'
+    };
+    var url = '../sCliente';
+    try {
+        $.ajax({
+            type: 'post',
+            url: url,
+            data: data,
+            beforeSend: function() {
+                fProcesandoPeticion();
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                $('#lServidorError').text(errorThrown + '()');
+                $('#dServidorError').dialog('open');
+            },
+            success: function(ajaxResponse, textStatus) {
+                if ($.isNumeric(ajaxResponse)) {
+                    $('#sInteresEvitarEstado').text('No afectado a pago de intereses.');
+                    $('#dInteresAsignadoEditar').dialog('close');
+                } else {
+                    $.growl.warning({title: 'Alerta', message: ajaxResponse, size: 'large'});
+                }
+                fProcesandoPeticionCerrar();
+                $('#montoAmortizar').focus();
+            },
+            statusCode: {
+                404: function() {
+                    $('#lServidorError').text('Página no encontrada(' + url + ').');
+                    $('#dServidorError').dialog('open');
+                }
+            }
+        });
+    } catch (ex) {
+        $('#lServidorError').text(ex);
+        $('#dServidorError').dialog('open');
+    }
+}
+;
 
 //<editor-fold defaultstate="collapsed" desc="function fPaginaActual(). Clic en el + para más detalles.">
 function fPaginaActual() {

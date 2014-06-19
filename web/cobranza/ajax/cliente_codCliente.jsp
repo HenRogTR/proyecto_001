@@ -29,7 +29,7 @@
                     + ", \"tipo\":\"" + new cDatosCliente().tipoCliente((Integer) datoCliente[6]).toUpperCase() + "\""
                     + ", \"condicion\":\"" + new cDatosCliente().condicionCliente((Integer) datoCliente[7]).toUpperCase() + "\""
                     + ", \"saldoFavor\":\"" + new cOtros().agregarCerosNumeroFormato((Double) datoCliente[8], 2) + "\""
-                    + ", \"interesEvitar\":\"" + (cobrarInteres ? "El cliente se encuentra afectado a pago de intereses" : "No se cobrarán intereses.") + "\""
+                    + ", \"interesEvitar\":\"" + (cobrarInteres ? "Afectado a pago de intereses." : "No afectado a pago de intereses.") + "\""
                     + "}");
         }
     } catch (Exception e) {

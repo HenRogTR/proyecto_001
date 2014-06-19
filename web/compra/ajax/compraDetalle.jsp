@@ -4,7 +4,6 @@
     Author     : Henrri
 --%>
 
-<%@page import="tablas.HibernateUtil"%>
 <%@page import="compraClases.cCompraDetalle"%>
 <%@page import="tablas.CompraSerieNumero"%>
 <%@page import="utilitarios.cOtros"%>

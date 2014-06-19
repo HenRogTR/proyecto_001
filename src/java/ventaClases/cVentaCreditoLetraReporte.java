@@ -10,7 +10,7 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Transaction;
 import org.hibernate.Session;
-import tablas.HibernateUtil;
+import HiberanteUtil.HibernateUtil;
 
 /**
  *

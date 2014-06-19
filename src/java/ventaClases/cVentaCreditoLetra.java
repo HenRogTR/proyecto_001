@@ -12,7 +12,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import otrasTablasClases.cDatosExtras;
 import tablas.CobranzaDetalle;
-import tablas.HibernateUtil;
+import HiberanteUtil.HibernateUtil;
 import tablas.VentaCreditoLetra;
 import utilitarios.cManejoFechas;
 import utilitarios.cOtros;
@@ -208,7 +208,7 @@ public class cVentaCreditoLetra {
                     + "and substring(vcl.registro,1,1) = 1 "
                     + "and vcl.monto- vcl.totalPago > 0 " //que tengan deuda de capital
                     + "and (vcl.interesUltimoCalculo is NULL or vcl.interesUltimoCalculo < :par1 ) " //si es NULL o la fecha ultima de actualizacion sea menor a la actual
-                    + "and vcl.fechaVencimiento < :par2 " //todas las letras vencidas    < porque si se vence el primiero y se consulta el 1 este marcara como vencido
+                    + "and vcl.fechaVencimiento < :par2 " //todas las letras vencidas    < porque si se vence el primero y se consulta el 1 este marcara como vencido
                     + "and ec.interesAsigando = :par3 " //empresas afectadas nada mas     
                     + "and dc = :par4 ")
                     .setDate("par1", fechaBase)

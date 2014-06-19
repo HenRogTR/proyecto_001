@@ -27,7 +27,7 @@ $(document).ready(function() {
             },
             statusCode: {
                 404: function() {
-                    $('#lServidorError').text('Página no encontrada().');
+                    $('#lServidorError').text('Página no encontrada(' + url + ').');
                     $('#dServidorError').dialog('open');
                 }
             }

@@ -44,7 +44,7 @@
                 out.print(", ");
             }
             out.print("{"
-                    + "\"anioMes\":\"" + new cManejoFechas().mesNombreCorto(fechaVencimiento).toUpperCase() + "-" + new cManejoFechas().anioCorto(fechaVencimiento) + "\""
+                    + "\"anioMes\":\"" + cManejoFechas.mesNombreCorto(fechaVencimiento).toUpperCase() + "-" + new cManejoFechas().anioCorto(fechaVencimiento) + "\""
                     + ", \"monto\":\"" + new cOtros().decimalFormato(monto + interes, 2) + "\""
                     + ", \"interes\":\"" + new cOtros().decimalFormato(interes, 2) + "\""
                     + ", \"totalPago\":\"" + new cOtros().decimalFormato(totalPagado, 2) + "\""

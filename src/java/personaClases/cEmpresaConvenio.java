@@ -9,7 +9,7 @@ import org.hibernate.Query;
 import org.hibernate.Transaction;
 import org.hibernate.Session;
 import tablas.EmpresaConvenio;
-import tablas.HibernateUtil;
+import HiberanteUtil.HibernateUtil;
 import utilitarios.cOtros;
 
 /**

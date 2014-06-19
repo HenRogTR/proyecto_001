@@ -24,7 +24,7 @@
                 Object[] temRP = (Object[]) it.next();
         %>
         <tr>
-            <td style="width: 70px;"><span><%=objcManejoFechas.mesNombreCorto((Date) temRP[6]).toUpperCase() + "-" + temRP[1].toString().substring(2, 4)%></span></td>
+            <td style="width: 70px;"><span><%=cManejoFechas.mesNombreCorto((Date) temRP[6]).toUpperCase() + "-" + temRP[1].toString().substring(2, 4)%></span></td>
             <td style="width: 70px;" class="derecha"><span style="padding-right: 2px"><%=objcOtros.agregarCerosNumeroFormato(Double.parseDouble(temRP[2].toString()), 2)%></span></td>
             <td style="width: 70px;" class="derecha"><span style="padding-right: 2px"><%=objcOtros.agregarCerosNumeroFormato(Double.parseDouble(temRP[3].toString()), 2)%></span></td>
             <td style="width: 70px;" class="derecha"><span style="padding-right: 2px"><%=objcOtros.agregarCerosNumeroFormato(Double.parseDouble(temRP[4].toString()), 2)%></span></td>

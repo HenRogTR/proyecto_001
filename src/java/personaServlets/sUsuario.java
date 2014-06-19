@@ -46,6 +46,8 @@ public class sUsuario extends HttpServlet {
         int codUsuario;
         String usuario, contrasenia;
 
+//        session.setMaxInactiveInterval(15 * 60); //15 minutes
+        
         Usuario objUsuario = (Usuario) session.getAttribute("usuario");
         cOtros objcOtros = new cOtros();
         if (accion == null) {

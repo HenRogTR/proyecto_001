@@ -10,7 +10,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import tablas.DatosCliente;
-import tablas.HibernateUtil;
+import HiberanteUtil.HibernateUtil;
 import utilitarios.cOtros;
 
 /**
@@ -671,7 +671,7 @@ public class cDatosCliente {
         return false;
     }
 
-    public String tipoCliente(int tipo) {
+    public static String tipoCliente(int tipo) {
         switch (tipo) {
             case 1:
                 return "ACTIVO";
@@ -685,7 +685,7 @@ public class cDatosCliente {
         return "";
     }
 
-    public String condicionCliente(int condicion) {
+    public static String condicionCliente(int condicion) {
         switch (condicion) {
             case 2:
                 return "NOMBRADO";

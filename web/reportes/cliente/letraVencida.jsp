@@ -32,7 +32,9 @@
 
     String orden = "";
     String fechaString = "";
+    String fechaInteresBaseString = "";
     Date fechaDate = null;
+    Date fechaInteresBaseDate = null;
     List LVList = null;
 
     Integer codCobradorInteger = 0;
@@ -376,6 +378,9 @@
                             <th colspan="3" >LETRAS VENCIDAS AL <%=fechaString%> - (<%=orden%>)</th>
                             <th colspan="5"><%=new cManejoFechas().fechaHoraActual()%></th>
                         </tr>
+                        <tr>
+                            <th colspan="3">INTERESES AFECTADOS AL </th>
+                        </tr>
                         <%=cabeceraString%>
                         <tr class="top2" style="font-size: 12px;" >
                             <th style="width: 80px;"><span>Número</span></th>
@@ -455,14 +460,8 @@
                                     diaRetraso = new cManejoFechas().diferenciaDosDias(fechaDate, interesUltimoCalculo);
                                 }
                                 diaRetraso = diaRetraso < 0 ? 0 : diaRetraso;
-                                if (codCliente.equals(218)) {
-                                    out.print("****" + diaEspera);
-                                }
                                 diaRetraso = diaRetraso <= diaEspera ? 0 : diaRetraso;      //todos aquellos dentro de los dias de espera no se generan intereses.
                                 interesSumar = (monto - totalPago) * factorInteres * diaRetraso;    //solo se genera interes del capital
-                                if (codCliente.equals(218)) {
-                                    out.print("****" + interesSumar);
-                                }
                                 interes += interesSumar;
 
                                 if (!codClienteAux.equals(codCliente)) {

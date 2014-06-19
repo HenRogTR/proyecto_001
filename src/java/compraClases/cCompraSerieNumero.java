@@ -9,7 +9,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import tablas.CompraSerieNumero;
-import tablas.HibernateUtil;
+import HiberanteUtil.HibernateUtil;
 import utilitarios.cOtros;
 
 /**

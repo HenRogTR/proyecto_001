@@ -13,7 +13,7 @@ import org.hibernate.Transaction;
 import otrasTablasClases.cDatosExtras;
 import tablas.Cobranza;
 import tablas.DatosExtras;
-import tablas.HibernateUtil;
+import HiberanteUtil.HibernateUtil;
 import utilitarios.cOtros;
 
 /**

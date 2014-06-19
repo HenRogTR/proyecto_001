@@ -7,7 +7,7 @@ package personaClases;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import tablas.HibernateUtil;
+import HiberanteUtil.HibernateUtil;
 import tablas.PNatural;
 import utilitarios.cOtros;
 

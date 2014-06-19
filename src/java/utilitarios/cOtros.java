@@ -94,6 +94,23 @@ public class cOtros {
         return cadena.replace("\\", "\\\\").replace("\"", "\\\"").replace("'", "\\\"").replace("\r", " ").replace("\n", "<br>");
     }
 
+    /**
+     * Devuelve una cadena con barras invertidas delante de los carácteres que
+     * necesitan escaparse en situaciones como consultas de bases de datos, etc.
+     * Los carácteres que se escapan son la comilla simple (<b>'</b>), comilla
+     * doble (<b>"</b>), barra invertida (<b>\</b>). String= "' \ En lugar de la
+     * mancha\ " '"
+     *
+     * @param cadena \ 'En lugar de la mancha' "a"
+     * @return \\ \'En lugar de la mancha\' \"a\"
+     */
+    public String replace_caracteresEspeciales(String cadena) {
+        if (cadena == null) {
+            return "";
+        }
+        return cadena.replace("\\", "\\\\").replace("\"", "\\\"").replace("'", "\\\"").replace("\r", " ").replace("\n", "<br>");
+    }
+
     // <editor-fold defaultstate="collapsed" desc="Haga clic en el signo + para mostrar descripción">
     /**
      * Permite redondear un numero a la expresion equivalente en decimales Tener
@@ -190,7 +207,7 @@ public class cOtros {
     public String iniciarSesion() {
         return "Estimado usuario, es necesario que se loguee.<a href=\"#\" id=\"aIniciarSesion\"> Clic aqui.</a>";
     }
-    
+
     public String accion2(String accion) {
         if (accion.equals("r")) {
             return "Registrar";

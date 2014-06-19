@@ -34,7 +34,7 @@
             out.print(",");
         }
         out.print(" {"
-                + "\"mesAnio\":\"" + new cManejoFechas().mesNombreCorto((Date) temRP[6]).toUpperCase() + "-" + temRP[1].toString().substring(2, 4) + "\""
+                + "\"mesAnio\":\"" + cManejoFechas.mesNombreCorto((Date) temRP[6]).toUpperCase() + "-" + temRP[1].toString().substring(2, 4) + "\""
                 + ",\"monto\":\"" + new cOtros().decimalFormato(Double.parseDouble(temRP[2].toString()), 2) + "\""
                 + ",\"interes\":\"" + new cOtros().decimalFormato(Double.parseDouble(temRP[3].toString()), 2) + "\""
                 + ",\"pagos\":\"" + new cOtros().decimalFormato(Double.parseDouble(temRP[4].toString()), 2) + "\""

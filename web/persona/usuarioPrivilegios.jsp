@@ -59,7 +59,7 @@
                                     </div>
                                     <div>
                                         <input type="checkbox" class="checkall" name="p51" id="p51" value="ON"/>
-                                        <label for="p51">HABILITAR INTERESES</label>                           
+                                        <label for="p51">HABILITAR/DESHABILITAR INTERESES</label>                           
                                     </div>
                                 </fieldset>
                                 <fieldset class="ancho240px">

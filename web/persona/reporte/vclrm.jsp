@@ -4,34 +4,31 @@
     Author     : Henrri
 --%>
 
-
-<%@page import="otrasTablasClases.cDatosExtras"%>
-<%@page import="utilitarios.cOtros"%>
-<%@page import="utilitarios.cManejoFechas"%>
-<%@page import="personaClases.cDatosCliente"%>
+<%@page import="clases.cUtilitarios"%>
+<%@page import="clases.cFecha"%>
 <%@page import="java.util.Date"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="personaClases.cPersona"%>
-<%@page import="ventaClases.cVentaCreditoLetra"%>
-<%@page import="tablas.Persona"%>
+<%@page import="utilitarios.cManejoFechas"%>
 <%@page import="java.util.List"%>
+<%@page import="tablas.DatosCliente"%>
+<%@page import="Ejb.EjbCliente"%>
+<%@page import="Ejb.EjbVentaCreditoLetra"%>
 <%
     int codCliente = 0;
     try {
         codCliente = Integer.parseInt(request.getParameter("codCliente"));
-        //actualizamos letras pendientes interes
-        Date fechaVencimiento = new Date();
-        int diaEspera = new cDatosExtras().leer_diaEspera().getEntero();
-        Date fechaVencimientoEspera = new cManejoFechas().StringADate(new cManejoFechas().fechaSumarDias(fechaVencimiento, -diaEspera));
-        List VCLetra = new cVentaCreditoLetra().leer_cliente_interesSinActualizar(fechaVencimientoEspera, fechaVencimiento, true, codCliente);
-        new cVentaCreditoLetra().actualizar_interes(VCLetra, fechaVencimiento);
-        
     } catch (Exception e) {
         out.print("Error en parámteros");
         return;
     }
-    Persona objPersona = new cPersona().leer_cod(new cDatosCliente().leer_cod(codCliente).getPersona().getCodPersona());
-
+    //definir java bean
+    EjbVentaCreditoLetra ejbVentaCreditoLetra;
+    EjbCliente ejbCliente;
+    //obteniendo lista
+    ejbVentaCreditoLetra = new EjbVentaCreditoLetra();
+    List<Object[]> ventaCreditoLetraObjects = ejbVentaCreditoLetra.leerResumenPorCodigoCliente(codCliente);
+    //obtneiendo cliente
+    ejbCliente = new EjbCliente();
+    DatosCliente objCliente = ejbCliente.leerCodigoCliente(codCliente, false);
 %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -45,47 +42,72 @@
     <body>
         <div id="documento">
             <div id="contenido">
-                <table class="tabla-imprimir" style="width: 650px;">
+                <table class="tabla-imprimir" style="width: 600px;">
                     <thead>
                         <tr class="bottom2">
-                            <th colspan="5"><%=objPersona.getNombresC()%> <label style="float: right;"><%=new cManejoFechas().fechaHoraActual()%></label></th>
+                            <th class="izquierda" colspan="5" style="padding-left: 20px;"><%=cUtilitarios.agregarCerosIzquierda(codCliente, 8)%> - <%=objCliente.getPersona().getNombresC()%></th>
                         </tr>
                         <tr class="bottom2">
-                            <th style="width: 120px;" class="centrado">MES/AÑO</th>
-                            <th style="width: 120px;" class="centrado">TOTAL MES</th>
-                            <th style="" class="centrado">TOTAL INTERES</th>
-                            <th style="width: 120px;" class="centrado">TOTAL PAGOS</th>
-                            <th style="width: 120px;" class="centrado">TOTAL SALDO</th>
+                            <th class="centrado ancho120px">MES/AÑO</th>
+                            <th class="centrado ancho120px">TOTAL MES</th>
+                            <th style="" class="centrado">TOTAL INTERÉS</th>
+                            <th class="centrado ancho120px">TOTAL PAGOS</th>
+                            <th class="centrado ancho120px">TOTAL SALDO</th>
                         </tr>
                     </thead>
                     <tbody>
                         <%
-                            List lVentaCreditoLetraRP = new cVentaCreditoLetra().leer_resumenPagos(objPersona.getCodPersona());
-                            Double mTotalMes = 0.00, mTotalInteres = 0.00, mTotalPago = 0.00, mTotalSaldo = 0.00;
-                            Iterator iVentaCreditoLetraRP = lVentaCreditoLetraRP.iterator();
-                            while (iVentaCreditoLetraRP.hasNext()) {
-                                Object[] temRP = (Object[]) iVentaCreditoLetraRP.next();
-                                mTotalMes += (Double) temRP[2];
-                                mTotalInteres += (Double) temRP[3];
-                                mTotalPago += (Double) temRP[4];
-                                mTotalSaldo += (Double) temRP[5];
+                            //definir variables (por año/mes)
+                            Date fechaVencimiento = null;
+                            Double monto = 0.00;
+                            Double interes = 0.00;
+                            Double totalPago = 0.00;
+                            Double interesPagado = 0.00;
+                            //calcular totales (por año/mes)
+                            Double deudaCliente = 0.00;
+                            Double pagoCliente = 0.00;
+                            Double saldoCliente = 0.00;
+                            //para calcular el totoal general
+                            Double deudaClienteTotal = 0.00;
+                            Double interesClienteTotal = 0.00;
+                            Double pagoClienteTotal = 0.00;
+                            Double saldoClienteTotal = 0.00;
+                            int tam = ventaCreditoLetraObjects.size();
+                            for (int i = 0; i < tam; i++) {
+                                Object[] VCLResumen = ventaCreditoLetraObjects.get(i);
+                                fechaVencimiento = (Date) VCLResumen[0];
+                                monto = (Double) VCLResumen[1];
+                                interes = (Double) VCLResumen[2];
+                                totalPago = (Double) VCLResumen[3];
+                                interesPagado = (Double) VCLResumen[4];
+                                deudaCliente = monto + interes;
+                                pagoCliente = totalPago + interesPagado;
+                                saldoCliente = deudaCliente - pagoCliente;
+                                //sumando totales
+                                deudaClienteTotal += monto;
+                                interesClienteTotal += interes;
+                                pagoClienteTotal += pagoCliente;
+                                saldoClienteTotal += saldoCliente;
                         %>
                         <tr>
-                            <td style="text-align: right;padding-right: 20px;"><%=new cManejoFechas().mesNombreCorto((Date) temRP[6]).toUpperCase() + "-" + temRP[1].toString().substring(2, 4)%></td>
-                            <td style="text-align: right;padding-right: 20px;"><%=new cOtros().decimalFormato(Double.parseDouble(temRP[2].toString()), 2)%></td>
-                            <td style="text-align: right;padding-right: 20px;"><%=new cOtros().decimalFormato(Double.parseDouble(temRP[3].toString()), 2)%></td>
-                            <td style="text-align: right;padding-right: 20px;"><%=new cOtros().decimalFormato(Double.parseDouble(temRP[4].toString()), 2)%></td>
-                            <td style="text-align: right;padding-right: 20px;"><%=new cOtros().decimalFormato(Double.parseDouble(temRP[5].toString()), 2)%></td>
+                            <td style="text-align: right;padding-right: 20px;"><%=cFecha.mesNombreCorto(fechaVencimiento).toUpperCase() + "-" + cFecha.anioCorto(fechaVencimiento)%></td>
+                            <td style="text-align: right;padding-right: 20px;"><%=cUtilitarios.decimalFormato(monto, 2)%></td>
+                            <td style="text-align: right;padding-right: 20px;"><%=cUtilitarios.decimalFormato(interes, 2)%></td>
+                            <td style="text-align: right;padding-right: 20px;"><%=cUtilitarios.decimalFormato(pagoCliente, 2)%></td>
+                            <td style="text-align: right;padding-right: 20px;"><%=cUtilitarios.decimalFormato(saldoCliente, 2)%></td>
                         </tr>
                         <%
                             }
                         %>
                         <tr class="top2 bottom2">
                             <th class="centrado">T. GENERAL</th>
-                            <th style="text-align: right;padding-right: 20px;"><%=new cOtros().decimalFormato(mTotalMes,  2)%></th>
-                            <th style="text-align: right;padding-right: 20px;"><%=new cOtros().decimalFormato(mTotalInteres,  2)%></th>
-                            <th style="text-align: right;padding-right: 20px;"><%=new cOtros().decimalFormato(mTotalPago, 2)%></th>
-                            <th style="text-align: right;padding-right: 20px;"><%=new cOtros().decimalFormato(mTotalSaldo,  2)%></th>
+                            <th style="text-align: right;padding-right: 20px;"><%=cUtilitarios.decimalFormato(deudaClienteTotal, 2)%></th>
+                            <th style="text-align: right;padding-right: 20px;"><%=cUtilitarios.decimalFormato(interesClienteTotal, 2)%></th>
+                            <th style="text-align: right;padding-right: 20px;"><%=cUtilitarios.decimalFormato(pagoClienteTotal, 2)%></th>
+                            <th style="text-align: right;padding-right: 20px;"><%=cUtilitarios.decimalFormato(saldoClienteTotal, 2)%></th>
+                        </tr>
+                        <tr>
+                            <td colspan="5" class="derecha" style="font-size: 10px; padding-right: 20px;"><%=cFecha.fechaHora(new Date()).toUpperCase()%></td>
                         </tr>
                     </tbody>
                 </table>

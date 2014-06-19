@@ -22,7 +22,7 @@
         <!--propio-->
         <script type="text/javascript" src="../librerias/utilitarios/manejoFecha.js"></script>
         <script type="text/javascript" src="../librerias/utilitarios/formatoDecimal.js"></script>
-        <script type="text/javascript" src="../librerias/cobranza/cobranza.js?v.14.05.23"></script>
+        <script type="text/javascript" src="../librerias/cobranza/cobranza.js?v.14.06.19"></script>
         <script type="text/javascript" src="../librerias/plugin/mask/jquery.mask.min.js"></script>
         <script type="text/javascript" src="../librerias/utilitarios/validaciones.js"></script>
         <script type="text/javascript" src="../librerias/jquery-ui/jquery-ui-1.10.3.custom/js/i18n/jquery.ui.datepicker-es-min.js"></script>
@@ -69,6 +69,7 @@
                         <input type="text" id="auxSaldoFavor" value="0.00"/>
                         <input type="text" id="marcaSaldoFavor" value="0"/>
                         <input type="text" id="auxCodCobranza2" value="0"/>
+                        <input type="text" id="docRecDescFoco" value=""/>
                     </div>
                     <div>                                                       <!--inicio general-->
                         <div style="width: 50%; float: left;">                  <!--inicio panel izquierdo-->
@@ -87,8 +88,9 @@
                                             </td>
                                             <td colspan="3">
                                                 <span id="sNombresC" class="vaciar">Nombres/Razón Social</span><br>
-                                                <span id="sInteresEvitar" class="vaciar" style="font-size: 10px; font-weight: bold;">Interés</span>
+                                                <span id="sInteresEvitarEstado" class="vaciar" style="font-size: 10px; font-weight: bold;">Interés</span>
                                                 <span class="esperando">&nbsp;</span>
+                                                <a href="#" id="bInteresEvitarEditar" class="boton iconoSoloPequenio edit">&nbsp;</a>
                                             </td>
                                         </tr>
                                         <tr>
@@ -428,6 +430,21 @@
                     </div>
                     <div id="dSaldoFavorConfirmar" title="Saldo a favor">
                         Se va a utilizar <b>SALDO A FAVOR</b> del cliente, ¿está seguro de continuar?
+                    </div>
+                    <!--actualizar interes evitar-->
+                    <div id="dInteresAsignadoEditar">
+                        <div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em; text-align: justify">
+                            <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                                <strong>¡Alerta!</strong><br><br> 
+                                <span><strong>Deshabilitar intereses:</strong> 
+                                    Indica que toda pago/amortización realizada 
+                                    no se cobrarán intereses (afectado a día actual). 
+                                    Al culminar el día se cobrarán interes.</span>
+                                <br>
+                                <br>
+                                <span><strong>Habilitar intereses:</strong> 
+                                    El pago/amortización estará afectado por intereses.</span></p>
+                        </div>
                     </div>
                 </div>
                 <%@include file="../principal/div2.jsp" %>

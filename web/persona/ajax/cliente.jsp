@@ -4,7 +4,6 @@
     Author     : Henrri***
 --%>
 
-
 <%@page import="personaClases.cPersona"%>
 <%@page import="tablas.PNatural"%>
 <%@page import="utilitarios.cOtros"%>

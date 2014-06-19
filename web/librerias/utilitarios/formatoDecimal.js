@@ -5,8 +5,8 @@
 /**
  * Permite dar formato a un número decimal
  * @param {todos} numero a convertir
- * @param {int} cantidad decimales
- * @param {Boolean} separador de miles
+ * @param {int} dec decimales
+ * @param {Boolean} miles separador de miles
  * @returns {fNumeroFormato.cad|String}
  */
 function fNumeroFormato(numero, dec, miles) {

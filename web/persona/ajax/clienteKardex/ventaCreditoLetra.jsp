@@ -56,9 +56,9 @@
             <td style="width: 90px; background-color: <%=estilo%> "><span style="padding-left: 2px;"><%=objVCL.getVentaCredito().getVentas().getDocSerieNumero()%></span></td>
             <td style="width: 90px;background-color: <%=estilo%> "><span style="padding-left: 2px;"><%=objVCL.getDetalleLetra()%></span></td>
             <td style="width: 70px;background-color: <%=estilo%> "><span style="padding-left: 2px;"><%=objcManejoFechas.DateAString(objVCL.getFechaVencimiento())%></span></td>
-            <td style="width: 60px;background-color: <%=estilo%> " class="derecha"><span style="padding-right: 2px;"><%=objcOtros.agregarCerosNumeroFormato(objVCL.getMonto(), 2)%></span></td>
-            <td style="width: 60px;background-color: <%=estilo%> " class="derecha"><span style="padding-right: 2px;"><%=objcOtros.agregarCerosNumeroFormato(objVCL.getInteres(), 2)%></span></td>
-            <td style="width: 60px;background-color: <%=estilo%> " class="derecha"><span style="padding-right: 2px;"><%=objcOtros.agregarCerosNumeroFormato(objVCL.getTotalPago() + objVCL.getTotalPago(), 2)%></span></td>
+            <td style="width: 60px;background-color: <%=estilo%> " class="derecha"><span style="padding-right: 2px;"><%=objcOtros.decimalFormato(objVCL.getMonto(), 2)%></span></td>
+            <td style="width: 60px;background-color: <%=estilo%> " class="derecha"><span style="padding-right: 2px;"><%=objcOtros.decimalFormato(objVCL.getInteres(), 2)%></span></td>
+            <td style="width: 60px;background-color: <%=estilo%> " class="derecha"><span style="padding-right: 2px;"><%=objcOtros.decimalFormato(objVCL.getTotalPago() + objVCL.getInteresPagado(), 2)%></span></td>
             <td style="width: 70px;background-color: <%=estilo%> "><span style="padding-left: 2px;"><%=objcManejoFechas.DateAString(objVCL.getFechaPago())%></span></td>
             <td style="width: 40px;background-color: <%=estilo%> " class="derecha"><span style="padding-left: 2px;"><%=dias%></span></td>
             <td class="derecha" style="background-color: <%=estilo%> "><span style="padding-right: 2px;"><%=objcOtros.decimalFormato(saldo, 2)%></span></td>

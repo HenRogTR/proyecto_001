@@ -3,10 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package personaServlets;
+package Servlet;
 
+import Ejb.EjbCliente;
+import clases.cFecha;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -42,13 +45,12 @@ public class sCliente extends HttpServlet {
         String accion = request.getParameter("accionCliente");
         Usuario objUsuario = (Usuario) session.getAttribute("usuario");
 
-        if (accion == null) {
-            session.removeAttribute("codClienteMantenimiento");
-            response.sendRedirect("persona/clienteMantenimiento.jsp");
+        if (null == accion) {
+            out.print("Acción encontrada");
             return;
         }
-
-        if (accion.equals("mantenimiento")) {
+        EjbCliente ejbCliente;
+        if ("mantenimiento".equals(accion)) {
             int codCliente = 0;
             try {
                 codCliente = Integer.parseInt(request.getParameter("codCliente"));
@@ -58,7 +60,7 @@ public class sCliente extends HttpServlet {
             session.setAttribute("codClienteMantenimiento", codCliente);
             response.sendRedirect("persona/clienteMantenimiento.jsp");
         }
-        if (accion.equals("editarCobrador")) {
+        if ("editarCobrador".equals(accion)) {
             if (!objUsuario.getP29()) {
                 out.print("No tiene permisos para esre acción.");
                 return;
@@ -70,7 +72,35 @@ public class sCliente extends HttpServlet {
             } catch (Exception e) {
                 out.print("Error en parámetros, contacte al administrador.");
             }
+            return;
         }
+        if ("actualizarInteresAsignar".equals(accion)) {
+            //verificar permisos
+            if (!objUsuario.getP51()) {
+                out.print("No tiene permisos para esta acción.");
+                return;
+            }
+            //iniciando variables
+            int codCliente;
+            String estado;
+            Date interesEvitar = null;
+            try {
+                codCliente = Integer.parseInt(request.getParameter("codCliente"));
+                estado = request.getParameter("estado").toString();
+                //si se habilita estado obtenemos fecha actual
+                if ("deshabilitar".equals(estado)) {
+                    interesEvitar = cFecha.fechaHoraAFecha(new Date());
+                }
+                //si es otro caso solo lo dejamos allí.
+            } catch (Exception e) {
+                out.print("Error en parámetros.");
+                return;
+            }
+            ejbCliente = new EjbCliente();
+            out.print(ejbCliente.actualizarInteresAsignar(codCliente, interesEvitar) ? codCliente : ejbCliente.getError());
+            return;
+        }
+        out.print("No se encontró operación para: " + accion);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
