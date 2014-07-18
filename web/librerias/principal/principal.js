@@ -52,13 +52,12 @@ $(document).ready(function() {
         event.preventDefault();
     });
 
-    fComprobarSesion(true);
+    fComprobarSesion(true, 'cargaPagina');
     // comprobar sesion activa
-    var tiempo = 10000; //1000=1s ; 10000=10s
+    var tiempo = 60000; //1000=1s ; 10000=10s
     $.timer(tiempo, function() {
-        fComprobarSesion(false);
+        fComprobarSesion(false, 'temporizador');
     });
-
 
     $.ui.autocomplete.prototype._renderItem = function(ul, item) {
         var term = this.term.split(' ').join('|');
@@ -82,7 +81,7 @@ $(function() {
         numberOfMonths: 2
     });
 
-//<editor-fold defaultstate="collapsed" desc="dialog's. Clic en el signo + de la izquierda para mas detalles.">
+    //<editor-fold defaultstate="collapsed" desc="dialog's. Clic en el signo + de la izquierda para mas detalles.">
     $('#dEquipoTrabajo').dialog({
         autoOpen: false,
         modal: true,
@@ -220,13 +219,16 @@ $(function() {
             }
         }
     });
-//</editor-fold>
+    //</editor-fold>
 
 });
 
 //<editor-fold defaultstate="collapsed" desc="fComprobarSesion(valor). Clic en el signo + de la izquierda para mas detalles.">
-function fComprobarSesion(valor) {
-    var data = 'accionUsuario=sesionComprobar';
+function fComprobarSesion(valor, tipo) {
+    var data = {
+        accionUsuario: 'sesionComprobar',
+        tipo: tipo
+    };
     try {
         $.ajax({
             type: "post",
@@ -264,6 +266,7 @@ function fComprobarSesion(valor) {
                     $('#dIniciarSesion').dialog('close');
                     $('#dServidorError').dialog('close');
                 } else {
+                    $('#lUsuarioErrorInicio').text(ajaxResponse);
                     $('.acceso').removeClass('ocultar');
                     $('#menu').addClass('ocultar');
                     $('#dIniciarSesion').dialog('open');
@@ -291,7 +294,9 @@ function fComprobarSesion(valor) {
 
 //<editor-fold defaultstate="collapsed" desc="fUsuarioPermiso(callback). Clic en el signo + de la izquierda para mas detalles.">
 function fUsuarioPermiso(callback) {
-    var data = 'accionUsuario=permisos';
+    var data = {
+        accionUsuario: 'permisos'
+    };
     try {
         $.ajax({
             type: "post",
@@ -486,6 +491,7 @@ function fUsuarioIngresar() {
                     $('#lUsuarioErrorInicio').text(ajaxResponse);
                     $('#usuario').focus();
                 } else {
+                    $('#lUsuarioErrorInicio').text('');
                     fUsuarioPermiso(function() {
                         if ($('input[name=paginaActualPermiso]').val() == '1') {
                             $('#rightSub1').removeClass('ocultar');
@@ -572,6 +578,41 @@ function procesarRespuesta(ajaxResponse) {
         response = null;
     }
     return response;
+}
+;
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="procesarCoincidencia(request, response, clienteArray). Clic en + para más detalles.">
+function procesarCoincidencia(request, response, clienteArray) {
+    //el nuevo array conteniendo coincidencias
+    var aryResponse = [];
+    //creamos array de lo ingresado y ponemos a mayúscula
+    var arySplitRequest = request.term.toUpperCase().split(" ");
+    //recorremos todos los datos con el cual trabajara
+    for (var i = 0; i < clienteArray.length; i++) {
+        var intCount = 0;
+        //creamos auxiliar (label es donde comparará datos)
+        var temp = clienteArray[i].label;
+        //recorremos posicion a posicion de lo ingresado para autocompletar
+        for (var j = 0; j < arySplitRequest.length; j++) {
+            //iniciamos el regExp
+            var regexp = new RegExp(arySplitRequest[j]);
+            //si hay coincidencia
+            var test = temp.match(regexp);
+            if (test) {
+                //debemos quitar la palabra ya encontrada
+                temp = temp.replace(arySplitRequest[j], '');
+                intCount++;
+            } else if (!test) {
+                intCount = arySplitRequest.length + 1;
+            }
+            if (intCount == arySplitRequest.length) {
+                //se agrega al nuevo array el dato concidente
+                aryResponse.push(clienteArray[i]);
+            }
+        }
+    }
+    response(aryResponse);
 }
 ;
 //</editor-fold>
@@ -676,16 +717,20 @@ function fDLibreReiniciar() {
 ;
 //</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="fLoginBotonesDeshabilitar(). Clic en + para más detalles.">
 function fLoginBotonesDeshabilitar() {
     $('#bCerrarSistema').addClass('disabled').prop('disabled', true);
     $('#bLimpiarLogin').addClass('disabled').prop('disabled', true);
     $('#bIngresar').addClass('disabled').prop('disabled', true);
 }
 ;
+//</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="fLoginBotonesHabilitar(). Clic en + para más detalles.">
 function fLoginBotonesHabilitar() {
     $('#bCerrarSistema').removeClass('disabled').prop('disabled', false);
     $('#bLimpiarLogin').removeClass('disabled').prop('disabled', false);
     $('#bIngresar').removeClass('disabled').prop('disabled', false);
 }
 ;
+//</editor-fold>

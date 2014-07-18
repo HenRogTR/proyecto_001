@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-//<editor-fold defaultstate="collapsed" desc=". Clic en el signo + de la izquierda para mas detalles.">
+//<editor-fold defaultstate="collapsed" desc=". Clic en + para más detalles.">
 
 //</editor-fold>
 

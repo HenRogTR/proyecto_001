@@ -145,7 +145,7 @@ public class EjbCliente {
         return this.clienteList;
     }
 
-    public boolean actualizarInteresAsignar(int codCliente, Date interesEvitar) {
+    public boolean actualizarInteresAsignar(int codCliente, Date interesEvitar, boolean interesEvitarPermanente) {
         boolean est = false;
         this.session = null;
         this.transaction = null;
@@ -153,13 +153,14 @@ public class EjbCliente {
         try {
             this.session = HibernateUtil.getSessionFactory().openSession();
             this.transaction = session.beginTransaction();
-            DaoCliente DaoCliente = new DaoCliente();
+            DaoCliente daoCliente = new DaoCliente();
             //leemos todos los clientes existentes en la base de datos
-            this.cliente = DaoCliente.leerPorCodigo(this.session, codCliente);
+            this.cliente = daoCliente.leerPorCodigo(this.session, codCliente);
             //procedemos a setear el interes asignar
             this.cliente.setInteresEvitar(interesEvitar);
+            this.cliente.setInteresEvitarPermanente(interesEvitarPermanente);
             //actualizamos objeto
-            DaoCliente.actualizar(this.session, this.cliente);
+            daoCliente.actualizar(this.session, this.cliente);
             this.transaction.commit();
             est = true;
         } catch (Exception e) {

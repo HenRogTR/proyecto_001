@@ -4,8 +4,8 @@
     Author     : Henrri
 --%>
 
-<%@page import="clases.cUtilitarios"%>
-<%@page import="clases.cFecha"%>
+<%@page import="Clase.Utilitarios"%>
+<%@page import="Clase.Fecha"%>
 <%@page import="java.util.Date"%>
 <%@page import="utilitarios.cManejoFechas"%>
 <%@page import="java.util.List"%>
@@ -45,12 +45,12 @@
                 <table class="tabla-imprimir" style="width: 600px;">
                     <thead>
                         <tr class="bottom2">
-                            <th class="izquierda" colspan="5" style="padding-left: 20px;"><%=cUtilitarios.agregarCerosIzquierda(codCliente, 8)%> - <%=objCliente.getPersona().getNombresC()%></th>
+                            <th class="izquierda" colspan="5" style="padding-left: 20px;"><%=new Utilitarios().agregarCerosIzquierda(codCliente, 8)%> - <%=objCliente.getPersona().getNombresC()%></th>
                         </tr>
                         <tr class="bottom2">
                             <th class="centrado ancho120px">MES/AÑO</th>
                             <th class="centrado ancho120px">TOTAL MES</th>
-                            <th style="" class="centrado">TOTAL INTERÉS</th>
+                            <th style="" class="centrado">TOTAL INTERÉS(*)</th>
                             <th class="centrado ancho120px">TOTAL PAGOS</th>
                             <th class="centrado ancho120px">TOTAL SALDO</th>
                         </tr>
@@ -90,24 +90,31 @@
                                 saldoClienteTotal += saldoCliente;
                         %>
                         <tr>
-                            <td style="text-align: right;padding-right: 20px;"><%=cFecha.mesNombreCorto(fechaVencimiento).toUpperCase() + "-" + cFecha.anioCorto(fechaVencimiento)%></td>
-                            <td style="text-align: right;padding-right: 20px;"><%=cUtilitarios.decimalFormato(monto, 2)%></td>
-                            <td style="text-align: right;padding-right: 20px;"><%=cUtilitarios.decimalFormato(interes, 2)%></td>
-                            <td style="text-align: right;padding-right: 20px;"><%=cUtilitarios.decimalFormato(pagoCliente, 2)%></td>
-                            <td style="text-align: right;padding-right: 20px;"><%=cUtilitarios.decimalFormato(saldoCliente, 2)%></td>
+                            <td style="text-align: right;padding-right: 20px;"><%=new Fecha().mesNombreCorto(fechaVencimiento).toUpperCase() + "-" + new Fecha().anioCorto(fechaVencimiento)%></td>
+                            <td style="text-align: right;padding-right: 20px;"><%=new Utilitarios().decimalFormato(monto, 2)%></td>
+                            <td style="text-align: right;padding-right: 20px;"><%=new Utilitarios().decimalFormato(interes, 2)%></td>
+                            <td style="text-align: right;padding-right: 20px;"><%=new Utilitarios().decimalFormato(pagoCliente, 2)%></td>
+                            <td style="text-align: right;padding-right: 20px;"><%=new Utilitarios().decimalFormato(saldoCliente, 2)%></td>
                         </tr>
                         <%
                             }
                         %>
                         <tr class="top2 bottom2">
                             <th class="centrado">T. GENERAL</th>
-                            <th style="text-align: right;padding-right: 20px;"><%=cUtilitarios.decimalFormato(deudaClienteTotal, 2)%></th>
-                            <th style="text-align: right;padding-right: 20px;"><%=cUtilitarios.decimalFormato(interesClienteTotal, 2)%></th>
-                            <th style="text-align: right;padding-right: 20px;"><%=cUtilitarios.decimalFormato(pagoClienteTotal, 2)%></th>
-                            <th style="text-align: right;padding-right: 20px;"><%=cUtilitarios.decimalFormato(saldoClienteTotal, 2)%></th>
+                            <th style="text-align: right;padding-right: 20px;"><%=new Utilitarios().decimalFormato(deudaClienteTotal, 2)%></th>
+                            <th style="text-align: right;padding-right: 20px;"><%=new Utilitarios().decimalFormato(interesClienteTotal, 2)%></th>
+                            <th style="text-align: right;padding-right: 20px;"><%=new Utilitarios().decimalFormato(pagoClienteTotal, 2)%></th>
+                            <th style="text-align: right;padding-right: 20px;"><%=new Utilitarios().decimalFormato(saldoClienteTotal, 2)%></th>
                         </tr>
                         <tr>
-                            <td colspan="5" class="derecha" style="font-size: 10px; padding-right: 20px;"><%=cFecha.fechaHora(new Date()).toUpperCase()%></td>
+                            <td colspan="5" class="derecha" style="font-size: 10px; padding-right: 20px;"><%=new Fecha().fechaHora(new Date()).toUpperCase()%></td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <div style="font-size: 10px; padding-left: 20px;">
+                                    (*)Intereses calculados al día actual, con el cliente afectado a pago de intereses.
+                                </div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

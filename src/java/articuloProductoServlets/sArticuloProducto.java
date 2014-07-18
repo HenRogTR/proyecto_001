@@ -80,8 +80,8 @@ public class sArticuloProducto extends HttpServlet {
                 objMarca.setCodMarca(Integer.parseInt(request.getParameter("codMarca")));
                 objArticuloProducto.setMarca(objMarca); //4
                 objArticuloProducto.setUnidadMedida(request.getParameter("unidadMedida") == null ? "Unidad" : (request.getParameter("unidadMedida").equals("") ? "Unidad" : request.getParameter("unidadMedida")));
-                objArticuloProducto.setUsarSerieNumero(request.getParameter("usarSerieNumero").equals("1") ? true : false);
-                objArticuloProducto.setReintegroTributario(request.getParameter("reintegroTributario").equals("1") ? true : false);  //6
+                objArticuloProducto.setUsarSerieNumero(request.getParameter("usarSerieNumero").equals("1"));
+                objArticuloProducto.setReintegroTributario(request.getParameter("reintegroTributario").equals("1"));  //6
                 objArticuloProducto.setObservaciones(request.getParameter("observacion"));    //7
                 objArticuloProducto.setFoto(request.getParameter("foto"));  //8
                 objArticuloProducto.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));  //9
@@ -94,7 +94,7 @@ public class sArticuloProducto extends HttpServlet {
             }
             //**********Editar un artículo producto**********
             if (accion.equals("editar")) {//comprobar que el usuario tiene permiso para editar
-                if (!objUsuario.getP28()) {
+                if (!objUsuario.getP15()) {
                     out.print("No tiene permisos para realizar esta acción.");
                     return;
                 }
@@ -125,8 +125,8 @@ public class sArticuloProducto extends HttpServlet {
                 objMarca.setCodMarca(Integer.parseInt(request.getParameter("codMarca")));
                 objArticuloProductoNuevo.setMarca(objMarca); //4
                 objArticuloProductoNuevo.setUnidadMedida(request.getParameter("unidadMedida") == null ? "Unidad" : (request.getParameter("unidadMedida").equals("") ? "Unidad" : request.getParameter("unidadMedida")));
-                objArticuloProductoNuevo.setUsarSerieNumero(request.getParameter("usarSerieNumero").equals("1") ? true : false);
-                objArticuloProductoNuevo.setReintegroTributario(request.getParameter("reintegroTributario").equals("1") ? true : false);  //6
+                objArticuloProductoNuevo.setUsarSerieNumero(request.getParameter("usarSerieNumero").equals("1"));
+                objArticuloProductoNuevo.setReintegroTributario(request.getParameter("reintegroTributario").equals("1"));  //6
                 objArticuloProductoNuevo.setObservaciones(request.getParameter("observaciones"));    //7
                 objArticuloProductoNuevo.setFoto(request.getParameter("foto"));  //8
                 objArticuloProductoNuevo.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));  //9

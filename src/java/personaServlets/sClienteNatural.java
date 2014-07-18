@@ -122,6 +122,7 @@ public class sClienteNatural extends HttpServlet {
                     objCliente.setCondicion(Integer.parseInt(request.getParameter("condicion")));
                     objCliente.setCreditoMax(Double.parseDouble(request.getParameter("saldoMax")));
                     objCliente.setSaldoFavor(0.00);
+                    objCliente.setInteresEvitarPermanente(false);
                     objCliente.setObservaciones(request.getParameter("observacionDatoCliente").toString());
                     objCliente.setTelefono(request.getParameter("telefono1C").toString());
                     objCliente.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
@@ -198,6 +199,7 @@ public class sClienteNatural extends HttpServlet {
                     objCliente.setCondicion(Integer.parseInt(request.getParameter("condicion")));
                     objCliente.setCreditoMax(Double.parseDouble(request.getParameter("saldoMax")));
                     objCliente.setSaldoFavor(Double.parseDouble(request.getParameter("saldoFavor")));
+                    objCliente.setInteresEvitarPermanente(false);
                     objCliente.setObservaciones(request.getParameter("observacionDatoCliente").toString());
                     objCliente.setTelefono(request.getParameter("telefono1C").toString());
                     objCliente.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));

@@ -26,7 +26,7 @@ import utilitarios.cOtros;
 public class sMarca_ extends HttpServlet {
 
     @EJB
-    private EjbMarca ejbTMarca;
+    private EjbMarca ejbMarca;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -67,12 +67,12 @@ public class sMarca_ extends HttpServlet {
                 return;
             }
             //inicializa
-            ejbTMarca = new EjbMarca();
+            ejbMarca = new EjbMarca();
             //seteamos
-            ejbTMarca.getMarca().setDescripcion(request.getParameter("descripcion"));
-            ejbTMarca.getMarca().setRegistro(new cOtros().registro("1", objUsuario.getCodUsuario().toString()));
+            ejbMarca.getMarca().setDescripcion(request.getParameter("descripcion"));
+            ejbMarca.getMarca().setRegistro(new cOtros().registro("1", objUsuario.getCodUsuario().toString()));
             //respuesta
-            out.print(ejbTMarca.crear() ? ejbTMarca.getMarca().getCodMarca() : "Error al registrar: " + ejbTMarca.getError());
+            out.print(ejbMarca.crear() ? ejbMarca.getMarca().getCodMarca() : "Error al registrar: " + ejbMarca.getError());
 
         }
         if (accion.equals("editar")) {

@@ -92,6 +92,8 @@ public class sVentaCredito extends HttpServlet {
                 objVentaCreditoLetra.setTotalPago(0.00);
                 objVentaCreditoLetra.setMoneda(objVentaCredito.getVentas().getMoneda().equals("soles") ? 0 : 1);
                 objVentaCreditoLetra.setInteres(0.00);
+                objVentaCreditoLetra.setInteresPagado(0.00);
+                objVentaCreditoLetra.setInteresPendiente(0.00);
                 objVentaCreditoLetra.setRegistro(new cOtros().registro("1", objUsuario.getCodUsuario().toString()));
                 if (m == 0) {
                     objVentaCreditoLetra.setNumeroLetra(m);

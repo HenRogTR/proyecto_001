@@ -51,7 +51,7 @@
         <a href="../sUsuario">Usuarios</a>
     </li>
     <li>
-        <a href="../sUsuario?accionUsuario=c">Cerrar Sesión</a>
+        <a href="../sUsuario?accionUsuario=sesionCerrar">Cerrar Sesión</a>
     </li>
 </ul>
 <%

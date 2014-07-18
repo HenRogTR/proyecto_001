@@ -809,8 +809,8 @@ function fVerificarDatos() {
         mensaje += '* Ingrese monto.<br>';
         estado = true;
     } else {
-        if (parseFloat($('#montoAmortizar').val()) < 1) {
-            mensaje += '* El monto a pagar debe ser mayor o igual a S/. 1.00.<br>';
+        if (parseFloat($('#montoAmortizar').val()) <= 0) {
+            mensaje += '* El monto a pagar debe ser mayor a S/. 0.00.<br>';
             estado = true;
         }
     }
@@ -1114,7 +1114,7 @@ function fInteresAsigandoHabilitar() {
     }
     var data = {
         codCliente: codCliente,
-        accionCliente: 'actualizarInteresAsignar',
+        accion: 'actualizarInteresAsignar',
         estado: 'habilitar'
     };
     var url = '../sCliente';
@@ -1162,7 +1162,7 @@ function fInteresAsigandoDeshabilitar() {
     }
     var data = {
         codCliente: codCliente,
-        accionCliente: 'actualizarInteresAsignar',
+        accion: 'actualizarInteresAsignar',
         estado: 'deshabilitar'
     };
     var url = '../sCliente';

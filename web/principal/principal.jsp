@@ -39,7 +39,7 @@
             <div id="right">
                 <div>
                     <h3 class="titulo">IMPORTADORA YUCRA S.A.C.</h3>
-                    <div class="articles" style="font-size: 12px;padding: 10px;text-align: justify;">
+                    <div class="articles" style="font-size: 12px;padding: 10px;text-align: justify; text-align: center">
                         Como llegar a Yucra desde el óvalo Saenz Peña.
                         <br /><br />
                         <img src="../librerias/imagenes/ruta_yucra.PNG" alt="Example pic" style="border: 3px solid #ccc;" />

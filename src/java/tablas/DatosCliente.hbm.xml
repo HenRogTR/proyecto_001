@@ -38,6 +38,9 @@
         <property name="interesEvitar" type="date">
             <column name="interes_evitar" length="10" />
         </property>
+        <property name="interesEvitarPermanente" type="java.lang.Boolean">
+            <column name="interes_evitar_permanente" />
+        </property>
         <property name="observaciones" type="string">
             <column name="observaciones" length="65535" />
         </property>

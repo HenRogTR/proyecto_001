@@ -131,8 +131,7 @@ function fUsuarioRegistrar() {
                     fReiniciarFormUsuarioRegistrar();
                     $(location).attr('href', '../sUsuario?accionUsuario=mantenimiento&codUsuario=' + ajaxResponse);
                 } else {
-                    $('#dMensajeAlertaDiv').empty().append('Error en el registro: ' + ajaxResponse);
-                    $('#dMensajeAlerta').dialog('open');
+                    fAlerta(ajaxResponse);
                 }
             },
             statusCode: {

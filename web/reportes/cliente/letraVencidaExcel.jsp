@@ -4,6 +4,7 @@
     Author     : Henrri
 --%>
 
+<%@page import="Clase.Fecha"%>
 <%@page import="otrasTablasClases.cDatosExtras"%>
 <%@page import="personaClases.cDatosCliente"%>
 <%@page import="personaClases.cEmpresaConvenio"%>
@@ -30,7 +31,9 @@
 
     String orden = "";
     String fechaString = "";
+    String fechaInteresBaseString = "";
     Date fechaDate = null;
+    Date fechaInteresBaseDate = new cManejoFechas().StringADate(new cManejoFechas().DateAString(new Date()));
     List LVList = null;
 
     Integer codCobradorInteger = 0;
@@ -372,10 +375,14 @@
                         <tr class="bottom2">
                             <th colspan="3"><label>Letras X cobrar : Clientes en general(Apellidos/Nombres) - Vencimiento <%=fechaString%></label></th>
                         </tr>
+                        <tr>
+                            <th colspan="3">INTERESES CALCULADOS AL <%=new cManejoFechas().DateAString(fechaInteresBaseDate)%></th>
+                        </tr>
                         <%=cabeceraString%>
                         <tr class="bottom1">
                             <th style="width: 120px;"><label>Cod. Cliente</label></th>
                             <th><label>Nombre/Razón Social</label></th>
+                            <th style="width: 80px;"><label>F.</label></th>
                             <th style="width: 120px;"><label>DNI / Ruc</label></th>
                             <th style="width: 80px;"><label>Monto</label></th>
                         </tr>
@@ -386,6 +393,7 @@
                             String nombresC = "";
                             String dniPasaporte = "";
                             String ruc = "";
+                            Date fecha = null;
                             Integer codCliente = 0;
                             Date fechaVencimiento = null;
                             Double monto = 0.00;
@@ -399,12 +407,16 @@
                             Double interesSumar = 0.00;
                             double factorInteres = (new cDatosExtras().leer_interesFactor().getDecimalDato() / 100) / 30;
                             int diaEspera = new cDatosExtras().leer_diaEspera().getEntero();
+                            Date fechaVentaDeLetraMasVencida = null;
+                            Date fechaVencimientoAux = null;
 
                             Double deudaTotal = 0.00;
 
                             Integer codClienteAux = 0;
                             Integer contAux = 0;//------
+                            //recorremos toda la lista
                             for (Iterator it = LVList.iterator(); it.hasNext();) {
+                                //obtenemos el objeto
                                 Object dato[] = (Object[]) it.next();
                                 codCliente = (Integer) dato[7];
                                 //si es el primer item
@@ -415,18 +427,22 @@
                                 if (!codClienteAux.equals(codCliente)) {
                         %>
                         <tr>
-                            <td style="text-align: left;padding-left: 5px; mso-number-format:'@';">*<span><%=new cOtros().agregarCeros_int(codClienteAux, 8)%></span></td>
+                            <td style="text-align: left;padding-left: 5px; mso-number-format:'@';"><span><%=new cOtros().agregarCeros_int(codClienteAux, 8)%></span></td>
                             <td><%=nombresC%></td>
+                            <td><%=new Fecha().dateAString(fechaVentaDeLetraMasVencida)%></td>
                             <td style="text-align: right; mso-number-format:'@';"><%=dniPasaporte.equals("") ? ruc : dniPasaporte%></td>
                             <td style="text-align: right; mso-number-format:'0.00';"><%=new cOtros().decimalFormato(deudaTotal, 2)%></td>
                         </tr>
                         <%
                                     codClienteAux = codCliente;
                                     deudaTotal = 0.00;
+                                    fechaVentaDeLetraMasVencida = null;
+                                    fechaVencimientoAux = null;
                                 }
                                 nombresC = (String) dato[1];
                                 dniPasaporte = (String) dato[2];
                                 ruc = (String) dato[3];
+                                fecha = (Date) dato[10];
                                 fechaVencimiento = (Date) dato[16];
                                 monto = (Double) dato[17];
                                 interes = (Double) dato[18];
@@ -434,11 +450,23 @@
                                 totalPago = (Double) dato[20];
                                 interesPagado = (Double) dato[21];
                                 interesUltimoCalculo = (Date) dato[22];
+                                //obtener la fecha del credito con la letra mas vencida
+                                if (fechaVentaDeLetraMasVencida == null) {
+                                    fechaVentaDeLetraMasVencida = fecha;
+                                    fechaVencimientoAux = fechaVencimiento;
+                                } else {
+                                    //si fecha vencimiento es menor a la usx
+                                    if (fechaVencimientoAux.after(fechaVencimiento)) {
+                                        fechaVencimientoAux = fechaVencimiento;
+                                        fechaVentaDeLetraMasVencida = fecha;
+                                    }
+                                }
 
                                 if (interesUltimoCalculo == null) {//se tomara el ultimo pago o la fecha de vencimiento
-                                    diaRetraso = new cManejoFechas().diferenciaDosDias(fechaDate, fechaPago != null ? (fechaPago.before(fechaVencimiento) ? fechaVencimiento : fechaPago) : fechaVencimiento);
+                                    //error al haber una fecha de pago anterior a la fecha de vencimiento
+                                    diaRetraso = new cManejoFechas().diferenciaDosDias(fechaInteresBaseDate, fechaPago != null ? (fechaPago.before(fechaVencimiento) ? fechaVencimiento : fechaPago) : fechaVencimiento);
                                 } else {
-                                    diaRetraso = new cManejoFechas().diferenciaDosDias(fechaDate, interesUltimoCalculo);
+                                    diaRetraso = new cManejoFechas().diferenciaDosDias(fechaInteresBaseDate, interesUltimoCalculo);
                                 }
                                 diaRetraso = diaRetraso < 0 ? 0 : diaRetraso;
                                 diaRetraso = diaRetraso <= diaEspera ? 0 : diaRetraso;      //todos aquellos dentro de los dias de espera no se generan intereses.
@@ -451,6 +479,7 @@
                         <tr>
                             <td style="text-align: left;padding-left: 5px; mso-number-format:'@';"><span>*<%=new cOtros().agregarCeros_int(codCliente, 8)%></span></td>
                             <td><%=nombresC%></td>
+                            <td><%=new Fecha().dateAString(fechaVentaDeLetraMasVencida)%></td>
                             <td style="text-align: right; mso-number-format:'@';"><%=dniPasaporte.equals("") ? ruc : dniPasaporte%></td>
                             <td style="text-align: right; mso-number-format:'0.00';"><%=new cOtros().decimalFormato(deudaTotal, 2)%></td>
                         </tr>

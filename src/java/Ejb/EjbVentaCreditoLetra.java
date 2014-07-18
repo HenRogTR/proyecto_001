@@ -7,7 +7,7 @@ package Ejb;
 
 import Dao.DaoVentaCreditoLetra;
 import HiberanteUtil.HibernateUtil;
-import clases.cFecha;
+import Clase.Fecha;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -127,14 +127,14 @@ public class EjbVentaCreditoLetra {
             //quitamos los anulados
             int tam = this.ventaCreditoLetraList.size();
             //Obtenemos día actual en el formato dd/mm/yyyy
-            Date fechaBase = cFecha.fechaHoraAFecha(new Date());
+            Date fechaBase = new Fecha().fechaHoraAFecha(new Date());
             //quitar horas a fecha
             //obtneer los dias de espera que se restará para no calcular interes: ej las que se vencen hoy
             int diaEspera = new cDatosExtras().leer_diaEspera().getEntero();//******EJB*****
             //fecha desde la cual se considera vencida para generar los intereses
-            Date fechaVencimientoConEspera = cFecha.sumarDias(fechaBase, -diaEspera);
+            Date fechaVencimientoConEspera = new Fecha().sumarDias(fechaBase, -diaEspera);
             //quitar horas a fecha
-            fechaVencimientoConEspera = cFecha.fechaHoraAFecha(fechaVencimientoConEspera);
+            fechaVencimientoConEspera = new Fecha().fechaHoraAFecha(fechaVencimientoConEspera);
             //variables
             int diasRetraso = 0;
             Double interesSumar = 0.00;
@@ -154,7 +154,13 @@ public class EjbVentaCreditoLetra {
                                 /*
                                  *si se hizo un pago antes de la fecha de vencimiento los dias de retraso seran negativos
                                  */
-                                diasRetraso = cFecha.diasDiferencia(fechaBase, this.ventaCreditoLetra.getFechaPago() != null ? this.ventaCreditoLetra.getFechaPago() : this.ventaCreditoLetra.getFechaVencimiento());
+                                diasRetraso = new Fecha().diasDiferencia(
+                                        fechaBase,
+                                        this.ventaCreditoLetra.getFechaPago() != null                                            ? 
+                                            (this.ventaCreditoLetra.getFechaPago().before(this.ventaCreditoLetra.getFechaVencimiento()) 
+                                                    ? this.ventaCreditoLetra.getFechaVencimiento() 
+                                                    : this.ventaCreditoLetra.getFechaPago())
+                                            : this.ventaCreditoLetra.getFechaVencimiento());
                             } else {
                                 diasRetraso = new cManejoFechas().diferenciaDosDias(fechaBase, this.ventaCreditoLetra.getInteresUltimoCalculo());
                             }
@@ -162,12 +168,10 @@ public class EjbVentaCreditoLetra {
                             diasRetraso = diasRetraso < 0 ? 0 : diasRetraso;
                             //calculando lo que se sumará
                             interesSumar = (this.ventaCreditoLetra.getMonto() - this.ventaCreditoLetra.getTotalPago()) * factorInteres * diasRetraso;
-                            //procedemos a actualizar el interes
-                            System.out.println(this.ventaCreditoLetra.getVentaCredito().getVentas().getDocSerieNumero() + "\t" + this.ventaCreditoLetra.getDetalleLetra() + "\t int: " + this.ventaCreditoLetra.getInteres());
+                            //procedemos a actualizar el interes                            
                             this.ventaCreditoLetra.setInteres(interesSumar + this.ventaCreditoLetra.getInteres());
                             //setear fecha de interes
                             this.ventaCreditoLetra.setInteresUltimoCalculo(fechaBase);
-                            System.out.println(">>>>> " + this.ventaCreditoLetra.getVentaCredito().getVentas().getDocSerieNumero() + "\t" + this.ventaCreditoLetra.getDetalleLetra() + "\t int: " + this.ventaCreditoLetra.getInteres());
                             //llamar al método update
                             daoVentaCreditoLetra.persistir(this.session, this.ventaCreditoLetra);
                         }

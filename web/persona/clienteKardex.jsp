@@ -23,7 +23,7 @@
         <script type="text/javascript" src="../librerias/utilitarios/formatoDecimal.js"></script>
         <script type="text/javascript" src="../librerias/plugin/jquery.growl/javascripts/jquery.growl.min.js"></script>
         <link rel="stylesheet" type="text/css" href="../librerias/plugin/jquery.growl/stylesheets/jquery.growl.min.css" media="all"/>
-        <script type="text/javascript" src="../librerias/persona/cliente/clienteKardex_.js?v14.06.19"></script>
+        <script type="text/javascript" src="../librerias/persona/cliente/clienteKardex.js?v14.07.02"></script>
         <script type="text/javascript" src="../librerias/plugin/mask/jquery.mask.min.js"></script>
         <style>
             .ui-autocomplete {
@@ -59,9 +59,9 @@
                         <span id="sInteresEvitarEstado" class="datoMostrar ocultar" style="font-size: 11px; font-weight: bold;">Detalle de afecto de interés</span>
                         <span class="esperando">&nbsp;</span> <a href="#" id="bInteresEvitarEditar" class="boton iconoSoloPequenio edit">&nbsp;</a>)
                     </h3>
-                    <div class="d_variables ocultar">
+                    <div class="ocultar">
                         <input type="text" name="codCliente" id="codCliente" value="" />
-                        <div id="clienteArray"></div>
+                        <input type="text" name="interesEvitarEstado" id="interesEvitarEstado" value=""/>
                     </div>
                     <div class="contenedorGeneral">
                         <div class="divSuperior">
@@ -70,7 +70,7 @@
                                     <table class="tabla9px anchoTotal">
                                         <thead>
                                             <tr>
-                                                <th colspan="9" class="centrado"><span>VENTAS</span> <a id="" class="boton iconoSoloPequenio print">&nbsp;</a></th>
+                                                <th colspan="9" class="centrado"><span>VENTAS</span> <a id="bVentaImprimir" href="#" class="boton iconoSoloPequenio print">&nbsp;</a></th>
                                             </tr>
                                             <tr>
                                                 <th style="width: 80px;"><span>Documento</span></th>
@@ -185,32 +185,46 @@
                                     </table>
                                 </div>
                                 <div>
-                                    <table class="tabla11px anchoTotal">
+                                    <table id="tTotales" class="tabla11px anchoTotal">
                                         <tbody>
                                             <tr>
                                                 <th class="ancho60px derecha">
                                                     <span>TOTAL</span>
                                                 </th>
                                                 <td class="derecha ancho80px">
-                                                    <span id="lTotal"  style="padding-right: 2px;" class="datoMostrar ocultar"></span><span class="esperando">&nbsp;</span>
+                                                    <div id="dTotal" class="datoMostrar ocultar">
+                                                        <span id="lTotal"  style="padding-right: 2px;"></span>
+                                                    </div>
+                                                    <span class="esperando">&nbsp;</span>
                                                 </td>
                                                 <th class="ancho80px">
                                                     <span>INTERÉS</span>
                                                 </th>
                                                 <td class="derecha ancho80px">
-                                                    <span id="lInteres"  style="padding-right: 2px;" class="datoMostrar ocultar"></span><span class="esperando">&nbsp;</span>
+                                                    <div id="dInteres" class="datoMostrar ocultar">
+                                                        <span id="lInteres"  style="padding-right: 2px;" class="ocultar interesAfectado"></span>
+                                                        <span id="lInteresInteresNoAfectado"  style="padding-right: 2px;" class="ocultar interesNoAfectado"></span>
+                                                    </div>
+                                                    <span class="esperando">&nbsp;</span>
                                                 </td>
                                                 <th class="ancho80px derecha">
                                                     <span>AMORTIZADO</span>
                                                 </th>
                                                 <td class="derecha ancho80px">
-                                                    <span id="lAmortizado" style="padding-right: 2px;" class="datoMostrar ocultar"></span><span class="esperando">&nbsp;</span>
+                                                    <div id="dAmortizado" class="datoMostrar ocultar">
+                                                        <span id="lAmortizado" style="padding-right: 2px;"></span>
+                                                    </div>
+                                                    <span class="esperando">&nbsp;</span>
                                                 </td>
                                                 <th class="ancho80px derecha">
                                                     <span>SALDO</span>
                                                 </th>
                                                 <td class="derecha">
-                                                    <span id="lSaldo" style="padding-right: 2px;" class="datoMostrar ocultar"></span><span class="esperando">&nbsp;</span>
+                                                    <div id="dSaldo" class="datoMostrar ocultar">
+                                                        <span id="lSaldo" style="padding-right: 2px;" class="ocultar interesAfectado"></span>
+                                                        <span id="lSaldoInteresNoAfectado" style="padding-right: 2px;" class="ocultar interesNoAfectado"></span>
+                                                    </div>
+                                                    <span class="esperando">&nbsp;</span>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -309,7 +323,7 @@
                     </div>
                     <div style="clear: both;"></div>
                     <!--dialog d_clienteBuscar-->
-                    <div id="d_clienteBuscar" title="BUSCAR CLIENTE" style="padding: 20px;">
+                    <div id="dClienteBuscar" title="BUSCAR CLIENTE" style="padding: 20px;">
                         <table class="reporte-tabla-1 anchoTotal" >
                             <thead>
                                 <tr>                                    
@@ -333,12 +347,16 @@
                         <div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em; text-align: justify">
                             <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
                                 <strong>¡Alerta!</strong><br><br> 
-                                <span><strong>Deshabilitar intereses:</strong> 
+                                <span><strong>Deshabilitar intereses (Solo hoy):</strong> 
                                     Indica que toda pago/amortización realizada 
                                     no se cobrarán intereses (afectado a día actual). 
                                     Al culminar el día se cobrarán interes.</span>
-                                <br>
-                                <br>
+                                <br><br>
+                                <span><strong>Deshabilitar intereses (Permanente):</strong> 
+                                    Indica que toda pago/amortización realizada 
+                                    no se cobrarán intereses para todas las letras durante  
+                                    un tiempo indeterminado.</span>
+                                <br><br>
                                 <span><strong>Habilitar intereses:</strong> 
                                     El pago/amortización estará afectado por intereses.</span></p>
                         </div>

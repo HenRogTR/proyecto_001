@@ -4,13 +4,8 @@
     Author     : Henrri
 --%>
 
-
-<%@page import="tablas.EmpresaConvenio"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="personaClases.cEmpresaConvenio"%>
-<%@page import="java.util.List"%>
+<%@page import="Clase.Fecha"%>
 <%@page import="java.util.Date"%>
-<%@page import="utilitarios.cManejoFechas"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -29,7 +24,9 @@
         <script type="text/javascript" src="../librerias/plugin/mask/jquery.mask.min.js"></script>
         <script type="text/javascript" src="../librerias/utilitarios/validaciones.js"></script>
         <script type="text/javascript" src="../librerias/utilitarios/manejoFecha.js"></script>
-        <script type="text/javascript" src="../librerias/reporte/reporte.js?v.14.04.03"></script>
+        <script type="text/javascript" src="../librerias/plugin/jquery.growl/javascripts/jquery.growl.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="../librerias/plugin/jquery.growl/stylesheets/jquery.growl.min.css" media="all"/>
+        <script type="text/javascript" src="../librerias/reporte/reporte.js?v.14.06.26"></script>
         <style>
             .ui-autocomplete {
                 width: 400px;
@@ -50,11 +47,11 @@
         <input type="hidden" name="paginaActualPermiso" id="permisoPaginaP19" value="" title=""/>
         <div id="wrap">
             <div id="header">
-                <label class="horaCabecera"><%=new cManejoFechas().fechaCabecera()%></label>
+                <label class="horaCabecera"><%=new Fecha().fechaCabecera(new Date())%></label>
             </div>
             <div id="right" style="width: 1024px;">
                 <div id="rightSub1" class="ocultar">
-                    <input type="text" name="fechaActual" id="fechaActual" value="<%=new cManejoFechas().DateAString(new Date())%>" class="ocultar" />
+                    <input type="text" name="fechaActual" id="fechaActual" value="<%=new Fecha().dateAString(new Date())%>" class="ocultar" />
                     <h3 class="titulo"><a href="../index.jsp" class="sexybutton"><span><span><span class="home">Inicio</span></span></span></a> MÓDULO REPORTES </h3>
                     <div id="tabs">
                         <ul>
@@ -70,6 +67,15 @@
                             <div>
                                 <table class="reporte-tabla-1 anchoTotal">
                                     <tbody>
+                                        <tr>
+                                            <th><span>F. INICIO (*)</span></th>
+                                            <td></td>
+                                            <th colspan="2"><span>USAR FECHA (**)</span></th>
+                                            <td colspan="4" class="medio">
+                                                <input type="checkbox" name="clienteFVLFinalUsar" id="clienteFVLFinalUsar"/>
+                                                <label for="clienteFVLFinalUsar">Incluir a vencer hoy (fecha vencimiento)</label>
+                                            </td>
+                                        </tr>
                                         <tr>
                                             <th><span>COBRADOR</span></th>
                                             <td colspan="2">
@@ -114,19 +120,8 @@
                                             <th><span>EMPRESA</span></th>
                                             <td class="contenedorEntrada">
                                                 <div>
-                                                    <%
-                                                        List empresaList = new cEmpresaConvenio().leer_SC();
-                                                    %>
                                                     <select name="tClienteCodEC" id="tClienteCodEC" class="anchoTotal contenedorEntrada limpiar">
                                                         <option value="">Seleccione</option>
-                                                        <%
-                                                            for (Iterator it = empresaList.iterator(); it.hasNext();) {
-                                                                EmpresaConvenio objEC = (EmpresaConvenio) it.next();
-                                                        %>
-                                                        <option value="<%=objEC.getCodEmpresaConvenio()%>"><%=objEC.getNombre()%></option>
-                                                        <%
-                                                            }
-                                                        %>
                                                     </select>
                                                 </div>
                                             </td>                                        
@@ -201,6 +196,14 @@
                                             <td>
                                                 <a id="rClienteECTipoCondicionOrdenVCL" class="sexybutton sexyicononly aCliente" ><span><span><span class="print"></span></span></span></a>
                                                 <a id="rClienteECTipoCondicionOrdenVCLExcel" class="sexybutton sexyicononly aCliente" ><span><span><span class="excel"></span></span></span></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="8" style="font-size: 10px;">
+                                                (*) Si desea obtener el reporte en un rango determinado,dejar en blanco si quiere todo.<br>
+                                                (**) Si se desea obtener las letras que se vencen hasta el dia seleccionado.
+                                                Ej: Si se obtiene el reporte hasta la fecha 31/01/2014 obtendrá las letras que se venceran hasta un día anterior
+                                                ya que si se vence el 31/01/2014 no se considera vencida. Con la opción marcada tomará hasta el 31/01/2014.
                                             </td>
                                         </tr>
                                     </tbody>

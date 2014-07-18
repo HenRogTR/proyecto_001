@@ -4,16 +4,16 @@
     Author     : Henrri
 --%>
 
+<%@page import="Clase.Utilitarios"%>
+<%@page import="Clase.Fecha"%>
 <%@page import="otrasTablasClases.cDatosExtras"%>
 <%@page import="tablas.VentasDetalle"%>
 <%@page import="ventaClases.cVentasDetalle"%>
-<%@page import="utilitarios.cOtros"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="personaClases.cDatosCliente"%>
 <%@page import="personaClases.cEmpresaConvenio"%>
 <%@page import="personaClases.cPersonal"%>
 <%@page import="ventaClases.cVentaCreditoLetraReporte"%>
-<%@page import="utilitarios.cManejoFechas"%>
 <%@page import="utilitarios.cValidacion"%>
 <%@page import="tablas.EmpresaConvenio"%>
 <%@page import="tablas.Personal"%>
@@ -33,8 +33,10 @@
     String orden = "";
     String fechaString = "";
     String fechaInteresBaseString = "";
+    Boolean fechaFinalUsar = false;
     Date fechaDate = null;
-    Date fechaInteresBaseDate = null;
+    Date fechaDateAux = null;
+    Date fechaInteresBaseDate = new Date();
     List LVList = null;
 
     Integer codCobradorInteger = 0;
@@ -49,12 +51,16 @@
             out.print("Fecha y/o formato de fecha incorrecta.");
             return;
         }
-        fechaDate = new cManejoFechas().StringADate(fechaString);
+        fechaDate = new Fecha().stringADate(fechaString);
     } catch (Exception e) {
         out.print("Fecha de vencimiento no encontrada.");
         return;
     }
-
+    fechaFinalUsar = Boolean.parseBoolean(request.getParameter("fechaFinalUsar"));
+    //Fechas que vencen en fechaDate figurar en el reporte
+    fechaDateAux = fechaDate;
+    //si se usa se suma un día
+    fechaDate = fechaFinalUsar ? new Fecha().sumarDias(fechaDate, 1) : fechaDate;
     //========================== 1 nivel =======================================
     if (reporte.equals("nombresC_todos")) {
         LVList = new cVentaCreditoLetraReporte().letrasVencidas_todos_ordenNombresC_SC(fechaDate);
@@ -375,11 +381,11 @@
                 <table style="font-size: 11px;" class="anchoTotal">
                     <thead>
                         <tr>
-                            <th colspan="3" >LETRAS VENCIDAS AL <%=fechaString%> - (<%=orden%>)</th>
-                            <th colspan="5"><%=new cManejoFechas().fechaHoraActual()%></th>
+                            <th colspan="3" >LETRAS VENCIDAS AL <%=fechaString%> <%=fechaFinalUsar ? "(*)" : ""%> - (<%=orden%>)</th>
+                            <th colspan="5"><%=new Fecha().fechaHora(new Date()).toUpperCase()%></th>
                         </tr>
                         <tr>
-                            <th colspan="3">INTERESES AFECTADOS AL </th>
+                            <th colspan="3">INTERESES CALCULADOS AL <%=new Fecha().dateAString(fechaInteresBaseDate)%></th>
                         </tr>
                         <%=cabeceraString%>
                         <tr class="top2" style="font-size: 12px;" >
@@ -436,8 +442,8 @@
                                 dniPasaporte = (String) dato[2];
                                 ruc = (String) dato[3];
                                 direccion = (String) dato[4];
-                                telefono1 = new cOtros().replace_comillas_comillasD_barraInvertida((String) dato[5]);
-                                telefono2 = new cOtros().replace_comillas_comillasD_barraInvertida((String) dato[6]);
+                                telefono1 = new Utilitarios().reemplazarCaracteresEspeciales((String) dato[5]);
+                                telefono2 = new Utilitarios().reemplazarCaracteresEspeciales((String) dato[6]);
                                 codCliente = (Integer) dato[7];
                                 codVenta = (Integer) dato[8];
                                 docSerieNumero = (String) dato[9];
@@ -455,9 +461,9 @@
 
                                 if (interesUltimoCalculo == null) {//se tomara el ultimo pago o la fecha de vencimiento
                                     //error al haber una fecha de pago anterior a la fecha de vencimiento
-                                    diaRetraso = new cManejoFechas().diferenciaDosDias(fechaDate, fechaPago != null ? (fechaPago.before(fechaVencimiento) ? fechaVencimiento : fechaPago) : fechaVencimiento);
+                                    diaRetraso = new Fecha().diasDiferencia(fechaInteresBaseDate, fechaPago != null ? (fechaPago.before(fechaVencimiento) ? fechaVencimiento : fechaPago) : fechaVencimiento);
                                 } else {
-                                    diaRetraso = new cManejoFechas().diferenciaDosDias(fechaDate, interesUltimoCalculo);
+                                    diaRetraso = new Fecha().diasDiferencia(fechaInteresBaseDate, interesUltimoCalculo);
                                 }
                                 diaRetraso = diaRetraso < 0 ? 0 : diaRetraso;
                                 diaRetraso = diaRetraso <= diaEspera ? 0 : diaRetraso;      //todos aquellos dentro de los dias de espera no se generan intereses.
@@ -471,9 +477,9 @@
                             <th colspan="8"></th>
                         </tr>
                         <tr style="font-size: 11px;">
-                            <td style="padding-left: 5px;"><%=new cOtros().agregarCeros_int(contAux, 8)%></td>
+                            <td style="padding-left: 5px;"><%=new Utilitarios().agregarCerosIzquierda(contAux, 8)%></td>
                             <td colspan="2">
-                                <span><%=new cOtros().agregarCeros_int(codCliente, 8)%></span> - <a href="../../sDatoCliente?accionDatoCliente=mantenimiento&codDatoCliente=<%=codCliente%>" target="_blank"><%=nombresC%></a> <%=telefono1 + " " + telefono2%>
+                                <span><%=new Utilitarios().agregarCerosIzquierda(codCliente, 8)%></span> - <a href="../../sDatoCliente?accionDatoCliente=mantenimiento&codDatoCliente=<%=codCliente%>" target="_blank"><%=nombresC%></a> <%=telefono1 + " " + telefono2%>
                             </td>
                             <td colspan="5"><%=direccion%></td>
                         </tr>
@@ -485,7 +491,7 @@
                         %>
                         <tr>
                             <td class="derecha">
-                                <div style="padding-right: 5px;"><%=new cManejoFechas().DateAString(fecha)%></div>
+                                <div style="padding-right: 5px;"><%=new Fecha().dateAString(fecha)%></div>
                             </td>
                             <td colspan="5">
                                 <div style="padding-left: 20px;">
@@ -514,12 +520,12 @@
                         <tr style="font-size: 11px;">
                             <td></td>
                             <td><div style="padding-left: 20px;"><%=detalleLetra%></div></td>
-                            <td><%=new cManejoFechas().DateAString(fechaVencimiento)%></td>
-                            <td class="derecha"><div style="padding-right: 5px;"><%=new cOtros().decimalFormato(monto, 2)%></div></td>
-                            <td class="derecha"><div style="padding-right: 5px;"><%=new cOtros().decimalFormato(interes, 2)%></div></td>
-                            <td class="derecha"><div style="padding-right: 5px;"><%=new cOtros().decimalFormato(totalPago + interesPagado, 2)%></div></td>
-                            <td class="derecha"><div style="padding-right: 5px;"><%=new cOtros().decimalFormato((monto - totalPago + interes - interesPagado), 2)%></div></td>
-                            <td><%=new cManejoFechas().DateAString(fechaPago)%></td>
+                            <td><%=new Fecha().dateAString(fechaVencimiento)%></td>
+                            <td class="derecha"><div style="padding-right: 5px;"><%=new Utilitarios().decimalFormato(monto, 2)%></div></td>
+                            <td class="derecha"><div style="padding-right: 5px;"><%=new Utilitarios().decimalFormato(interes, 2)%></div></td>
+                            <td class="derecha"><div style="padding-right: 5px;"><%=new Utilitarios().decimalFormato(totalPago + interesPagado, 2)%></div></td>
+                            <td class="derecha"><div style="padding-right: 5px;"><%=new Utilitarios().decimalFormato((monto - totalPago + interes - interesPagado), 2)%></div></td>
+                            <td><%=new Fecha().dateAString(fechaPago)%></td>
                         </tr>
                         <%
                                 totalDeudaAux += monto - totalPago + interes - interesPagado;
@@ -531,11 +537,22 @@
                             <th colspan="3" style="font-weight: bold; font-size: 14px; vertical-align: bottom;">TOTAL GENERAL</th>
                             <th colspan="2" style="font-weight: bold; font-size: 14px; vertical-align: bottom;" class="derecha">
                                 <span style="padding-right: 5px;">
-                                    <%=new cOtros().decimalFormato(totalDeudaAux, 2)%>
+                                    <%=new Utilitarios().decimalFormato(totalDeudaAux, 2)%>
                                 </span>
                             </th>
                             <td></td>
                         </tr>
+                        <%
+                            if (fechaFinalUsar) {
+                        %>
+                        <tr>
+                            <td colspan="4">
+                                (*) Se muestran letras vencidas al <%=fechaString%> (fechaVenciento)
+                            </td>
+                        </tr>
+                        <%
+                            }
+                        %>
                     </tbody>
                 </table>
             </div>

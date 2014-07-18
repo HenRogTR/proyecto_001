@@ -6,10 +6,11 @@
 package Servlet;
 
 import Ejb.EjbCliente;
-import clases.cFecha;
+import Clase.Fecha;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -25,6 +26,9 @@ import tablas.Usuario;
  */
 @WebServlet(name = "sCliente", urlPatterns = {"/sCliente"})
 public class sCliente extends HttpServlet {
+
+    @EJB
+    private EjbCliente ejbCliente;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,14 +46,13 @@ public class sCliente extends HttpServlet {
 
         HttpSession session = request.getSession();
 
-        String accion = request.getParameter("accionCliente");
+        String accion = request.getParameter("accion");
         Usuario objUsuario = (Usuario) session.getAttribute("usuario");
 
         if (null == accion) {
             out.print("Acción encontrada");
             return;
         }
-        EjbCliente ejbCliente;
         if ("mantenimiento".equals(accion)) {
             int codCliente = 0;
             try {
@@ -84,12 +87,15 @@ public class sCliente extends HttpServlet {
             int codCliente;
             String estado;
             Date interesEvitar = null;
+            boolean interesEvitarPermanente = false;
             try {
                 codCliente = Integer.parseInt(request.getParameter("codCliente"));
                 estado = request.getParameter("estado").toString();
                 //si se habilita estado obtenemos fecha actual
                 if ("deshabilitar".equals(estado)) {
-                    interesEvitar = cFecha.fechaHoraAFecha(new Date());
+                    interesEvitar = new Fecha().fechaHoraAFecha(new Date());
+                } else if ("deshabilitarPermanente".equals(estado)) {
+                    interesEvitarPermanente = true;
                 }
                 //si es otro caso solo lo dejamos allí.
             } catch (Exception e) {
@@ -97,7 +103,20 @@ public class sCliente extends HttpServlet {
                 return;
             }
             ejbCliente = new EjbCliente();
-            out.print(ejbCliente.actualizarInteresAsignar(codCliente, interesEvitar) ? codCliente : ejbCliente.getError());
+            out.print(ejbCliente.actualizarInteresAsignar(codCliente, interesEvitar, interesEvitarPermanente) ? codCliente : ejbCliente.getError());
+            return;
+        }
+        if ("imprimirVenta".equals(accion)) {
+            int codCliente = 0;
+            try {
+                codCliente = Integer.parseInt(request.getParameter("codCliente"));
+                //asignar el código a una sessión
+                session.setAttribute("reporteVentaCodCliente", codCliente);
+                //redireccionamos
+                response.sendRedirect("reporte/ventaPorCodCliente.jsp");
+            } catch (Exception e) {
+                out.print("Código de cliente no encontrado.");
+            }
             return;
         }
         out.print("No se encontró operación para: " + accion);

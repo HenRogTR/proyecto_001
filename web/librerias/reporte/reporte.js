@@ -99,10 +99,7 @@ $(document).ready(function() {
         $('#compra_dProveedorBuscar').dialog('open');
         e.preventDefault();
     });
-
-
-    //bloquenado fechas fuera de rango para ventaFechaInicio
-
+    //bloquenado fechas fuera de rango para ventaFechaInicio-Fin
     $('#ventaFechaInicio').change(function(e) {
         $('#ventaFechaFin').datepicker('option', 'minDate', fValidarFecha(this.value) ? fStringADate(this.value) : null);
     });
@@ -143,6 +140,7 @@ $(document).ready(function() {
                 return;
             }
         }
+        var fechaFinalUsar = $('#clienteFVLFinalUsar').is(":checked");
         switch ($(this).attr('id')) {
             //============Reporte cartera de cliente.=======================
             case 'rClienteOrden':
@@ -194,7 +192,7 @@ $(document).ready(function() {
                     fAlerta('Ingrese fecha.');
                     return;
                 }
-                $(this).attr('target', '_blank').attr('href', 'cliente/letraVencida.jsp?reporte=' + clienteOrden + "_" + clienteCobrador + '&fechaVencimiento=' + $clienteFVLOrden.val() + '&codCobrador=' + codCobrador);
+                $(this).attr('target', '_blank').attr('href', 'cliente/letraVencida.jsp?reporte=' + clienteOrden + "_" + clienteCobrador + '&fechaVencimiento=' + $clienteFVLOrden.val() + '&codCobrador=' + codCobrador + '&fechaFinalUsar=' + fechaFinalUsar);
                 break;
             case 'rClienteECOrdenVCL':
                 var $cEC = $('#tClienteCodEC');
@@ -207,7 +205,7 @@ $(document).ready(function() {
                     fAlerta('Ingrese fecha correspondiente.');
                     return;
                 }
-                $(this).attr('target', '_blank').attr('href', 'cliente/letraVencida.jsp?reporte=' + clienteOrden + '_EC_' + clienteCobrador + '&fechaVencimiento=' + $clienteFVLECOrden.val() + '&codEC=' + $cEC.val() + '&codCobrador=' + codCobrador);
+                $(this).attr('target', '_blank').attr('href', 'cliente/letraVencida.jsp?reporte=' + clienteOrden + '_EC_' + clienteCobrador + '&fechaVencimiento=' + $clienteFVLECOrden.val() + '&codEC=' + $cEC.val() + '&codCobrador=' + codCobrador + '&fechaFinalUsar=' + fechaFinalUsar);
                 break;
             case 'rClienteECTipoOrdenVCL':
                 var $cEC = $('#tClienteCodEC');
@@ -225,7 +223,7 @@ $(document).ready(function() {
                     fAlerta('Ingrese fecha correspondiente.');
                     return;
                 }
-                $(this).attr('target', '_blank').attr('href', 'cliente/letraVencida.jsp?reporte=' + clienteOrden + '_EC_tipo_' + clienteCobrador + '&fechaVencimiento=' + $clienteFVLECTipoOrden.val() + '&codEC=' + $cEC.val() + '&tipo=' + $tipo.val() + '&codCobrador=' + codCobrador);
+                $(this).attr('target', '_blank').attr('href', 'cliente/letraVencida.jsp?reporte=' + clienteOrden + '_EC_tipo_' + clienteCobrador + '&fechaVencimiento=' + $clienteFVLECTipoOrden.val() + '&codEC=' + $cEC.val() + '&tipo=' + $tipo.val() + '&codCobrador=' + codCobrador + '&fechaFinalUsar=' + fechaFinalUsar);
                 break;
             case 'rClienteECTipoCondicionOrdenVCL':
                 var $cEC = $('#tClienteCodEC');
@@ -248,7 +246,7 @@ $(document).ready(function() {
                     fAlerta('Ingrese fecha correspondiente.');
                     return;
                 }
-                $(this).attr('target', '_blank').attr('href', 'cliente/letraVencida.jsp?reporte=' + clienteOrden + '_EC_tipo_condicion_' + clienteCobrador + '&fechaVencimiento=' + $clienteFVLECTipoCondicionOrden.val() + '&codEC=' + $cEC.val() + '&tipo=' + $tipo.val() + '&condicion=' + $condicion.val() + '&codCobrador=' + codCobrador);
+                $(this).attr('target', '_blank').attr('href', 'cliente/letraVencida.jsp?reporte=' + clienteOrden + '_EC_tipo_condicion_' + clienteCobrador + '&fechaVencimiento=' + $clienteFVLECTipoCondicionOrden.val() + '&codEC=' + $cEC.val() + '&tipo=' + $tipo.val() + '&condicion=' + $condicion.val() + '&codCobrador=' + codCobrador + '&fechaFinalUsar=' + fechaFinalUsar);
                 break;
                 //===============Reporte letras vencidas Excel==================
             case 'rClienteOrdenVCLExcel':
@@ -257,7 +255,7 @@ $(document).ready(function() {
                     fAlerta('Ingrese fecha.');
                     return;
                 }
-                $(this).attr('target', '_blank').attr('href', 'cliente/letraVencidaExcel.jsp?reporte=' + clienteOrden + "_" + clienteCobrador + '&fechaVencimiento=' + $clienteFVLOrden.val() + '&codCobrador=' + codCobrador);
+                $(this).attr('target', '_blank').attr('href', 'cliente/letraVencidaExcel.jsp?reporte=' + clienteOrden + "_" + clienteCobrador + '&fechaVencimiento=' + $clienteFVLOrden.val() + '&codCobrador=' + codCobrador + '&fechaFinalUsar=' + fechaFinalUsar);
                 break;
             case 'rClienteECOrdenVCLExcel':
                 var $cEC = $('#tClienteCodEC');
@@ -270,7 +268,7 @@ $(document).ready(function() {
                     fAlerta('Ingrese fecha correspondiente.');
                     return;
                 }
-                $(this).attr('target', '_blank').attr('href', 'cliente/letraVencidaExcel.jsp?reporte=' + clienteOrden + '_EC_' + clienteCobrador + '&fechaVencimiento=' + $clienteFVLECOrden.val() + '&codEC=' + $cEC.val() + '&codCobrador=' + codCobrador);
+                $(this).attr('target', '_blank').attr('href', 'cliente/letraVencidaExcel.jsp?reporte=' + clienteOrden + '_EC_' + clienteCobrador + '&fechaVencimiento=' + $clienteFVLECOrden.val() + '&codEC=' + $cEC.val() + '&codCobrador=' + codCobrador + '&fechaFinalUsar=' + fechaFinalUsar);
                 break;
             case 'rClienteECTipoOrdenVCLExcel':
                 var $cEC = $('#tClienteCodEC');
@@ -288,7 +286,7 @@ $(document).ready(function() {
                     fAlerta('Ingrese fecha correspondiente.');
                     return;
                 }
-                $(this).attr('target', '_blank').attr('href', 'cliente/letraVencidaExcel.jsp?reporte=' + clienteOrden + '_EC_tipo_' + clienteCobrador + '&fechaVencimiento=' + $clienteFVLECTipoOrden.val() + '&codEC=' + $cEC.val() + '&tipo=' + $tipo.val() + '&codCobrador=' + codCobrador);
+                $(this).attr('target', '_blank').attr('href', 'cliente/letraVencidaExcel.jsp?reporte=' + clienteOrden + '_EC_tipo_' + clienteCobrador + '&fechaVencimiento=' + $clienteFVLECTipoOrden.val() + '&codEC=' + $cEC.val() + '&tipo=' + $tipo.val() + '&codCobrador=' + codCobrador + '&fechaFinalUsar=' + fechaFinalUsar);
                 break;
             case 'rClienteECTipoCondicionOrdenVCLExcel':
                 var $cEC = $('#tClienteCodEC');
@@ -311,7 +309,7 @@ $(document).ready(function() {
                     fAlerta('Ingrese fecha correspondiente.');
                     return;
                 }
-                $(this).attr('target', '_blank').attr('href', 'cliente/letraVencidaExcel.jsp?reporte=' + clienteOrden + '_EC_tipo_condicion_' + clienteCobrador + '&fechaVencimiento=' + $clienteFVLECTipoCondicionOrden.val() + '&codEC=' + $cEC.val() + '&tipo=' + $tipo.val() + '&condicion=' + $condicion.val() + '&codCobrador=' + codCobrador);
+                $(this).attr('target', '_blank').attr('href', 'cliente/letraVencidaExcel.jsp?reporte=' + clienteOrden + '_EC_tipo_condicion_' + clienteCobrador + '&fechaVencimiento=' + $clienteFVLECTipoCondicionOrden.val() + '&codEC=' + $cEC.val() + '&tipo=' + $tipo.val() + '&condicion=' + $condicion.val() + '&codCobrador=' + codCobrador + '&fechaFinalUsar=' + fechaFinalUsar);
                 break;
                 //======================== Tramo Excel==========================
             case 'rClienteOrdenVCLTExcel':
@@ -320,7 +318,7 @@ $(document).ready(function() {
                     fAlerta('Ingrese fecha.');
                     return;
                 }
-                $(this).attr('target', '_blank').attr('href', 'cliente/tramoExcel.jsp?reporte=' + clienteOrden + "_" + clienteCobrador + '&fechaVencimiento=' + $clienteFVLOrden.val() + '&codCobrador=' + codCobrador);
+                $(this).attr('target', '_blank').attr('href', 'cliente/tramoExcel.jsp?reporte=' + clienteOrden + "_" + clienteCobrador + '&fechaVencimiento=' + $clienteFVLOrden.val() + '&codCobrador=' + codCobrador + '&fechaFinalUsar=' + fechaFinalUsar);
                 break;
             case 'rClienteOrdenECVCLTExcel':
                 var $cEC = $('#tClienteCodEC');
@@ -333,7 +331,7 @@ $(document).ready(function() {
                     fAlerta('Ingrese fecha correspondiente.');
                     return;
                 }
-                $(this).attr('target', '_blank').attr('href', 'cliente/tramoExcel.jsp?reporte=' + clienteOrden + '_EC_' + clienteCobrador + '&fechaVencimiento=' + $clienteFVLECOrden.val() + '&codEC=' + $cEC.val() + '&codCobrador=' + codCobrador);
+                $(this).attr('target', '_blank').attr('href', 'cliente/tramoExcel.jsp?reporte=' + clienteOrden + '_EC_' + clienteCobrador + '&fechaVencimiento=' + $clienteFVLECOrden.val() + '&codEC=' + $cEC.val() + '&codCobrador=' + codCobrador + '&fechaFinalUsar=' + fechaFinalUsar);
                 break;
             default :
                 fAlerta('No implementado ID:' + $(this).attr('id'));
@@ -877,10 +875,6 @@ $(function() {
 
 });
 
-function fPaginaActual() {
-}
-;
-
 //<editor-fold defaultstate="collapsed" desc="cliente_fVendedorCobradorSeleccionado(event, ui). Clic en el signo + de la izquierda para mas detalles.">
 function cliente_fVendedorCobradorSeleccionado(event, ui) {
     var vendedor = ui.item.value;
@@ -944,12 +938,16 @@ function cobranza_fVendedorCobradorMarcado(event, ui) {
 ;
 //</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="fFamiliaStock_marcado(event, ui). Clic en + para más detalles.">
 function fFamiliaStock_marcado(event, ui) {
     var familia = ui.item.value;
     $('#articuloProducto_familiaStockBuscar').val(familia.familia);
     event.preventDefault();
 }
 ;
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="fFamiliaStock_seleccionado(event, ui). Clic en + para más detalles.">
 function fFamiliaStock_seleccionado(event, ui) {
     var familia = ui.item.value;
     $('#articuloProducto_codFamiliaStock').val(familia.codFamilia);
@@ -959,12 +957,18 @@ function fFamiliaStock_seleccionado(event, ui) {
     event.preventDefault();
 }
 ;
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="fMarcaStock_marcado(event, ui). Clic en + para más detalles.">
 function fMarcaStock_marcado(event, ui) {
     var marca = ui.item.value;
     $('#articuloProducto_marcaStockBuscar').val(marca.descripcion);
     event.preventDefault();
 }
 ;
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="fMarcaStock_seleccionado(event, ui). Clic en + para más detalles.">
 function fMarcaStock_seleccionado(event, ui) {
     var marca = ui.item.value;
     $('#articuloProducto_codMarcaStock').val(marca.codMarca);
@@ -974,12 +978,18 @@ function fMarcaStock_seleccionado(event, ui) {
     event.preventDefault();
 }
 ;
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="fFamiliaMovimiento_marcado(event, ui). Clic en + para más detalles.">
 function fFamiliaMovimiento_marcado(event, ui) {
     var familia = ui.item.value;
     $('#articuloProducto_familiaMovimientoBuscar').val(familia.familia);
     event.preventDefault();
 }
 ;
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="fFamiliaMovimiento_seleccionado(event, ui). Clic en + para más detalles.">
 function fFamiliaMovimiento_seleccionado(event, ui) {
     var familia = ui.item.value;
     $('#articuloProducto_codFamiliaMovimiento').val(familia.codFamilia);
@@ -989,12 +999,18 @@ function fFamiliaMovimiento_seleccionado(event, ui) {
     event.preventDefault();
 }
 ;
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="fMarcaMovimiento_marcado(event, ui). Clic en + para más detalles.">
 function fMarcaMovimiento_marcado(event, ui) {
     var marca = ui.item.value;
     $('#articuloProducto_marcaMovimientoBuscar').val(marca.descripcion);
     event.preventDefault();
 }
 ;
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="fMarcaMovimiento_seleccionado(event, ui). Clic en + para más detalles.">
 function fMarcaMovimiento_seleccionado(event, ui) {
     var marca = ui.item.value;
     $('#articuloProducto_codMarcaMovimiento').val(marca.codMarca);
@@ -1004,6 +1020,9 @@ function fMarcaMovimiento_seleccionado(event, ui) {
     event.preventDefault();
 }
 ;
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="fArticuloProductoMovimiento_marcado(event, ui). Clic en + para más detalles.">
 function fArticuloProductoMovimiento_marcado(event, ui) {
     var articuloProducto = ui.item.value;
     $('#articuloProducto_codArticuloProductoMovimientoBuscar').val(articuloProducto.codArticuloProducto);
@@ -1011,6 +1030,9 @@ function fArticuloProductoMovimiento_marcado(event, ui) {
     event.preventDefault();
 }
 ;
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="fArticuloProductoMovimiento_seleccionado(event, ui). Clic en + para más detalles.">
 function fArticuloProductoMovimiento_seleccionado(event, ui) {
     var articuloProducto = ui.item.value;
     $('#articuloProducto_codArticuloProductoMovimiento').val(articuloProducto.codArticuloProducto);
@@ -1021,6 +1043,7 @@ function fArticuloProductoMovimiento_seleccionado(event, ui) {
     event.preventDefault();
 }
 ;
+//</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="fAPLeer(codArticuloProducto). Clic en el signo + de la izquierda para mas detalles.">
 function fAPLeer(codArticuloProducto) {
@@ -1062,13 +1085,16 @@ function fAPLeer(codArticuloProducto) {
 ;
 //</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="fMarca_proveedor_marcado(event, ui). Clic en + para más detalles.">
 function fMarca_proveedor_marcado(event, ui) {
     var proveedor = ui.item.value;
     $('#compra_proveedorBuscar').val(proveedor.razonSocial);
     event.preventDefault();
 }
 ;
+//</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="fMarca_proveedor_seleccionado(event, ui). Clic en + para más detalles.">
 function fMarca_proveedor_seleccionado(event, ui) {
     var proveedor = ui.item.value;
     $('#compra_codProveedor').val(proveedor.codProveedor);
@@ -1076,5 +1102,58 @@ function fMarca_proveedor_seleccionado(event, ui) {
     $('#compra_proveedorBuscar').val('');
     $('#compra_dProveedorBuscar').dialog('close');
     event.preventDefault();
+}
+;
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="fEmpresaConvenioCargar(). Clic en + para más detalles.">
+function fEmpresaConvenioCargar() {
+    var url = '../ajax/empresaConvenio.jsp';
+    try {
+        $.ajax({
+            type: 'post',
+            url: url,
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                $('#lServidorError').text(errorThrown + '()');
+                $('#dServidorError').dialog('open');
+            },
+            success: function(ajaxResponse, textStatus) {
+                //trasformar a datos Json
+                var empresaConvenioJSon = procesarRespuesta(ajaxResponse);
+                /*
+                 *En caso la respuesta del servidor no tenga la forma para 
+                 *converitir a json.
+                 */
+                if (empresaConvenioJSon == null) {
+                    $.growl.error({title: 'Error', message: ajaxResponse, size: 'large'});
+                    return;
+                }
+                //tomamos tamaño de datos
+                var tam = empresaConvenioJSon.length;
+                //vaciar el contenedor
+                var $tClienteCodEC = $('#tClienteCodEC');
+                for (var i = 0; i < tam; i++) {
+                    var empresaConvenio = empresaConvenioJSon[i];
+                    var $option = $('<option>', {value: empresaConvenio.codEmpresaConvenio, html: empresaConvenio.nombre}).appendTo($tClienteCodEC);
+                }
+            },
+            statusCode: {
+                404: function() {
+                    $('#lServidorError').text('Página no encontrada(' + url + ').');
+                    $('#dServidorError').dialog('open');
+                }
+            }
+        });
+    }
+    catch (ex) {
+        $('#lServidorError').text(ex);
+        $('#dServidorError').dialog('open');
+    }
+}
+;
+//</editor-fold>
+
+function fPaginaActual() {
+    fEmpresaConvenioCargar();
 }
 ;

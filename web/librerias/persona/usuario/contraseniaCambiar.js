@@ -50,9 +50,9 @@ $(function() {
 function fUsuarioContraseñaCambiar() {
     var data = {
         accionUsuario: 'contraseniaCambiar',
-        contraseniaAnterior: hex_md5($('#contraseniaAnterior').val()),
-        contraseniaNueva: hex_md5($('#contraseniaNueva').val()),
-        contraseniaNuevaRepetir: hex_md5($('#contraseniaNuevaRepetir').val())
+        contraseniaAnterior: $('#contraseniaAnterior').val(),
+        contraseniaNueva: $('#contraseniaNueva').val(),
+        contraseniaNuevaRepetir: $('#contraseniaNuevaRepetir').val()
     };
     var url = '../sUsuario';
     try {

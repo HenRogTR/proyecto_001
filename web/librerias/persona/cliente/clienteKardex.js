@@ -4,69 +4,72 @@
  * and open the template in the editor.
  */
 
+var DELAY = 500;
+var clicks = 0;
+var timer = null;
+
 $(document).ready(function() {
+    //buscar cliente
+    $('#bClienteBuscar').click(function(event) {
+        $('#dClienteBuscar').dialog('open');
+        $('#dniPasaporteRucNombresCBuscar').focus();
+        event.preventDefault();
+    });
+    //actualizamos la lista de clientes
+    $('#bClienteActualizar').click(function(e) {
+        e.preventDefault();
+        //destruimos el método para volver a inicializarlo de nuevo
+        $('#dniPasaporteRucNombresCBuscar').autocomplete('destroy');
+        fClienteObtener();
+    });
+    //botones para imprimir
+    $('#bVentaCreditoLetraResumen').click(function(e) {
+        var codCliente = $('#codCliente').val();
+        if ($.isNumeric(codCliente)) {
+            $(this).attr('target', '_blank').attr('href', '../reporte/vclrm.jsp?codCliente=' + parseInt(codCliente, 10));
+        } else {
+            e.preventDefault();
+        }
+    });
+    $('#bVentaImprimir').click(function(e) {
+        var codCliente = $('#codCliente').val();
+        if ($.isNumeric(codCliente)) {
+            $(this).attr('target', '_blank').attr('href', '../sCliente?accion=imprimirVenta&codCliente=' + parseInt(codCliente, 10));
+        } else {
+            e.preventDefault();
+        }
+    });
+    //modificar el interes evitar
+    $('#bInteresEvitarEditar').click(function(e) {
+        $('#dInteresAsignadoEditar').dialog('open');
+        e.preventDefault();
+    });
+    // input código cliente buscar
     $('#codClienteBuscar')
+            //solo permite números enteros
             .mask('#', {maxlength: false})
             .keyup(function(e) {
                 var key = e.charCode ? e.charCode : (e.keyCode ? e.keyCode : 0);
                 if (key == 13) {
-                    if (!isNaN(this.value) & this.value > 0) {
-                        fCliente(parseInt(this.value, 10));
-                        this.value = '';
-                    }
                     e.preventDefault();
+                    //si existe un número en la entrada se busca cliente
+                    if (!f_validar_mayorIgual(this.value, 1)) {
+                        $.growl.warning({title: 'Alerta', message: 'Ingrese un código valido.', size: 'large'});
+                        return;
+                    }
+                    fClienteLeer(parseInt(this.value, 10));
+                    $(this).val('');
                 }
             });
-
-    $('#bClienteBuscar').click(function(event) {
-        $('#dClienteBuscar').dialog('open');
-        event.preventDefault();
-    });
-    $('#bClienteInfo').click(function(event) {
-        var codCliente = $('#codCliente').val();
-        if ($.isNumeric(codCliente)) {
-            $(this).attr('href', '../sDatoCliente?accionDatoCliente=mantenimiento&codDatoCliente=' + parseInt(codCliente, 10)).attr('target', '_blank');
-        } else {
-            event.preventDefault();
-        }
-    });
-    $('#bVCLRM').click(function(event) {
-        var codCliente = $('#codCliente').val();
-        if ($.isNumeric(codCliente)) {
-            $(this).attr('target', '_blank').attr('href', 'reporte/vclrm.jsp?codCliente=' + parseInt(codCliente, 10));
-        } else {
-            event.preventDefault();
-        }
-    });
-
-    $('.fechaEntrada')
-            .mask('00/00/0000')
-            .change(function(e) {
-                if (!fValidarFecha(this.value)) {
-                    this.value = '';
-                }
-            })
-            .val($('#fechaActual').val());
-
-    $('#b_interesEvitarEditar').click(function(event) {
-        $('#d_interesEvitar_editar').dialog('open');
-        event.preventDefault();
-    });
 });
 
 $(function() {
-    $('.fechaEntrada').datepicker({
-        showAnim: 'drop',
-        changeMonth: true,
-        changeYear: true,
-        numberOfMonths: 2
-    });
-
+    //dialogo para buscar un cliente
     $('#dClienteBuscar').dialog({
         autoOpen: false,
         modal: true,
-        resizable: true,
-        height: 180,
+        resizable: false,
+        height: 200,
         width: 800,
         buttons: {
             Aceptar: function() {
@@ -77,78 +80,122 @@ $(function() {
             $(this).dialog('close');
         }
     });
-
-    $('#d_interesEvitar_editar').dialog({
+    //interesAsignar
+    $('#dInteresAsignadoEditar').dialog({
         autoOpen: false,
         modal: true,
-        resizable: true,
-        height: 200,
-        width: 340,
+        resizable: false,
+        height: 280,
+        width: 650,
         buttons: {
-            Habilitar: function() {
-                f_interesEvitar_habilitar();
-            }, Deshabilitar: function() {
-                f_interesEvitar_modificar();
-            }, Cancelar: function() {
-                $(this).dialog("close");
+            'Deshabilitar interés (Solo hoy)': function() {
+                fInteresAsigandoDeshabilitar();
+            },
+            'Deshabilitar interés (Permanente)': function() {
+                fInteresAsigandoPermanenteDeshabilitar();
+            },
+            'Habilitar intereses': function() {
+                fInteresAsigandoHabilitar();
             }
         },
         close: function() {
-            $(this).dialog("close");
+            $(this).dialog('close');
         }
-    });
-
-    $('#dniPasaporteRucNombresCBuscar').autocomplete({
-        source: 'autocompletado/kardexCliente/dniPasaporteRucNombresCBuscar.jsp',
-        minLength: 4,
-        focus: clienteMarcado,
-        select: clienteSeleccionado
     });
 });
 
-function fPaginaActual() {
+//<editor-fold defaultstate="collapsed" desc="function fClienteMarcado(event, ui). Clic en el signo + de la izquierda para mas detalles.">
+function fClienteMarcado(event, ui) {
+    var cliente = ui.item.value;
+    $('#codClienteBuscar').val(cliente.codCliente);
+    $('#dniPasaporteRucNombresCBuscar').val(cliente.nombresC);
+    event.preventDefault();
 }
 ;
+//</editor-fold>
 
-function fCliente(codCliente) {
+//<editor-fold defaultstate="collapsed" desc="fClienteSeleccionado(event, ui). Clic en el signo + de la izquierda para mas detalles.">
+function fClienteSeleccionado(event, ui) {
+    var cliente = ui.item.value;
+    $('#codClienteBuscar').val('');
+    $('#dniPasaporteRucNombresCBuscar').val('');
+    fClienteLeer(parseInt(cliente.codCliente, 10));
+    event.preventDefault();
+}
+;
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="fClienteLeer(codCliente). Clic en + para más detalles.">
+function fClienteLeer(codCliente) {
     var data = {codCliente: codCliente};
-    var url = 'ajax/clienteKardex/cliente.jsp';
+    var url = '../ajax/clientePorCodCliente.jsp';
     try {
         $.ajax({
             type: 'post',
             url: url,
             data: data,
             beforeSend: function() {
-
+                //datos independientes
+                $('.datoMostrar').addClass('ocultar').next().removeClass('ocultar');
+                ////Se vacia, remueve el class ocultar y agregar class ocultar
+                $('.tbDato').addClass('ocultar').next().removeClass('ocultar');
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
                 $('#lServidorError').text(errorThrown + '()');
                 $('#dServidorError').dialog('open');
             },
             success: function(ajaxResponse, textStatus) {
-                if ($.trim(ajaxResponse) == '') {
-                    fAlerta('Cliente no encontrado');
-                    var $dVenta = $('#dVenta');
-                    $dVenta.find('table').removeClass('ocultar');
-                    $dVenta.find('.temp').remove();
-                    var $dVCLRM = $('#dVentaCreditoLetraResumenMensual');
-                    $dVCLRM.find('table').removeClass('ocultar');
-                    $dVCLRM.find('.temp').remove();
-                    var $dVCL = $('#dVentaCreditoLetra');
-                    $dVCL.find('table').removeClass('ocultar');
-                    $dVCL.find('.temp').remove();
-                    var $dVD = $('#dVentaDetalle');
-                    $dVD.find('table').removeClass('ocultar');
-                    $dVD.find('.temp').remove();
-                    var $dCobranza = $('#dCobranza');
-                    $dCobranza.find('table').removeClass('ocultar');
-                    $dCobranza.find('.temp').remove();
+                //trasformar a datos Json
+                var jsonCliente = procesarRespuesta(ajaxResponse);
+                /*
+                 *En caso la respuesta del servidor no tenga la forma para 
+                 *converitir a json.
+                 */
+                if (jsonCliente == null) {
+                    $.growl.error({title: 'Error', message: ajaxResponse, size: 'large'});
+                    //quitar los gif de espera en las otras tablas y retornar los datos anteirores
+                    //quitamos para los span independientes
+                    $('.datoMostrar').removeClass('ocultar');
+                    //mostramos los span con gif junto al anterior descrito
+                    $('.esperando').addClass('ocultar');
+                    //ocultamos los datos con gif por lo general son tbody
+                    $('.tbDato').removeClass('ocultar');
+                    //quitamos toda el contenedor tfoot
+                    $('.tfContenedor').addClass('ocultar');
+                    return;
+                }
+                fProcesandoPeticionCerrar();
+                //tomamos tamaño de datos
+                var tam = jsonCliente.length;
+                //si tamaño = 0 indica que no se encontro cliente con el dato llamado
+                if (tam == 0) {
+                    $.growl.warning({title: 'Alerta', message: 'Cliente no encontrado.', size: 'large'});
+                    //quitar los gif de espera en las otras tablas y retornar los datos anteirores
+                    //quitamos para los span independientes
+                    $('.datoMostrar').removeClass('ocultar');
+                    //mostramos los span con gif junto al anterior descrito
+                    $('.esperando').addClass('ocultar');
+                    //ocultamos los datos con gif por lo general son tbody
+                    $('.tbDato').removeClass('ocultar');
+                    //quitamos toda el contenedor tfoot
+                    $('.tfContenedor').addClass('ocultar');
                 } else {
-                    $('#codCliente').val(codCliente);
-                    var dato = ajaxResponse.split(':');
-                    $('#lNombresC').text(dato[0]);
-                    $('#interesEvitar_estado').text(dato[1]);
-                    fClienteKardex(codCliente);
+                    var itemCliente = jsonCliente[0];
+                    $('#codCliente').val(itemCliente.codCliente);
+                    $('#sCodCliente').text(itemCliente.codCliente).removeClass('ocultar')
+                            .next('.esperando').addClass('ocultar');
+                    $('#sNombresC').html('<a href="../sDatoCliente?accionDatoCliente=mantenimiento&codDatoCliente=' + itemCliente.codCliente + '" target="_blank">' + itemCliente.nombresC + '</a>').removeClass('ocultar')
+                            .next('.esperando').addClass('ocultar');
+                    $('#sInteresEvitarEstado').text(itemCliente.interesEvitarEstado ? 'Afectado a pago de intereses.' : 'No afectado a pago de intereses (' + (itemCliente.interesEvitarPermanente ? 'permanente' : 'solo hoy') + ').').removeClass('ocultar')
+                            .next('.esperando').addClass('ocultar');
+                    $('#interesEvitarEstado').val(itemCliente.interesEvitarEstado);
+                    /*
+                     * Obtenemos todas las ventas hechas ademas de mandar parseado
+                     * el int ya que el json retorna con ceros adelante
+                     */
+                    fVenta(itemCliente.codCliente);
+                    fCobranza(itemCliente.codCliente);
+                    fVentaCreditoLetraResumen(itemCliente.codCliente);
                 }
             },
             statusCode: {
@@ -165,55 +212,265 @@ function fCliente(codCliente) {
     }
 }
 ;
+//</editor-fold>
 
-function fClienteKardex(codCliente) {
-    fVenta(codCliente);
-    fDeudaResumen(codCliente);
-    fCobranza(codCliente);
-    fVentaCreditoLetraResumenMensual(codCliente);
-}
-;
-
+//<editor-fold defaultstate="collapsed" desc="fVenta(codCliente). Clic en + para más detalles.">
 function fVenta(codCliente) {
+    //parsear el codCliente ya que llega en formato 0000000
+    codCliente = parseInt(codCliente, 10);
     var data = {codCliente: codCliente};
-    var url = 'ajax/clienteKardex/ventaCliente.jsp';
+    var url = '../ajax/ventaPorCodCliente.jsp';
     try {
         $.ajax({
             type: 'post',
             url: url,
             data: data,
             beforeSend: function() {
-                fAntesEnvioTodo();
+
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
-                $('#lServidorError').text(errorThrown + '(' + url + ')');
+                $('#lServidorError').text(errorThrown + '()');
                 $('#dServidorError').dialog('open');
             },
             success: function(ajaxResponse, textStatus) {
-                if ($.trim(ajaxResponse) != '') {
-                    $('#dVenta').empty().append(ajaxResponse);
-                    $('.tr_venta').bind('click', function(event) {
-                        var id = $(this).attr('id');
-                        var tam = id.length;
-                        var codVenta = id.substring(9, tam);
-                        fVentaCreditoLetra(codVenta, codCliente);
-                        fVentaDetalle(codVenta);
-                    });
-                    $('.tr_venta').bind('dblclick', function(event) {
-                        fDLibreEditar('300', '400', 'S/N en venta', $(this).find('.info_serieNumero').attr('title'));
-                        fDLibreAbrir();
-                    });
-                    var $primero = $('#dVenta').find('.primero');
-                    var id = $primero.attr('id');
-                    var tam = id.length;
-                    var codVenta = id.substring(9, tam);
-                    fVentaCreditoLetra(codVenta, codCliente);
-                    fVentaDetalle(codVenta);
-                } else {
-                    $('#dVenta').empty();
-                    $('#dVentaCreditoLetra').empty();
-                    $('#dVentaDetalle').empty();
+                //trasformar a datos Json
+                var ventaJson = procesarRespuesta(ajaxResponse);
+                /*
+                 *En caso la respuesta del servidor no tenga la forma para 
+                 *converitir a json.
+                 */
+                if (ventaJson == null) {
+                    $.growl.error({title: 'Error', message: ajaxResponse, size: 'large'});
+                    return;
                 }
+                //tomamos tamaño de datos
+                var tam = ventaJson.length;
+                //obtener los totales respecto a ventas la credito
+                var total = 0.00;
+                var interes = 0.00;
+                var interesPagado = 0.00;
+                var amortizado = 0.00;
+                var saldo = 0.00;
+                var saldoSinInteres = 0.00;
+                //obtener el objeto
+                var $tVentaTbody = $('#tVenta tbody');
+                //si tamaño = 0 indica que no se encontro cliente con el dato llamado
+                $tVentaTbody.empty();
+                if (tam == 0) {
+                    //Se vacia, remueve el class ocultar y agregar class ocultar
+                    $('#tVentaCreditoLetra tbody').empty().removeClass('ocultar').next().addClass('ocultar');
+                    //Se vacia, remueve el class ocultar y agregar class ocultar
+                    $tVentaTbody.removeClass('ocultar').next().addClass('ocultar');
+                    //Se vacia, remueve el class ocultar y agregar class ocultar
+                    $('#tVentaDetalle tbody').empty().removeClass('ocultar').next().addClass('ocultar');
+                    //poner en cero
+                } else {
+                    //recoremos cada posicion
+                    for (var i = 0; i < tam; i++) {
+                        //obtenemos posicion [i]
+                        var ventaItem = ventaJson[i];
+                        //para evento clic y doble clic
+                        var trClass = 'trVenta';
+                        //para cambiar el puntero al tener el foco
+                        trClass += ' manoPuntero';
+                        //fondo si esta anulado
+                        trClass += '0' == ventaItem.registro.substring(0, 1) ? ' fondoVentaAnulada' : '';
+                        //tr contenedor, class trVenta para evento clic y doble clic
+                        var $tr = $('<tr>', {id: 'codVenta_' + ventaItem.codVenta + '_' + ventaItem.docSerieNumero, 'class': trClass}).appendTo($tVentaTbody);
+                        //creamos los td
+                        var $td1 = $('<td>', {css: {'width': 80}}).appendTo($tr);
+                        var $a11 = $('<a>', {html: ventaItem.docSerieNumero, href: '../sVenta?accionVenta=mantenimiento&codVenta=' + ventaItem.codVenta, target: '_blank'}).appendTo($td1);
+                        var $td2 = $('<td>', {html: ventaItem.fecha, css: {'width': 80}}).appendTo($tr);
+                        var $td3 = $('<td>', {html: ventaItem.neto, 'class': 'derecha', css: {'width': 60}}).appendTo($tr);
+                        var $td4 = $('<td>', {'class': 'derecha', css: {'width': 60}}).appendTo($tr);
+                        //intereses auxiliares
+                        var $div41 = $('<div>', {html: 'CREDITO' == ventaItem.tipo ? ventaItem.interes : '', 'class': 'ocultar interesAfectado'}).appendTo($td4);
+                        var $div42 = $('<div>', {html: 'CREDITO' == ventaItem.tipo ? ventaItem.interesPagado : '', 'class': 'ocultar interesNoAfectado'}).appendTo($td4);
+                        var $td5 = $('<td>', {html: 'CREDITO' == ventaItem.tipo ? ventaItem.pagoVenta : '', 'class': 'derecha', css: {'width': 60}}).appendTo($tr);
+                        var $td6 = $('<td>', {'class': 'derecha', css: {'width': 60}}).appendTo($tr);
+                        //saldo auxiliares
+                        var $div61 = $('<div>', {html: 'CREDITO' == ventaItem.tipo ? ventaItem.saldoVenta : '', 'class': 'ocultar interesAfectado'}).appendTo($td6);
+                        var $div62 = $('<div>', {html: 'CREDITO' == ventaItem.tipo ? ventaItem.saldoVentaSinInteres : '', 'class': 'ocultar interesNoAfectado'}).appendTo($td6);
+                        var $td7 = $('<td>', {html: 'CREDITO' == ventaItem.tipo ? ventaItem.cantidadLetras : '', 'class': 'derecha', css: {'width': 40}}).appendTo($tr);
+                        var $td8 = $('<td>', {html: ventaItem.tipo, css: {'width': 60}}).appendTo($tr);
+                        var $td9 = $('<td>', {html: '1.00', 'class': 'derecha'}).appendTo($tr);
+                        //obtener ventaCreditoLetra, ventaDetalle de la primera venta
+                        if (i == 0) {
+                            //obtener todas VCL
+                            fVentaCreditoLetra(ventaItem.codVenta, ventaItem.docSerieNumero);
+                            //obtener detalle venta
+                            fVentaDetalle(ventaItem.codVenta, ventaItem.docSerieNumero);
+                        }
+                        //sumar los totales y dar formato #.##
+                        total += parseFloat(ventaItem.neto);
+                        interes += parseFloat(ventaItem.interes);
+                        interesPagado += parseFloat(ventaItem.interesPagado);
+                        amortizado += parseFloat(ventaItem.pagoVenta);
+                        saldo += parseFloat(ventaItem.saldoVenta);
+                        saldoSinInteres += parseFloat(ventaItem.saldoVentaSinInteres);
+                    }
+                    //como diferenciar si es un simple click o doble click
+                    $('.trVenta')
+                            .bind('click', trVentaEventoClick)
+                            //quitar evento doble clic
+                            .bind('dblclick', function(e) {
+                                e.preventDefault();
+                            });
+                }
+                //asignar los totales
+                $('#lTotal').text(fNumeroFormato(total, 2, false));
+                $('#lInteres').text(fNumeroFormato(interes, 2, false));
+                $('#lInteresInteresNoAfectado').text(fNumeroFormato(interesPagado, 2, false));
+                $('#lAmortizado').text(fNumeroFormato(amortizado, 2, false));
+                $('#lSaldo').text(fNumeroFormato(saldo, 2, false));
+                $('#lSaldoInteresNoAfectado').text(fNumeroFormato(saldoSinInteres, 2, false));
+                //llamamos a la funcion para mostrar o no
+                fMostrarNoMostarInteresAfecto();
+                //remover los ocultos
+                $('#tTotales')
+                        .find('.datoMostrar').removeClass('ocultar')
+                        .next().addClass('ocultar');
+                //remover y asignar class
+                $tVentaTbody.removeClass('ocultar').next().addClass('ocultar');
+            },
+            statusCode: {
+                404: function() {
+                    $('#lServidorError').text('Página no encontrada().');
+                    $('#dServidorError').dialog('open');
+                }
+            }
+        });
+    }
+    catch (ex) {
+        $('#lServidorError').text(ex);
+        $('#dServidorError').dialog('open');
+    }
+}
+;
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="fClienteObtener(). Clic en el signo + de la izquierda para mas detalles.">
+/**
+ * Obtenemos la lista de datos de la BD para hacer la busqueda de autocompletado por cliente.
+ * @returns {Array}
+ */
+function fClienteObtener() {
+    var url = '../autocompletado/cliente.jsp';
+    try {
+        $.ajax({
+            type: 'post',
+            url: url,
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                $('#lServidorError').text(errorThrown + '()');
+                $('#dServidorError').dialog('open');
+            },
+            success: function(ajaxResponse, textStatus) {
+                //iniciamos el autocompletado con los datos cargados para hacer las busquedas en el cliente y no saturar el servidor
+                var clienteArray = procesarRespuesta(ajaxResponse);
+                $('#dniPasaporteRucNombresCBuscar').autocomplete({
+                    source: function(request, response) {
+                        procesarCoincidencia(request, response, clienteArray);
+                    },
+                    minLength: 4,
+                    focus: fClienteMarcado,
+                    select: fClienteSeleccionado
+                });
+                $('#dniPasaporteRucNombresCBuscar').val('');
+                $('#codClienteBuscar').val('');
+            },
+            statusCode: {
+                404: function() {
+                    $('#lServidorError').text('Página no encontrada().');
+                    $('#dServidorError').dialog('open');
+                }
+            }
+        });
+    }
+    catch (ex) {
+        $('#lServidorError').text(ex);
+        $('#dServidorError').dialog('open');
+    }
+}
+;
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="fVentaCreditoLetra(codVenta, docSerieNumero). Clic en + para más detalles.">
+function fVentaCreditoLetra(codVenta, docSerieNumero) {
+    //parsear el codVenta ya que llega en formato 0000000
+    codVenta = parseInt(codVenta, 10);
+    var data = {codVenta: codVenta};
+    var url = '../ajax/ventaCreditoLetraPorCodVenta.jsp';
+    //obtenemos el tag
+    var $tVentaCreditoLetraTbody = $('#tVentaCreditoLetra tbody');
+    try {
+        $.ajax({
+            type: 'post',
+            url: url,
+            data: data,
+            beforeSend: function() {
+                //poner gif 
+                $tVentaCreditoLetraTbody.addClass('ocultar').next().removeClass('ocultar');
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                $('#lServidorError').text(errorThrown + '()');
+                $('#dServidorError').dialog('open');
+            },
+            success: function(ajaxResponse, textStatus) {
+                //trasformar a datos Json
+                var ventaCreditoLetraJson = procesarRespuesta(ajaxResponse);
+                /*
+                 *En caso la respuesta del servidor no tenga la forma para 
+                 *converitir a json.
+                 */
+                if (ventaCreditoLetraJson == null) {
+                    $.growl.error({title: 'Error', message: ajaxResponse, size: 'large'});
+                    return;
+                }
+                //tomamos tamaño de datos
+                var tam = ventaCreditoLetraJson.length;
+                //vaciar la tabla
+                $tVentaCreditoLetraTbody.empty();
+                //recoremos cada posicion
+                for (var i = 0; i < tam; i++) {
+                    //obtenemos posicion [i]
+                    var ventaCreditoLetraItem = ventaCreditoLetraJson[i];
+                    //obtener el fondo que tendra
+                    //class fondo tr
+                    var trClass = '';
+                    //dias retrasos de pago
+                    var diaRetraso = '';
+                    //si tiene saldo pendiente y (tenga dia retraso o sea la inicial)
+                    if (ventaCreditoLetraItem.saldoLetra > 0 & (ventaCreditoLetraItem.diaRetraso > 0 || ventaCreditoLetraItem.numeroLetra == 0)) {
+                        trClass = 'ventaCreditoLetraVencida';
+                        diaRetraso = ventaCreditoLetraItem.diaRetraso;
+                    }
+                    // si tiene saldo pendiente y esta dentro de la semana
+                    if (ventaCreditoLetraItem.saldoLetra > 0 & ventaCreditoLetraItem.diaRetraso < 0 & ventaCreditoLetraItem.diaRetraso > -6) {
+                        trClass = 'ventaCreditoLetraPorVencer';
+                    }
+                    //tr contenedor, class trVenta para evento clic y doble clic
+                    var $tr = $('<tr>', {id: 'codVentaCreditoLetra_' + ventaCreditoLetraItem.codVentaCreditoLetra, 'class': trClass}).appendTo($tVentaCreditoLetraTbody);
+                    //creamos los td
+                    var $td1 = $('<td>', {html: docSerieNumero, css: {'width': 90}}).appendTo($tr);
+                    var $td2 = $('<td>', {html: ventaCreditoLetraItem.detalleLetra, css: {'width': 90}}).appendTo($tr);
+                    var $td3 = $('<td>', {html: ventaCreditoLetraItem.fechaVencimiento, css: {'width': 70}}).appendTo($tr);
+                    var $td4 = $('<td>', {html: ventaCreditoLetraItem.monto, 'class': 'derecha', css: {'width': 60}}).appendTo($tr);
+                    //indicar el interes afecto o no afecto
+                    var $td5 = $('<td>', {'class': 'derecha', css: {'width': 60}}).appendTo($tr);
+                    var $d51 = $('<div>', {html: ventaCreditoLetraItem.interes, 'class': 'ocultar interesAfectado'}).appendTo($td5);
+                    var $d52 = $('<div>', {html: ventaCreditoLetraItem.interesPagado, 'class': 'ocultar interesNoAfectado'}).appendTo($td5);
+                    var $td6 = $('<td>', {html: ventaCreditoLetraItem.pagoLetra, 'class': 'derecha', css: {'width': 60}}).appendTo($tr);
+                    var $td7 = $('<td>', {html: ventaCreditoLetraItem.fechaPago, css: {'width': 70}}).appendTo($tr);
+                    var $td8 = $('<td>', {html: diaRetraso, 'class': 'derecha', css: {'width': 40}}).appendTo($tr);
+                    //indicar el saldo afecto o no afecto
+                    var $td9 = $('<td>', {'class': 'derecha', css: {}}).appendTo($tr);
+                    var $d91 = $('<div>', {html: ventaCreditoLetraItem.saldoLetra, 'class': 'ocultar interesAfectado'}).appendTo($td9);
+                    var $d92 = $('<div>', {html: ventaCreditoLetraItem.saldoLetraSinInteres, 'class': 'ocultar interesNoAfectado'}).appendTo($td9);
+                }
+                //interes afectado
+                fMostrarNoMostarInteresAfecto();
+                //quitamos lo oculto y ocultamos el gif de espera
+                $tVentaCreditoLetraTbody.removeClass('ocultar').next().addClass('ocultar');
             },
             statusCode: {
                 404: function() {
@@ -229,98 +486,83 @@ function fVenta(codCliente) {
     }
 }
 ;
+//</editor-fold>
 
-function fVentaDetalle(codVenta) {
+//<editor-fold defaultstate="collapsed" desc="trVentaEventoClick(). Clic en + para más detalles.">
+function trVentaEventoClick() {
+    var id = this.id.split('_');
+    var codVenta = id[1];
+    var docSerieNumero = id[2];
+    clicks++;  //count clicks
+    if (clicks === 1) {
+        timer = setTimeout(function() {
+            fVentaCreditoLetra(codVenta, docSerieNumero);
+            fVentaDetalle(codVenta, docSerieNumero);
+            clicks = 0;  //after action performed, reset counter
+        }, DELAY);
+    } else {
+        clearTimeout(timer);  //prevent single-click action
+        fVentaSerieNumero(codVenta, docSerieNumero);
+        clicks = 0;  //after action performed, reset counter
+    }
+}
+;
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="fVentaDetalle(codVenta, docSerieNumero). Clic en + para más detalles.">
+function fVentaDetalle(codVenta, docSerieNumero) {
+    //parsear el codVenta ya que llega en formato 0000000
+    codVenta = parseInt(codVenta, 10);
     var data = {codVenta: codVenta};
-    var url = 'ajax/clienteKardex/ventaDetalle.jsp';
+    var url = '../ajax/ventaDetallePorCodVenta.jsp';
+    //obtenemos el tag
+    var $tVentaDetalleTbody = $('#tVentaDetalle tbody');
     try {
         $.ajax({
             type: 'post',
             url: url,
             data: data,
             beforeSend: function() {
-                fAntesEnvioVentaDetalle();
+                $tVentaDetalleTbody.addClass('ocultar').next().removeClass('ocultar');
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
                 $('#lServidorError').text(errorThrown + '()');
                 $('#dServidorError').dialog('open');
             },
             success: function(ajaxResponse, textStatus) {
-                $('#dVentaDetalle').empty().append(ajaxResponse);
+                //trasformar a datos Json
+                var ventaDetalleJson = procesarRespuesta(ajaxResponse);
+                /*
+                 *En caso la respuesta del servidor no tenga la forma para 
+                 *converitir a json.
+                 */
+                if (ventaDetalleJson == null) {
+                    $.growl.error({title: 'Error', message: ajaxResponse, size: 'large'});
+                    return;
+                }
+                //tomamos tamaño de datos
+                var tam = ventaDetalleJson.length;
+                //vaciar la tabla
+                $tVentaDetalleTbody.empty();
+                //recorrer el array
+                for (var i = 0; i < tam; i++) {
+                    //obtenemos posicion [i]
+                    var ventaDetalleItem = ventaDetalleJson[i];
+                    //tr contenedor, class trVenta para evento clic y doble clic
+                    var $tr = $('<tr>', {id: 'codVentaDetalle_' + ventaDetalleItem.codVentaDetalle}).appendTo($tVentaDetalleTbody);
+                    //td
+                    var $td1 = $('<td>', {html: docSerieNumero, css: {'width': 80}}).appendTo($tr);
+                    var $td2 = $('<td>', {html: ventaDetalleItem.cantidad, 'class': 'derecha', css: {'width': 40}}).appendTo($tr);
+                    var $td3 = $('<td>', {html: ventaDetalleItem.descripcion, css: {'width': 380}}).appendTo($tr);
+                    var $td4 = $('<td>', {html: ventaDetalleItem.precioVenta, 'class': 'derecha', css: {'width': 70}}).appendTo($tr);
+                    var $td5 = $('<td>', {html: ventaDetalleItem.valorVenta, 'class': 'derecha'}).appendTo($tr);
+                }
+                //remover
+                $tVentaDetalleTbody.removeClass('ocultar').next().addClass('ocultar');
             },
             statusCode: {
                 404: function() {
                     $('#lServidorError').text('Página no encontrada().');
-                    $('#dServidorError').dialog('open');
-                }
-            }
-        });
-    }
-    catch (ex) {
-        $('#lServidorError').text(ex);
-        $('#dServidorError').dialog('open');
-    }
-}
-;
-
-function fVentaCreditoLetra(codVenta, codCliente) {
-    var data = {codVenta: codVenta, codCliente: codCliente};
-    var url = 'ajax/clienteKardex/ventaCreditoLetra.jsp';
-    try {
-        $.ajax({
-            type: 'post',
-            url: url,
-            data: data,
-            beforeSend: function() {
-                fAntesEnvioVentaCreditoLetra();
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                $('#lServidorError').text(errorThrown + '()');
-                $('#dServidorError').dialog('open');
-            },
-            success: function(ajaxResponse, textStatus) {
-                $('#dVentaCreditoLetra').empty().append(ajaxResponse);
-            },
-            statusCode: {
-                404: function() {
-                    $('#lServidorError').text('Página no encontrada().');
-                    $('#dServidorError').dialog('open');
-                }
-            }
-        });
-    }
-    catch (ex) {
-        $('#lServidorError').text(ex);
-        $('#dServidorError').dialog('open');
-    }
-}
-;
-
-//<editor-fold defaultstate="collapsed" desc="function fDeudaResumen(codCliente). Clic en el signo + de la izquierda para mas detalles.">
-function fDeudaResumen(codCliente) {
-    var data = {codCliente: codCliente};
-    var url = 'ajax/clienteKardex/deudaResumenLeer.jsp';
-    try {
-        $.ajax({
-            type: 'post',
-            url: url,
-            data: data,
-            beforeSend: function() {
-
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                $('#lServidorError').text(errorThrown + '()');
-                $('#dServidorError').dialog('open');
-            },
-            success: function(ajaxResponse, textStatus) {
-                var DRItem = procesarRespuesta(ajaxResponse)[0];
-                $('#lTotal').removeClass('esperando').text(DRItem.mTotal);
-                $('#lAmortizado').removeClass('esperando').text(DRItem.mAmortizado);
-                $('#lSaldo').removeClass('esperando').text(DRItem.mSaldo);
-            },
-            statusCode: {
-                404: function() {
-                    $('#lServidorError').text('Página no encontrada(ajax/deudaResumenLeer.jsp).');
                     $('#dServidorError').dialog('open');
                 }
             }
@@ -334,9 +576,12 @@ function fDeudaResumen(codCliente) {
 ;
 //</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="fCobranza(codCliente). Clic en + para más detalles.">
 function fCobranza(codCliente) {
+    //parsear
+    codCliente = parseInt(codCliente, 10);
     var data = {codCliente: codCliente};
-    var url = 'ajax/clienteKardex/cobranzaCliente.jsp';
+    var url = '../ajax/cobranzaPorCodCliente.jsp';
     try {
         $.ajax({
             type: 'post',
@@ -350,27 +595,199 @@ function fCobranza(codCliente) {
                 $('#dServidorError').dialog('open');
             },
             success: function(ajaxResponse, textStatus) {
-                $('#dCobranza').empty().append(ajaxResponse);
-                if ($.trim(ajaxResponse) != '') {
-                    $('.tr_cobranza').bind('click', function(event) {
-                        $('#tCobranzaDetalle').empty().append(
-                                '<tr>' +
-                                '<td>' +
-                                $(this).find('.info_cobranzaDetalle').attr('title') +
-                                '</td>' +
-                                '</tr>'
-                                );
-                    });
-                    var $primero = $('#dCobranza').find('tr');
-                    $('#tCobranzaDetalle').empty().append(
-                            '<tr>' +
-                            '<td>' +
-                            $primero.find('.info_cobranzaDetalle').attr('title') +
-                            '</td>' +
-                            '</tr>'
-                            );
+                //trasformar a datos Json
+                var cobranzaJSon = procesarRespuesta(ajaxResponse);
+                /*
+                 *En caso la respuesta del servidor no tenga la forma para 
+                 *converitir a json.
+                 */
+                if (cobranzaJSon == null) {
+                    $.growl.error({title: 'Error', message: ajaxResponse, size: 'large'});
+                    return;
+                }
+                //tomamos tamaño de datos
+                var tam = cobranzaJSon.length;
+                //vaciar la tabla
+                var $tCobranzaTbody = $('#tCobranza tbody');
+                $tCobranzaTbody.empty();
+                //si en caso no hay ninguna cobranza limpiar la tabla cobranza detalle
+                if (tam == 0) {
+                    $('#tCobranzaDetalle tbody').empty().removeClass('ocultar').next().addClass('ocultar');
+                }
+                //recorrer el array
+                for (var i = 0; i < tam; i++) {
+                    //obtenemos posicion [i]
+                    var cobranza = cobranzaJSon[i];
+                    //tr contenedor, class trVenta para evento clic y doble clic
+                    var $tr = $('<tr>', {id: 'codCobranza_' + cobranza.codCobranza + '_' + cobranza.docSerieNumero, 'class': 'trCobranza manoPuntero', title: cobranza.observacion.replace(/<br>/gi, '\n')}).appendTo($tCobranzaTbody);
+                    //td
+                    var $td1 = $('<td>', {html: cobranza.docSerieNumero, css: {'width': 110}}).appendTo($tr);
+                    var $td2 = $('<td>', {html: cobranza.importe, 'class': 'derecha', css: {'width': 70}}).appendTo($tr);
+                    var $td3 = $('<td>', {html: cobranza.fechaCobranza, 'class': 'derecha', css: {'width': 70}}).appendTo($tr);
+                    var $td4 = $('<td>', {html: cobranza.saldo, 'class': 'derecha'}).appendTo($tr);
+                    var $cobranzaDetalle = $('<div>', {html: cobranza.observacion, 'class': 'cobranzaDetalle ocultar'}).appendTo($td4);
+                    //fijar detalle de cobranza al ultimo
+                    if (i == tam - 1) {
+                        fCobranzaDetalle(cobranza.docSerieNumero, cobranza.observacion);
+                    }
+
+                }
+                //evento clic para mostrar detalle de cobranza
+                $('.trCobranza').bind('click', fCobranzaDetalleClick);
+                //evento clic
+                //quitamos el class
+                $tCobranzaTbody.removeClass('ocultar').next().addClass('ocultar');
+            },
+            statusCode: {
+                404: function() {
+                    $('#lServidorError').text('Página no encontrada().');
+                    $('#dServidorError').dialog('open');
+                }
+            }
+        });
+    }
+    catch (ex) {
+        $('#lServidorError').text(ex);
+        $('#dServidorError').dialog('open');
+    }
+}
+;
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="fCobranzaDetalleClick(). Clic en + para más detalles.">
+function fCobranzaDetalleClick() {
+    //id de la forma codCobranza_00000000_tkr-001-000000
+    var id = this.id.split('_');
+    var codCobranza = id[1];
+    var docSerieNumero = id[2];
+    var observacion = $(this).find('.cobranzaDetalle').html();
+    fCobranzaDetalle(docSerieNumero, observacion);
+}
+;
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="fCobranzaDetalle(docSerieNumero, observacion). Clic en + para más detalles.">
+function fCobranzaDetalle(docSerieNumero, observacion) {
+    var $tCobrazaDetalleTbody = $('#tCobranzaDetalle tbody');
+    //vaciamos tabla
+    $tCobrazaDetalleTbody.empty();
+    //crear el tr contenedor
+    var $tr = $('<tr>').appendTo($tCobrazaDetalleTbody);
+    //td
+    var $td1 = $('<td>', {html: docSerieNumero, css: {'width': 100}}).appendTo($tr);
+    var $td2 = $('<td>', {html: observacion}).appendTo($tr);
+    //mostrar
+    $tCobrazaDetalleTbody.removeClass('ocultar').next().addClass('ocultar');
+}
+;
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="fVentaCreditoLetraResumen(codCliente). Clic en + para más detalles.">
+function fVentaCreditoLetraResumen(codCliente) {
+    //parsear
+    codCliente = parseInt(codCliente, 10);
+    var data = {codCliente: codCliente};
+    var url = '../ajax/ventaCreditoLetraResumenPorCodCliente.jsp';
+    try {
+        $.ajax({
+            type: 'post',
+            url: url,
+            data: data,
+            beforeSend: function() {
+
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                $('#lServidorError').text(errorThrown + '(' + url + ')');
+                $('#dServidorError').dialog('open');
+            },
+            success: function(ajaxResponse, textStatus) {
+                //trasformar a datos Json
+                var VCLResumenJson = procesarRespuesta(ajaxResponse);
+                /*
+                 *En caso la respuesta del servidor no tenga la forma para 
+                 *converitir a json.
+                 */
+                if (VCLResumenJson == null) {
+                    $.growl.error({title: 'Error', message: ajaxResponse, size: 'large'});
+                    return;
+                }
+                //tomamos tamaño de datos
+                var tam = VCLResumenJson.length;
+                //vaciar la tabla
+                var $tVentaCreditoLetraResumenTbody = $('#tVentaCreditoLetraResumen tbody');
+                $tVentaCreditoLetraResumenTbody.empty();
+                for (var i = 0; i < tam; i++) {
+                    //obtenemos posicion [i]
+                    var VCLResumenItem = VCLResumenJson[i];
+                    //tr contenedor, class trVenta para evento clic y doble clic
+                    var $tr = $('<tr>').appendTo($tVentaCreditoLetraResumenTbody);
+                    //td
+                    var $td1 = $('<td>', {html: VCLResumenItem.mes + '-' + VCLResumenItem.anio, css: {'width': 70}}).appendTo($tr);
+                    var $td2 = $('<td>', {html: VCLResumenItem.monto, 'class': 'derecha', css: {'width': 70}}).appendTo($tr);
+                    var $td3 = $('<td>', {html: VCLResumenItem.interes, 'class': 'derecha', css: {'width': 70}}).appendTo($tr);
+                    var $td4 = $('<td>', {html: VCLResumenItem.pagoCliente, 'class': 'derecha', css: {'width': 70}}).appendTo($tr);
+                    var $td5 = $('<td>', {html: VCLResumenItem.saldoCliente, 'class': 'derecha'}).appendTo($tr);
+                }
+                //quitar lo ocultado
+                $tVentaCreditoLetraResumenTbody.removeClass('ocultar').next().addClass('ocultar');
+            },
+            statusCode: {
+                404: function() {
+                    $('#lServidorError').text('Página no encontrada().');
+                    $('#dServidorError').dialog('open');
+                }
+            }
+        });
+    }
+    catch (ex) {
+        $('#lServidorError').text(ex);
+        $('#dServidorError').dialog('open');
+    }
+}
+;
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="fVentaObtenerUltimo(). Clic en + para más detalles.">
+function fVentaObtenerUltimo() {
+    var url = '../ajax/ventaLeerUltimo.jsp';
+    try {
+        $.ajax({
+            type: 'post',
+            url: url,
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                $('#lServidorError').text(errorThrown + '()');
+                $('#dServidorError').dialog('open');
+            },
+            success: function(ajaxResponse, textStatus) {
+                //trasformar a datos Json
+                var ventaUltimoCreditoJson = procesarRespuesta(ajaxResponse);
+                /*
+                 *En caso la respuesta del servidor no tenga la forma para 
+                 *converitir a json.
+                 */
+                if (ventaUltimoCreditoJson == null) {
+                    $.growl.error({title: 'Error', message: ajaxResponse, size: 'large'});
+                    return;
+                }
+                //tomamos tamaño de datos
+                var tam = ventaUltimoCreditoJson.length;
+                //decimos que no hay venta al crédito ultima hecha
+                if (tam == 0) {
+                    $.growl.warning({title: 'Alerta', message: 'No hay ninguna venta al crédito.', size: 'large'});
+                    //quitar los gif de espera en las otras tablas y retornar los datos anteirores
+                    //quitamos para los span independientes
+                    $('.datoMostrar').removeClass('ocultar');
+                    //mostramos los span con gif junto al anterior descrito
+                    $('.esperando').addClass('ocultar');
+                    //ocultamos los datos con gif por lo general son tbody
+                    $('.tbDato').removeClass('ocultar');
+                    //quitamos toda el contenedor tfoot
+                    $('.tfContenedor').addClass('ocultar');
+                    fProcesandoPeticionCerrar();
+                    return;
                 } else {
-                    $('#tCobranzaDetalle').empty();
+                    var venta = ventaUltimoCreditoJson[0];
+                    fClienteLeer(venta.codCliente);
                 }
             },
             statusCode: {
@@ -387,24 +804,52 @@ function fCobranza(codCliente) {
     }
 }
 ;
+//</editor-fold>
 
-function fVentaCreditoLetraResumenMensual(codCliente) {
-    var data = {codCliente: codCliente};
-    var url = 'ajax/clienteKardex/ventaCreditoLetraResumenMensualCliente.jsp';
+//<editor-fold defaultstate="collapsed" desc="fVentaSerieNumero(codVenta, docSerieNumero). Clic en + para más detalles.">
+function fVentaSerieNumero(codVenta, docSerieNumero) {
+    //parsear
+    codVenta = parseInt(codVenta, 10);
+    var data = {codVenta: codVenta};
+    var url = '../ajax/ventaSerieNumeroPorCodVenta.jsp';
     try {
         $.ajax({
             type: 'post',
             url: url,
             data: data,
             beforeSend: function() {
-
+                fDLibreAbrir();
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
                 $('#lServidorError').text(errorThrown + '()');
                 $('#dServidorError').dialog('open');
             },
             success: function(ajaxResponse, textStatus) {
-                $('#dVentaCreditoLetraResumenMensual').empty().append(ajaxResponse);
+                //trasformar a datos Json
+                var ventaJson = procesarRespuesta(ajaxResponse);
+                /*
+                 *En caso la respuesta del servidor no tenga la forma para 
+                 *converitir a json.
+                 */
+                if (ventaJson == null) {
+                    $.growl.error({title: 'Error', message: ajaxResponse, size: 'large'});
+                    return;
+                }
+                //tomamos tamaño de datos
+                var tam = ventaJson.length;
+                //tabla contenedora
+                var $tabla = $('<tabla>', {'class': 'reporte-tabla-1 anchoTotal'});
+                var $tr1 = $('<tr>').appendTo($tabla);
+                $('<th>', {html: 'Serie/Número', css: {'width': 350}}).appendTo($tr1);
+                $('<th>', {html: 'Observación', css: {'width': 300}}).appendTo($tr1);
+                //recuperar
+                for (var i = 0; i < tam; i++) {
+                    var ventaSerieNumeroItem = ventaJson[i];
+                    var $tr = $('<tr>').appendTo($tabla);
+                    var $td1 = $('<td>', {html: ventaSerieNumeroItem.serieNumero}).appendTo($tr);
+                    var $td2 = $('<td>', {html: ventaSerieNumeroItem.observacion}).appendTo($tr);
+                }
+                fDLibreEditar('500', '700', docSerieNumero, $tabla);
             },
             statusCode: {
                 404: function() {
@@ -420,25 +865,21 @@ function fVentaCreditoLetraResumenMensual(codCliente) {
     }
 }
 ;
+//</editor-fold>
 
-function f_interesEvitar_modificar() {
+//<editor-fold defaultstate="collapsed" desc="function fInteresAsigandoHabilitar(). Clic en + para más detalles.">
+function fInteresAsigandoHabilitar() {
     var codCliente = $('#codCliente').val();
-    var fechaEvitar = $('#fechaEvitar').val();
-
     if (!$.isNumeric(codCliente)) {
-        fAlerta('Primero busque cliente.');
-        return;
-    }
-    if (!fValidarFecha(fechaEvitar)) {
-        fAlerta('Seleccione fecha.');
+        $.growl.warning({title: 'Alerta', message: 'Cliente no seleccionado', size: 'large'});
         return;
     }
     var data = {
         codCliente: codCliente,
-        accionDatoCliente: 'actualizar_interesEvitar',
-        fecha: fechaEvitar
+        accion: 'actualizarInteresAsignar',
+        estado: 'habilitar'
     };
-    var url = '../sDatoCliente';
+    var url = '../sCliente';
     try {
         $.ajax({
             type: 'post',
@@ -453,16 +894,18 @@ function f_interesEvitar_modificar() {
             },
             success: function(ajaxResponse, textStatus) {
                 if ($.isNumeric(ajaxResponse)) {
-                    fAlerta('Exito');
+                    $('.interesNoAfectado').addClass('ocultar');
+                    $('.interesAfectado').removeClass('ocultar');
+                    $('#sInteresEvitarEstado').text('Afectado a pago de intereses.');
+                    $('#dInteresAsignadoEditar').dialog('close');
                 } else {
-                    fAlerta(ajaxResponse);
+                    $.growl.warning({title: 'Alerta', message: ajaxResponse, size: 'large'});
                 }
                 fProcesandoPeticionCerrar();
-                $('#d_interesEvitar_editar').dialog('close');
             },
             statusCode: {
                 404: function() {
-                    $('#lServidorError').text('Página no encontrada().');
+                    $('#lServidorError').text('Página no encontrada(' + url + ').');
                     $('#dServidorError').dialog('open');
                 }
             }
@@ -473,19 +916,21 @@ function f_interesEvitar_modificar() {
     }
 }
 ;
+//</editor-fold>
 
-function f_interesEvitar_habilitar() {
+//<editor-fold defaultstate="collapsed" desc="fInteresAsigandoDeshabilitar(). Clic en + para más detalles.">
+function fInteresAsigandoDeshabilitar() {
     var codCliente = $('#codCliente').val();
-
     if (!$.isNumeric(codCliente)) {
-        fAlerta('Primero busque cliente.');
+        $.growl.warning({title: 'Alerta', message: 'Cliente no seleccionado', size: 'large'});
         return;
     }
     var data = {
         codCliente: codCliente,
-        accionDatoCliente: 'interesEvitar_habilitar'
+        accion: 'actualizarInteresAsignar',
+        estado: 'deshabilitar'
     };
-    var url = '../sDatoCliente';
+    var url = '../sCliente';
     try {
         $.ajax({
             type: 'post',
@@ -500,16 +945,18 @@ function f_interesEvitar_habilitar() {
             },
             success: function(ajaxResponse, textStatus) {
                 if ($.isNumeric(ajaxResponse)) {
-                    fAlerta('Exito');
+                    $('.interesAfectado').addClass('ocultar');
+                    $('.interesNoAfectado').removeClass('ocultar');
+                    $('#sInteresEvitarEstado').text('No afectado a pago de intereses (solo hoy).');
+                    $('#dInteresAsignadoEditar').dialog('close');
                 } else {
-                    fAlerta(ajaxResponse);
+                    $.growl.warning({title: 'Alerta', message: ajaxResponse, size: 'large'});
                 }
                 fProcesandoPeticionCerrar();
-                $('#d_interesEvitar_editar').dialog('close');
             },
             statusCode: {
                 404: function() {
-                    $('#lServidorError').text('Página no encontrada().');
+                    $('#lServidorError').text('Página no encontrada(' + url + ').');
                     $('#dServidorError').dialog('open');
                 }
             }
@@ -520,118 +967,82 @@ function f_interesEvitar_habilitar() {
     }
 }
 ;
+//</editor-fold>
 
-//<editor-fold defaultstate="collapsed" desc="function clienteMarcado(event, ui). Clic en el signo + de la izquierda para mas detalles.">
-function clienteMarcado(event, ui) {
-    var cliente = ui.item.value;
-    $('#codClienteBuscar').val(cliente.codCliente);
-    $('#dniPasaporteRucNombresCBuscar').val(cliente.nombresC);
-    event.preventDefault();
+//<editor-fold defaultstate="collapsed" desc="fInteresAsigandoPermanenteDeshabilitar(). Clic en + para más detalles.">
+function fInteresAsigandoPermanenteDeshabilitar() {
+    var codCliente = $('#codCliente').val();
+    if (!$.isNumeric(codCliente)) {
+        $.growl.warning({title: 'Alerta', message: 'Cliente no seleccionado', size: 'large'});
+        return;
+    }
+    var data = {
+        codCliente: codCliente,
+        accion: 'actualizarInteresAsignar',
+        estado: 'deshabilitarPermanente'
+    };
+    var url = '../sCliente';
+    try {
+        $.ajax({
+            type: 'post',
+            url: url,
+            data: data,
+            beforeSend: function() {
+                fProcesandoPeticion();
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                $('#lServidorError').text(errorThrown + '()');
+                $('#dServidorError').dialog('open');
+            },
+            success: function(ajaxResponse, textStatus) {
+                if ($.isNumeric(ajaxResponse)) {
+                    $('.interesAfectado').addClass('ocultar');
+                    $('.interesNoAfectado').removeClass('ocultar');
+                    $('#sInteresEvitarEstado').text('No afectado a pago de intereses (permanente).');
+                    $('#dInteresAsignadoEditar').dialog('close');
+                } else {
+                    $.growl.warning({title: 'Alerta', message: ajaxResponse, size: 'large'});
+                }
+                fProcesandoPeticionCerrar();
+            },
+            statusCode: {
+                404: function() {
+                    $('#lServidorError').text('Página no encontrada(' + url + ').');
+                    $('#dServidorError').dialog('open');
+                }
+            }
+        });
+    } catch (ex) {
+        $('#lServidorError').text(ex);
+        $('#dServidorError').dialog('open');
+    }
 }
 ;
 //</editor-fold>
 
-//<editor-fold defaultstate="collapsed" desc="function clienteSeleccionado(event, ui). Clic en el signo + de la izquierda para mas detalles.">
-function clienteSeleccionado(event, ui) {
-    var cliente = ui.item.value;
-    $('#codClienteBuscar').val('');
-    $('#dniPasaporteRucNombresCBuscar').val('');
-    fCliente(parseInt(cliente.codCliente, 10), '');
-    event.preventDefault();
+//<editor-fold defaultstate="collapsed" desc="fMostrarNoMostarInteresAfecto(). Clic en + para más detalles.">
+function fMostrarNoMostarInteresAfecto() {
+    var interesEvitarEstado = $('#interesEvitarEstado').val() == 'true';//
+    if (interesEvitarEstado) {
+        $('.interesNoAfectado').addClass('ocultar');
+        $('.interesAfectado').removeClass('ocultar');
+    } else {
+        $('.interesAfectado').addClass('ocultar');
+        $('.interesNoAfectado').removeClass('ocultar');
+    }
 }
 ;
 //</editor-fold>
 
-function fAntesEnvioTodo() {
-    $('.vaciar').addClass('esperando');
-    var $dVenta = $('#dVenta');
-    $dVenta.find('table').addClass('ocultar');
-    $dVenta.append(
-            '<table class="reporte-tabla-2 anchoTotal temp" style="font-size: 9px;">' +
-            '<tr>' +
-            '<td class="derecha" style="width: 80px;"><div class="esperando"></div></td>' +
-            '<td class="derecha" style="width: 80px;"><div class="esperando"></div></td>' +
-            '<td class="derecha" style="width: 60px;"><div class="esperando"></div></td>' +
-            '<td class="derecha" style="width: 60px;"><div class="esperando"></div></td>' +
-            '<td style="width: 60px;"><div class="esperando"></div></td>' +
-            '<td class="derecha" style="width: 60px;"><div class="esperando"></div></td>' +
-            '<td class="derecha" style="width: 50px;"><div class="esperando"></div></td>' +
-            '<td class="derecha" style="width: 50px;"><div class="esperando"></div></td>' +
-            '<td class="derecha"><div class="esperando"></div></td>' +
-            '</tr>' +
-            '</table>'
-            );
-    var $dVCLRM = $('#dVentaCreditoLetraResumenMensual');
-    $dVCLRM.find('table').addClass('ocultar');
-    $dVCLRM.append(
-            '<table class="reporte-tabla-2 anchoTotal temp" style="font-size: 9px;">' +
-            '<tr>' +
-            '<td style="width: 70px;"><div class="esperando"></div></td>' +
-            '<td style="width: 70px;" class="derecha"><div class="esperando"></div></td>' +
-            '<td style="width: 70px;" class="derecha"><div class="esperando"></div></td>' +
-            '<td style="width: 70px;" class="derecha"><div class="esperando"></div></td>' +
-            '<td class="derecha"><div class="esperando"></div></td>' +
-            '</tr>' +
-            '</table>'
-            );
-    fAntesEnvioVentaCreditoLetra();
-    fAntesEnvioVentaDetalle();
-    var $tdCobranza = $('#dCobranza');
-    $tdCobranza.find('table').addClass('ocultar');
-    $tdCobranza.append(
-            '<table class="reporte-tabla-2 anchoTotal temp" style="font-size: 9px;">' +
-            '<tr>' +
-            '<td style="width: 110px;"><div class="esperando"></div></td>' +
-            '<td style="width: 70px;" class="derecha"><div class="esperando"></div></td>' +
-            '<td style="width: 70px;"><div class="esperando"></div></td>' +
-            '<td class="derecha"><div class="esperando"></div></td>' +
-            '</tr>' +
-            '</table>'
-            );
-    var $tCobranzaDetalle = $('#tCobranzaDetalle');
-    $tCobranzaDetalle.find('tr').addClass('ocultar');
-    $tCobranzaDetalle.append(
-            '<tr>' +
-            '<td class="derecha"><div class="esperando"></div></td>' +
-            '</tr>'
-            );
+//<editor-fold defaultstate="collapsed" desc="fPaginaActual(). Clic en + para más detalles.">
+function fPaginaActual() {
+    fProcesandoPeticion();
+    /*obtener todos los clientes y almacenarlos para hacer la busqueda por
+     autocompletado desde el cliente
+     */
+    fClienteObtener();
+    //obtener el codCliente de la última venta al credito hecha
+    fVentaObtenerUltimo();
 }
 ;
-
-function fAntesEnvioVentaCreditoLetra() {
-    var $dVCL = $('#dVentaCreditoLetra');
-    $dVCL.find('table').addClass('ocultar');
-    $dVCL.append(
-            '<table class="reporte-tabla-2 anchoTotal temp" style="font-size: 9px;">' +
-            '<tr>' +
-            '<td style="width: 90px;"><div class="esperando"></div></td>' +
-            '<td style="width: 90px;" class="derecha"><div class="esperando"></div></td>' +
-            '<td style="width: 70px;" class="derecha"><div class="esperando"></div></td>' +
-            '<td style="width: 60px;" class="derecha"><div class="esperando"></div></td>' +
-            '<td style="width: 60px;" class="derecha"><div class="esperando"></div></td>' +
-            '<td style="width: 70px;" class="derecha"><div class="esperando"></div></td>' +
-            '<td style="width: 40px;" class="derecha"><div class="esperando"></div></td>' +
-            '<td style="width: 60px;" class="derecha"><div class="esperando"></div></td>' +
-            '<td class="derecha"><div class="esperando"></div></td>' +
-            '</tr>' +
-            '</table>'
-            );
-}
-;
-
-function fAntesEnvioVentaDetalle() {
-    var $dVD = $('#dVentaDetalle');
-    $dVD.find('table').addClass('ocultar');
-    $dVD.append(
-            '<table class="reporte-tabla-2 anchoTotal temp" style="font-size: 9px;">' +
-            '<tr>' +
-            '<td style="width: 90px;"><div class="esperando"></div></td>' +
-            '<td style="width: 40px;" class="derecha"><div class="esperando"></div></td>' +
-            '<td style="width: 350px;" class="derecha"><div class="esperando"></div></td>' +
-            '<td style="width: 70px;" class="derecha"><div class="esperando"></div></td>' +
-            '<td class="derecha"><div class="esperando"></div></td>' +
-            '</tr>' +
-            '</table>'
-            );
-}
-;
+//</editor-fold>

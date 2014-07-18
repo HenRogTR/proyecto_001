@@ -207,10 +207,15 @@ public class sCobranza extends HttpServlet {
                     }
                     int codCobranza = new cCobranza().crear(objCobranza);
                     objCobranza.setCodCobranza(codCobranza);
-                    boolean cobrarInteres = objCliente.getInteresEvitar() == null ? true : (objCliente.getInteresEvitar().compareTo(new cManejoFechas().fecha_actual()) != 0);
+                    boolean cobrarInteres = true;
+                    //si no paga interes permanente
+                    if (objCliente.getInteresEvitarPermanente()) {
+                        cobrarInteres = false;
+                    } else {
+                        cobrarInteres = objCliente.getInteresEvitar() == null ? true : (objCliente.getInteresEvitar().compareTo(new cManejoFechas().fecha_actual()) != 0);
+                    }
                     Double montoAmortizarAux = montoAmortizar;
                     while (montoAmortizarAux > 0) {
-                        System.out.println(montoAmortizarAux);
                         VentaCreditoLetra objVentaCreditoLetra = null;
                         //se buscan deuda con intereses
                         if (cobrarInteres) {

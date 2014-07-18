@@ -22,7 +22,7 @@
         <!--cambios-->
         <%@include file="../principal/inclusiones.jsp" %>
         <!--propio-->
-        <script type="text/javascript" src="../librerias/persona/usuario/usuarioPrivilegio.js"></script>
+        <script type="text/javascript" src="../librerias/persona/usuario/usuarioPrivilegio.js?v.14.07.02"></script>
     </head>
     <body>
         <input type="hidden" name="paginaActualPermiso" value="1" title=""/>
@@ -35,7 +35,6 @@
                     <h3 class="titulo">EDITAR LOS PRIVILEGIOS DE <span id="sUsuario"></span> </h3>
                     <form id="frm_usuarioPermiso" action="../sUsuario">
                         <input type="text" name="codUsuario" id="codUsuario" value="<%=request.getParameter("codUsuario")%>" class="ocultar" />
-                        <input type="text" name="accionUsuario" id="accion" value="editarPrivilegio" class="ocultar" />
                         <fieldset class="">
                             <legend class="">
                                 PRIVILEGIOS GLOBALES
@@ -206,6 +205,13 @@
                                     <div>
                                         <input type="checkbox" class="checkall" name="p10" id="p10" value="ON" />
                                         <label for="p10">LISTAR</label>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="ancho240px">
+                                    <legend>Otros</legend>
+                                    <div>
+                                        <input type="checkbox" class="checkall" name="p60" id="p60" value="ON" />
+                                        <label for="p60">CONFIGURACIÓN</label>
                                     </div>
                                 </fieldset>
                             </div>

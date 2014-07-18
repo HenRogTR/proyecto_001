@@ -4,9 +4,8 @@
     Author     : Henrri
 --%>
 
-
-<%@page import="clases.cFecha"%>
-<%@page import="clases.cUtilitarios"%>
+<%@page import="Clase.Utilitarios"%>
+<%@page import="Clase.Fecha"%>
 <%@page import="tablas.Personal"%>
 <%@page import="tablas.DatosCliente"%>
 <%@page import="tablas.Ventas"%>
@@ -39,29 +38,29 @@
     Personal objPersonal = ejbPersonal.leerPorCodigoPersona(objVenta.getPersonaCodVendedor(), false);
     //imprimir
     out.print("[{"
-            + "\"codVenta\":\"" + cUtilitarios.agregarCerosIzquierda(objVenta.getCodVentas(), 8) + "\""
+            + "\"codVenta\":\"" + new Utilitarios().agregarCerosIzquierda(objVenta.getCodVentas(), 8) + "\""
             + ", \"itemCantidad\":" + objVenta.getItemCantidad()
             + ", \"docSerieNumero\":\"" + objVenta.getDocSerieNumero() + "\""
             + ", \"tipo\":\"" + objVenta.getTipo() + "\""
-            + ", \"fecha\":\"" + cFecha.dateAString(objVenta.getFecha()) + "\""
+            + ", \"fecha\":\"" + new Fecha().dateAString(objVenta.getFecha()) + "\""
             + ", \"moneda\":\"" + objVenta.getMoneda() + "\""
-            + ", \"subTotal\":\"" + cUtilitarios.decimalFormato(objVenta.getSubTotal(), 2) + "\""
-            + ", \"descuento\":\"" + cUtilitarios.decimalFormato(objVenta.getDescuento(), 2) + "\""
-            + ", \"total\":\"" + cUtilitarios.decimalFormato(objVenta.getTotal(), 2) + "\""
-            + ", \"valorIgv\":\"" + cUtilitarios.decimalFormato(objVenta.getValorIgv(), 2) + "\""
-            + ", \"neto\":\"" + cUtilitarios.decimalFormato(objVenta.getNeto(), 2) + "\""
-            + ", \"son\":\"" + cUtilitarios.reemplazarCaracteresEspeciales(objVenta.getSon()) + "\""
-            + ", \"personaCodVendedor\":\"" + cUtilitarios.agregarCerosIzquierda(objVenta.getPersonaCodVendedor(), 8) + "\""
-            + ", \"vendedorNombresC\":\"" + cUtilitarios.reemplazarCaracteresEspeciales(objPersonal.getPersona().getNombresC()) + "\""
+            + ", \"subTotal\":\"" + new Utilitarios().decimalFormato(objVenta.getSubTotal(), 2) + "\""
+            + ", \"descuento\":\"" + new Utilitarios().decimalFormato(objVenta.getDescuento(), 2) + "\""
+            + ", \"total\":\"" + new Utilitarios().decimalFormato(objVenta.getTotal(), 2) + "\""
+            + ", \"valorIgv\":\"" + new Utilitarios().decimalFormato(objVenta.getValorIgv(), 2) + "\""
+            + ", \"neto\":\"" + new Utilitarios().decimalFormato(objVenta.getNeto(), 2) + "\""
+            + ", \"son\":\"" + new Utilitarios().reemplazarCaracteresEspeciales(objVenta.getSon()) + "\""
+            + ", \"personaCodVendedor\":\"" + new Utilitarios().agregarCerosIzquierda(objVenta.getPersonaCodVendedor(), 8) + "\""
+            + ", \"vendedorNombresC\":\"" + new Utilitarios().reemplazarCaracteresEspeciales(objPersonal.getPersona().getNombresC()) + "\""
             + ", \"estado\":" + objVenta.getEstado()
-            + ", \"observacion\":\"" + cUtilitarios.reemplazarCaracteresEspeciales(objVenta.getObservacion()) + "\""
-            + ", \"codCliente\":\"" + cUtilitarios.agregarCerosIzquierda(objCliente.getCodDatosCliente(), 8) + "\""
-            + ", \"cliente\":\"" + cUtilitarios.reemplazarCaracteresEspeciales(objVenta.getCliente()) + "\""
+            + ", \"observacion\":\"" + new Utilitarios().reemplazarCaracteresEspeciales(objVenta.getObservacion()) + "\""
+            + ", \"codCliente\":\"" + new Utilitarios().agregarCerosIzquierda(objCliente.getCodDatosCliente(), 8) + "\""
+            + ", \"cliente\":\"" + new Utilitarios().reemplazarCaracteresEspeciales(objVenta.getCliente()) + "\""
             + ", \"identificacion\":\"" + objVenta.getIdentificacion() + "\""
-            + ", \"direccion\":\"" + cUtilitarios.reemplazarCaracteresEspeciales(objVenta.getDireccion()) + "\""
-            + ", \"docSerieNumeroGuia\":\"" + cUtilitarios.reemplazarCaracteresEspeciales(objVenta.getDocSerieNumeroGuia()) + "\""
-            + ", \"direccion2\":\"" + cUtilitarios.reemplazarCaracteresEspeciales(objVenta.getDireccion2()) + "\""
-            + ", \"direccion3\":\"" + cUtilitarios.reemplazarCaracteresEspeciales(objVenta.getDireccion3()) + "\""
+            + ", \"direccion\":\"" + new Utilitarios().reemplazarCaracteresEspeciales(objVenta.getDireccion()) + "\""
+            + ", \"docSerieNumeroGuia\":\"" + new Utilitarios().reemplazarCaracteresEspeciales(objVenta.getDocSerieNumeroGuia()) + "\""
+            + ", \"direccion2\":\"" + new Utilitarios().reemplazarCaracteresEspeciales(objVenta.getDireccion2()) + "\""
+            + ", \"direccion3\":\"" + new Utilitarios().reemplazarCaracteresEspeciales(objVenta.getDireccion3()) + "\""
             + ", \"registro\":\"" + objVenta.getRegistro() + "\""
             + "}]");
 %>

@@ -11,7 +11,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>cobranza nueva</title>
+        <title>cobranza</title>
         <!--todos-->
         <script type="text/javascript" src="../librerias/jquery/jquery-1.9.0-min.js" ></script>
         <script type="text/javascript" src="../librerias/jquery/jquery.timer-min.js" ></script>
@@ -22,7 +22,7 @@
         <!--propio-->
         <script type="text/javascript" src="../librerias/utilitarios/manejoFecha.js"></script>
         <script type="text/javascript" src="../librerias/utilitarios/formatoDecimal.js"></script>
-        <script type="text/javascript" src="../librerias/cobranza/cobranza.js?v.14.06.19"></script>
+        <script type="text/javascript" src="../librerias/cobranza/cobranza.js?v.14.07.02"></script>
         <script type="text/javascript" src="../librerias/plugin/mask/jquery.mask.min.js"></script>
         <script type="text/javascript" src="../librerias/utilitarios/validaciones.js"></script>
         <script type="text/javascript" src="../librerias/jquery-ui/jquery-ui-1.10.3.custom/js/i18n/jquery.ui.datepicker-es-min.js"></script>

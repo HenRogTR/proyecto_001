@@ -185,7 +185,7 @@
     <body>
         <div id="documento" style="width: 2350px;">
             <div id="contenido">
-                <table style="font-size: 14px;width: 2350px;">
+                <table style="font-size: 14px;">
                     <thead>
                         <tr>
                             <th colspan="11"><label>REPORTE POR TRAMOS <%=fechaString%> x <%=orden%></label></th>
@@ -195,7 +195,8 @@
                             <th style="width: 100px;"><label>Documento</label></th>
                             <th style="width: 80px;"><label>F. Venta</label></th>
                             <th style="width: 100px;"><label>Dni/Ruc</label></th>
-                            <th style=""><label>Ape-Nombres/Razón Social</label></th>
+                            <th style="width: 60px;"><label>C. Desc.</label></th>
+                            <th><label>Ape-Nombres/Razón Social</label></th>
                             <th style="width: 550px;"><label>Dirección</label></th>
                             <th style="width: 70px;"><label>M. Crédito</label></th>
                             <th style="width: 90px;"><label>Deuda Actual</label></th>
@@ -209,8 +210,8 @@
                             <th style="width: 70px;"><label>31-60(Días)</label></th>
                             <th style="width: 70px;"><label>61-90(Días)</label></th>
                             <th style="width: 70px;"><label>91-120(Días)</label></th>
-                            <th class="ancho80px"><label>121-150(Días)</label></th>
-                            <th class="ancho80px"><label>151-más(Días)</label></th>
+                            <th style="width: 80px;"><label>121-150(Días)</label></th>
+                            <th style="width: 80px;"><label>151-más(Días)</label></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -219,6 +220,7 @@
                             String docSerieNumero = "";
                             Date fecha = null;
                             String identificacion = "";
+                            String codDescuento = "";
                             String cliente = "";
                             String direccion = "";
                             Double neto = 0.00;
@@ -257,11 +259,12 @@
 
                                 if (!codVentaAux.equals(codVenta)) {
                                     //imprimimos datos anteriores
-%>
+                        %>
                         <tr>
                             <td><%=docSerieNumero%></td>
                             <td><%=new cManejoFechas().DateAString(fecha)%></td>
                             <td style="text-align: right; padding-right: 10px; mso-number-format:'@';"><%=identificacion%></td>
+                            <td style="text-align: right; padding-right: 5px;"><%=codDescuento%></td>
                             <td class="izquierda"><%=cliente%></td>
                             <td class="izquierda"><%=direccion%></td>
                             <td style="text-align: right;mso-number-format:'0.00';"><%=new cOtros().decimalFormato(neto, 2)%></td>
@@ -309,6 +312,7 @@
                                 fechaVencimiento = (Date) dato[8];
                                 monto = (Double) dato[9];
                                 totalPago = (Double) dato[10];
+                                codDescuento = (String) dato[11];
                                 deudaActual += monto - totalPago;
                                 if (fechaVencimiento.before(fechaDate)) {//inicio letras vencidas
                                     if (new cManejoFechas().StringADate(new cManejoFechas().fechaSumarDias(fechaDate, -31)).before(fechaVencimiento)) {
@@ -361,6 +365,7 @@
                             <td><%=docSerieNumero%></td>
                             <td><%=new cManejoFechas().DateAString(fecha)%></td>
                             <td style="text-align: right; padding-right: 10px; mso-number-format:'@';"><%=identificacion%></td>
+                            <td style="text-align: right; padding-right: 5px;"><%=codDescuento%></td>
                             <td class="izquierda"><%=cliente%></td>
                             <td class="izquierda"><%=direccion%></td>
                             <td style="text-align: right;mso-number-format:'0.00';"><%=new cOtros().decimalFormato(neto, 2)%></td>

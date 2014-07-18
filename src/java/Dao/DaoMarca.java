@@ -18,12 +18,12 @@ import tablas.Marca;
 public class DaoMarca implements InterfaceDaoMarca {
 
     @Override
-    public int crear(Session sesion, Marca objMarca) throws Exception {
-        return (Integer) sesion.save(objMarca);
+    public int crear(Session session, Marca objMarca) throws Exception {
+        return (Integer) session.save(objMarca);
     }
 
     @Override
-    public List<Marca> leer_todo(Session sesion) throws Exception {
+    public List<Marca> leer_todo(Session session) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

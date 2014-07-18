@@ -5,7 +5,6 @@
 package HiberanteUtil;
 
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.stat.Statistics;
 
@@ -38,13 +37,6 @@ public class HibernateUtil {
     }
 
     public static SessionFactory getSessionFactory() {
-//        if(sessionFactory==null){
-//            synchronized (HibernateUtil.class){
-//                if(sessionFactory==null){
-//                    sessionFactory=new AnnotationConfiguration().configure().buildSessionFactory();
-//                }
-//            }
-//        }
         return sessionFactory;
     }
 }

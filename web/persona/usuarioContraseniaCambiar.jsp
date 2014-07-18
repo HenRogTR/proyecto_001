@@ -26,7 +26,7 @@
         <script type="text/javascript" src="../librerias/jquery.validate/1.11.1/localization/messages_es.js"></script>
         <script type="text/javascript" src="../librerias/jquery.validate/1.11.1/additional-methods.min.js"></script>
         <script type="text/javascript" src="../librerias/plugin/md5/md5-min.js"></script>
-        <script type="text/javascript" src="../librerias/persona/usuario/contraseniaCambiar.js"></script>
+        <script type="text/javascript" src="../librerias/persona/usuario/contraseniaCambiar.js?v.14.07.02"></script>
     </head>
     <body>
         <input type="hidden" name="paginaActualPermiso" value="1" title=""/>

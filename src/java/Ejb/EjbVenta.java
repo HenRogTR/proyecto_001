@@ -60,16 +60,48 @@ public class EjbVenta {
         return this.ventaList;
     }
 
-    /**
-     * Retornará la última venta al crédito hecha, en caso de no haber retornará
-     * NULL
-     *
-     * @param cerrarSesion
-     * @return
-     */
-    public Ventas leerUltimaVenta(boolean cerrarSesion) {
+    public List<Object[]> leerPorCodigoClienteReporte(int codCliente) {
         this.session = null;
         this.transaction = null;
+        try {
+            this.session = HibernateUtil.getSessionFactory().openSession();
+            this.transaction = session.beginTransaction();
+            DaoVenta daoVenta = new DaoVenta();
+            //Ventas que tiene un cliente
+            this.ventaObjects = daoVenta.leerPorCodigoClienteReporte(this.session, codCliente);
+            this.transaction.commit();
+        } catch (Exception e) {
+            if (this.transaction != null) {
+                this.transaction.rollback();
+            }
+            this.error = "Contacte al administrador << " + e.getMessage() + " >>";
+            e.printStackTrace();
+        } finally {
+            //la sesión se cerrará si es true el valor
+            if (this.session != null) {
+                this.session.close();
+            }
+        }
+        return this.ventaObjects;
+    }
+
+    public Ventas leerPrimeraVenta(boolean cerrarSession) {
+        return this.venta;
+    }
+
+    public Ventas leerAnteriorVenta(int codVenta, boolean cerrarSession) {
+        return this.venta;
+    }
+
+    public Ventas leerSiguienteVenta(int codVenta, boolean cerrarSession) {
+        return this.venta;
+    }
+
+    public Ventas leerUltimaVenta(boolean cerrarSession) {
+        this.session = null;
+        this.transaction = null;
+        //en caso de que no haya venta retornará NULL
+        this.venta = null;
         try {
             this.session = HibernateUtil.getSessionFactory().openSession();
             this.transaction = session.beginTransaction();
@@ -85,37 +117,29 @@ public class EjbVenta {
                 if (("0".equals(this.venta.getRegistro().substring(0, 1)) || "1".equals(this.venta.getRegistro().substring(0, 1)))) {
                     //terminamos el for
                     break;
-                } else {
-                    //sino decimos que venta sea NULL
-                    this.venta = null;
                 }
             }
             this.transaction.commit();
         } catch (Exception e) {
-            if (cerrarSesion & this.transaction != null) {
+            if (cerrarSession & this.transaction != null) {
                 this.transaction.rollback();
             }
             this.error = "Contacte al administrador << " + e.getMessage() + " >>";
             e.printStackTrace();
         } finally {
             //la sesión se cerrará si es true el valor
-            if (cerrarSesion & this.session != null) {
+            if (cerrarSession & this.session != null) {
                 this.session.close();
             }
         }
         return this.venta;
     }
 
-    /**
-     * Retornará la última venta al crédito hecha, en caso de no haber retornará
-     * NULL
-     *
-     * @param cerrarSesion
-     * @return
-     */
-    public Ventas leerUltimaVentaCredito(boolean cerrarSesion) {
+    public Ventas leerUltimaVentaCredito(boolean cerrarSession) {
         this.session = null;
         this.transaction = null;
+        //en caso de que no haya venta retornará NULL
+        this.venta = null;
         try {
             this.session = HibernateUtil.getSessionFactory().openSession();
             this.transaction = session.beginTransaction();
@@ -132,28 +156,25 @@ public class EjbVenta {
                         & ("0".equals(this.venta.getRegistro().substring(0, 1)) || "1".equals(this.venta.getRegistro().substring(0, 1)))) {
                     //terminamos el for
                     break;
-                } else {
-                    //sino decimos que venta sea NULL
-                    this.venta = null;
                 }
             }
             this.transaction.commit();
         } catch (Exception e) {
-            if (cerrarSesion & this.transaction != null) {
+            if (cerrarSession & this.transaction != null) {
                 this.transaction.rollback();
             }
             this.error = "Contacte al administrador << " + e.getMessage() + " >>";
             e.printStackTrace();
         } finally {
             //la sesión se cerrará si es true el valor
-            if (cerrarSesion & this.session != null) {
+            if (cerrarSession & this.session != null) {
                 this.session.close();
             }
         }
         return this.venta;
     }
 
-    public List<Ventas> leerTodos(boolean cerrarSesion) {
+    public List<Ventas> leerTodos(boolean cerrarSession) {
         this.session = null;
         this.transaction = null;
         try {
@@ -171,7 +192,7 @@ public class EjbVenta {
             e.printStackTrace();
         } finally {
             //la sesión se cerrará si es true el valor
-            if (cerrarSesion & this.session != null) {
+            if (cerrarSession & this.session != null) {
                 this.session.close();
             }
         }

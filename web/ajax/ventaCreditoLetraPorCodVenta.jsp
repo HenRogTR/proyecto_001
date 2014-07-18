@@ -4,13 +4,12 @@
     Author     : Henrri
 --%>
 
-
-<%@page import="clases.cUtilitarios"%>
+<%@page import="Clase.Utilitarios"%>
+<%@page import="Clase.Fecha"%>
 <%@page import="java.util.List"%>
 <%@page import="Ejb.EjbVentaCreditoLetra"%>
 <%@page import="java.util.Date"%>
 <%@page import="tablas.VentaCreditoLetra"%>
-<%@page import="clases.cFecha"%>
 <%
     //evitar el acceso directo por el URL
     if (request.getMethod().equals("GET")) {
@@ -31,8 +30,10 @@
     List<VentaCreditoLetra> ventaCreditoLetraList = ejbVentaCreditoLetra.leerActivoPorCodigoVenta(codVenta, true);
     //variables para calcular datos
     Double deudaLetra = 0.00;
+    Double deudaLetraSinInteres = 0.00;
     Double pagoLetra = 0.00;
     Double saldoLetra = 0.00;
+    Double saldoLetraSinInteres = 0.00;
     int diaRetraso = 0;
     //ventaList no puede tomar valor null
     int tam = ventaCreditoLetraList.size();
@@ -41,29 +42,33 @@
         VentaCreditoLetra objVentaCreditoLetra = ventaCreditoLetraList.get(i);
         //obtenemos la deuda del cliente
         deudaLetra = objVentaCreditoLetra.getMonto() + objVentaCreditoLetra.getInteres();
+        deudaLetraSinInteres = objVentaCreditoLetra.getMonto() + objVentaCreditoLetra.getInteresPagado();
         //pagos realizados a la letra
         pagoLetra = objVentaCreditoLetra.getTotalPago() + objVentaCreditoLetra.getInteresPagado();
-        //saldo de la letra
+        //saldo de la letra con intereses
         saldoLetra = deudaLetra - pagoLetra;
+        saldoLetraSinInteres = deudaLetraSinInteres - pagoLetra;
         //calculado dias de retraso
-        diaRetraso = cFecha.diasDiferencia(new Date(), objVentaCreditoLetra.getFechaVencimiento());
+        diaRetraso = new Fecha().diasDiferencia(new Date(), objVentaCreditoLetra.getFechaVencimiento());
         if (i > 0) {
             out.print(", ");
         }
         out.print("{"
-                + "\"codVentaCreditoLetra\":\"" + cUtilitarios.agregarCerosIzquierda(objVentaCreditoLetra.getCodVentaCreditoLetra(), 8) + "\""
+                + "\"codVentaCreditoLetra\":\"" + new Utilitarios().agregarCerosIzquierda(objVentaCreditoLetra.getCodVentaCreditoLetra(), 8) + "\""
                 + ", \"numeroLetra\":" + objVentaCreditoLetra.getNumeroLetra()
-                + ", \"detalleLetra\":\"" + cUtilitarios.reemplazarCaracteresEspeciales(objVentaCreditoLetra.getDetalleLetra()) + "\""
-                + ", \"fechaVencimiento\":\"" + cFecha.dateAString(objVentaCreditoLetra.getFechaVencimiento()) + "\""
-                + ", \"monto\":\"" + cUtilitarios.decimalFormato(objVentaCreditoLetra.getMonto(), 2) + "\""
-                + ", \"interes\":\"" + cUtilitarios.decimalFormato(objVentaCreditoLetra.getInteres(), 2) + "\""
-                + ", \"fechaPago\":\"" + cFecha.dateAString(objVentaCreditoLetra.getFechaPago()) + "\""
-                + ", \"totalPago\":\"" + cUtilitarios.decimalFormato(objVentaCreditoLetra.getTotalPago(), 2) + "\""
-                + ", \"interesPagado\":\"" + cUtilitarios.decimalFormato(objVentaCreditoLetra.getInteresPagado(), 2) + "\""
-                + ", \"interesUltimoCalculo\":\"" + cFecha.dateAString(objVentaCreditoLetra.getInteresUltimoCalculo()) + "\""
-                + ", \"deudaLetra\":\"" + cUtilitarios.decimalFormato(deudaLetra, 2) + "\""
-                + ", \"pagoLetra\":\"" + cUtilitarios.decimalFormato(pagoLetra, 2) + "\""
-                + ", \"saldoLetra\":\"" + cUtilitarios.decimalFormato(saldoLetra, 2) + "\""
+                + ", \"detalleLetra\":\"" + new Utilitarios().reemplazarCaracteresEspeciales(objVentaCreditoLetra.getDetalleLetra()) + "\""
+                + ", \"fechaVencimiento\":\"" + new Fecha().dateAString(objVentaCreditoLetra.getFechaVencimiento()) + "\""
+                + ", \"monto\":\"" + new Utilitarios().decimalFormato(objVentaCreditoLetra.getMonto(), 2) + "\""
+                + ", \"interes\":\"" + new Utilitarios().decimalFormato(objVentaCreditoLetra.getInteres(), 2) + "\""
+                + ", \"fechaPago\":\"" + new Fecha().dateAString(objVentaCreditoLetra.getFechaPago()) + "\""
+                + ", \"totalPago\":\"" + new Utilitarios().decimalFormato(objVentaCreditoLetra.getTotalPago(), 2) + "\""
+                + ", \"interesPagado\":\"" + new Utilitarios().decimalFormato(objVentaCreditoLetra.getInteresPagado(), 2) + "\""
+                + ", \"interesUltimoCalculo\":\"" + new Fecha().dateAString(objVentaCreditoLetra.getInteresUltimoCalculo()) + "\""
+                + ", \"deudaLetra\":\"" + new Utilitarios().decimalFormato(deudaLetra, 2) + "\""
+                + ", \"deudaLetraSinInteres\":\"" + new Utilitarios().decimalFormato(deudaLetraSinInteres, 2) + "\""
+                + ", \"pagoLetra\":\"" + new Utilitarios().decimalFormato(pagoLetra, 2) + "\""
+                + ", \"saldoLetra\":\"" + new Utilitarios().decimalFormato(saldoLetra, 2) + "\""
+                + ", \"saldoLetraSinInteres\":\"" + new Utilitarios().decimalFormato(saldoLetraSinInteres, 2) + "\""
                 + ", \"registro\":\"" + objVentaCreditoLetra.getRegistro() + "\""
                 + ", \"diaRetraso\":" + diaRetraso
                 + "}");

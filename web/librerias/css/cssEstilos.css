@@ -1,0 +1,199 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 17/07/2014, 10:12:43 AM
+    Author     : Henrri
+*/
+root 
+{
+    display: block;
+}
+
+body 
+{
+    font-size: 70%;
+    font-family: "Trebuchet MS", "Arial", "Helvetica", "Verdana", "sans-serif";
+    background: #333; 
+    color: #444;  
+}
+
+#wrap 
+{
+    padding: 5px 5px 3px 5px; 
+    width:1024px; 
+    margin:1px auto; 
+    background: #fff;
+}
+#header {
+    position: relative;
+    background: #FE7B09 url(imagenes/cabeceraLogo.jpg) repeat-x;
+    background-position: 0% 50%;
+    height: 70px;
+    width: 1024px
+}
+#piePagina { 
+    font-size: 11px; 
+    text-align: center; 
+    border-top: 1px solid #ccc; 
+    padding: 10px 5px; 
+}
+
+#dMenu
+{
+    padding-top: 5px;    
+}
+
+.horaCabecera{
+    font-size: 16px;
+    font-weight: bold;
+    position: absolute;
+    top: 8px;
+    right: 5px;
+    color: #fff;
+}
+
+.usuarioInfo{
+    font-size: 24px;
+    font-weight: bold;
+    position: absolute;
+    top: 25px;
+    right: 5px;
+    color: #fff;
+}
+
+.titulo  
+{ 
+    color: #fff; 
+    background: #FE7B09 url(imagenes/bg.jpg) repeat-x; //veer color
+    line-height: 24px;
+    padding-left: 10px; 
+    margin-top: 20px; 
+    vertical-align: middle; 
+    height: 24px; 
+}
+.titulo2
+{    
+    font-size: 16px;
+    font-weight: bold;
+    padding-left: 5px;
+}
+.lineaDivisoria{
+    margin-top: 5px;
+    border-top: 2px solid #ccc; 
+    clear: both;
+}
+.ocultar
+{
+    display: none;
+}
+
+.login{
+    font-size: 14px;
+    box-shadow: 0px 0px 0px 4px #f2f5f7;
+    width: 300px;
+    height: 25px;
+    padding: 0 10px 0 10px;
+    margin: 0 auto;
+    color: #444;
+    border: 1px solid #bec2c4;
+    margin-bottom:  10px;
+}
+.login:focus{
+    box-shadow: 0px 0px 0px 4px #e0f1fc;
+    border:1px solid #7dc6dd;
+}
+.acceso{
+    text-align: center;
+    border: 10px;
+}
+.alerta{
+    font-size: 10px;
+    color: red;
+}
+.fondoDivSecundario{
+    background: #F1F1F7;
+}
+
+.tabla11px{
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 11px;
+    text-align: center;
+    border-collapse: collapse;
+}
+.tabla11px thead tr th{
+    text-align: center;
+}
+.tabla11px tfoot tr th{
+    text-align: right;
+}
+.tabla11px tbody tr th{
+    text-align: right;
+    padding-right: 4px;
+}
+.tabla11px th{
+    padding: 2px;
+    font-weight: normal;
+    color: #fff;
+    background: #6583E0;
+    border: 1px solid #fff;
+}
+.tabla11px td{
+    padding: 2px;
+    background: #F1F1F7;
+    border-top: 1px solid #fff;
+    color: #000;
+    border: 1px solid #fff;
+}
+
+.tabla9px{
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 9px;
+    text-align: center;
+    border-collapse: collapse;
+}
+.tabla9px thead tr th{
+    text-align: center;
+}
+.tabla9px tfoot tr th{
+    text-align: right;
+}
+.tabla9px tbody tr th{
+    text-align: right;
+    padding-right: 3px;
+}
+.tabla9px th{
+    padding: 1px 2px 0px 1px;
+    font-weight: normal;
+    color: #fff;
+    background: #6583E0;
+    border: 1px solid #fff;
+}
+.tabla9px td{
+    padding: 1px 2px 0px 1px;
+    background: #F1F1F7;
+    border-top: 1px solid #fff;
+    color: #000;
+    border: 1px solid #fff;
+}
+tfoot.thFondoTd th{
+    background: #F1F1F7;
+}
+
+.manoPuntero{
+    cursor: help;
+}
+
+.fondoVentaAnulada td{
+    background-color: #ff6666 !important;
+}
+
+.ventaCreditoLetraVencida td{
+    background-color: tomato !important;
+}
+
+.ventaCreditoLetraPorVencer td{
+    background-color: #ffcccc !important;
+}

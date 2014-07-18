@@ -21,7 +21,7 @@
         <%@include file="../principal/inclusiones.jsp" %>
         <!--propio-->
         <script type="text/javascript" src="../librerias/jquery-ui/jquery-ui-1.10.3.custom/js/i18n/jquery.ui.datepicker-es-min.js"></script>
-        <script type="text/javascript" src="../librerias/persona/cliente/clienteKardex.js?v14.05.22"></script>
+        <script type="text/javascript" src="../librerias/persona/cliente/clienteKardex__.js?v14.05.22"></script>
         <script type="text/javascript" src="../librerias/plugin/mask/jquery.mask.min.js"></script>
         <script type="text/javascript" src="../librerias/utilitarios/validaciones.js"></script>
         <style>

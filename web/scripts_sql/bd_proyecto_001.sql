@@ -463,6 +463,7 @@ CREATE TABLE IF NOT EXISTS `proyecto_001`.`datos_cliente` (
   `credito_max` DOUBLE(10,2) NOT NULL DEFAULT '0.00',
   `saldo_favor` DOUBLE(10,2) NOT NULL DEFAULT '0.00',
   `interes_evitar` DATE NULL,
+  `interes_evitar_permanente` BIT NULL DEFAULT 0,
   `observaciones` TEXT CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NULL,
   `cod_cobrador` INT(11) NOT NULL DEFAULT 0,
   `persona_cod_garante` INT(11) NOT NULL DEFAULT 0,

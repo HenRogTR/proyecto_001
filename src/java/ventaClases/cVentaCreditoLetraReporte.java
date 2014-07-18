@@ -187,7 +187,7 @@ public class cVentaCreditoLetraReporte {
                     + "vcl.ventaCredito.ventas.itemCantidad, "
                     + "vcl.ventaCredito.cantidadLetras, vcl.codVentaCreditoLetra, "
                     + "vcl.numeroLetra, vcl.detalleLetra, vcl.fechaVencimiento, "
-                    + "vcl.monto, vcl.interes, vcl.fechaPago, vcl.totalPago " 
+                    + "vcl.monto, vcl.interes, vcl.fechaPago, vcl.totalPago "
                     + " ,vcl.interesPagado, vcl.interesUltimoCalculo "
                     + "from VentaCreditoLetra vcl, DatosCliente dc "
                     + "where vcl.ventaCredito.ventas.persona=dc.persona "
@@ -1652,7 +1652,8 @@ public class cVentaCreditoLetraReporte {
                     + "	vcl.codVentaCreditoLetra,"
                     + "	vcl.fechaVencimiento,"
                     + "	vcl.monto,"
-                    + "	vcl.totalPago"
+                    + "	vcl.totalPago,"
+                    + " dc.empresaConvenio.codCobranza"
                     + " from VentaCreditoLetra vcl, DatosCliente dc"
                     + " where vcl.ventaCredito.ventas.persona = dc.persona"
                     + " and (vcl.monto-vcl.totalPago)>0"
@@ -1693,7 +1694,8 @@ public class cVentaCreditoLetraReporte {
                     + "	vcl.codVentaCreditoLetra,"
                     + "	vcl.fechaVencimiento,"
                     + "	vcl.monto,"
-                    + "	vcl.totalPago"
+                    + "	vcl.totalPago,"
+                    + " dc.empresaConvenio.codCobranza"
                     + " from VentaCreditoLetra vcl, DatosCliente dc"
                     + " where vcl.ventaCredito.ventas.persona = dc.persona"
                     + " and (vcl.monto-vcl.totalPago)>0"
@@ -1735,7 +1737,8 @@ public class cVentaCreditoLetraReporte {
                     + "	vcl.codVentaCreditoLetra,"
                     + "	vcl.fechaVencimiento,"
                     + "	vcl.monto,"
-                    + "	vcl.totalPago"
+                    + "	vcl.totalPago,"
+                    + " dc.empresaConvenio.codCobranza"
                     + " from VentaCreditoLetra vcl, DatosCliente dc"
                     + " where vcl.ventaCredito.ventas.persona = dc.persona"
                     + " and (vcl.monto-vcl.totalPago)>0"
@@ -1779,7 +1782,8 @@ public class cVentaCreditoLetraReporte {
                     + "	vcl.codVentaCreditoLetra,"
                     + "	vcl.fechaVencimiento,"
                     + "	vcl.monto,"
-                    + "	vcl.totalPago"
+                    + "	vcl.totalPago,"
+                    + " dc.empresaConvenio.codCobranza"
                     + " from VentaCreditoLetra vcl, DatosCliente dc"
                     + " where vcl.ventaCredito.ventas.persona = dc.persona"
                     + " and (vcl.monto-vcl.totalPago)>0"
@@ -1823,7 +1827,8 @@ public class cVentaCreditoLetraReporte {
                     + "	vcl.codVentaCreditoLetra,"
                     + "	vcl.fechaVencimiento,"
                     + "	vcl.monto,"
-                    + "	vcl.totalPago"
+                    + "	vcl.totalPago,"
+                    + " dc.empresaConvenio.codCobranza"
                     + " from VentaCreditoLetra vcl, DatosCliente dc"
                     + " where vcl.ventaCredito.ventas.persona = dc.persona"
                     + " and (vcl.monto-vcl.totalPago)>0"
@@ -1867,7 +1872,8 @@ public class cVentaCreditoLetraReporte {
                     + "	vcl.codVentaCreditoLetra,"
                     + "	vcl.fechaVencimiento,"
                     + "	vcl.monto,"
-                    + "	vcl.totalPago"
+                    + "	vcl.totalPago,"
+                    + " dc.empresaConvenio.codCobranza"
                     + " from VentaCreditoLetra vcl, DatosCliente dc"
                     + " where vcl.ventaCredito.ventas.persona = dc.persona"
                     + " and (vcl.monto-vcl.totalPago)>0"
@@ -1913,7 +1919,8 @@ public class cVentaCreditoLetraReporte {
                     + "	vcl.codVentaCreditoLetra,"
                     + "	vcl.fechaVencimiento,"
                     + "	vcl.monto,"
-                    + "	vcl.totalPago"
+                    + "	vcl.totalPago,"
+                    + " dc.empresaConvenio.codCobranza"
                     + " from VentaCreditoLetra vcl, DatosCliente dc"
                     + " where vcl.ventaCredito.ventas.persona = dc.persona"
                     + " and (vcl.monto-vcl.totalPago)>0"
@@ -1923,7 +1930,7 @@ public class cVentaCreditoLetraReporte {
                     + " order by vcl.ventaCredito.ventas.persona.nombresC,"
                     + " dc.codDatosCliente, vcl.ventaCredito.codVentaCredito")
                     .setInteger("ter1", codEmpresaConvenio)
-                    .setInteger("ter2", codCobrador);
+                    .setInteger("par2", codCobrador);
             l = q.list();
         } catch (Exception e) {
             e.printStackTrace();
@@ -1961,7 +1968,8 @@ public class cVentaCreditoLetraReporte {
                     + "	vcl.codVentaCreditoLetra,"
                     + "	vcl.fechaVencimiento,"
                     + "	vcl.monto,"
-                    + "	vcl.totalPago"
+                    + "	vcl.totalPago,"
+                    + " dc.empresaConvenio.codCobranza"
                     + " from VentaCreditoLetra vcl, DatosCliente dc"
                     + " where vcl.ventaCredito.ventas.persona = dc.persona"
                     + " and (vcl.monto-vcl.totalPago)>0"
@@ -1971,7 +1979,7 @@ public class cVentaCreditoLetraReporte {
                     + " order by vcl.ventaCredito.ventas.persona.direccion,"
                     + " dc.codDatosCliente, vcl.ventaCredito.codVentaCredito")
                     .setInteger("ter1", codEmpresaConvenio)
-                    .setInteger("ter2", codCobrador);
+                    .setInteger("par2", codCobrador);
             l = q.list();
         } catch (Exception e) {
             e.printStackTrace();

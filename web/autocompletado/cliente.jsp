@@ -4,7 +4,7 @@
     Author     : Henrri
 --%>
 
-<%@page import="clases.cUtilitarios"%>
+<%@page import="Clase.Utilitarios"%>
 <%@page import="tablas.DatosCliente"%>
 <%@page import="java.util.List"%>
 <%@page import="Ejb.EjbCliente"%>
@@ -36,10 +36,10 @@
             out.print(",");
         }
         out.println("{ "
-                + "\"label\": \"" + dniPasaporte + ruc + cUtilitarios.reemplazarCaracteresEspeciales(nombresC) + "\", "
+                + "\"label\": \"" + dniPasaporte + ruc + new Utilitarios().reemplazarCaracteresEspeciales(nombresC) + "\", "
                 + "\"value\": { "
-                + "\"codCliente\": \"" + cUtilitarios.agregarCerosIzquierda(codCliente, 8) + "\""
-                + ",\"nombresC\": \"" + cUtilitarios.reemplazarCaracteresEspeciales(nombresC) + "\""
+                + "\"codCliente\": \"" + new Utilitarios().agregarCerosIzquierda(codCliente, 8) + "\""
+                + ",\"nombresC\": \"" + new Utilitarios().reemplazarCaracteresEspeciales(nombresC) + "\""
                 + "} "
                 + "}");
     }

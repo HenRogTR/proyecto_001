@@ -4,8 +4,8 @@
     Author     : Henrri
 --%>
 
-<%@page import="clases.cFecha"%>
-<%@page import="clases.cUtilitarios"%>
+<%@page import="Clase.Utilitarios"%>
+<%@page import="Clase.Fecha"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.util.List"%>
 <%@page import="Ejb.EjbVentaCreditoLetra"%>
@@ -56,16 +56,16 @@
             out.print(", ");
         }
         out.print("{"
-                + "\"mes\":\"" + cFecha.mesNombreCorto(fechaVencimiento).toUpperCase() + "\""
-                + ", \"anio\":\"" + cFecha.anioCorto(fechaVencimiento) + "\""
-                + ", \"fechaVencimiento\":\"" + cFecha.dateAString(fechaVencimiento) + "\""
-                + ", \"monto\":\"" + cUtilitarios.decimalFormato(monto, 2) + "\""
-                + ", \"interes\":\"" + cUtilitarios.decimalFormato(interes, 2) + "\""
-                + ", \"totalPago\":\"" + cUtilitarios.decimalFormato(totalPago, 2) + "\""
-                + ", \"interesPagado\":\"" + cUtilitarios.decimalFormato(interesPagado, 2) + "\""
-                + ", \"deudaCliente\":\"" + cUtilitarios.decimalFormato(deudaCliente, 2) + "\""
-                + ", \"pagoCliente\":\"" + cUtilitarios.decimalFormato(pagoCliente, 2) + "\""
-                + ", \"saldoCliente\":\"" + cUtilitarios.decimalFormato(saldoCliente, 2) + "\""
+                + "\"mes\":\"" + new Fecha().mesNombreCorto(fechaVencimiento).toUpperCase() + "\""
+                + ", \"anio\":\"" + new Fecha().anioCorto(fechaVencimiento) + "\""
+                + ", \"fechaVencimiento\":\"" + new Fecha().dateAString(fechaVencimiento) + "\""
+                + ", \"monto\":\"" + new Utilitarios().decimalFormato(monto, 2) + "\""
+                + ", \"interes\":\"" + new Utilitarios().decimalFormato(interes, 2) + "\""
+                + ", \"totalPago\":\"" + new Utilitarios().decimalFormato(totalPago, 2) + "\""
+                + ", \"interesPagado\":\"" + new Utilitarios().decimalFormato(interesPagado, 2) + "\""
+                + ", \"deudaCliente\":\"" + new Utilitarios().decimalFormato(deudaCliente, 2) + "\""
+                + ", \"pagoCliente\":\"" + new Utilitarios().decimalFormato(pagoCliente, 2) + "\""
+                + ", \"saldoCliente\":\"" + new Utilitarios().decimalFormato(saldoCliente, 2) + "\""
                 + "}");
     }
     out.print("]");

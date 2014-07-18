@@ -1,5 +1,5 @@
 package tablas;
-// Generated 22/05/2014 10:20:56 AM by Hibernate Tools 3.6.0
+// Generated 18/07/2014 10:11:54 AM by Hibernate Tools 3.6.0
 
 
 import java.util.Date;
@@ -23,6 +23,7 @@ public class DatosCliente  implements java.io.Serializable {
      private double creditoMax;
      private double saldoFavor;
      private Date interesEvitar;
+     private Boolean interesEvitarPermanente;
      private String observaciones;
      private int codCobrador;
      private int personaCodGarante;
@@ -43,7 +44,7 @@ public class DatosCliente  implements java.io.Serializable {
         this.personaCodGarante = personaCodGarante;
         this.registro = registro;
     }
-    public DatosCliente(EmpresaConvenio empresaConvenio, Persona persona, Integer tipoCliente, String centroTrabajo, String telefono, int tipo, Integer condicion, double creditoMax, double saldoFavor, Date interesEvitar, String observaciones, int codCobrador, int personaCodGarante, String registro, Set<DocumentoNotificacion> documentoNotificacions) {
+    public DatosCliente(EmpresaConvenio empresaConvenio, Persona persona, Integer tipoCliente, String centroTrabajo, String telefono, int tipo, Integer condicion, double creditoMax, double saldoFavor, Date interesEvitar, Boolean interesEvitarPermanente, String observaciones, int codCobrador, int personaCodGarante, String registro, Set<DocumentoNotificacion> documentoNotificacions) {
        this.empresaConvenio = empresaConvenio;
        this.persona = persona;
        this.tipoCliente = tipoCliente;
@@ -54,6 +55,7 @@ public class DatosCliente  implements java.io.Serializable {
        this.creditoMax = creditoMax;
        this.saldoFavor = saldoFavor;
        this.interesEvitar = interesEvitar;
+       this.interesEvitarPermanente = interesEvitarPermanente;
        this.observaciones = observaciones;
        this.codCobrador = codCobrador;
        this.personaCodGarante = personaCodGarante;
@@ -137,6 +139,13 @@ public class DatosCliente  implements java.io.Serializable {
     
     public void setInteresEvitar(Date interesEvitar) {
         this.interesEvitar = interesEvitar;
+    }
+    public Boolean getInteresEvitarPermanente() {
+        return this.interesEvitarPermanente;
+    }
+    
+    public void setInteresEvitarPermanente(Boolean interesEvitarPermanente) {
+        this.interesEvitarPermanente = interesEvitarPermanente;
     }
     public String getObservaciones() {
         return this.observaciones;

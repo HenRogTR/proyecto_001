@@ -4,8 +4,8 @@
     Author     : Henrri
 --%>
 
-<%@page import="clases.cFecha"%>
-<%@page import="clases.cUtilitarios"%>
+<%@page import="Clase.Utilitarios"%>
+<%@page import="Clase.Fecha"%>
 <%@page import="tablas.Cobranza"%>
 <%@page import="java.util.List"%>
 <%@page import="Ejb.EjbCobranza"%>
@@ -38,15 +38,15 @@
             out.print(",");
         }
         out.print("{"
-                + "\"codCobranza\":\"" + cUtilitarios.agregarCerosIzquierda(objCobranza.getCodCobranza(), 8) + "\""
-                + ", \"fechaCobranza\":\"" + cFecha.dateAString(objCobranza.getFechaCobranza()) + "\""
+                + "\"codCobranza\":\"" + new Utilitarios().agregarCerosIzquierda(objCobranza.getCodCobranza(), 8) + "\""
+                + ", \"fechaCobranza\":\"" + new Fecha().dateAString(objCobranza.getFechaCobranza()) + "\""
                 + ", \"docSerieNumero\":\"" + objCobranza.getDocSerieNumero() + "\""
-                + ", \"saldoAnterior\":\"" + cUtilitarios.decimalFormato(objCobranza.getSaldoAnterior(), 2) + "\""
-                + ", \"importe\":\"" + cUtilitarios.decimalFormato(objCobranza.getImporte(), 2) + "\""
-                + ", \"saldo\":\"" + cUtilitarios.decimalFormato(objCobranza.getSaldo(), 2) + "\""
-                + ", \"montoPagado\":\"" + cUtilitarios.decimalFormato(objCobranza.getMontoPagado(), 2) + "\""
-                + ", \"observacion\":\"" + cUtilitarios.reemplazarCaracteresEspeciales(objCobranza.getObservacion()) + "\""
-                + ", \"registro\":\"" + cUtilitarios.reemplazarCaracteresEspeciales(objCobranza.getRegistro()) + "\""
+                + ", \"saldoAnterior\":\"" + new Utilitarios().decimalFormato(objCobranza.getSaldoAnterior(), 2) + "\""
+                + ", \"importe\":\"" + new Utilitarios().decimalFormato(objCobranza.getImporte(), 2) + "\""
+                + ", \"saldo\":\"" + new Utilitarios().decimalFormato(objCobranza.getSaldo(), 2) + "\""
+                + ", \"montoPagado\":\"" + new Utilitarios().decimalFormato(objCobranza.getMontoPagado(), 2) + "\""
+                + ", \"observacion\":\"" + new Utilitarios().reemplazarCaracteresEspeciales(objCobranza.getObservacion()) + "\""
+                + ", \"registro\":\"" + new Utilitarios().reemplazarCaracteresEspeciales(objCobranza.getRegistro()) + "\""
                 + "}");
     }
     out.print("]");

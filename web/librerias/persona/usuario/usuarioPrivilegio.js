@@ -154,8 +154,8 @@ function fUsuarioLeer(codUsuario, parametro) {
 
 function fPrivilegiosGuardar() {
     var $frm = $('#frm_usuarioPermiso');
-    var data = $frm.serialize();
-    var url = $frm.attr('action');
+    var data = $frm.serialize() + '&accionUsuario=editarPrivilegio';
+    var url = '../sUsuario';
     try {
         $.ajax({
             type: 'post',

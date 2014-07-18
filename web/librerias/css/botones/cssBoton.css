@@ -1,0 +1,141 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 09/04/2014, 11:17:42 PM
+    Author     : Henrri
+*/
+
+.boton {
+    vertical-align: middle;
+    cursor: pointer;
+    margin-left: 3px;
+    padding: 0;
+    height: 24px;
+    color: #666;                                    /*color texto*/
+    background-color: #F1F1F7;                      /*color fondo*/
+    font-family: Comic Sans MS, Calibri, Arial;     /*tipo fuente*/
+    font-weight: bold;                              /*peso fuente*/
+    text-decoration: none; 
+    background-image: none;
+    background-repeat: no-repeat;
+    border-radius: 5px;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius:5px;
+    behavior: url(pie/PIE.htc);
+} 
+.disabled,
+.disabled:hover,
+.disabled:focus,
+.disabled:active {
+    color: #cccccc;                                 /*color texto*/
+    cursor: inherit;
+    text-shadow: none; 
+    opacity: 0.33;
+}
+.iconoSoloNormal{
+    font-size: 11px;                                /*tama�o fuente*/
+    border: 2px #F1F1F7 solid;                      /*borde*/
+    padding: 2px 8px 3px 12px;                     /*relleno*/
+    /*padding: 5px 10px 5px;*/
+    background-color: transparent;
+    background-position: 5px 2px;
+}
+.iconoSoloPequenio{
+    font-size: 10px;                                /*tama�o fuente*/
+    border: 1px #F1F1F7 solid;                      /*borde*/
+    padding: 2px 0px 2px 18px;                      /*relleno*/
+    background-color: transparent;
+    background-position: 2px 1px;
+}
+
+.botonNormal{
+    font-size: 12px;                                /*tama�o fuente*/
+    border: 2px #cccccc solid;                      /*borde*/
+    padding: 2px 8px 2px 24px;                     /*relleno*/
+    background-position: 5px 2px;
+}
+.botonPequenio{
+    font-size: 10px;                                /*tama�o fuente*/
+    border: 1px #cccccc solid;                      /*borde*/
+    padding: 2px 5px 2px 21px;                      /*relleno*/
+    background-position: 2px 1px;
+}
+.boton:hover { 
+    /*font-style: italic;*/ 
+    box-shadow: 0px 0px 5px 0px #000000; 
+} 
+.boton:active { 
+    color: #666; 
+    background-color: #FFF; 
+    box-shadow: 0px 0px 10px 0px #000000; 
+}
+.ok                 { background-image: url(imagen/tick.png) !important; }
+.cancel             { background-image: url(imagen/cross.png) !important; }
+.add                { background-image: url(imagen/add.png); }
+.delete             { background-image: url(imagen/delete.png); }
+.download           { background-image: url(imagen/arrow_down.png); }
+.download2          { background-image: url(imagen/package_down.png); }
+.upload             { background-image: url(imagen/arrow_up.png); }
+.search             { background-image: url(imagen/magnifier.png); }
+.find               { background-image: url(imagen/find.png); }
+.first              { background-image: url(imagen/resultset_first.png); }
+.prev               { background-image: url(imagen/resultset_previous.png); }
+.next               { background-image: url(imagen/resultset_next.png); }
+.last               { background-image: url(imagen/resultset_last.png); }
+.play               { background-image: url(imagen/play_blue.png); }
+.pause              { background-image: url(imagen/pause_blue.png); }
+.rewind             { background-image: url(imagen/rewind_blue.png); }
+.forward            { background-image: url(imagen/forward_blue.png); }
+.stop               { background-image: url(imagen/stop_blue.png); }
+.reload             { background-image: url(imagen/reload.png); }
+.sync               { background-image: url(imagen/arrow_refresh.png); }
+.save               { background-image: url(imagen/disk.png); }
+.email              { background-image: url(imagen/email.png); }
+.print              { background-image: url(imagen/printer.png) !important; }
+.heart              { background-image: url(imagen/heart.png); }
+.like               { background-image: url(imagen/thumb_up.png); }
+.dislike            { background-image: url(imagen/thumb_down.png); }
+.accept             { background-image: url(imagen/accept.png); }
+.decline            { background-image: url(imagen/decline.png); }
+.help               { background-image: url(imagen/help.png); }
+.home               { background-image: url(imagen/house.png); }
+.info               { background-image: url(imagen/information.png); }
+.cut                { background-image: url(imagen/cut.png); }
+.copy               { background-image: url(imagen/page_white_copy.png); }
+.paste              { background-image: url(imagen/paste_plain.png); }
+.erase              { background-image: url(imagen/erase.png); }
+.undo               { background-image: url(imagen/arrow_undo.png); }
+.redo               { background-image: url(imagen/arrow_redo.png); }
+.edit               { background-image: url(imagen/pencil.png); }
+.calendar           { background-image: url(imagen/date.png); }
+.user               { background-image: url(imagen/user.png); }
+.settings           { background-image: url(imagen/cog.png); }
+.cart               { background-image: url(imagen/cart.png); }
+.wand               { background-image: url(imagen/wand.png); }
+.wrench             { background-image: url(imagen/wrench.png); }
+.update             { background-image: url(imagen/update.jpg); }
+.key                { background-image: url(imagen/key_go.png); }
+.excel              { background-image: url(imagen/excel.png); }
+.esperando{ 
+    vertical-align: middle;
+    margin-left: 3px;
+    padding: 0;
+    color: #666;                                    /*color texto*/
+    background-color: #F1F1F7;                      /*color fondo*/
+    font-family: Comic Sans MS, Calibri, Arial;     /*tipo fuente*/
+    font-weight: bold;                              /*peso fuente*/
+    text-decoration: none; 
+    background-image: none;
+    background-repeat: no-repeat;    
+    font-size: 10px;                                /*tama�o fuente*/
+    border: 0px #F1F1F7 solid;                      /*borde*/
+    padding: 2px 0px 2px 18px;                      /*relleno*/
+    background-color: transparent;
+    background-position: 2px 2px;
+    background-image: url(imagen/working.gif) 
+}

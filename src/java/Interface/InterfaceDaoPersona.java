@@ -15,4 +15,6 @@ import tablas.Persona;
 public interface InterfaceDaoPersona {
 
     public int crear(Session session, Persona persona) throws Exception;
+
+    public Persona leerPorCodigo(Session session, int codPersona) throws Exception;
 }

@@ -1,0 +1,91 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 15/07/2014, 04:31:37 PM
+    Author     : Henrri
+*/
+
+#menuPrincipal 
+{
+    left: 0px;
+    position: fixed;
+    top: 90px;
+}
+#menuPrincipal ul
+{
+    background-color: #FFFFFF;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.7), 0px 0px 2px rgba(0, 0, 0, 0.7);
+    left: 0px;
+    list-style: none;
+    margin: 0px;
+    overflow: hidden;
+    padding: 0px;
+    position: absolute;
+    top: 0px;
+    transition: 0.2s width;
+    width: 0px;
+}
+#menuPrincipal ul:hover
+{
+    width: 200px;
+}
+#menuPrincipal ul li  
+{
+    display: inline-table;
+    height: 40px;
+    text-align: left;
+    width: 200px;
+}
+
+#menuPrincipal img
+{
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+#menuPrincipal a
+{
+    color: #999;
+    display: table-cell;
+    text-decoration: none;
+    vertical-align: middle;
+    font-size: 1.1em;
+}
+
+#menuPrincipal a:hover
+{
+    background-color: #EEEEEE;
+    color: black;
+}
+#menuPrincipal hr
+{
+    border: none;
+    height: 1px;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.15);
+}
+#menuPrincipal div
+{
+    box-shadow: 0px 0px 2px black;
+    cursor: pointer;
+    display: inline-table;
+    height: 40px;
+    width: 20px;
+    background: #fff
+}
+
+#menuPrincipal div:hover ~ ul
+{
+    width: 200px;
+}
+
+#menuPrincipal div span
+{
+    display: table-cell;
+    margin-left: 10px;
+    vertical-align: middle;
+}

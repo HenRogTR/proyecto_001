@@ -4,7 +4,7 @@
     Author     : Henrri
 --%>
 
-<%@page import="clases.cUtilitarios"%>
+<%@page import="Clase.Utilitarios"%>
 <%@page import="tablas.VentasSerieNumero"%>
 <%@page import="java.util.List"%>
 <%@page import="Ejb.EjbVentaSerieNumero"%>
@@ -35,9 +35,9 @@
             out.print(", ");
         }
         out.print("{"
-                + "\"codVentaSerieNumero\":\"" + cUtilitarios.agregarCerosIzquierda(objVentaSerieNumero.getCodVentasSerieNumero(), 8) + "\""
-                + ", \"serieNumero\":\"" + cUtilitarios.reemplazarCaracteresEspeciales(objVentaSerieNumero.getSerieNumero()) + "\""
-                + ", \"observacion\":\"" + cUtilitarios.reemplazarCaracteresEspeciales(objVentaSerieNumero.getObservacion()) + "\""
+                + "\"codVentaSerieNumero\":\"" + new Utilitarios().agregarCerosIzquierda(objVentaSerieNumero.getCodVentasSerieNumero(), 8) + "\""
+                + ", \"serieNumero\":\"" + new Utilitarios().reemplazarCaracteresEspeciales(objVentaSerieNumero.getSerieNumero()) + "\""
+                + ", \"observacion\":\"" + new Utilitarios().reemplazarCaracteresEspeciales(objVentaSerieNumero.getObservacion()) + "\""
                 + ", \"registro\":\"" + objVentaSerieNumero.getRegistro() + "\""
                 + "}");
     }

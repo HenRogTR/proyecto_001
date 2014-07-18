@@ -4,7 +4,7 @@
     Author     : Henrri
 --%>
 
-<%@page import="clases.cUtilitarios"%>
+<%@page import="Clase.Utilitarios"%>
 <%@page import="java.util.List"%>
 <%@page import="tablas.VentasDetalle"%>
 <%@page import="Ejb.EjbVentaDetalle"%>
@@ -34,17 +34,17 @@
             out.print(", ");
         }
         out.print("{"
-                + "\"codVentaDetalle\":\"" + cUtilitarios.agregarCerosIzquierda(objVentaDetalle.getCodVentasDetalle(), 8) + "\""
+                + "\"codVentaDetalle\":\"" + new Utilitarios().agregarCerosIzquierda(objVentaDetalle.getCodVentasDetalle(), 8) + "\""
                 + ", \"item\":" + objVentaDetalle.getItem()
                 //                + "\"codArticuloProducto\":\"" + cUtilitarios.agregarCerosIzquierda(objVentaDetalle.getArticuloProducto().getCodArticuloProducto(), 8) + "\""
                 + ", \"cantidad\":" + objVentaDetalle.getCantidad()
-                + ", \"descripcion\":\"" + cUtilitarios.reemplazarCaracteresEspeciales(objVentaDetalle.getDescripcion()) + "\""
-                + ", \"precioReal\":\"" + cUtilitarios.decimalFormato(objVentaDetalle.getPrecioReal(), 2) + "\""
-                + ", \"precioProforma\":\"" + cUtilitarios.decimalFormato(objVentaDetalle.getPrecioReal(), 2) + "\""
-                + ", \"precioCash\":\"" + cUtilitarios.decimalFormato(objVentaDetalle.getPrecioCash(), 2) + "\""
-                + ", \"precioVenta\":\"" + cUtilitarios.decimalFormato(objVentaDetalle.getPrecioVenta(), 2) + "\""
-                + ", \"valorVenta\":\"" + cUtilitarios.decimalFormato(objVentaDetalle.getValorVenta(), 2) + "\""
-                + ", \"registro\":\"" + cUtilitarios.reemplazarCaracteresEspeciales(objVentaDetalle.getRegistro()) + "\""
+                + ", \"descripcion\":\"" + new Utilitarios().reemplazarCaracteresEspeciales(objVentaDetalle.getDescripcion()) + "\""
+                + ", \"precioReal\":\"" + new Utilitarios().decimalFormato(objVentaDetalle.getPrecioReal(), 2) + "\""
+                + ", \"precioProforma\":\"" + new Utilitarios().decimalFormato(objVentaDetalle.getPrecioReal(), 2) + "\""
+                + ", \"precioCash\":\"" + new Utilitarios().decimalFormato(objVentaDetalle.getPrecioCash(), 2) + "\""
+                + ", \"precioVenta\":\"" + new Utilitarios().decimalFormato(objVentaDetalle.getPrecioVenta(), 2) + "\""
+                + ", \"valorVenta\":\"" + new Utilitarios().decimalFormato(objVentaDetalle.getValorVenta(), 2) + "\""
+                + ", \"registro\":\"" + new Utilitarios().reemplazarCaracteresEspeciales(objVentaDetalle.getRegistro()) + "\""
                 + "}");
     }
     out.print("]");

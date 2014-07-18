@@ -16,7 +16,8 @@
             <a href="venta_credito_actualizar_fechaUltimoPago.jsp">Venta credito actualizar</a><br>
             <a href="comprobar_serie_numero.jsp">comprobar serie numero</a><br>
             <a href="sesiones.jsp">sesiones</a><br>
-            <a href="validaciones.jsp">validaciones</a>
+            <a href="validaciones.jsp">validaciones</a><br>
+            <a href="session.jsp">sesion</a><br>
         </strong>
     </body>
 </html>

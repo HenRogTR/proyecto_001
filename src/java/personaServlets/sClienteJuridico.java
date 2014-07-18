@@ -31,9 +31,8 @@ import utilitarios.cOtros;
 public class sClienteJuridico extends HttpServlet {
 
     /**
-     * Processes requests for both HTTP
-     * <code>GET</code> and
-     * <code>POST</code> methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
      *
      * @param request servlet request
      * @param response servlet response
@@ -106,6 +105,7 @@ public class sClienteJuridico extends HttpServlet {
                     objCliente.setCondicion(3);
                     objCliente.setCreditoMax(Double.parseDouble(request.getParameter("saldoMax")));
                     objCliente.setSaldoFavor(0.00);
+                    objCliente.setInteresEvitarPermanente(false);
                     objCliente.setObservaciones(request.getParameter("observacionCliente").toString());
                     objCliente.setTelefono("");
                     objCliente.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
@@ -162,6 +162,7 @@ public class sClienteJuridico extends HttpServlet {
                     objCliente.setCondicion(3);
                     objCliente.setCreditoMax(Double.parseDouble(request.getParameter("saldoMax")));
                     objCliente.setSaldoFavor(Double.parseDouble(request.getParameter("saldoFavor")));
+                    objCliente.setInteresEvitarPermanente(false);
                     objCliente.setObservaciones("");
                     objCliente.setTelefono("");
                     objCliente.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
@@ -178,13 +179,11 @@ public class sClienteJuridico extends HttpServlet {
             }
         }
 
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP
-     * <code>GET</code> method.
+     * Handles the HTTP <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -198,8 +197,7 @@ public class sClienteJuridico extends HttpServlet {
     }
 
     /**
-     * Handles the HTTP
-     * <code>POST</code> method.
+     * Handles the HTTP <code>POST</code> method.
      *
      * @param request servlet request
      * @param response servlet response

@@ -593,7 +593,7 @@ function cobradorMarcado(event, ui) {
 
 function fCobradorEditar() {
     var data = {
-        accionCliente: 'editarCobrador',
+        accion: 'editarCobrador',
         codCliente: $('#codDatoCliente').val(),
         codCobrador: $('#codCobradorAux').val()
     };
