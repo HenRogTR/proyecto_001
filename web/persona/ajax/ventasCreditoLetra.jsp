@@ -66,8 +66,8 @@
                 + ",\"diasRetraso\":\"" + dias + "\""
                 + ",\"estilo\":\"" + estilo + "\""
                 //datos de venta
-                + ",\"codVentas\":" + objVentaCreditoLetra.getVentaCredito().getVentas().getCodVentas()
-                + ",\"docNumeroSerie\":\"" + objVentaCreditoLetra.getVentaCredito().getVentas().getDocSerieNumero() + "\""
+                + ",\"codVentas\":" + objVentaCreditoLetra.getVentas().getCodVentas()
+                + ",\"docNumeroSerie\":\"" + objVentaCreditoLetra.getVentas().getDocSerieNumero() + "\""
                 + "}"
                 //                + ","
                 + "");

@@ -16,7 +16,7 @@
         return;
     }
     EjbCliente ejbCliente = new EjbCliente();
-    List clienteList = ejbCliente.leerClienteOrdenadoAlfabeticamente();
+    List<Object[]> clienteList = ejbCliente.leerClienteOrdenadoAlfabeticamente();
     int codCliente = 0;
     String dniPasaporte = "";
     String ruc = "";
@@ -25,7 +25,7 @@
     out.print("[");
     int tam = clienteList.size();
     for (int i = 0; i < tam; i++) {
-        Object[] cliente = (Object[]) clienteList.get(i);
+        Object[] cliente = clienteList.get(i);
         codCliente = (Integer) cliente[0];
         dniPasaporte = cliente[2].toString();
         ruc = cliente[3].toString();

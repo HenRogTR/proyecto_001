@@ -40,9 +40,17 @@ public class sDatoCliente extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         HttpSession session = request.getSession();
-
-        //Clases
+        // ============================ sesión =================================
+        //verficar inicio de sesión        
         Usuario objUsuario = (Usuario) session.getAttribute("usuario");
+        if (objUsuario == null) {
+            out.print("La sesión se ha cerrado.");
+            return;
+        }
+        //actualizamos ultimo ingreso
+        session.setAttribute("fechaAcceso", new Date());
+        // ============================ sesión =================================
+        //Clases
         cDatosCliente objcDatosCliente = new cDatosCliente();
         //variables
         String accion = request.getParameter("accionDatoCliente");
@@ -120,7 +128,7 @@ public class sDatoCliente extends HttpServlet {
                 }
 
             }
-            
+
         }
     }
 

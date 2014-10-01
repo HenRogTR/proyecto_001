@@ -6,8 +6,6 @@
 
 
 <%@page import="utilitarios.cManejoFechas"%>
-<%@page import="ventaClases.cVentaCredito"%>
-<%@page import="tablas.VentaCredito"%>
 <%@page import="tablas.Ventas"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="utilitarios.cOtros"%>
@@ -41,8 +39,7 @@
             String amortizado = "";
             String deuda = "";
             if (objVenta.getTipo().equals("CREDITO")) {
-                VentaCredito objVentaCredito = new cVentaCredito().leer_codVenta(objVenta.getCodVentas());
-                numeroLetra = objVentaCredito.getCantidadLetras().toString();
+                numeroLetra = objVenta.getCantidadLetras() + "";
             }
     %>
     <tr class="tr_venta" id="codVenta_<%=objVenta.getCodVentas()%>" title="<%=objVenta.getDocSerieNumero()%>">

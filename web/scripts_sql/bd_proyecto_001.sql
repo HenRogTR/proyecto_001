@@ -197,12 +197,23 @@ CREATE TABLE IF NOT EXISTS `proyecto_001`.`ventas` (
   `persona_cod_vendedor` INT(11) NOT NULL,
   `estado` BIT(1) NULL DEFAULT b'0',
   `observacion` TEXT CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NULL DEFAULT NULL,
+  `cod_cliente` INT NOT NULL,
   `cliente` TEXT CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NULL DEFAULT NULL,
   `identificacion` TEXT CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NULL DEFAULT NULL,
   `direccion` TEXT CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NULL DEFAULT NULL,
   `doc_serie_numero_guia` VARCHAR(45) NULL,
   `direccion2` TEXT NULL,
   `direccion3` TEXT NULL,
+  `duracion` VARCHAR(45) NULL DEFAULT '',
+  `monto_inicial` DOUBLE(10,2) NOT NULL DEFAULT '0.00',
+  `fecha_inicial_vencimiento` DATE NULL DEFAULT NULL,
+  `cantidad_letras` INT(11) NOT NULL DEFAULT '0',
+  `monto_letra` DOUBLE(10,2) NOT NULL DEFAULT '0.00',
+  `fecha_vencimiento_letra_deuda` DATE NULL,
+  `interes` DOUBLE(10,2) NOT NULL DEFAULT 0.00,
+  `amortizado` DOUBLE(10,2) NOT NULL DEFAULT '0.00',
+  `interes_pagado` DOUBLE(10,2) NOT NULL DEFAULT '0.00',
+  `saldo` DOUBLE(10,2) NOT NULL DEFAULT '0.00',
   `registro` TEXT CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NOT NULL,
   PRIMARY KEY (`cod_ventas`),
   INDEX `fk_ventas_persona1` (`persona_cod_persona` ASC),
@@ -215,43 +226,14 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `proyecto_001`.`venta_credito`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `proyecto_001`.`venta_credito` ;
-
-CREATE TABLE IF NOT EXISTS `proyecto_001`.`venta_credito` (
-  `cod_venta_credito` INT(11) NOT NULL AUTO_INCREMENT,
-  `ventas_cod_ventas` INT(11) NOT NULL,
-  `persona_cod_garante` INT(11) NOT NULL,
-  `estado` BIT(1) NULL DEFAULT NULL,
-  `duracion` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NULL DEFAULT NULL,
-  `monto_inicial` DOUBLE(10,2) NOT NULL DEFAULT '0.00',
-  `fecha_inicial` DATE NULL,
-  `cantidad_letras` INT(11) NULL DEFAULT NULL,
-  `monto_letra` DOUBLE(10,2) NULL,
-  `fecha_vencimiento_letra` DATE NULL,
-  `registro` TEXT CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NOT NULL,
-  PRIMARY KEY (`cod_venta_credito`),
-  INDEX `fk_venta_credito_ventas1` (`ventas_cod_ventas` ASC),
-  CONSTRAINT `fk_venta_credito_ventas1`
-    FOREIGN KEY (`ventas_cod_ventas`)
-    REFERENCES `proyecto_001`.`ventas` (`cod_ventas`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-COMMENT = '*La columna estado indica el estado del credito, será 1 si e /* comment truncated */ /* /* comment truncated */ /*ste fue aprobado y 0 si es una solicitud de credito
-*La columna duracion indicará la fecha que la solicitud de crétido va a tener*/*/';
-
-
--- -----------------------------------------------------
 -- Table `proyecto_001`.`venta_credito_letra`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `proyecto_001`.`venta_credito_letra` ;
 
 CREATE TABLE IF NOT EXISTS `proyecto_001`.`venta_credito_letra` (
   `cod_venta_credito_letra` INT(11) NOT NULL AUTO_INCREMENT,
-  `venta_credito_cod_venta_credito` INT(11) NOT NULL,
-  `moneda` INT(11) NULL DEFAULT NULL,
+  `ventas_cod_ventas` INT(11) NOT NULL,
+  `moneda` INT(11) NULL,
   `numero_letra` INT(11) NULL DEFAULT NULL,
   `detalle_letra` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NULL DEFAULT NULL,
   `fecha_vencimiento` DATETIME NULL DEFAULT NULL,
@@ -264,10 +246,10 @@ CREATE TABLE IF NOT EXISTS `proyecto_001`.`venta_credito_letra` (
   `interes_ultimo_calculo` DATE NULL,
   `registro` TEXT CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NOT NULL,
   PRIMARY KEY (`cod_venta_credito_letra`),
-  INDEX `fk_ventas_credito_letras_venta_credito1` (`venta_credito_cod_venta_credito` ASC),
-  CONSTRAINT `fk_ventas_credito_letras_venta_credito1`
-    FOREIGN KEY (`venta_credito_cod_venta_credito`)
-    REFERENCES `proyecto_001`.`venta_credito` (`cod_venta_credito`)
+  INDEX `fk_venta_credito_letra_ventas1_idx` (`ventas_cod_ventas` ASC),
+  CONSTRAINT `fk_venta_credito_letra_ventas1`
+    FOREIGN KEY (`ventas_cod_ventas`)
+    REFERENCES `proyecto_001`.`ventas` (`cod_ventas`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -463,7 +445,7 @@ CREATE TABLE IF NOT EXISTS `proyecto_001`.`datos_cliente` (
   `credito_max` DOUBLE(10,2) NOT NULL DEFAULT '0.00',
   `saldo_favor` DOUBLE(10,2) NOT NULL DEFAULT '0.00',
   `interes_evitar` DATE NULL,
-  `interes_evitar_permanente` BIT NULL DEFAULT 0,
+  `interes_evitar_permanente` BIT NOT NULL DEFAULT 0,
   `observaciones` TEXT CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NULL,
   `cod_cobrador` INT(11) NOT NULL DEFAULT 0,
   `persona_cod_garante` INT(11) NOT NULL DEFAULT 0,

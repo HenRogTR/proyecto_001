@@ -23,7 +23,7 @@
         <script type="text/javascript" src="../librerias/utilitarios/formatoDecimal.js"></script>
         <script type="text/javascript" src="../librerias/plugin/jquery.growl/javascripts/jquery.growl.min.js"></script>
         <link rel="stylesheet" type="text/css" href="../librerias/plugin/jquery.growl/stylesheets/jquery.growl.min.css" media="all"/>
-        <script type="text/javascript" src="../librerias/persona/cliente/clienteKardex.js?v14.07.02"></script>
+        <script type="text/javascript" src="../librerias/persona/cliente/clienteKardex.js?v14.09.30"></script>
         <script type="text/javascript" src="../librerias/plugin/mask/jquery.mask.min.js"></script>
         <style>
             .ui-autocomplete {
@@ -61,6 +61,7 @@
                     </h3>
                     <div class="ocultar">
                         <input type="text" name="codCliente" id="codCliente" value="" />
+                        <input type="text" name="codVentaAux" id="codVentaAux"/>
                         <input type="text" name="interesEvitarEstado" id="interesEvitarEstado" value=""/>
                     </div>
                     <div class="contenedorGeneral">
@@ -148,7 +149,7 @@
                                     <table class="tabla9px anchoTotal">
                                         <thead>
                                             <tr>
-                                                <th colspan="9"><span>CUOTAS DE PAGOS</span> <a id="" class="boton iconoSoloPequenio print">&nbsp;</a></th>
+                                                <th colspan="9"><span>CUOTAS DE PAGOS</span> <a id="bVentaCreditoLetra" class="boton iconoSoloPequenio print">&nbsp;</a></th>
                                             </tr>
                                             <tr>
                                                 <th style="width: 90px;"><span>Documento</span></th>
@@ -269,7 +270,7 @@
                                     <table class="tabla9px anchoTotal">
                                         <thead>
                                             <tr>
-                                                <th colspan="4"><span>PAGOS REALIZADOS</span> <a id="" class="boton iconoSoloPequenio print">&nbsp;</a></th>
+                                                <th colspan="4"><span>PAGOS REALIZADOS</span> <a id="bCobranza" class="boton iconoSoloPequenio print">&nbsp;</a></th>
                                             </tr>
                                             <tr>
                                                 <th style="width: 110px;"><span>Documento</span></th>
@@ -343,6 +344,7 @@
                             </tbody>
                         </table>
                     </div>
+                    <!-- Asignar interes -->
                     <div id="dInteresAsignadoEditar">
                         <div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em; text-align: justify">
                             <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
@@ -359,6 +361,32 @@
                                 <br><br>
                                 <span><strong>Habilitar intereses:</strong> 
                                     El pago/amortización estará afectado por intereses.</span></p>
+                        </div>
+                    </div>
+                    <!-- Escoger las VCL a imprimir -->
+                    <div id="dVentaCreditoLetraSeleccionar" title="Opciones de impresión Cuotas de pago">
+                        <div class="dDatos" style="">
+                            <div>
+                                <input type="radio" id="VCLActual" name="ventaCreditoLetraImprimirOpcion" value="ventaActual" checked="checked" /> 
+                                <label for="VCLActual">Cuotas de pago de venta actual</label>
+                            </div>
+                            <div>                            
+                                <input type="radio" id="VCLTodos" name="ventaCreditoLetraImprimirOpcion" value="ventaTodos" />
+                                <label for="VCLTodos">Todas las cuotas de pago</label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Escoger las Cobranzas a imprimir -->
+                    <div id="dCobranzaSeleccionar" title="Opciones de impresión de Cobranza">
+                        <div class="dDatos" style="">
+                            <div>
+                                <input type="radio" id="cobranzaActual" name="cobranzaImprimirOpcion" value="ventaActual"  checked="checked"/> 
+                                <label for="cobranzaActual">Pagos de venta actual</label>
+                            </div>
+                            <div>                            
+                                <input type="radio" id="cobranzaTodos" name="cobranzaImprimirOpcion" value="ventaTodos" />
+                                <label for="cobranzaTodos">Todas los pagos</label>
+                            </div>
                         </div>
                     </div>
                 </div>

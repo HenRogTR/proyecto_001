@@ -8,6 +8,8 @@ package Clase;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -27,11 +29,15 @@ public class Utilitarios {
      */
     // </editor-fold>
     public static String agregarCerosIzquierda(int numero, int cantidad) {
-        String ceros = "";
-        for (int i = 0; i < cantidad - String.valueOf(numero).length(); i++) {
-            ceros += "0";
-        }
-        return ceros + numero;
+        /* Método optimizado
+         String ceros = "";
+         for (int i = 0; i < cantidad - String.valueOf(numero).length(); i++) {
+         ceros += "0";
+         }
+         return ceros + numero;
+         */
+        String agregado = StringUtils.leftPad(String.valueOf(numero), 8, "0");
+        return agregado;
     }
 
     public static String reemplazarCaracteresEspeciales(String cadena) {
@@ -79,5 +85,14 @@ public class Utilitarios {
         SimpleDateFormat formato = new SimpleDateFormat("yyyyMMddHHmmss");
         Date fecha = new Date();
         return est + formato.format(fecha) + user;
+    }
+    
+    public static double redondearDecimales(double numero, int decimales) {
+        if (numero < 0.009) {
+            return 0;
+        }
+        BigDecimal bd = new BigDecimal(numero);
+        bd = bd.setScale(decimales, BigDecimal.ROUND_HALF_UP);
+        return bd.doubleValue();
     }
 }

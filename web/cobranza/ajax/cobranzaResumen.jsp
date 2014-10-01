@@ -2,7 +2,10 @@
     Document   : cobranzaResumen
     Created on : 05/10/2013, 12:29:46 PM
     Author     : Henrri
---%><%@page import="tablas.DatosCliente"%>
+--%>
+
+<%@page import="ventaClases.cVentaCreditoLetra"%>
+<%@page import="tablas.DatosCliente"%>
 <%@page import="utilitarios.cManejoFechas"%>
 <%@page import="utilitarios.cOtros"%>
 <%@page import="tablas.Cobranza"%>
@@ -14,7 +17,9 @@
 
 [
 <%
-    List l = new cCobranza().leer_codPersona_SC(1);    
+    List l = new cCobranza().leer_codPersona_SC(1);
+    new cDatosCliente().leer_codigo_SC(1);
+    new cVentaCreditoLetra().leer_codCliente(1);
     List lCobranza = new cCobranza().leer_codPersona(new cDatosCliente().leer_cod(Integer.parseInt(request.getParameter("codCliente"))).getPersona().getCodPersona());
     if (lCobranza != null) {
         cOtros objcOtros = new cOtros();

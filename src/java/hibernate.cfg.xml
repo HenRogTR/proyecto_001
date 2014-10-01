@@ -51,7 +51,6 @@
     <mapping resource="tablas/ComprobantePago.hbm.xml"/>
     <mapping resource="tablas/VentasSerieNumero.hbm.xml"/>
     <mapping resource="tablas/CompraDetalle.hbm.xml"/>
-    <mapping resource="tablas/VentaCredito.hbm.xml"/>
     <mapping resource="tablas/PNatural.hbm.xml"/>
     <mapping resource="tablas/Almacen.hbm.xml"/>
     <mapping resource="tablas/OtrosCC.hbm.xml"/>

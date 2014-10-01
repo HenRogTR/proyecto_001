@@ -26,7 +26,7 @@
         <script type="text/javascript" src="../librerias/utilitarios/manejoFecha.js"></script>
         <script type="text/javascript" src="../librerias/plugin/jquery.growl/javascripts/jquery.growl.min.js"></script>
         <link rel="stylesheet" type="text/css" href="../librerias/plugin/jquery.growl/stylesheets/jquery.growl.min.css" media="all"/>
-        <script type="text/javascript" src="../librerias/reporte/reporte.js?v.14.06.26"></script>
+        <script type="text/javascript" src="../librerias/reporte/reporte.js?v.14.08.05"></script>
         <style>
             .ui-autocomplete {
                 width: 400px;
@@ -65,60 +65,63 @@
                         </ul>
                         <div id="tabs_cliente">
                             <div>
-                                <table class="reporte-tabla-1 anchoTotal">
+                                <table class="reporte-tabla-1">
+                                    <thead>
+                                        <tr>
+                                            <th class="ancho200px" colspan="5">PERIODO DE LETRAS</th>
+                                        </tr>
+                                    </thead>
                                     <tbody>
                                         <tr>
-                                            <th><span>F. INICIO (*)</span></th>
-                                            <td></td>
-                                            <th colspan="2"><span>USAR FECHA (**)</span></th>
-                                            <td colspan="4" class="medio">
-                                                <input type="checkbox" name="clienteFVLFinalUsar" id="clienteFVLFinalUsar"/>
-                                                <label for="clienteFVLFinalUsar">Incluir a vencer hoy (fecha vencimiento)</label>
+                                            <th class="ancho80px">INICIO(*)</th>
+                                            <td class="ancho140px contenedorEntrada">
+                                                <input type="text" name="clienteFVLInicio" id="clienteFVLInicio"  value="" class="ancho110px entrada fechaEntrada"/>
+                                            </td>
+                                            <th class="ancho80px">FIN</th>
+                                            <td class="ancho140px contenedorEntrada">
+                                                <input type="text" name="clienteFVLFin" id="clienteFVLFin" value="" class="ancho110px entrada fechaEntrada"/>                                                
+                                            </td>
+                                            <td class="ancho40px centrado">
+                                                <input type="checkbox" name="clienteFVLFinalUsar" id="clienteFVLFinalUsar" title="Incluir a vencer hoy (fecha vencimiento)" class="manoPuntero"/><label for="clienteFVLFinalUsar">(**)</label>
                                             </td>
                                         </tr>
                                         <tr>
                                             <th><span>COBRADOR</span></th>
-                                            <td colspan="2">
+                                            <td colspan="4">
                                                 <input type="radio" name="tCliente_cobrador" id="tCliente_todos" value="todos" class="clienteCobrador" checked="checked"/><label for="tCliente_todos">Todos</label>
                                                 <input type="radio" name="tCliente_cobrador" id="tCliente_por_cobrador" value="cobrador"  class="clienteCobrador"/><label for="tCliente_por_cobrador">Por Cobrador</label>
-                                            </td>
-                                            <td colspan="5" id="tdClienteCobrador" class="ocultar">
-                                                <div>
-                                                    <a id="tCliente_bCobradorBuscar" class="sexybutton sexyicononly"><span><span><span class="search"></span></span></span></a>
+                                                <div id="tdClienteCobrador" class="ocultar dDatos">
+                                                    <a href="#" id="tCliente_bCobradorBuscar" class="boton iconoSoloPequenio search">&nbsp;</a>
                                                     <input type="text" name="clienteCodCobrador" id="clienteCodCobrador" value="" class="ocultar"/>
                                                     <span id="tCliente_cobradorNombresC">APELLIDOS/NOMBRES</span>
                                                 </div>
                                             </td>
+                                        </tr>                                        
+                                        <tr>
+                                            <th colspan="5" class="centrado">CARTERA DE CLIENTES</th>
+                                            <th>PENDIENTES DE PAGO</th>
+                                            <th>TRAMOS</th>
                                         </tr>
                                         <tr>
                                             <th class="ancho80px"><span>ORDEN</span></th>
-                                            <td>
+                                            <td colspan="3">
                                                 <input type="radio" name="tCliente_orden" id="tCliente_nombresC" value="nombresC" checked="checked" /><label for="tCliente_nombresC">Apellidos/Nombres</label>
                                                 <input type="radio" name="tCliente_orden" id="tCliente_direccion" value="direccion"/><label for="tCliente_direccion">Dirección</label>
                                             </td>
                                             <td class="ancho40px">
                                                 <a id="rClienteOrden" class="sexybutton sexyicononly aCliente" ><span><span><span class="print"></span></span></span></a>
                                             </td>
-                                            <th class="ancho110px">
-                                                <span>LET. PENDIENTE</span>
-                                            </th>
-                                            <td class="contenedorEntrada ancho90px">
-                                                <input type="text" id="clienteFVLOrden" value="" class="anchoTotal entrada fechaEntrada"/>
-                                            </td>                                        
-                                            <td class="ancho90px">
+                                            <td class="centrado">
                                                 <a id="rClienteOrdenVCL" class="sexybutton sexyicononly aCliente" ><span><span><span class="print"></span></span></span></a>
                                                 <a id="rClienteOrdenVCLExcel" class="sexybutton sexyicononly aCliente" ><span><span><span class="excel"></span></span></span></a>
                                             </td>
-                                            <th class="ancho60px">
-                                                <span>TRAMOS</span>
-                                            </th>
-                                            <td class="ancho40px">                                                
+                                            <td class="centrado">
                                                 <a id="rClienteOrdenVCLTExcel" class="sexybutton sexyicononly aCliente" ><span><span><span class="excel"></span></span></span></a>
                                             </td>
-                                        </tr>                                    
+                                        </tr>
                                         <tr>
                                             <th><span>EMPRESA</span></th>
-                                            <td class="contenedorEntrada">
+                                            <td class="contenedorEntrada" colspan="3">
                                                 <div>
                                                     <select name="tClienteCodEC" id="tClienteCodEC" class="anchoTotal contenedorEntrada limpiar">
                                                         <option value="">Seleccione</option>
@@ -128,26 +131,17 @@
                                             <td>
                                                 <a id="rClienteOrdenEC" class="sexybutton sexyicononly aCliente"><span><span><span class="print"></span></span></span></a>
                                             </td>
-                                            <th>
-                                                <span>LET. PENDIENTE</span>
-                                            </th>
-                                            <td class="contenedorEntrada">
-                                                <input type="text" id="clienteFVLECOrden" name="" value="" class="anchoTotal entrada fechaEntrada"/>
-                                            </td>                                        
-                                            <td>
+                                            <td class="centrado">
                                                 <a id="rClienteECOrdenVCL" class="sexybutton sexyicononly aCliente" ><span><span><span class="print"></span></span></span></a>
                                                 <a id="rClienteECOrdenVCLExcel" class="sexybutton sexyicononly aCliente" ><span><span><span class="excel"></span></span></span></a>
                                             </td>
-                                            <th>
-                                                <span>TRAMOS</span>
-                                            </th>
-                                            <td>
+                                            <td class="centrado">
                                                 <a id="rClienteOrdenECVCLTExcel" class="sexybutton sexyicononly aCliente" ><span><span><span class="excel"></span></span></span></a>
                                             </td>
-                                        </tr>                                    
+                                        </tr>
                                         <tr>
                                             <th><span>TIPO</span></th>
-                                            <td class="contenedorEntrada">
+                                            <td class="contenedorEntrada" colspan="3">
                                                 <div>                                                    
                                                     <select name="tClienteTipo" id="tClienteTipo" class="anchoTotal contenedorEntrada limpiar">
                                                         <option value="">Seleccione</option>
@@ -161,20 +155,14 @@
                                             <td>
                                                 <a id="rClienteOrdenECTipo" class="sexybutton sexyicononly aCliente" ><span><span><span class="print"></span></span></span></a>
                                             </td>
-                                            <th>
-                                                <span>LET. PENDIENTE</span>
-                                            </th>
-                                            <td class="contenedorEntrada">
-                                                <input type="text" id="clienteFVLECTipoOrden" name="" value="" class="anchoTotal entrada fechaEntrada"/>
-                                            </td>                                        
-                                            <td>
+                                            <td class="centrado">
                                                 <a id="rClienteECTipoOrdenVCL" class="sexybutton sexyicononly aCliente" ><span><span><span class="print"></span></span></span></a>
                                                 <a id="rClienteECTipoOrdenVCLExcel" class="sexybutton sexyicononly aCliente" ><span><span><span class="excel"></span></span></span></a>
                                             </td>
                                         </tr>
                                         <tr>
                                             <th><span>CONDICIÓN</span></th>
-                                            <td class="contenedorEntrada">
+                                            <td class="contenedorEntrada" colspan="3">
                                                 <div>                                                    
                                                     <select name="tClienteCondicion" id="tClienteCondicion" class="anchoTotal contenedorEntrada limpiar">
                                                         <option value="">Seleccione</option>
@@ -187,22 +175,16 @@
                                             <td>
                                                 <a id="rClienteOrdenECTipoCondicion" class="sexybutton sexyicononly aCliente" ><span><span><span class="print"></span></span></span></a>
                                             </td>
-                                            <th>
-                                                <span>LET. PENDIENTE</span>
-                                            </th>
-                                            <td class="contenedorEntrada">
-                                                <input type="text" id="clienteFVLECTipoCondicionOrden" name="" value="" class="anchoTotal entrada fechaEntrada"/>
-                                            </td>                                        
-                                            <td>
+                                            <td class="centrado">
                                                 <a id="rClienteECTipoCondicionOrdenVCL" class="sexybutton sexyicononly aCliente" ><span><span><span class="print"></span></span></span></a>
                                                 <a id="rClienteECTipoCondicionOrdenVCLExcel" class="sexybutton sexyicononly aCliente" ><span><span><span class="excel"></span></span></span></a>
                                             </td>
-                                        </tr>
+                                        </tr>                                        
                                         <tr>
-                                            <td colspan="8" style="font-size: 10px;">
-                                                (*) Si desea obtener el reporte en un rango determinado,dejar en blanco si quiere todo.<br>
-                                                (**) Si se desea obtener las letras que se vencen hasta el dia seleccionado.
-                                                Ej: Si se obtiene el reporte hasta la fecha 31/01/2014 obtendrá las letras que se venceran hasta un día anterior
+                                            <td colspan="7" style="font-size: 10px;">
+                                                (*) Si desea obtener el reporte en un rango determinado seleccionar fecha caso contrario dejar en blanco si quiere todo.<br>
+                                                (**) Si se desea obtener las letras que se vencen hasta el dia seleccionado.<br>
+                                                Ej: Si se obtiene el reporte hasta la fecha 31/01/2014 obtendrá las letras que se<br> venceran hasta un día anterior
                                                 ya que si se vence el 31/01/2014 no se considera vencida. Con la opción marcada tomará hasta el 31/01/2014.
                                             </td>
                                         </tr>

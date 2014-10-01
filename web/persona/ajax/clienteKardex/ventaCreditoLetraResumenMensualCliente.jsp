@@ -20,13 +20,12 @@
     Date fechaVencimientoEspera = new cManejoFechas().StringADate(new cManejoFechas().fechaSumarDias(fechaBase, -diaEspera));
     List VCLetra = new cVentaCreditoLetra().leer_cliente_interesSinActualizar(fechaVencimientoEspera, fechaBase, true, codCliente);
     new cVentaCreditoLetra().actualizar_interes(VCLetra, fechaBase);
-    
+
     List VCLRMList = new cVentaCreditoLetra().leer_resumenPagos(new cDatosCliente().leer_cod(codCliente).getPersona().getCodPersona());
 %>
 <table class="reporte-tabla-2 anchoTotal" style="font-size: 9px;">
     <tbody>
         <%
-            cManejoFechas objcManejoFechas = new cManejoFechas();
             cOtros objcOtros = new cOtros();
             for (Iterator it = VCLRMList.iterator(); it.hasNext();) {
                 Object[] temRP = (Object[]) it.next();

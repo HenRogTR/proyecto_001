@@ -6,7 +6,6 @@
 package Dao;
 
 import Interface.InterfaceDaoCliente;
-import java.util.LinkedList;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;

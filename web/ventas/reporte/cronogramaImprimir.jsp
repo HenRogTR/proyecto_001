@@ -86,7 +86,7 @@
                 <table class="tabla-imprimir">
                     <thead>
                         <tr class="bottom2">
-                            <th colspan="7"><label>Reporte letras del cliente: <%=objVentaCreditoLetra0.getVentaCredito().getVentas().getPersona().getNombresC()%></label></th>
+                            <th colspan="7"><label>Reporte letras del cliente: <%=objVentaCreditoLetra0.getVentas().getPersona().getNombresC()%></label></th>
                         </tr>
                         <tr class="bottom2">
                             <th><label>Doc. Serie N°:</label></th>
@@ -99,7 +99,7 @@
                         </tr>
                         <tr>
                             <td colspan="7">
-                                <label><%=objVentaCreditoLetra0.getVentaCredito().getVentas().getDocSerieNumero()%>&nbsp;&nbsp;&nbsp;<%=objcManejoFechas.DateAString(objVentaCreditoLetra0.getVentaCredito().getVentas().getFecha())%></label>
+                                <label><%=objVentaCreditoLetra0.getVentas().getDocSerieNumero()%>&nbsp;&nbsp;&nbsp;<%=objcManejoFechas.DateAString(objVentaCreditoLetra0.getVentas().getFecha())%></label>
                             </td>
                         </tr>
                     </thead>
@@ -128,10 +128,10 @@
                             <td></td>
                             <td><label style="font-weight: bold">Total general</label></td>
                             <td></td>
-                            <td style="text-align: right;padding-right: 10px;"><%=objcOtros.agregarCerosNumeroFormato(objVentaCreditoLetra0.getVentaCredito().getVentas().getNeto(), 2)%></td>
+                            <td style="text-align: right;padding-right: 10px;"><%=objcOtros.agregarCerosNumeroFormato(objVentaCreditoLetra0.getVentas().getNeto(), 2)%></td>
                             <td style="text-align: right;padding-right: 10px;"><%=objcOtros.agregarCerosNumeroFormato(objcOtros.redondearDecimales(pagado, 2), 2)%></td>
                             <td></td>
-                            <td style="text-align: right;padding-right: 10px;"><%=objcOtros.agregarCerosNumeroFormato(objcOtros.redondearDecimales(objVentaCreditoLetra0.getVentaCredito().getVentas().getNeto() - pagado, 2), 2)%></td>
+                            <td style="text-align: right;padding-right: 10px;"><%=objcOtros.agregarCerosNumeroFormato(objcOtros.redondearDecimales(objVentaCreditoLetra0.getVentas().getNeto() - pagado, 2), 2)%></td>
                         </tr>
                         <tr>
                             <td style="height: 20px;"></td>

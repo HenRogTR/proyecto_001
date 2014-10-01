@@ -10,7 +10,6 @@
 <%@page import="java.util.List"%>
 <%@page import="ventaClases.cVentaCreditoLetra"%>
 <%@page import="tablas.VentaCreditoLetra"%>
-<%@page import="tablas.VentaCredito"%>
 <%@page import="ventaClases.cVenta"%>
 <%@page import="tablas.Ventas"%>
 <%

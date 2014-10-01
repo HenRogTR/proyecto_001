@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ventaServlets;
+package Servlet;
 
+import Ejb.EjbVentaCreditoLetra;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
-import java.util.List;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,9 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import tablas.Usuario;
-import utilitarios.cManejoFechas;
-import utilitarios.cValidacion;
-import ventaClases.cVentaCreditoLetra;
 
 /**
  *
@@ -26,6 +24,9 @@ import ventaClases.cVentaCreditoLetra;
  */
 @WebServlet(name = "sVentaCreditoLetra", urlPatterns = {"/sVentaCreditoLetra"})
 public class sVentaCreditoLetra extends HttpServlet {
+
+    @EJB
+    private EjbVentaCreditoLetra ejbVentaCreditoLetra;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,19 +41,41 @@ public class sVentaCreditoLetra extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+
         HttpSession session = request.getSession();
+        // ============================ sesión =================================
+        //verficar inicio de sesión        
         Usuario objUsuario = (Usuario) session.getAttribute("usuario");
         if (objUsuario == null) {
-            out.print("Sesión de usuario no iniciada.");
+            out.print("La sesión se ha cerrado.");
             return;
         }
-        String accion = request.getParameter("accion");
-        if (accion == null) {
-            out.print("Acción no encontrada.");
+        //actualizamos ultimo ingreso
+        session.setAttribute("fechaAcceso", new Date());
+        // ============================ sesión =================================
+        String accion = request.getParameter("accionVentaCreditoLetra");
+        if (null == accion) {
+            out.print("Acción no encontrada");
             return;
         }
-
-        out.print("La acción (" + accion + ") no ha sido implementada.");
+        if ("imprimirVentaCreditoLetra".equals(accion)) {
+            //asignar el código a una sessión
+            try {
+                session.removeAttribute("reporteVentaCreditoLetraCodCliente");
+                session.setAttribute("reporteVentaCreditoLetraCodCliente", request.getParameter("codCliente").toString());
+                String tipo = request.getParameter("tipo").toString();
+                session.removeAttribute("reporteVentaCreditoLetraCodVenta");
+                session.setAttribute("reporteVentaCreditoLetraCodVenta", "ventaActual".equals(tipo) ? request.getParameter("codVenta") : null);
+            } catch (Exception e) {
+                out.print("Error en parámetros.");
+                return;
+            }
+            //redireccionamos
+            response.sendRedirect("reporte/ventaCreditoLetraPorCodClienteYCodVenta.jsp");
+            return;
+        }
+        //si en caso no se ejecuta la acción.
+        out.print("Acción <" + accion + "> no implementada.");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

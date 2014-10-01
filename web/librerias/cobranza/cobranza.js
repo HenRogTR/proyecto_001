@@ -578,7 +578,7 @@ function fCobranzaResumen(codCliente) {
 //<editor-fold defaultstate="collapsed" desc="function fVentaCreditoLetraResumen(codCliente). Clic en  + para más detalles.">
 function fVentaCreditoLetraResumen(codCliente) {
     var data = {codCliente: codCliente};
-    var url = 'ajax/ventaCreditoLetraResumenLeer.jsp';
+    var url = '../ajax/ventaCreditoLetraPorCodigoCliente.jsp';
     try {
         $.ajax({
             type: 'post',
@@ -612,8 +612,8 @@ function fVentaCreditoLetraResumen(codCliente) {
                     var $td5 = $('<td/>', {html: VCLResumenItem.interes, 'class': VCLResumenItem.finalVenta + ' derecha interes', css: {'width': 45, 'background-color': VCLResumenItem.estilo}}).appendTo($tr);
                     var $td6 = $('<td/>', {html: VCLResumenItem.totalPago, 'class': VCLResumenItem.finalVenta + ' derecha pagoLetra', css: {'width': 45, 'background-color': VCLResumenItem.estilo}}).appendTo($tr);
                     var $td7 = $('<td/>', {html: VCLResumenItem.fechaPago, 'class': VCLResumenItem.finalVenta + ' derecha', css: {'width': 60, 'background-color': VCLResumenItem.estilo}}).appendTo($tr);
-                    var $td8 = $('<td/>', {html: VCLResumenItem.diasRetraso, 'class': VCLResumenItem.finalVenta + ' derecha', css: {'width': 25, 'background-color': VCLResumenItem.estilo}}).appendTo($tr);
-                    var $td9 = $('<td/>', {html: VCLResumenItem.saldo, 'class': VCLResumenItem.finalVenta + ' derecha saldoLetra', css: {'background-color': VCLResumenItem.estilo}}).appendTo($tr);
+                    var $td8 = $('<td/>', {html: VCLResumenItem.diaRetraso, 'class': VCLResumenItem.finalVenta + ' derecha', css: {'width': 25, 'background-color': VCLResumenItem.estilo}}).appendTo($tr);
+                    var $td9 = $('<td/>', {html: VCLResumenItem.saldoLetra, 'class': VCLResumenItem.finalVenta + ' derecha saldoLetra', css: {'background-color': VCLResumenItem.estilo}}).appendTo($tr);
                     //asigna al 6 pq marcaba error
                     var $codVenta = $('<span/>', {'class': 'codVenta ocultar', html: VCLResumenItem.codVenta}).appendTo($td7);
                     if (i == 0) {
@@ -621,7 +621,7 @@ function fVentaCreditoLetraResumen(codCliente) {
                     }
                     deudaTotal += (parseFloat(VCLResumenItem.monto) + parseFloat(VCLResumenItem.interes));
                     pagadoTotal += parseFloat(VCLResumenItem.totalPago);
-                    saldoTotal += parseFloat(VCLResumenItem.saldo);
+                    saldoTotal += parseFloat(VCLResumenItem.saldoLetra);
                 }
                 $('.tr_ventaCreditoLetra').bind('click', f_ventaCreditoLetra_click);
                 $('.tr_ventaCreditoLetra').bind('dblclick', f_ventaCreditoLetra_dblclick);
@@ -657,7 +657,8 @@ function fVentaCreditoLetraResumen(codCliente) {
 //<editor-fold defaultstate="collapsed" desc="function vCLResumenMensual(codCliente). Clic en  + para más detalles.">
 function fDeudaMes(codCliente) {
     var data = {codCliente: codCliente};
-    var url = 'ajax/deudaMes_codCliente.jsp';
+//    var url = 'ajax/deudaMes_codCliente.jsp';
+    var url = '../ajax/ventaCreditoLetraResumenMensualPorCodigoCliente.jsp';
     try {
         $.ajax({
             type: 'post',
@@ -678,10 +679,14 @@ function fDeudaMes(codCliente) {
                 for (var i = 0; i < tamanio; i++) {
                     var deudaMesItem = deudaMesArray[i];
                     var $tr = $('<tr/>').appendTo($t_deudaMes);
-                    var $td1 = $('<td/>', {html: deudaMesItem.anioMes, 'class': 'derecha', css: {'width': 45}}).appendTo($tr);
-                    var $td2 = $('<td/>', {html: deudaMesItem.monto, 'class': 'derecha', css: {'width': 55}}).appendTo($tr);
-                    var $td3 = $('<td/>', {html: deudaMesItem.totalPago, 'class': 'derecha', css: {'width': 45}}).appendTo($tr);
-                    var $td4 = $('<td/>', {html: deudaMesItem.saldo, 'class': 'derecha'}).appendTo($tr);
+//                    var $td1 = $('<td/>', {html: deudaMesItem.anioMes, 'class': 'derecha', css: {'width': 45}}).appendTo($tr);
+//                    var $td2 = $('<td/>', {html: deudaMesItem.monto, 'class': 'derecha', css: {'width': 55}}).appendTo($tr);
+//                    var $td3 = $('<td/>', {html: deudaMesItem.totalPago, 'class': 'derecha', css: {'width': 45}}).appendTo($tr);
+//                    var $td4 = $('<td/>', {html: deudaMesItem.saldo, 'class': 'derecha'}).appendTo($tr);
+                    var $td1 = $('<td/>', {html: deudaMesItem.mes + '-' + deudaMesItem.anio, 'class': 'derecha', css: {'width': 45}}).appendTo($tr);
+                    var $td2 = $('<td/>', {html: deudaMesItem.deudaAcumulada, 'class': 'derecha', css: {'width': 55}}).appendTo($tr);
+                    var $td3 = $('<td/>', {html: deudaMesItem.pagoTotal, 'class': 'derecha', css: {'width': 45}}).appendTo($tr);
+                    var $td4 = $('<td/>', {html: deudaMesItem.saldoConInteres, 'class': 'derecha'}).appendTo($tr);
                 }
                 $t_deudaMes.next('.esperando_contenedor').addClass('ocultar');
             },
@@ -702,10 +707,10 @@ function fDeudaMes(codCliente) {
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="function fVentaDetalle(codVenta). Clic en  + para más detalles.">
-function fVentaDetalle(codVenta) {
+function fVentaDetalle(codVenta, docSerieNumero) {
     var $tbVentaDetalle = $('#t_ventaDetalle');
     var data = {codVenta: codVenta};
-    var url = 'ajax/ventaDetalleLeer.jsp';
+    var url = '../ajax/ventaDetallePorCodVenta.jsp';
     try {
         $.ajax({
             type: 'post',
@@ -725,7 +730,7 @@ function fVentaDetalle(codVenta) {
                 for (var i = 0; i < VDArray.length; i++) {
                     VDItem = VDArray[i];
                     var $tr = $('<tr/>', {'class': 'manoPuntero'}).appendTo($tbVentaDetalle);
-                    var $td1 = $('<td/>', {html: VDItem.docSerieNumero, css: {'width': 80}}).appendTo($tr);
+                    var $td1 = $('<td/>', {html: docSerieNumero, css: {'width': 80}}).appendTo($tr);
                     var $td2 = $('<td/>', {html: VDItem.cantidad, 'class': 'derecha', css: {'width': 25}}).appendTo($tr);
                     var $td3 = $('<td/>', {html: VDItem.descripcion, css: {'width': 260}}).appendTo($tr);
                     var $td4 = $('<td/>', {html: VDItem.precioVenta, 'class': 'derecha', css: {'width': 60}}).appendTo($tr);
@@ -735,7 +740,7 @@ function fVentaDetalle(codVenta) {
             },
             statusCode: {
                 404: function() {
-                    $('#lServidorError').text('Página no encontrada(ajax/ventaDetalleLeer.jsp).');
+                    $('#lServidorError').text('Página no encontrada(' + url + ').');
                     $('#dServidorError').dialog('open');
                 }
             }
@@ -1071,7 +1076,7 @@ function f_cobranza_dblclick() {
 //<editor-fold defaultstate="collapsed" desc="function f_ventaCreditoLetra_click(objeto). Clic en  + para más detalles.">
 function f_ventaCreditoLetra_click(objeto) {
     var $this = $(this).attr('id') ? $(this) : objeto;
-    fVentaDetalle($this.find('.codVenta').text());
+    fVentaDetalle($this.find('.codVenta').text(), $this.attr('title'));
 }
 ;
 //</editor-fold>

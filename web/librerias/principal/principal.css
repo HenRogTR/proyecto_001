@@ -358,19 +358,3 @@ fieldset legend {
 tfoot.thFondoTd th{
     background: #F1F1F7;
 }
-
-.manoPuntero{
-    cursor: help;
-}
-
-.fondoVentaAnulada td{
-    background-color: #ff6666 !important;
-}
-
-.ventaCreditoLetraVencida td{
-    background-color: tomato !important;
-}
-
-.ventaCreditoLetraPorVencer td{
-    background-color: #ffcccc !important;
-}

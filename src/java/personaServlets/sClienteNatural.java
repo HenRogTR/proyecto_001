@@ -6,6 +6,7 @@ package personaServlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -48,7 +49,16 @@ public class sClienteNatural extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         HttpSession session = request.getSession();
-
+        // ============================ sesión =================================
+        //verficar inicio de sesión        
+        Usuario objUsuario = (Usuario) session.getAttribute("usuario");
+        if (objUsuario == null) {
+            out.print("La sesión se ha cerrado.");
+            return;
+        }
+        //actualizamos ultimo ingreso
+        session.setAttribute("fechaAcceso", new Date());
+        // ============================ sesión =================================
         String accion = request.getParameter("accionDatoCliente");
 
         cManejoFechas objcManejoFechas = new cManejoFechas();
@@ -56,7 +66,6 @@ public class sClienteNatural extends HttpServlet {
         cNatural objcNatural = new cNatural();
         cDatosCliente objcDatosCliente = new cDatosCliente();
         cOtros objcOtros = new cOtros();
-        Usuario objUsuario = (Usuario) session.getAttribute("usuario");
 
         int codDatoCliente = 0;
 

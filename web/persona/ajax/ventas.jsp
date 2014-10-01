@@ -8,7 +8,6 @@
 <%@page import="tablas.VentasSerieNumero"%>
 <%@page import="tablas.VentasDetalle"%>
 <%@page import="tablas.VentaCreditoLetra"%>
-<%@page import="tablas.VentaCredito"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
@@ -54,13 +53,15 @@
         Double interesGeneredo = 0.00, montoAmortizado = objVentas.getNeto(), deudaTotal = 0.00;
         String tipoVenta = "Contado";
         int numeroLetras = 0;
-        if (objVentas.getVentaCreditos().iterator().hasNext()) {
+        if (objVentas.getTipo().equals("credito")) {
             montoAmortizado = 0.00;
-            VentaCredito objVentaCredito = (VentaCredito) objVentas.getVentaCreditos().iterator().next();
             tipoVenta = "Crédito";
-            numeroLetras = objVentaCredito.getCantidadLetras();
-            for (VentaCreditoLetra objVentaCreditoLetra : objVentaCredito.getVentaCreditoLetras()) {
-                montoAmortizado += objVentaCreditoLetra.getTotalPago();
+            numeroLetras = objVentas.getCantidadLetras();
+            for (VentaCreditoLetra objVentaCreditoLetra : objVentas.getVentaCreditoLetras()) {
+                //evitar que considere letras eliminadas
+                if (objVentaCreditoLetra.getRegistro().substring(0, 1).equals("1")) {
+                    montoAmortizado += objVentaCreditoLetra.getTotalPago();
+                }
             }
             deudaTotal = objVentas.getNeto() - montoAmortizado;
         }

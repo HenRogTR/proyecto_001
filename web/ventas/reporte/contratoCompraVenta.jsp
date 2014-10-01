@@ -9,7 +9,6 @@
 <%@page import="utilitarios.cNumeroLetra"%>
 <%@page import="utilitarios.cOtros"%>
 <%@page import="tablas.VentaCreditoLetra"%>
-<%@page import="tablas.VentaCredito"%>
 <%@page import="tablas.VentasDetalle"%>
 <%@page import="tablas.VentasSerieNumero"%>
 <%@page import="ventaClases.cVenta"%>
@@ -129,11 +128,10 @@
                                 El Comprador se compromete a cancelar el precio pactado por el total de 
                                 <b>S/. <%=new cOtros().decimalFormato(objVentas.getNeto(), 2)%> <%=objVentas.getSon()%></b><br>
                                 <%
-                                    if (objVentas.getTipo().equals("CREDITO")) {
-                                        VentaCredito objVentaCredito = objVentas.getVentaCreditos().iterator().next();
+                                    if (objVentas.getTipo().equals("CREDITO")) {                                        
                                 %>
-                                <br>En <b><%=objVentaCredito.getCantidadLetras()%></b> cuota(s) mensuales por el valor de <b>S/. <%=new cOtros().decimalFormato(objVentaCredito.getMontoLetra(), 2)%></b> mensual(es) con 
-                                INICIAL de <b>S/. <%=new cOtros().decimalFormato(objVentaCredito.getMontoInicial(), 2)%></b>.
+                                <br>En <b><%=objVentas.getCantidadLetras()%></b> cuota(s) mensuales por el valor de <b>S/. <%=new cOtros().decimalFormato(objVentas.getMontoLetra(), 2)%></b> mensual(es) con 
+                                INICIAL de <b>S/. <%=new cOtros().decimalFormato(objVentas.getMontoInicial(), 2)%></b>.
 
                                 <br><br><b>CUARTO:</b> De las responsabilidades.-<br> 
                                 <b>“EL (LOS) COMPRADOR (ES)”</b> y/o <b>“EL (LOS) FIADORES)”,</b> 

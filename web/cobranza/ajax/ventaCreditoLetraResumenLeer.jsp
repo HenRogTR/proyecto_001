@@ -18,7 +18,7 @@
 [
 <%
     int codCliente = 0;
-    int codVentaCredito = 0;
+    int codVenta = 0;
     String margen = "";
     try {
         codCliente = Integer.parseInt(request.getParameter("codCliente"));
@@ -41,8 +41,8 @@
                 }
                 String dias = "";
                 String estilo = "";
-                if (codVentaCredito != objVentaCreditoLetra.getVentaCredito().getCodVentaCredito()) {
-                    codVentaCredito = objVentaCreditoLetra.getVentaCredito().getCodVentaCredito();
+                if (codVenta != objVentaCreditoLetra.getVentas().getCodVentas()) {
+                    codVenta = objVentaCreditoLetra.getVentas().getCodVentas();
                     margen = "finalVenta";
                 } else {
                     margen = "";
@@ -73,8 +73,8 @@
                         + ",\"diasRetraso\":\"" + dias + "\""
                         + ",\"estilo\":\"" + estilo + "\""
                         + ",\"finalVenta\":\"" + margen + "\""
-                        + ",\"codVenta\":" + objVentaCreditoLetra.getVentaCredito().getVentas().getCodVentas()
-                        + ",\"docNumeroSerie\":\"" + objVentaCreditoLetra.getVentaCredito().getVentas().getDocSerieNumero() + "\""
+                        + ",\"codVenta\":" + objVentaCreditoLetra.getVentas().getCodVentas()
+                        + ",\"docNumeroSerie\":\"" + objVentaCreditoLetra.getVentas().getDocSerieNumero() + "\""
                         + "}");
             }
         }

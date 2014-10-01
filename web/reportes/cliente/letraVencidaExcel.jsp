@@ -30,8 +30,11 @@
     String cabeceraString = "";
 
     String orden = "";
+    String fechaStringInicio = "";
     String fechaString = "";
     String fechaInteresBaseString = "";
+    Boolean fechaFinalUsar = false;
+    Date fechaDateInicio = null;
     Date fechaDate = null;
     Date fechaInteresBaseDate = new cManejoFechas().StringADate(new cManejoFechas().DateAString(new Date()));
     List LVList = null;
@@ -43,17 +46,22 @@
     Integer tipoInteger = 0;
     Integer condicionInteger = 0;
     try {
+        fechaStringInicio = request.getParameter("fechaVencimientoInicio");
         fechaString = request.getParameter("fechaVencimiento").toString();
         if (!new cValidacion().validarFecha(fechaString)) {
             out.print("Fecha y/o formato de fecha incorrecta.");
             return;
         }
+        fechaDateInicio = new Fecha().stringADate(fechaStringInicio);
         fechaDate = new cManejoFechas().StringADate(fechaString);
     } catch (Exception e) {
-        out.print("Fecha de vencimiento no encontrada.");
+        out.print("Fecha(s) de vencimiento(s) no encontrada(s).");
         return;
     }
-
+    fechaFinalUsar = Boolean.parseBoolean(request.getParameter("fechaFinalUsar"));
+    //Fechas que vencen en fechaDate figurar en el reporte
+    //si se usa se suma un día
+    fechaDate = fechaFinalUsar ? new Fecha().sumarDias(fechaDate, 1) : fechaDate;
     //========================== 1 nivel =======================================
     if (reporte.equals("nombresC_todos")) {
         LVList = new cVentaCreditoLetraReporte().letrasVencidas_todos_ordenNombresC_SC(fechaDate);
@@ -376,7 +384,7 @@
                             <th colspan="3"><label>Letras X cobrar : Clientes en general(Apellidos/Nombres) - Vencimiento <%=fechaString%></label></th>
                         </tr>
                         <tr>
-                            <th colspan="3">INTERESES CALCULADOS AL <%=new cManejoFechas().DateAString(fechaInteresBaseDate)%></th>
+                            <th colspan="3">INTERESES CALCULADOS <%if (fechaDateInicio != null) {%>DEL <%=new Fecha().dateAString(fechaDateInicio)%><%}%> AL <%=new cManejoFechas().DateAString(fechaInteresBaseDate)%></th>
                         </tr>
                         <%=cabeceraString%>
                         <tr class="bottom1">
@@ -396,6 +404,7 @@
                             Date fecha = null;
                             Integer codCliente = 0;
                             Date fechaVencimiento = null;
+                            Date fechaVencimientoAyuda = null;
                             Double monto = 0.00;
                             Double interes = 0.00;
                             Date fechaPago = null;
@@ -419,12 +428,14 @@
                                 //obtenemos el objeto
                                 Object dato[] = (Object[]) it.next();
                                 codCliente = (Integer) dato[7];
+                                fechaVencimientoAyuda = (Date) dato[16];
                                 //si es el primer item
                                 if (contAux++ == 0) {
                                     codClienteAux = codCliente;
                                 }
-                                //si el codCliente es diferente al anterior se imprimimen los datos
-                                if (!codClienteAux.equals(codCliente)) {
+                                if (null == fechaDateInicio || !fechaVencimientoAyuda.before(fechaDateInicio)) {
+                                    //si el codCliente es diferente al anterior se imprimimen los datos
+                                    if (!codClienteAux.equals(codCliente)) {
                         %>
                         <tr>
                             <td style="text-align: left;padding-left: 5px; mso-number-format:'@';"><span><%=new cOtros().agregarCeros_int(codClienteAux, 8)%></span></td>
@@ -434,50 +445,51 @@
                             <td style="text-align: right; mso-number-format:'0.00';"><%=new cOtros().decimalFormato(deudaTotal, 2)%></td>
                         </tr>
                         <%
-                                    codClienteAux = codCliente;
-                                    deudaTotal = 0.00;
-                                    fechaVentaDeLetraMasVencida = null;
-                                    fechaVencimientoAux = null;
-                                }
-                                nombresC = (String) dato[1];
-                                dniPasaporte = (String) dato[2];
-                                ruc = (String) dato[3];
-                                fecha = (Date) dato[10];
-                                fechaVencimiento = (Date) dato[16];
-                                monto = (Double) dato[17];
-                                interes = (Double) dato[18];
-                                fechaPago = (Date) dato[19];
-                                totalPago = (Double) dato[20];
-                                interesPagado = (Double) dato[21];
-                                interesUltimoCalculo = (Date) dato[22];
-                                //obtener la fecha del credito con la letra mas vencida
-                                if (fechaVentaDeLetraMasVencida == null) {
-                                    fechaVentaDeLetraMasVencida = fecha;
-                                    fechaVencimientoAux = fechaVencimiento;
-                                } else {
-                                    //si fecha vencimiento es menor a la usx
-                                    if (fechaVencimientoAux.after(fechaVencimiento)) {
-                                        fechaVencimientoAux = fechaVencimiento;
-                                        fechaVentaDeLetraMasVencida = fecha;
+                                        codClienteAux = codCliente;
+                                        deudaTotal = 0.00;
+                                        fechaVentaDeLetraMasVencida = null;
+                                        fechaVencimientoAux = null;
                                     }
-                                }
+                                    nombresC = (String) dato[1];
+                                    dniPasaporte = (String) dato[2];
+                                    ruc = (String) dato[3];
+                                    fecha = (Date) dato[10];
+                                    fechaVencimiento = (Date) dato[16];
+                                    monto = (Double) dato[17];
+                                    interes = (Double) dato[18];
+                                    fechaPago = (Date) dato[19];
+                                    totalPago = (Double) dato[20];
+                                    interesPagado = (Double) dato[21];
+                                    interesUltimoCalculo = (Date) dato[22];
+                                    //obtener la fecha del credito con la letra mas vencida
+                                    if (fechaVentaDeLetraMasVencida == null) {
+                                        fechaVentaDeLetraMasVencida = fecha;
+                                        fechaVencimientoAux = fechaVencimiento;
+                                    } else {
+                                        //si fecha vencimiento es menor a la usx
+                                        if (fechaVencimientoAux.after(fechaVencimiento)) {
+                                            fechaVencimientoAux = fechaVencimiento;
+                                            fechaVentaDeLetraMasVencida = fecha;
+                                        }
+                                    }
 
-                                if (interesUltimoCalculo == null) {//se tomara el ultimo pago o la fecha de vencimiento
-                                    //error al haber una fecha de pago anterior a la fecha de vencimiento
-                                    diaRetraso = new cManejoFechas().diferenciaDosDias(fechaInteresBaseDate, fechaPago != null ? (fechaPago.before(fechaVencimiento) ? fechaVencimiento : fechaPago) : fechaVencimiento);
-                                } else {
-                                    diaRetraso = new cManejoFechas().diferenciaDosDias(fechaInteresBaseDate, interesUltimoCalculo);
-                                }
-                                diaRetraso = diaRetraso < 0 ? 0 : diaRetraso;
-                                diaRetraso = diaRetraso <= diaEspera ? 0 : diaRetraso;      //todos aquellos dentro de los dias de espera no se generan intereses.
-                                interesSumar = (monto - totalPago) * factorInteres * diaRetraso;    //solo se genera interes del capital
-                                interes += interesSumar;
+                                    if (interesUltimoCalculo == null) {//se tomara el ultimo pago o la fecha de vencimiento
+                                        //error al haber una fecha de pago anterior a la fecha de vencimiento
+                                        diaRetraso = new cManejoFechas().diferenciaDosDias(fechaInteresBaseDate, fechaPago != null ? (fechaPago.before(fechaVencimiento) ? fechaVencimiento : fechaPago) : fechaVencimiento);
+                                    } else {
+                                        diaRetraso = new cManejoFechas().diferenciaDosDias(fechaInteresBaseDate, interesUltimoCalculo);
+                                    }
+                                    diaRetraso = diaRetraso < 0 ? 0 : diaRetraso;
+                                    diaRetraso = diaRetraso <= diaEspera ? 0 : diaRetraso;      //todos aquellos dentro de los dias de espera no se generan intereses.
+                                    interesSumar = (monto - totalPago) * factorInteres * diaRetraso;    //solo se genera interes del capital
+                                    interes += interesSumar;
 
-                                deudaTotal += monto - totalPago + interes - interesPagado;
+                                    deudaTotal += monto - totalPago + interes - interesPagado;
+                                }
                             }
                         %>
                         <tr>
-                            <td style="text-align: left;padding-left: 5px; mso-number-format:'@';"><span>*<%=new cOtros().agregarCeros_int(codCliente, 8)%></span></td>
+                            <td style="text-align: left;padding-left: 5px; mso-number-format:'@';"><span><%=new cOtros().agregarCeros_int(codCliente, 8)%></span></td>
                             <td><%=nombresC%></td>
                             <td><%=new Fecha().dateAString(fechaVentaDeLetraMasVencida)%></td>
                             <td style="text-align: right; mso-number-format:'@';"><%=dniPasaporte.equals("") ? ruc : dniPasaporte%></td>

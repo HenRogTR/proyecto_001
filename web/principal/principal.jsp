@@ -4,8 +4,6 @@
     Author     : Henrri
 --%>
 
-
-
 <%@page import="utilitarios.cManejoFechas"%>
 <%
     cManejoFechas objcManejoFechas = new cManejoFechas();

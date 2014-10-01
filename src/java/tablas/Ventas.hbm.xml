@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 22/05/2014 10:20:57 AM by Hibernate Tools 3.6.0 -->
+<!-- Generated 22/07/2014 11:50:39 AM by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
     <class name="tablas.Ventas" table="ventas" catalog="proyecto_001">
         <id name="codVentas" type="java.lang.Integer">
@@ -53,6 +53,9 @@
         <property name="observacion" type="string">
             <column name="observacion" length="65535" />
         </property>
+        <property name="codCliente" type="int">
+            <column name="cod_cliente" not-null="true" />
+        </property>
         <property name="cliente" type="string">
             <column name="cliente" length="65535" />
         </property>
@@ -71,20 +74,50 @@
         <property name="direccion3" type="string">
             <column name="direccion3" length="65535" />
         </property>
+        <property name="duracion" type="string">
+            <column name="duracion" length="45" />
+        </property>
+        <property name="montoInicial" type="double">
+            <column name="monto_inicial" precision="10" not-null="true" />
+        </property>
+        <property name="fechaInicialVencimiento" type="date">
+            <column name="fecha_inicial_vencimiento" length="10" />
+        </property>
+        <property name="cantidadLetras" type="int">
+            <column name="cantidad_letras" not-null="true" />
+        </property>
+        <property name="montoLetra" type="double">
+            <column name="monto_letra" precision="10" not-null="true" />
+        </property>
+        <property name="fechaVencimientoLetraDeuda" type="date">
+            <column name="fecha_vencimiento_letra_deuda" length="10" />
+        </property>
+        <property name="interes" type="double">
+            <column name="interes" precision="10" not-null="true" />
+        </property>
+        <property name="amortizado" type="double">
+            <column name="amortizado" precision="10" not-null="true" />
+        </property>
+        <property name="interesPagado" type="double">
+            <column name="interes_pagado" precision="10" not-null="true" />
+        </property>
+        <property name="saldo" type="double">
+            <column name="saldo" precision="10" not-null="true" />
+        </property>
         <property name="registro" type="string">
             <column name="registro" length="65535" not-null="true" />
         </property>
-        <set name="ventaCreditos" table="venta_credito" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="ventas_cod_ventas" not-null="true" />
-            </key>
-            <one-to-many class="tablas.VentaCredito" />
-        </set>
         <set name="ventasDetalles" table="ventas_detalle" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="ventas_cod_ventas" not-null="true" />
             </key>
             <one-to-many class="tablas.VentasDetalle" />
+        </set>
+        <set name="ventaCreditoLetras" table="venta_credito_letra" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ventas_cod_ventas" not-null="true" />
+            </key>
+            <one-to-many class="tablas.VentaCreditoLetra" />
         </set>
         <set name="tramiteDocumentarios" table="tramite_documentario" inverse="true" lazy="true" fetch="select">
             <key>

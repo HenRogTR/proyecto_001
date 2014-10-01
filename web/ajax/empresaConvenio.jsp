@@ -4,6 +4,8 @@
     Author     : Henrri
 --%>
 
+<%@page import="java.util.Date"%>
+<%@page import="tablas.Usuario"%>
 <%@page import="Clase.Utilitarios"%>
 <%@page import="java.util.List"%>
 <%@page import="tablas.EmpresaConvenio"%>
@@ -14,6 +16,16 @@
         out.print("No tiene permisos para ver este enlace.");
         return;
     }
+    // ============================ sesión =====================================
+    //verficar inicio de sesión        
+    Usuario objUsuario = (Usuario) session.getAttribute("usuario");
+    if (objUsuario == null) {
+        out.print("La sesión se ha cerrado.");
+        return;
+    }
+    //actualizamos ultimo ingreso
+    session.setAttribute("fechaAcceso", new Date());
+    // ============================ sesión =====================================
     EjbEmpresaConvenio ejbEmpresaConvenio;
     //inicializar ejb
     ejbEmpresaConvenio = new EjbEmpresaConvenio();

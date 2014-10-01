@@ -5,11 +5,9 @@
 --%>
 <%@page import="utilitarios.cOtros"%>
 <%@page import="utilitarios.cManejoFechas"%>
-<%@page import="ventaClases.cVentaCredito"%>
 <%@page import="ventaClases.cVentasDetalle"%>
 <%@page import="personaClases.cPersona"%>
 <%@page import="tablas.VentaCreditoLetra"%>
-<%@page import="tablas.VentaCredito"%>
 <%@page import="tablas.VentasSerieNumero"%>
 <%@page import="tablas.VentasDetalle"%>
 <%@page import="java.util.Iterator"%>
@@ -165,9 +163,8 @@
                             <td></td>
                             <td></td>
                             <td style="font-size: 8px;">
-                                <%
-                                    VentaCredito objVentaCredito = new cVentaCredito().leer_codVenta(objVentasAux.getCodVentas());
-                                    out.print("<br><br>Incial S/. " + objcOtros.agregarCerosNumeroFormato(objVentaCredito.getMontoInicial(), 2) + " ," + objVentaCredito.getCantidadLetras() + " Letra(s) de S/. " + objcOtros.agregarCerosNumeroFormato(objVentaCredito.getMontoLetra(), 2) + ", Inicio: " + objcManejoFechas.DateAString(objVentaCredito.getFechaVencimientoLetra()));
+                                <%                                    
+                                    out.print("<br><br>Incial S/. " + objcOtros.agregarCerosNumeroFormato(objVentasAux.getMontoInicial(), 2) + " ," + objVentasAux.getCantidadLetras() + " Letra(s) de S/. " + objcOtros.agregarCerosNumeroFormato(objVentasAux.getMontoLetra(), 2) + ", Inicio: " + objcManejoFechas.DateAString(objVentasAux.getFechaVencimientoLetraDeuda()));
                                 %>
                             </td>
                         </tr>

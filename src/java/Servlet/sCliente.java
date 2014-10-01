@@ -45,12 +45,20 @@ public class sCliente extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         HttpSession session = request.getSession();
-
-        String accion = request.getParameter("accion");
+        // ============================ sesión =================================
+        //verficar inicio de sesión        
         Usuario objUsuario = (Usuario) session.getAttribute("usuario");
+        if (objUsuario == null) {
+            out.print("La sesión se ha cerrado.");
+            return;
+        }
+        //actualizamos ultimo ingreso
+        session.setAttribute("fechaAcceso", new Date());
+        // ============================ sesión =================================
+        String accion = request.getParameter("accion");
 
         if (null == accion) {
-            out.print("Acción encontrada");
+            out.print("Acción no encontrada");
             return;
         }
         if ("mantenimiento".equals(accion)) {
@@ -107,16 +115,15 @@ public class sCliente extends HttpServlet {
             return;
         }
         if ("imprimirVenta".equals(accion)) {
-            int codCliente = 0;
             try {
-                codCliente = Integer.parseInt(request.getParameter("codCliente"));
                 //asignar el código a una sessión
-                session.setAttribute("reporteVentaCodCliente", codCliente);
-                //redireccionamos
-                response.sendRedirect("reporte/ventaPorCodCliente.jsp");
+                session.removeAttribute("reporteVentaCodCliente");
+                session.setAttribute("reporteVentaCodCliente", request.getParameter("codCliente"));
             } catch (Exception e) {
                 out.print("Código de cliente no encontrado.");
             }
+            //redireccionamos
+            response.sendRedirect("reporte/ventaPorCodCliente.jsp");
             return;
         }
         out.print("No se encontró operación para: " + accion);

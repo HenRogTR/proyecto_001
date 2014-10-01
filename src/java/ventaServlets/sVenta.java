@@ -21,12 +21,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import otrasTablasClases.cDatosExtras;
+import personaClases.cDatosCliente;
 import personaClases.cPersona;
 import tablas.Almacen;
 import tablas.KardexArticuloProducto;
 import tablas.KardexSerieNumero;
 import tablas.Usuario;
-import tablas.VentaCredito;
 import tablas.VentaCreditoLetra;
 import tablas.Ventas;
 import tablas.VentasDetalle;
@@ -35,7 +35,6 @@ import utilitarios.cManejoFechas;
 import utilitarios.cNumeroLetra;
 import utilitarios.cOtros;
 import ventaClases.cVenta;
-import ventaClases.cVentaCredito;
 import ventaClases.cVentaCreditoLetra;
 import ventaClases.cVentasDetalle;
 import ventaClases.cVentasSerieNumero;
@@ -98,8 +97,8 @@ public class sVenta extends HttpServlet {
                     return;
                 }
                 codVenta = Integer.parseInt(request.getParameter("codVenta"));
-                Ventas objVentas = objcVenta.leer_cod(codVenta);
-                if (objVentas.getRegistro().substring(0, 1).equals("0")) {
+                Ventas objVenta = objcVenta.leer_cod(codVenta);
+                if (objVenta.getRegistro().substring(0, 1).equals("0")) {
                     out.print("La venta ya se encuentra anulada.");
                     return;
                 }
@@ -108,7 +107,7 @@ public class sVenta extends HttpServlet {
                  * registr=0??????
                  * T_ventaDetalle: valor venta=0
                  */
-                if (objVentas.getTipo().equals("CONTADO")) {
+                if (objVenta.getTipo().equals("CONTADO")) {
                     List lVentasDetalle = objcVentasDetalle.leer_ventas_porCodVentas(codVenta);
                     Iterator iVentaDetalle = lVentasDetalle.iterator();
                     while (iVentaDetalle.hasNext()) {
@@ -156,93 +155,80 @@ public class sVenta extends HttpServlet {
                         //actualizar datos
                         objcVentasDetalle.actualizar_valorVenta(objVentaDetalle.getCodVentasDetalle(), 0.00);
                     }
-                    objcVenta.actualizar_anularVenta(objVentas.getCodVentas(), 0.00, 0.00, 0.00, 0.00, 0.00, "*** DOCUMENTO ANULADO ***", objcOtros.registro("0", objUsuario.getCodUsuario().toString()));
-                    out.print(objVentas.getCodVentas());
+                    objcVenta.actualizar_anularVenta(objVenta.getCodVentas(), 0.00, 0.00, 0.00, 0.00, 0.00, "*** DOCUMENTO ANULADO ***", objcOtros.registro("0", objUsuario.getCodUsuario().toString()));
+                    out.print(objVenta.getCodVentas());
                 }//fin tipo de venta contado
-                if (objVentas.getTipo().equals("CREDITO")) {
-                    cVentaCredito objcVentaCredito = new cVentaCredito();
-                    cVentaCreditoLetra objcVentaCreditoLetra = new cVentaCreditoLetra();
-                    Boolean temLetraPagadas = true;
-                    VentaCredito objVentaCreditoTemp = null;
-                    for (VentaCredito objVentaCredito : objVentas.getVentaCreditos()) {
-                        if (objVentaCredito.getRegistro().substring(0, 1).equals("1")) {
-                            objVentaCreditoTemp = objVentaCredito;
-                            for (VentaCreditoLetra objVentaCreditoLetra : objVentaCredito.getVentaCreditoLetras()) {
-                                if (objVentaCreditoLetra.getTotalPago() > 0) {
-                                    temLetraPagadas = false;
-                                }
-                            }
+                if (objVenta.getTipo().equals("CREDITO")) {
+                    for (VentaCreditoLetra objVentaCreditoLetra : objVenta.getVentaCreditoLetras()) {
+                        if (objVentaCreditoLetra.getRegistro().substring(0, 1).equals("1") & objVentaCreditoLetra.getTotalPago() > 0) {
+                            out.print("La venta contiene pagos realizados, elimine antes los pagos realizados.");
+                            return;
                         }
                     }
-                    if (temLetraPagadas) {
-                        //cambiar los datos antes vistos, ademas de poner en 0 las letras pendientes de pagos
-                        //venta creditp, registro a 0 y todas las letras de credito a 0 en los registros.
-                        objcVentaCredito.actualizar_registro(objVentaCreditoTemp.getCodVentaCredito(), "0", objUsuario.getCodUsuario().toString());
-                        for (VentaCreditoLetra objVentaCreditoLetra : objVentaCreditoTemp.getVentaCreditoLetras()) {
-                            objcVentaCreditoLetra.actualizar_registro(objVentaCreditoLetra.getCodVentaCreditoLetra(), "0", objUsuario.getCodUsuario().toString());
-                        }
+                    //cambiar los datos antes vistos, ademas de poner en 0 las letras pendientes de pagos
+                    //venta creditp, registro a 0 y todas las letras de credito a 0 en los registros.
+                    for (VentaCreditoLetra objVentaCreditoLetra : objVenta.getVentaCreditoLetras()) {
+                        new cVentaCreditoLetra().actualizar_registro(objVentaCreditoLetra.getCodVentaCreditoLetra(), "0", objUsuario.getCodUsuario().toString());
+                    }
 
-                        List lVentasDetalle = objcVentasDetalle.leer_ventas_porCodVentas(codVenta);
-                        Iterator iVentaDetalle = lVentasDetalle.iterator();
-                        while (iVentaDetalle.hasNext()) {
-                            VentasDetalle objVentaDetalle = (VentasDetalle) iVentaDetalle.next();
-                            //kardex actual
-                            KardexArticuloProducto objKardexArticuloProductoAlmacen = objcKardexArticuloProducto.leer_articuloProductoStock(objVentaDetalle.getArticuloProducto().getCodArticuloProducto(), objAlmacen.getCodAlmacen());
-                            KardexArticuloProducto objKardexArticuloProductoNuevo = new KardexArticuloProducto();//a registrar
-                            objKardexArticuloProductoNuevo.setArticuloProducto(new cArticuloProducto().leer_cod(objVentaDetalle.getArticuloProducto().getCodArticuloProducto()));
-                            objKardexArticuloProductoNuevo.setCodOperacion(objVentaDetalle.getVentas().getCodVentas());
-                            objKardexArticuloProductoNuevo.setCodOperacionDetalle(objVentaDetalle.getCodVentasDetalle());
-                            objKardexArticuloProductoNuevo.setTipoOperacion(5);
-                            objKardexArticuloProductoNuevo.setDetalle("REPOSICIÓN X ANULACIÓN " + objVentaDetalle.getVentas().getDocSerieNumero() + " " + objVentaDetalle.getVentas().getCliente());
-                            objKardexArticuloProductoNuevo.setEntrada(objVentaDetalle.getCantidad());
-                            objKardexArticuloProductoNuevo.setSalida(0);
-                            objKardexArticuloProductoNuevo.setPrecio(objVentaDetalle.getPrecioVenta());
-                            objKardexArticuloProductoNuevo.setStock(objKardexArticuloProductoAlmacen.getStock() + objKardexArticuloProductoNuevo.getEntrada());
-                            objKardexArticuloProductoNuevo.setPrecioPonderado(objKardexArticuloProductoAlmacen.getPrecioPonderado());
-                            objKardexArticuloProductoNuevo.setTotal(objKardexArticuloProductoNuevo.getPrecioPonderado() * objKardexArticuloProductoNuevo.getStock());
-                            objKardexArticuloProductoNuevo.setAlmacen(objAlmacen);
-                            objKardexArticuloProductoNuevo.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
-                            int codKardexArticuloProducto = objcKardexArticuloProducto.crear(objKardexArticuloProductoNuevo);
-                            //out.print(objKardexArticuloProductoNuevo.getDetalle());
-                            if (codKardexArticuloProducto != 0) {
-                                objKardexArticuloProductoNuevo.setCodKardexArticuloProducto(codKardexArticuloProducto);
+                    List lVentasDetalle = objcVentasDetalle.leer_ventas_porCodVentas(codVenta);
+                    Iterator iVentaDetalle = lVentasDetalle.iterator();
+                    while (iVentaDetalle.hasNext()) {
+                        VentasDetalle objVentaDetalle = (VentasDetalle) iVentaDetalle.next();
+                        //kardex actual
+                        KardexArticuloProducto objKardexArticuloProductoAlmacen = objcKardexArticuloProducto.leer_articuloProductoStock(objVentaDetalle.getArticuloProducto().getCodArticuloProducto(), objAlmacen.getCodAlmacen());
+                        KardexArticuloProducto objKardexArticuloProductoNuevo = new KardexArticuloProducto();//a registrar
+                        objKardexArticuloProductoNuevo.setArticuloProducto(new cArticuloProducto().leer_cod(objVentaDetalle.getArticuloProducto().getCodArticuloProducto()));
+                        objKardexArticuloProductoNuevo.setCodOperacion(objVentaDetalle.getVentas().getCodVentas());
+                        objKardexArticuloProductoNuevo.setCodOperacionDetalle(objVentaDetalle.getCodVentasDetalle());
+                        objKardexArticuloProductoNuevo.setTipoOperacion(5);
+                        objKardexArticuloProductoNuevo.setDetalle("REPOSICIÓN X ANULACIÓN " + objVentaDetalle.getVentas().getDocSerieNumero() + " " + objVentaDetalle.getVentas().getCliente());
+                        objKardexArticuloProductoNuevo.setEntrada(objVentaDetalle.getCantidad());
+                        objKardexArticuloProductoNuevo.setSalida(0);
+                        objKardexArticuloProductoNuevo.setPrecio(objVentaDetalle.getPrecioVenta());
+                        objKardexArticuloProductoNuevo.setStock(objKardexArticuloProductoAlmacen.getStock() + objKardexArticuloProductoNuevo.getEntrada());
+                        objKardexArticuloProductoNuevo.setPrecioPonderado(objKardexArticuloProductoAlmacen.getPrecioPonderado());
+                        objKardexArticuloProductoNuevo.setTotal(objKardexArticuloProductoNuevo.getPrecioPonderado() * objKardexArticuloProductoNuevo.getStock());
+                        objKardexArticuloProductoNuevo.setAlmacen(objAlmacen);
+                        objKardexArticuloProductoNuevo.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
+                        int codKardexArticuloProducto = objcKardexArticuloProducto.crear(objKardexArticuloProductoNuevo);
+                        //out.print(objKardexArticuloProductoNuevo.getDetalle());
+                        if (codKardexArticuloProducto != 0) {
+                            objKardexArticuloProductoNuevo.setCodKardexArticuloProducto(codKardexArticuloProducto);
 
-                                //registramos las series en stock
-                                for (KardexSerieNumero objKardexSerieNumero : objKardexArticuloProductoAlmacen.getKardexSerieNumeros()) {
-                                    objKardexSerieNumero.setCodKardexSerieNumero(null);
-                                    objKardexSerieNumero.setKardexArticuloProducto(objKardexArticuloProductoNuevo);
-                                    objKardexSerieNumero.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
-                                    objcKardexSerieNumero.crear(objKardexSerieNumero);
-                                }
-
-                                //registramos las series que se devuelven
-                                for (VentasSerieNumero objVentasSerieNumero : objVentaDetalle.getVentasSerieNumeros()) {
-                                    KardexSerieNumero objKardexSerieNumeroReposicion = new KardexSerieNumero();
-                                    objKardexSerieNumeroReposicion.setKardexArticuloProducto(objKardexArticuloProductoNuevo);
-                                    objKardexSerieNumeroReposicion.setSerieNumero(objVentasSerieNumero.getSerieNumero());
-                                    objKardexSerieNumeroReposicion.setObservacion(objVentasSerieNumero.getObservacion());
-                                    objKardexSerieNumeroReposicion.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
-                                    objcKardexSerieNumero.crear(objKardexSerieNumeroReposicion);
-                                }
-                            }//fin de registros de series
-                            else {
-                                out.print("Error en crer kardex:" + objcKardexArticuloProducto.getError());
+                            //registramos las series en stock
+                            for (KardexSerieNumero objKardexSerieNumero : objKardexArticuloProductoAlmacen.getKardexSerieNumeros()) {
+                                objKardexSerieNumero.setCodKardexSerieNumero(null);
+                                objKardexSerieNumero.setKardexArticuloProducto(objKardexArticuloProductoNuevo);
+                                objKardexSerieNumero.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
+                                objcKardexSerieNumero.crear(objKardexSerieNumero);
                             }
 
-                            //actualizar datos
-                            objcVentasDetalle.actualizar_valorVenta(objVentaDetalle.getCodVentasDetalle(), 0.00);
-                            objcVenta.actualizar_anularVenta(objVentas.getCodVentas(), 0.00, 0.00, 0.00, 0.00, 0.00, "*** DOCUMENTO ANULADO ***", objcOtros.registro("0", objUsuario.getCodUsuario().toString()));
+                            //registramos las series que se devuelven
+                            for (VentasSerieNumero objVentasSerieNumero : objVentaDetalle.getVentasSerieNumeros()) {
+                                KardexSerieNumero objKardexSerieNumeroReposicion = new KardexSerieNumero();
+                                objKardexSerieNumeroReposicion.setKardexArticuloProducto(objKardexArticuloProductoNuevo);
+                                objKardexSerieNumeroReposicion.setSerieNumero(objVentasSerieNumero.getSerieNumero());
+                                objKardexSerieNumeroReposicion.setObservacion(objVentasSerieNumero.getObservacion());
+                                objKardexSerieNumeroReposicion.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
+                                objcKardexSerieNumero.crear(objKardexSerieNumeroReposicion);
+                            }
+                        }//fin de registros de series
+                        else {
+                            out.print("Error en crer kardex:" + objcKardexArticuloProducto.getError());
                         }
-                        out.print(objVentas.getCodVentas());
-                    } else {
-                        out.print("La venta contiene pagos realizados, elimine antes los pagos realizados.");
+
+                        //actualizar datos
+                        objcVentasDetalle.actualizar_valorVenta(objVentaDetalle.getCodVentasDetalle(), 0.00);
+                        objcVenta.actualizar_anularVenta(objVenta.getCodVentas(), 0.00, 0.00, 0.00, 0.00, 0.00, "*** DOCUMENTO ANULADO ***", objcOtros.registro("0", objUsuario.getCodUsuario().toString()));
                     }
+                    out.print(objVenta.getCodVentas());
+
                 }
             }
             if (accion.equals("registrar")) {
                 try {
                     Ventas objVenta = new Ventas();
-                    VentaCredito objVentaCredito = new VentaCredito();
                     //inicio recogiendo datos
                     objVenta.setPersona(new cPersona().leer_cod(Integer.parseInt(request.getParameter("codPersona"))));
                     objVenta.setItemCantidad(Integer.parseInt(request.getParameter("itemCantidad")));
@@ -258,6 +244,7 @@ public class sVenta extends HttpServlet {
                     objVenta.setSon("");
                     objVenta.setPersonaCodVendedor(Integer.parseInt(request.getParameter("codVendedor")));
                     objVenta.setEstado(true);
+                    objVenta.setCodCliente((new cDatosCliente().leer_codPersona(objVenta.getPersona().getCodPersona()).getCodDatosCliente()));
                     objVenta.setCliente(objVenta.getPersona().getNombresC());
                     objVenta.setDireccion(objVenta.getPersona().getDireccion());
                     if (objVenta.getDocSerieNumero().substring(0, 1).equals("F")) {
@@ -354,21 +341,21 @@ public class sVenta extends HttpServlet {
                         ventaSerieNumeroList.add(lVentaSerieNumeroItem);//asi no naya series se registra
                     }
                     objVenta.setSon(new cNumeroLetra().importeNumeroALetra(new cOtros().decimalFormato(objVenta.getNeto(), 2), true));
+                    objVenta.setAmortizado(objVenta.getNeto());
                     //si en caso es al credito
                     if (objVenta.getTipo().equals("CREDITO")) {
                         Double neto = objVenta.getNeto();
                         Double montoLetra = objcOtros.redondearDecimales((neto - montoInicialLetra) / cantidadLetras, 1);
                         Double acumulado = 0.0;
-//
-                        objVentaCredito.setPersonaCodGarante(0);
-                        objVentaCredito.setCantidadLetras(cantidadLetras);
-                        objVentaCredito.setMontoInicial(montoInicialLetra);
-                        objVentaCredito.setFechaInicial(fechaVencimientoInicial);
-                        objVentaCredito.setEstado(true);
-                        objVentaCredito.setDuracion(periodoLetra);
-                        objVentaCredito.setFechaVencimientoLetra(fechaInicioLetras);
-                        objVentaCredito.setRegistro(objcOtros.registro("1", objUsuario.getCodUsuario().toString()));
-                        objVentaCredito.setMontoLetra(montoLetra);
+                        //actualizamos datos de venta
+                        objVenta.setDuracion(periodoLetra);
+                        objVenta.setMontoInicial(montoInicialLetra);
+                        objVenta.setFechaInicialVencimiento(fechaVencimientoInicial);
+                        objVenta.setCantidadLetras(cantidadLetras);
+                        objVenta.setMontoLetra(montoLetra);
+                        objVenta.setFechaVencimientoLetraDeuda(fechaInicioLetras);
+                        objVenta.setAmortizado(0.00);//
+
                         for (int m = 0; m <= cantidadLetras; m++) {
                             VentaCreditoLetra objVentaCreditoLetra = new VentaCreditoLetra();
                             objVentaCreditoLetra.setTotalPago(0.00);
@@ -413,6 +400,7 @@ public class sVenta extends HttpServlet {
                     //--fin recogo datos
                     //**********************************************************
                     //iniciando grabacion
+                    //codCliente
                     codVenta = objcVenta.crear(objVenta);
                     if (codVenta != 0) {
                         objVenta.setCodVentas(codVenta);
@@ -472,16 +460,13 @@ public class sVenta extends HttpServlet {
                             }
                         }
                         if (objVenta.getTipo().equals("CREDITO")) {
-                            objVentaCredito.setVentas(objVenta);//asignamos a objeto 
-                            int codVentaCredito = new cVentaCredito().Crear(objVentaCredito);
-                            if (codVentaCredito != 0) {
-                                objVentaCredito.setCodVentaCredito(codVentaCredito);
-                                for (int i = 0; i < ventaCreditoLetraList.size(); i++) {
-                                    VentaCreditoLetra objVentaCreditoLetra = (VentaCreditoLetra) ventaCreditoLetraList.get(i);
-                                    objVentaCreditoLetra.setVentaCredito(objVentaCredito);
-                                    int a = new cVentaCreditoLetra().crear(objVentaCreditoLetra);
-                                }
+                            for (int i = 0; i < ventaCreditoLetraList.size(); i++) {
+                                VentaCreditoLetra objVentaCreditoLetra = (VentaCreditoLetra) ventaCreditoLetraList.get(i);
+                                //agregar codVenta
+                                objVentaCreditoLetra.setVentas(objVenta);
+                                int a = new cVentaCreditoLetra().crear(objVentaCreditoLetra);
                             }
+
                         }
                         out.print(codVenta);
                     } else {

@@ -15,6 +15,13 @@ import tablas.Cobranza;
  */
 public interface InterfaceDaoCobranza {
 
+    public int registrar(Session session, Cobranza objCobranza) throws Exception;
+
     public List<Cobranza> leerPorCodigoCliente(Session session, int codCliente) throws Exception;
 
+    public List<Cobranza> leerPorCodigoVenta(Session session, int codVenta) throws Exception;
+
+    public Cobranza leerPorDocSerieNumero(Session session, String docSerieNumero) throws Exception;
+
+    public boolean actualizar(Session session, Cobranza objCobranza) throws Exception;
 }

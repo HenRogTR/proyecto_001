@@ -7,6 +7,7 @@ package personaServlets;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -43,8 +44,17 @@ public class sEmpresaConvenio extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         HttpSession session = request.getSession();
-        String accion = request.getParameter("accion");
+        // ============================ sesión =================================
+        //verficar inicio de sesión        
         Usuario objUsuario = (Usuario) session.getAttribute("usuario");
+        if (objUsuario == null) {
+            out.print("La sesión se ha cerrado.");
+            return;
+        }
+        //actualizamos ultimo ingreso
+        session.setAttribute("fechaAcceso", new Date());
+        // ============================ sesión =================================
+        String accion = request.getParameter("accion");
 
         cEmpresaConvenio objcEmpresaConvenio = new cEmpresaConvenio();
         cOtros objcOtros = new cOtros();

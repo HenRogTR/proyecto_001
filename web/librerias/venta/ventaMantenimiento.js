@@ -509,7 +509,8 @@ function fVentaAnular() {
 function fVentaCreditoLetraComprobar() {
     var estado = true;
     var data = {codVenta: $('#codVenta').val()};
-    var url = 'ajax/ventaCreditoLetraComprobar.jsp';
+    //var url = 'ajax/ventaCreditoLetraComprobar.jsp'; *corregir* eliminar
+    var url = '../ajax/ventaVerificarModificarVentaCreditoLetra.jsp';
     try {
         $.ajax({
             type: 'post',
@@ -737,15 +738,17 @@ function fGuiaRemisionAdjuntar() {
 
 function fLetrasCreditoEditar() {
     var data = {
-        accionVentaCredito: 'editar',
-        codVentaCredito: $('#codVentaCredito').val(),
+        //accionVentaCredito: 'editar', *corregir* no se debe usar
+        accionVenta: 'editarCuotaPago',
+        codVenta: $('#codVenta').val(),
+        //codVentaCredito: $('#codVentaCredito').val(), *corregir* no se debe usar
         cantidadLetras: $('#numeroLetras').val(),
         fechaInicioLetras: $('#fechaInicio').val(),
         montoInicialLetra: $('#montoInicial').val(),
         fechaVencimientoInicial: $('#fechaVencimiento').val(),
         periodoLetra: $('input[name=periodoLetra]:checked').val()
     };
-    var url = '../sVentaCredito';
+    var url = '../sVenta_';
     try {
         $.ajax({
             type: 'post',

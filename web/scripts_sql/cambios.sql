@@ -3,14 +3,23 @@
 ALTER TABLE `venta_credito_letra` 
 ADD COLUMN `ventas_cod_ventas` INT(11) NULL AFTER `venta_credito_cod_venta_credito`;
 
+ALTER TABLE `venta_credito_letra` 
+CHANGE COLUMN `ventas_cod_ventas` `ventas_cod_ventas` INT(11) NOT NULL ;
+
+-- ALTER TABLE `venta_credito_letra` 
+-- CHANGE COLUMN `ventas_cod_ventas` `ventas_cod_ventas` INT(11) NOT NULL DEFAULT 0 ;
+
+
 -- actualizamos el codVentas
 UPDATE venta_credito_letra vcl SET ventas_cod_ventas= 
 									(select max(vc.ventas_cod_ventas)
 									 from venta_credito vc
 								     where vcl.venta_credito_cod_venta_credito= vc.cod_venta_credito)
 WHERE vcl.cod_venta_credito_letra!='0';
-
-
+-- hacemos fk al codVenta
+ALTER TABLE venta_credito_letra 
+ADD FOREIGN KEY (ventas_cod_ventas) references ventas (cod_ventas) 
+ON UPDATE CASCADE;
 -- reestructurar ventas
 ALTER TABLE `ventas` 
 ADD COLUMN `cod_cliente` INT NOT NULL DEFAULT 0 AFTER `observacion`,
@@ -89,12 +98,27 @@ where `ventas`.`cod_ventas`!=0;
 
 -- actualizar el saldo
 UPDATE `ventas` SET `saldo`=`neto`-`amortizado` WHERE `cod_ventas`!=0;
--- actualizar fecha vencimiento inicial
+-- actualizar periodo de letras
+    update ventas v 
+set v.duracion=if(v.tipo='contado','',(select vc.duracion from venta_credito vc where vc.ventas_cod_ventas= v.cod_ventas))
+where v.cod_ventas!=0;
 -- ==================================================================================================
 -- venta 764
+
+-- cuando hacemos el copiado de datos
+-- ALTER TABLE `venta_credito_letra` 
+-- DROP FOREIGN KEY `fk_ventas_credito_letras_venta_credito1`;
+-- ALTER TABLE `venta_credito_letra` 
+-- DROP COLUMN `venta_credito_cod_venta_credito`,
+-- DROP INDEX `fk_ventas_credito_letras_venta_credito1` ;
+
+
+-- ======================================
 
 ALTER TABLE `venta_credito_letra` 
 DROP FOREIGN KEY `fk_ventas_credito_letras_venta_credito1`;
 ALTER TABLE `venta_credito_letra` 
 DROP COLUMN `venta_credito_cod_venta_credito`,
 DROP INDEX `fk_ventas_credito_letras_venta_credito1` ;
+
+DROP TABLE `venta_credito`

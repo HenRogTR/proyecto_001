@@ -17,8 +17,6 @@ INSERT INTO proyecto_001.persona SELECT * FROM sicci_pucallpa_importadora.person
 INSERT INTO proyecto_001.cobranza SELECT * FROM sicci_pucallpa_importadora.cobranza; 
 -- ventas
 INSERT INTO proyecto_001.ventas SELECT * FROM sicci_pucallpa_importadora.ventas; 
--- venta_credito
-INSERT INTO proyecto_001.venta_credito SELECT * FROM sicci_pucallpa_importadora.venta_credito; 
 -- venta_credito_letra
 INSERT INTO proyecto_001.venta_credito_letra SELECT * FROM sicci_pucallpa_importadora.venta_credito_letra; 
 -- cobranza_detalle

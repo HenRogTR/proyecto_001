@@ -31,11 +31,12 @@
     String cabeceraString = "";
 
     String orden = "";
+    String fechaStringInicio = "";
     String fechaString = "";
     String fechaInteresBaseString = "";
     Boolean fechaFinalUsar = false;
+    Date fechaDateInicio = null;
     Date fechaDate = null;
-    Date fechaDateAux = null;
     Date fechaInteresBaseDate = new Date();
     List LVList = null;
 
@@ -46,19 +47,20 @@
     Integer tipoInteger = 0;
     Integer condicionInteger = 0;
     try {
+        fechaStringInicio = request.getParameter("fechaVencimientoInicio");
         fechaString = request.getParameter("fechaVencimiento").toString();
         if (!new cValidacion().validarFecha(fechaString)) {
             out.print("Fecha y/o formato de fecha incorrecta.");
             return;
         }
+        fechaDateInicio = new Fecha().stringADate(fechaStringInicio);
         fechaDate = new Fecha().stringADate(fechaString);
     } catch (Exception e) {
-        out.print("Fecha de vencimiento no encontrada.");
+        out.print("Fecha(s) de vencimiento(s) no encontrada(s).");
         return;
     }
     fechaFinalUsar = Boolean.parseBoolean(request.getParameter("fechaFinalUsar"));
     //Fechas que vencen en fechaDate figurar en el reporte
-    fechaDateAux = fechaDate;
     //si se usa se suma un día
     fechaDate = fechaFinalUsar ? new Fecha().sumarDias(fechaDate, 1) : fechaDate;
     //========================== 1 nivel =======================================
@@ -360,7 +362,6 @@
             return;
         }
     }
-
     if (LVList == null) {
         out.print(reporte + " list -> null.");
         return;
@@ -381,8 +382,8 @@
                 <table style="font-size: 11px;" class="anchoTotal">
                     <thead>
                         <tr>
-                            <th colspan="3" >LETRAS VENCIDAS AL <%=fechaString%> <%=fechaFinalUsar ? "(*)" : ""%> - (<%=orden%>)</th>
-                            <th colspan="5"><%=new Fecha().fechaHora(new Date()).toUpperCase()%></th>
+                            <th colspan="4" >LETRAS VENCIDAS <label style="font-size: 12px;"><%if (fechaDateInicio != null) {%>DEL <%=new Fecha().dateAString(fechaDateInicio)%><%}%> AL <%=fechaString%> <%=fechaFinalUsar ? "(*)" : ""%></label> - (<%=orden%>)</th>
+                            <th colspan="4" class="derecha"><%=new Fecha().fechaHora(new Date()).toUpperCase()%></th>
                         </tr>
                         <tr>
                             <th colspan="3">INTERESES CALCULADOS AL <%=new Fecha().dateAString(fechaInteresBaseDate)%></th>
@@ -459,19 +460,20 @@
                                 interesPagado = (Double) dato[21];
                                 interesUltimoCalculo = (Date) dato[22];
 
-                                if (interesUltimoCalculo == null) {//se tomara el ultimo pago o la fecha de vencimiento
-                                    //error al haber una fecha de pago anterior a la fecha de vencimiento
-                                    diaRetraso = new Fecha().diasDiferencia(fechaInteresBaseDate, fechaPago != null ? (fechaPago.before(fechaVencimiento) ? fechaVencimiento : fechaPago) : fechaVencimiento);
-                                } else {
-                                    diaRetraso = new Fecha().diasDiferencia(fechaInteresBaseDate, interesUltimoCalculo);
-                                }
-                                diaRetraso = diaRetraso < 0 ? 0 : diaRetraso;
-                                diaRetraso = diaRetraso <= diaEspera ? 0 : diaRetraso;      //todos aquellos dentro de los dias de espera no se generan intereses.
-                                interesSumar = (monto - totalPago) * factorInteres * diaRetraso;    //solo se genera interes del capital
-                                interes += interesSumar;
+                                if (null == fechaDateInicio || !fechaVencimiento.before(fechaDateInicio)) {
+                                    if (interesUltimoCalculo == null) {//se tomara el ultimo pago o la fecha de vencimiento
+                                        //error al haber una fecha de pago anterior a la fecha de vencimiento
+                                        diaRetraso = new Fecha().diasDiferencia(fechaInteresBaseDate, fechaPago != null ? (fechaPago.before(fechaVencimiento) ? fechaVencimiento : fechaPago) : fechaVencimiento);
+                                    } else {
+                                        diaRetraso = new Fecha().diasDiferencia(fechaInteresBaseDate, interesUltimoCalculo);
+                                    }
+                                    diaRetraso = diaRetraso < 0 ? 0 : diaRetraso;
+                                    diaRetraso = diaRetraso <= diaEspera ? 0 : diaRetraso;      //todos aquellos dentro de los dias de espera no se generan intereses.
+                                    interesSumar = (monto - totalPago) * factorInteres * diaRetraso;    //solo se genera interes del capital
+                                    interes += interesSumar;
 
-                                if (!codClienteAux.equals(codCliente)) {
-                                    codClienteAux = codCliente;
+                                    if (!codClienteAux.equals(codCliente)) {
+                                        codClienteAux = codCliente;
                         %>
                         <tr class="bottom1">
                             <th colspan="8"></th>
@@ -528,7 +530,8 @@
                             <td><%=new Fecha().dateAString(fechaPago)%></td>
                         </tr>
                         <%
-                                totalDeudaAux += monto - totalPago + interes - interesPagado;
+                                    totalDeudaAux += monto - totalPago + interes - interesPagado;
+                                }
                             }
                         %>
                         <tr class="bottom2">

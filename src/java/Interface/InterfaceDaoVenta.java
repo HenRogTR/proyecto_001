@@ -19,5 +19,7 @@ public interface InterfaceDaoVenta {
 
     public List<Ventas> leerTodos(Session session) throws Exception;
 
-    public List<Object[]> leerPorCodigoClienteReporte(Session session, int codCliente) throws Exception;
+    public Ventas leerPorCodigo(Session session, int codVenta) throws Exception;
+
+    public boolean actualizar(Session session, Ventas objVenta) throws Exception;
 }

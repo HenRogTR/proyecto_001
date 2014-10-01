@@ -8,7 +8,7 @@ and open the template in the editor.
     Author     : Henrri
 */
 
-.ui-menu { 
+/*.ui-menu { 
     overflow: hidden;
 }
 .ui-menu .ui-menu {
@@ -22,29 +22,30 @@ and open the template in the editor.
 .ui-menu ul li {
     display:block;
     float:none;
-}
+}*/
 .ui-menu ul li ul {
     left:140px !important;
     width:100%;
 }
-.ui-menu ul li ul li {
+/*.ui-menu ul li ul li {
     width:auto;
-}
+}*/
 
-.ui-menu ul li ul li a {
+/*.ui-menu ul li ul li a {
     float:left;
-}
-.ui-menu > li {
+    width: 95%;
+}*/
+/*.ui-menu > li {
     margin: 0px 1px !important;
     padding: 0 0 !important;
-}
-.ui-menu > li > a { 
-    /*float: left;*/
+}*/
+/*.ui-menu > li > a { 
+    float: left;
     display: block;
     clear: both;
     overflow: hidden;
     position: relative;
-}
+}*/
 /*.ui-menu .ui-menu-icon { 
     margin-top: 0.1em !important;
 }

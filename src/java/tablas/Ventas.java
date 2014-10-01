@@ -1,5 +1,5 @@
 package tablas;
-// Generated 22/05/2014 10:20:56 AM by Hibernate Tools 3.6.0
+// Generated 22/07/2014 11:50:38 AM by Hibernate Tools 3.6.0
 
 
 import java.util.Date;
@@ -28,22 +28,33 @@ public class Ventas  implements java.io.Serializable {
      private int personaCodVendedor;
      private Boolean estado;
      private String observacion;
+     private int codCliente;
      private String cliente;
      private String identificacion;
      private String direccion;
      private String docSerieNumeroGuia;
      private String direccion2;
      private String direccion3;
+     private String duracion;
+     private double montoInicial;
+     private Date fechaInicialVencimiento;
+     private int cantidadLetras;
+     private double montoLetra;
+     private Date fechaVencimientoLetraDeuda;
+     private double interes;
+     private double amortizado;
+     private double interesPagado;
+     private double saldo;
      private String registro;
-     private Set<VentaCredito> ventaCreditos = new HashSet<VentaCredito>(0);
      private Set<VentasDetalle> ventasDetalles = new HashSet<VentasDetalle>(0);
+     private Set<VentaCreditoLetra> ventaCreditoLetras = new HashSet<VentaCreditoLetra>(0);
      private Set<TramiteDocumentario> tramiteDocumentarios = new HashSet<TramiteDocumentario>(0);
 
     public Ventas() {
     }
 
 	
-    public Ventas(Persona persona, String tipo, double subTotal, double descuento, double total, double valorIgv, double neto, String son, int personaCodVendedor, String registro) {
+    public Ventas(Persona persona, String tipo, double subTotal, double descuento, double total, double valorIgv, double neto, String son, int personaCodVendedor, int codCliente, double montoInicial, int cantidadLetras, double montoLetra, double interes, double amortizado, double interesPagado, double saldo, String registro) {
         this.persona = persona;
         this.tipo = tipo;
         this.subTotal = subTotal;
@@ -53,9 +64,17 @@ public class Ventas  implements java.io.Serializable {
         this.neto = neto;
         this.son = son;
         this.personaCodVendedor = personaCodVendedor;
+        this.codCliente = codCliente;
+        this.montoInicial = montoInicial;
+        this.cantidadLetras = cantidadLetras;
+        this.montoLetra = montoLetra;
+        this.interes = interes;
+        this.amortizado = amortizado;
+        this.interesPagado = interesPagado;
+        this.saldo = saldo;
         this.registro = registro;
     }
-    public Ventas(Persona persona, Integer itemCantidad, String docSerieNumero, String tipo, Date fecha, String moneda, double subTotal, double descuento, double total, double valorIgv, double neto, String son, int personaCodVendedor, Boolean estado, String observacion, String cliente, String identificacion, String direccion, String docSerieNumeroGuia, String direccion2, String direccion3, String registro, Set<VentaCredito> ventaCreditos, Set<VentasDetalle> ventasDetalles, Set<TramiteDocumentario> tramiteDocumentarios) {
+    public Ventas(Persona persona, Integer itemCantidad, String docSerieNumero, String tipo, Date fecha, String moneda, double subTotal, double descuento, double total, double valorIgv, double neto, String son, int personaCodVendedor, Boolean estado, String observacion, int codCliente, String cliente, String identificacion, String direccion, String docSerieNumeroGuia, String direccion2, String direccion3, String duracion, double montoInicial, Date fechaInicialVencimiento, int cantidadLetras, double montoLetra, Date fechaVencimientoLetraDeuda, double interes, double amortizado, double interesPagado, double saldo, String registro, Set<VentasDetalle> ventasDetalles, Set<VentaCreditoLetra> ventaCreditoLetras, Set<TramiteDocumentario> tramiteDocumentarios) {
        this.persona = persona;
        this.itemCantidad = itemCantidad;
        this.docSerieNumero = docSerieNumero;
@@ -71,15 +90,26 @@ public class Ventas  implements java.io.Serializable {
        this.personaCodVendedor = personaCodVendedor;
        this.estado = estado;
        this.observacion = observacion;
+       this.codCliente = codCliente;
        this.cliente = cliente;
        this.identificacion = identificacion;
        this.direccion = direccion;
        this.docSerieNumeroGuia = docSerieNumeroGuia;
        this.direccion2 = direccion2;
        this.direccion3 = direccion3;
+       this.duracion = duracion;
+       this.montoInicial = montoInicial;
+       this.fechaInicialVencimiento = fechaInicialVencimiento;
+       this.cantidadLetras = cantidadLetras;
+       this.montoLetra = montoLetra;
+       this.fechaVencimientoLetraDeuda = fechaVencimientoLetraDeuda;
+       this.interes = interes;
+       this.amortizado = amortizado;
+       this.interesPagado = interesPagado;
+       this.saldo = saldo;
        this.registro = registro;
-       this.ventaCreditos = ventaCreditos;
        this.ventasDetalles = ventasDetalles;
+       this.ventaCreditoLetras = ventaCreditoLetras;
        this.tramiteDocumentarios = tramiteDocumentarios;
     }
    
@@ -195,6 +225,13 @@ public class Ventas  implements java.io.Serializable {
     public void setObservacion(String observacion) {
         this.observacion = observacion;
     }
+    public int getCodCliente() {
+        return this.codCliente;
+    }
+    
+    public void setCodCliente(int codCliente) {
+        this.codCliente = codCliente;
+    }
     public String getCliente() {
         return this.cliente;
     }
@@ -237,6 +274,76 @@ public class Ventas  implements java.io.Serializable {
     public void setDireccion3(String direccion3) {
         this.direccion3 = direccion3;
     }
+    public String getDuracion() {
+        return this.duracion;
+    }
+    
+    public void setDuracion(String duracion) {
+        this.duracion = duracion;
+    }
+    public double getMontoInicial() {
+        return this.montoInicial;
+    }
+    
+    public void setMontoInicial(double montoInicial) {
+        this.montoInicial = montoInicial;
+    }
+    public Date getFechaInicialVencimiento() {
+        return this.fechaInicialVencimiento;
+    }
+    
+    public void setFechaInicialVencimiento(Date fechaInicialVencimiento) {
+        this.fechaInicialVencimiento = fechaInicialVencimiento;
+    }
+    public int getCantidadLetras() {
+        return this.cantidadLetras;
+    }
+    
+    public void setCantidadLetras(int cantidadLetras) {
+        this.cantidadLetras = cantidadLetras;
+    }
+    public double getMontoLetra() {
+        return this.montoLetra;
+    }
+    
+    public void setMontoLetra(double montoLetra) {
+        this.montoLetra = montoLetra;
+    }
+    public Date getFechaVencimientoLetraDeuda() {
+        return this.fechaVencimientoLetraDeuda;
+    }
+    
+    public void setFechaVencimientoLetraDeuda(Date fechaVencimientoLetraDeuda) {
+        this.fechaVencimientoLetraDeuda = fechaVencimientoLetraDeuda;
+    }
+    public double getInteres() {
+        return this.interes;
+    }
+    
+    public void setInteres(double interes) {
+        this.interes = interes;
+    }
+    public double getAmortizado() {
+        return this.amortizado;
+    }
+    
+    public void setAmortizado(double amortizado) {
+        this.amortizado = amortizado;
+    }
+    public double getInteresPagado() {
+        return this.interesPagado;
+    }
+    
+    public void setInteresPagado(double interesPagado) {
+        this.interesPagado = interesPagado;
+    }
+    public double getSaldo() {
+        return this.saldo;
+    }
+    
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
     public String getRegistro() {
         return this.registro;
     }
@@ -244,19 +351,19 @@ public class Ventas  implements java.io.Serializable {
     public void setRegistro(String registro) {
         this.registro = registro;
     }
-    public Set<VentaCredito> getVentaCreditos() {
-        return this.ventaCreditos;
-    }
-    
-    public void setVentaCreditos(Set<VentaCredito> ventaCreditos) {
-        this.ventaCreditos = ventaCreditos;
-    }
     public Set<VentasDetalle> getVentasDetalles() {
         return this.ventasDetalles;
     }
     
     public void setVentasDetalles(Set<VentasDetalle> ventasDetalles) {
         this.ventasDetalles = ventasDetalles;
+    }
+    public Set<VentaCreditoLetra> getVentaCreditoLetras() {
+        return this.ventaCreditoLetras;
+    }
+    
+    public void setVentaCreditoLetras(Set<VentaCreditoLetra> ventaCreditoLetras) {
+        this.ventaCreditoLetras = ventaCreditoLetras;
     }
     public Set<TramiteDocumentario> getTramiteDocumentarios() {
         return this.tramiteDocumentarios;

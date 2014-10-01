@@ -3,10 +3,9 @@
     Created on : 13/06/2013, 10:02:16 AM
     Author     : Henrri
 --%>
-<%@page import="utilitarios.cOtros"%>
-<%@page import="ventaClases.cVentaCredito"%>
+
+<%@page import="Clase.Utilitarios"%>
 <%@page import="tablas.VentaCreditoLetra"%>
-<%@page import="tablas.VentaCredito"%>
 <%@page import="tablas.VentasDetalle"%>
 <%@page import="tablas.VentasSerieNumero"%>
 <%@page import="ventaClases.cVenta"%>
@@ -88,22 +87,21 @@
                                 <b><%=objVentas.getDocSerieNumero()%></b>, segun Decreto ley Nº 28194, ha sido la siguiente :
                                 <%
                                     if (objVentas.getTipo().equals("CREDITO")) {
-                                        VentaCredito objVentaCredito = new cVentaCredito().leer_codVenta(objVentas.getCodVentas());
                                 %>
                                 <br><br>La forma de Pago al Crédito por un Monto de 
-                                <b>S/. <%=new cOtros().decimalFormato(objVentas.getNeto(), 2)%>
+                                <b>S/. <%=Utilitarios.decimalFormato(objVentas.getNeto(), 2)%>
                                     (<%=objVentas.getSon()%>)</b>, ha cancelado una cuota inicial en efectivo
-                                de <b>S/. <%=new cOtros().decimalFormato(objVentaCredito.getMontoInicial(), 2)%></b>, 
+                                de <b>S/. <%=Utilitarios.decimalFormato(objVentas.getMontoInicial(), 2)%></b>, 
                                 y el saldo será abonado en :
-                                <br><br><%=objVentaCredito.getCantidadLetras()%> Letra(s) a 30 días de 
-                                <b>S/. <%=new cOtros().decimalFormato(objVentaCredito.getMontoLetra(), 2)%> c/u</b>, 
+                                <br><br><%=objVentas.getCantidadLetras()%> Letra(s) a 30 días de 
+                                <b>S/. <%=Utilitarios.decimalFormato(objVentas.getMontoLetra(), 2)%> c/u</b>, 
                                 los cuales incluyen los intereses, porte y comisiones, por
                                 la compra CON RESERVA DE PROPIEDAD DEL VEHICULO:
                                 <%
                                 } else {
                                 %>
                                 <br><br>La forma de Pago al Contado; en efectivo, por operaciones en las que no existe obligación de
-                                utilizar medios de pago; por la suma de <b>S/. <%=new cOtros().decimalFormato(objVentas.getNeto(), 2)%></b>, 
+                                utilizar medios de pago; por la suma de <b>S/. <%=Utilitarios.decimalFormato(objVentas.getNeto(), 2)%></b>, 
                                 que hacen el monto total del vehículo:<br><br>
                                 <table>
                                     <%                                            }

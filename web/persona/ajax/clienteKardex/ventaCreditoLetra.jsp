@@ -53,7 +53,7 @@
                 }
         %>
         <tr>
-            <td style="width: 90px; background-color: <%=estilo%> "><span style="padding-left: 2px;"><%=objVCL.getVentaCredito().getVentas().getDocSerieNumero()%></span></td>
+            <td style="width: 90px; background-color: <%=estilo%> "><span style="padding-left: 2px;"><%=objVCL.getVentas().getDocSerieNumero()%></span></td>
             <td style="width: 90px;background-color: <%=estilo%> "><span style="padding-left: 2px;"><%=objVCL.getDetalleLetra()%></span></td>
             <td style="width: 70px;background-color: <%=estilo%> "><span style="padding-left: 2px;"><%=objcManejoFechas.DateAString(objVCL.getFechaVencimiento())%></span></td>
             <td style="width: 60px;background-color: <%=estilo%> " class="derecha"><span style="padding-right: 2px;"><%=objcOtros.decimalFormato(objVCL.getMonto(), 2)%></span></td>

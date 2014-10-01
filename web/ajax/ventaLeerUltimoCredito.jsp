@@ -5,6 +5,8 @@
     Retornará la última venta al crédito realizada
 --%>
 
+<%@page import="java.util.Date"%>
+<%@page import="tablas.Usuario"%>
 <%@page import="Clase.Utilitarios"%>
 <%@page import="Clase.Fecha"%>
 <%@page import="tablas.DatosCliente"%>
@@ -22,13 +24,23 @@
         out.print("No tiene permisos para ver este enlace.");
         return;
     }
+    // ============================ sesión =====================================
+    //verficar inicio de sesión        
+    Usuario objUsuario = (Usuario) session.getAttribute("usuario");
+    if (objUsuario == null) {
+        out.print("La sesión se ha cerrado.");
+        return;
+    }
+    //actualizamos ultimo ingreso
+    session.setAttribute("fechaAcceso", new Date());
+    // ============================ sesión =====================================
     //definir java bean
     EjbVenta ejbVenta;
     EjbPersonal ejbPersonal;
     EjbCliente ejbCliente;
     //obtener venta
     ejbVenta = new EjbVenta();
-    Ventas objVenta = ejbVenta.leerUltimaVentaCredito(false);
+    Ventas objVenta = ejbVenta.leerUltimaVentaACredito(false);
     //si en caso no hay retornamos vacio
     if (objVenta == null) {
         out.print("[]");

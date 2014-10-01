@@ -4,6 +4,7 @@
     Author     : Henrri
 --%>
 
+<%@page import="tablas.Usuario"%>
 <%@page import="tablas.VentaCreditoLetra"%>
 <%@page import="Ejb.EjbVentaCreditoLetra"%>
 <%@page import="tablas.Personal"%>
@@ -20,6 +21,16 @@
         out.print("No tiene permisos para ver este enlace.");
         return;
     }
+    // ============================ sesión =====================================
+    //verficar inicio de sesión        
+    Usuario objUsuario = (Usuario) session.getAttribute("usuario");
+    if (objUsuario == null) {
+        out.print("La sesión se ha cerrado.");
+        return;
+    }
+    //actualizamos ultimo ingreso
+    session.setAttribute("fechaAcceso", new Date());
+    // ============================ sesión =====================================
     //siempre se tendrá un dato válido para codigoCliente
     String codClienteString = request.getParameter("codCliente");
     //En caso de que el parametro codCliente no se haya enviado
@@ -31,17 +42,14 @@
     //definir java bean
     EjbVenta ejbVenta;
     EjbPersonal ejbPersonal;
-    EjbVentaCreditoLetra ejbVentaCreditoLetra;
     //obtener ventas
     ejbVenta = new EjbVenta();
+    if (!ejbVenta.actualizarVentaDatosCreditoEInteresCuotas(codClienteI)) {
+        out.print(ejbVenta.getError());
+        return;
+    }
     List<Ventas> ventaList = ejbVenta.leerPorCodigoCliente(codClienteI, true);
     //definimos variables
-    Integer cantidadLetras;
-    Double monto;
-    Double interes;
-    Double totalPago;
-    Double interesPagado;
-
     Double deudaVenta;
     //deuda que mantiene sin sumar intereses
     Double deudaVentaSinInteres;
@@ -57,36 +65,10 @@
         //obtener datos de vendedor
         ejbPersonal = new EjbPersonal();
         Personal objPersonal = ejbPersonal.leerPorCodigoPersona(objVenta.getPersonaCodVendedor(), false);
-        //inicializar datos
-        cantidadLetras = 0;
-        monto = 0.00;
-        interes = 0.00;
-        totalPago = 0.00;
-        interesPagado = 0.00;
-
-        deudaVenta = 0.00;
-        deudaVentaSinInteres = 0.00;
-        pagoVenta = 0.00;
-        saldoVenta = 0.00;
-        saldoVentaSinInteres = 0.00;
         //obtener los totales
-        ejbVentaCreditoLetra = new EjbVentaCreditoLetra();
-        List<VentaCreditoLetra> ventaCreditoLetraList = ejbVentaCreditoLetra.leerActivoPorCodigoVenta(objVenta.getCodVentas(), true);
-        int tam2 = ventaCreditoLetraList.size();
-        //si en caso no tiene ventas al credito activo, tam=0, por ende será menos 1
-        cantidadLetras = tam2 - 1;
-        //corregir
-        cantidadLetras = cantidadLetras < 0 ? 0 : cantidadLetras;
-        for (int j = 0; j < tam2; j++) {
-            VentaCreditoLetra objVentaCreditoLetra = ventaCreditoLetraList.get(j);
-            monto += objVentaCreditoLetra.getMonto();
-            interes += objVentaCreditoLetra.getInteres();
-            totalPago += objVentaCreditoLetra.getTotalPago();
-            interesPagado += objVentaCreditoLetra.getInteresPagado();
-        }
-        deudaVenta = monto + interes;
-        deudaVentaSinInteres = monto + interesPagado;
-        pagoVenta = totalPago + interesPagado;
+        deudaVenta = objVenta.getNeto() + objVenta.getInteres();
+        deudaVentaSinInteres = objVenta.getNeto() + objVenta.getInteresPagado();
+        pagoVenta = objVenta.getAmortizado() + objVenta.getInteresPagado();
         saldoVenta = deudaVenta - pagoVenta;
         saldoVentaSinInteres = deudaVentaSinInteres - pagoVenta;
         if (i > 0) {
@@ -117,11 +99,11 @@
                 + ", \"direccion2\":\"" + new Utilitarios().reemplazarCaracteresEspeciales(objVenta.getDireccion2()) + "\""
                 + ", \"direccion3\":\"" + new Utilitarios().reemplazarCaracteresEspeciales(objVenta.getDireccion3()) + "\""
                 + ", \"registro\":\"" + objVenta.getRegistro() + "\""
-                + ", \"cantidadLetras\":\"" + cantidadLetras + "\""
-                + ", \"monto\":\"" + new Utilitarios().decimalFormato(monto, 2) + "\""
-                + ", \"interes\":\"" + new Utilitarios().decimalFormato(interes, 2) + "\""
-                + ", \"totalPago\":\"" + new Utilitarios().decimalFormato(totalPago, 2) + "\""
-                + ", \"interesPagado\":\"" + new Utilitarios().decimalFormato(interesPagado, 2) + "\""
+                + ", \"cantidadLetras\":\"" + objVenta.getCantidadLetras() + "\""
+                + ", \"monto\":\"" + new Utilitarios().decimalFormato(objVenta.getNeto(), 2) + "\""
+                + ", \"interes\":\"" + new Utilitarios().decimalFormato(objVenta.getInteres(), 2) + "\""
+                + ", \"totalPago\":\"" + new Utilitarios().decimalFormato(objVenta.getAmortizado(), 2) + "\""
+                + ", \"interesPagado\":\"" + new Utilitarios().decimalFormato(objVenta.getInteresPagado(), 2) + "\""
                 + ", \"deudaVenta\":\"" + new Utilitarios().decimalFormato(deudaVenta, 2) + "\""
                 + ", \"deudaVentaSinInteres\":\"" + new Utilitarios().decimalFormato(deudaVentaSinInteres, 2) + "\""
                 + ", \"pagoVenta\":\"" + new Utilitarios().decimalFormato(pagoVenta, 2) + "\""

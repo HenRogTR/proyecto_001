@@ -5,6 +5,7 @@
     Descripción: Retorna un cliente sólo si tiene el primer dígito del substrig(0,1)= 1
 --%>
 
+<%@page import="Ejb.EjbVenta"%>
 <%@page import="tablas.Usuario"%>
 <%@page import="personaClases.cDatosCliente"%>
 <%@page import="Clase.Fecha"%>
@@ -19,22 +20,25 @@
         out.print("No tiene permisos para ver este enlace.");
         return;
     }
-    //verficar inicio de sesion
-    if ((Usuario) session.getAttribute("usuario") == null) {
+    // ============================ sesión =====================================
+    //verficar inicio de sesión        
+    Usuario objUsuario = (Usuario) session.getAttribute("usuario");
+    if (objUsuario == null) {
         out.print("La sesión se ha cerrado.");
         return;
     }
-    //actualizamos ultimo acceso
+    //actualizamos ultimo ingreso
     session.setAttribute("fechaAcceso", new Date());
+    // ============================ sesión =====================================
     String codClienteString = request.getParameter("codCliente");
-    //En caso de que el parametro codCliente no se haya enviado
+    //En caso de que el parámetro codCliente no se haya enviado
     if (codClienteString == null) {
         out.print("[Parámetro codCliente no encontrado.]");
         return;
     }
     int codClienteI = Integer.parseInt(codClienteString);
     EjbCliente ejbCliente;
-    EjbVentaCreditoLetra ejbVentaCreditoLetra;
+    EjbVenta ejbVenta;
     //inicializar ejb
     ejbCliente = new EjbCliente();
     DatosCliente objCliente = ejbCliente.leerCodigoCliente(codClienteI, false);
@@ -49,11 +53,13 @@
         out.print("[]");
         return;
     }
-
     //inicializar ejb
-    ejbVentaCreditoLetra = new EjbVentaCreditoLetra();
-    //actualizamos
-    ejbVentaCreditoLetra.actualizarInteresPorCodigoCliente(objCliente.getCodDatosCliente());
+    //actualizamos los datos de la venta y letras de credito
+    ejbVenta = new EjbVenta();
+    if (!ejbVenta.actualizarVentaDatosCreditoEInteresCuotas(objCliente.getCodDatosCliente())) {
+        out.print(ejbVenta.getError());
+        return;
+    }
     Date interesEvitar = objCliente.getInteresEvitar();
     boolean cobrarInteres = true;
     //si en caso esta con evitar interes permanente

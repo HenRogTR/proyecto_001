@@ -42,7 +42,7 @@ public class sUsuario extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        //session
+        //obtenemos la sesión
         HttpSession session = request.getSession();
         //tomamos la acción a recibir
         String accion = request.getParameter("accionUsuario");
@@ -168,14 +168,13 @@ public class sUsuario extends HttpServlet {
                     session.setAttribute("fechaAcceso", ultimoUso);
                 }
                 //si es mayor en x minutos
-                int tiempo = 30;//
+                int tiempo = 60;//
                 if (new Fecha().diferenciaMinuto(ultimoUso, new Date()) > tiempo) {
                     session.invalidate();
                     out.print("Se ha cerrado la sesión por sobrepasar el tiempo de inactividad.");
                 } else {
                     out.print("1");
                 }
-
             }
             return;
         }

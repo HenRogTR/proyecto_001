@@ -4,63 +4,70 @@
     Author     : Henrri
 --%>
 
-<ul id="ulMenu" style="width: 100px;">    
-    <li><a href="../index.jsp">Menú</a>
-        <ul>
-            <li><a href="#">Clientes</a>
+<div style="float: left;">
+    <div class="acceso">                            
+        <button class="sexybutton" id="bAccesoAbrir"><span><span><img src="../librerias/botonesIconos/images/icons/silk/key_go.png">Ingresar</span></span></button>
+    </div>
+    <div id="menu" class="ocultar">
+        <ul id="ulMenu" style="width: 100px;">    
+            <li><a href="../index.jsp">Menú/Inicio</a>
                 <ul>
-                    <li id="permiso1"><a href="../sDatoCliente">Cartera de clientes</a></li>
-                    <li id="permiso2"><a href="../persona/clienteKardex.jsp">Kardex</a></li>
-                    <li id="permiso24"><a href="">Garante</a></li>
-                    <li id="permiso25"><a href="#">Propietario</a></li>
+                    <li><a href="#">Clientes</a>
+                        <ul>
+                            <li id="permiso1"><a href="../sDatoCliente">Cartera de clientes</a></li>
+                            <li id="permiso2"><a href="../persona/clienteKardex.jsp">Kardex</a></li>
+                            <li id="permiso24"><a href="">Garante</a></li>
+                            <li id="permiso25"><a href="#">Propietario</a></li>
+                        </ul>
+                    </li>
+                    <li id="permiso18"><a href="../sVenta?accionVenta=mantenimiento">Módulo de Ventas</a></li>
+                    <li id="permiso22"><a href="../cobranza/cobranza.jsp">Módulo de Cobranza</a></li>
+                    <li id="permiso19"><a href="../reportes/reporte.jsp">Reporte</a></li>
+                    <li><a href="#">Almacen</a>
+                        <ul>
+                            <li id="permiso3"><a href="../compra/compraMantenimiento.jsp">Movimientos y Compras</a></li>
+                            <li id="permiso4"><a href="../sArticuloProducto">Artículos y Productos</a></li>
+                            <li id="permiso5"><a href="../sProveedor">Proveedores</a></li>
+                            <li id="permiso6"><a href="#">Actualizacion manual de almacén</a></li>
+                            <li id="permiso7"><a href="../articuloProducto/kardexArticuloProducto.jsp">Kardex de Productos</a></li>
+                            <li id="permiso21"><a href="../articuloProducto/kardexArticuloProductoPorSN.jsp">Kardex de Producto X S/N</a></li>
+                            <li id="permiso8"><a href="../compra/almacenListar.jsp">Listar almacén</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Personal</a>
+                        <ul>
+                            <li id="permiso9"><a href="../sPersonal">Mantenimiento de Personal</a></li>
+                            <li id="permiso10"><a href="../persona/cargosListar.jsp">Cargos</a></li>
+                            <li id="permiso11"><a href="../persona/areaListar.jsp">Área</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">Otras tablas</a>
+                        <ul>
+                            <li id="permiso12"><a href="../sEmpresaConvenio">Empresa</a></li>
+                            <li id="permiso13"><a href="../articuloProducto/marcaListar.jsp">Marcas</a></li>
+                            <li id="permiso14"><a href="../sFamilia">Familias</a></li>
+                            <li id="permiso60"><a href="../configuracion/configuracion.jsp">Configuraciones</a></li>
+                            <li id="permiso16"><a href="../sZona">Zona</a></li>
+                            <li id="permiso17"><a href="../controlDocumento/controlDocumento.jsp">Control de documentos</a></li>
+                            <li id="permiso50"><a href="../controlDocumento/controlReciboIngresos.jsp">Control de recibo ingresos</a></li>
+                        </ul>
+                    </li>
+                    <li id="permiso20">
+                        <a href="../sUsuario">Usuarios</a>
+                    </li>
+                    <li>
+                        <a href="../persona/usuarioContraseniaCambiar.jsp">Cambiar contraseña</a>
+                    </li>
+                    <li>
+                        <a href="#" id="aUsuarioCerrarSesion">Cerrar Sesión</a>
+                    </li>
                 </ul>
-            </li>
-            <li id="permiso18"><a href="../sVenta?accionVenta=mantenimiento">Módulo de Ventas</a></li>
-            <li id="permiso22"><a href="../cobranza/cobranza.jsp">Módulo de Cobranza</a></li>
-            <li id="permiso19"><a href="../reportes/reporte.jsp">Reporte</a></li>
-            <li><a href="#">Almacen</a>
-                <ul>
-                    <li id="permiso3"><a href="../compra/compraMantenimiento.jsp">Movimientos y Compras</a></li>
-                    <li id="permiso4"><a href="../sArticuloProducto">Artículos y Productos</a></li>
-                    <li id="permiso5"><a href="../sProveedor">Proveedores</a></li>
-                    <li id="permiso6"><a href="#">Actualizacion manual de almacén</a></li>
-                    <li id="permiso7"><a href="../articuloProducto/kardexArticuloProducto.jsp">Kardex de Productos</a></li>
-                    <li id="permiso21"><a href="../articuloProducto/kardexArticuloProductoPorSN.jsp">Kardex de Producto X S/N</a></li>
-                    <li id="permiso8"><a href="../compra/almacenListar.jsp">Listar almacén</a></li>
-                </ul>
-            </li>
-            <li><a href="#">Personal</a>
-                <ul>
-                    <li id="permiso9"><a href="../sPersonal">Mantenimiento de Personal</a></li>
-                    <li id="permiso10"><a href="../persona/cargosListar.jsp">Cargos</a></li>
-                    <li id="permiso11"><a href="../persona/areaListar.jsp">Área</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">Otras tablas</a>
-                <ul>
-                    <li id="permiso12"><a href="../sEmpresaConvenio">Empresa</a></li>
-                    <li id="permiso13"><a href="../articuloProducto/marcaListar.jsp">Marcas</a></li>
-                    <li id="permiso14"><a href="../sFamilia">Familias</a></li>
-                    <li id="permiso60"><a href="../configuracion/configuracion.jsp">Configuraciones</a></li>
-                    <li id="permiso16"><a href="../sZona">Zona</a></li>
-                    <li id="permiso17"><a href="../controlDocumento/controlDocumento.jsp">Control de documentos</a></li>
-                    <li id="permiso50"><a href="../controlDocumento/controlReciboIngresos.jsp">Control de recibo ingresos</a></li>
-                </ul>
-            </li>
-            <li id="permiso20">
-                <a href="../sUsuario">Usuarios</a>
-            </li>
-            <li>
-                <a href="../persona/usuarioContraseniaCambiar.jsp">Cambiar contraseña</a>
-            </li>
-            <li>
-                <a href="#" id="aUsuarioCerrarSesion">Cerrar Sesión</a>
             </li>
         </ul>
-    </li>
-</ul>
 
+    </div>
+</div>
 <div class="ocultar">
     <!--mensaje alerta-->
     <div id="d_mensajeAlerta" class="ui-state-highlight ui-corner-all" style="margin-top: 11px; padding: 0 .7em;">

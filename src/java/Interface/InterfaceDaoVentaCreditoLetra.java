@@ -22,12 +22,20 @@ public interface InterfaceDaoVentaCreditoLetra {
 
     public List<VentaCreditoLetra> leerPorCodigoVenta(Session session, int codVenta) throws Exception;
 
+    public List<VentaCreditoLetra> leerPorCodigoVentaActivos(Session session, int codVenta) throws Exception;
+
     public List<VentaCreditoLetra> leerPorCodigoCliente(Session session, int codCliente) throws Exception;
+
+    public List<VentaCreditoLetra> leerPorCodigoClienteOrderFechaVencimientoAsc(Session session, int codCliente) throws Exception;
 
     public List<Object[]> leerResumenPorCodigoCliente(Session session, int codCliente) throws Exception;
 
     public boolean actualizar(Session session, VentaCreditoLetra objVentaCreditoLetra) throws Exception;
 
     public boolean persistir(Session session, VentaCreditoLetra objVentaCreditoLetra) throws Exception;
+
+    public List<VentaCreditoLetra> leerConDeudaPorCodigoCliente(Session session, int codCliente) throws Exception;
+
+    public List<VentaCreditoLetra> leerConDeudaPorCodigoVenta(Session session, int codCliente) throws Exception;
 
 }

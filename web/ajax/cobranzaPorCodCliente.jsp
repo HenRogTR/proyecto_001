@@ -4,6 +4,8 @@
     Author     : Henrri
 --%>
 
+<%@page import="java.util.Date"%>
+<%@page import="tablas.Usuario"%>
 <%@page import="Clase.Utilitarios"%>
 <%@page import="Clase.Fecha"%>
 <%@page import="tablas.Cobranza"%>
@@ -15,6 +17,16 @@
         out.print("No tiene permisos para ver este enlace.");
         return;
     }
+    // ============================ sesión =====================================
+    //verficar inicio de sesión        
+    Usuario objUsuario = (Usuario) session.getAttribute("usuario");
+    if (objUsuario == null) {
+        out.print("La sesión se ha cerrado.");
+        return;
+    }
+    //actualizamos ultimo ingreso
+    session.setAttribute("fechaAcceso", new Date());
+    // ============================ sesión =====================================
     //siempre se tendrá un dato válido para codigoCliente
     String codClienteString = request.getParameter("codCliente");
     //En caso de que el parametro codCliente no se haya enviado

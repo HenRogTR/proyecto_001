@@ -111,6 +111,7 @@ public class cVentaCreditoLetra {
      * @return
      */
     public List leer_letraConDeuda_codCliente(int codCliente) {
+        //*corregir* el uso de datosCleinte esta por demas
         List l = null;
         Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
@@ -118,7 +119,7 @@ public class cVentaCreditoLetra {
             trns = sesion.beginTransaction();
             Query q = sesion.createQuery("select vcl.codVentaCreditoLetra "
                     + "from VentaCreditoLetra vcl, DatosCliente dc "
-                    + "where vcl.ventaCredito.ventas.persona = dc.persona"
+                    + "where vcl.ventas.persona = dc.persona"
                     + " and dc = :par1"
                     + " and substring(vcl.registro,1,1) = 1 "
                     + " and (vcl.monto-vcl.totalPago) > 0 ")
@@ -146,7 +147,7 @@ public class cVentaCreditoLetra {
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
             Query q = sesion.createQuery("from VentaCreditoLetra v "
-                    + "where v.ventaCredito.ventas.codVentas=:codVentas "
+                    + "where v.ventas.codVentas=:codVentas "
                     + "and substring(v.registro,1,1)=1 "
                     + "order by codVentaCreditoLetra asc")
                     .setParameter("codVentas", codVenta);
@@ -158,12 +159,13 @@ public class cVentaCreditoLetra {
     }
 
     public Object[] leer_resumen(int codPersona) {
+        //*corregir* el uso de datosCleinte esta por demas
         Object[] resumen = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
             Query q = sesion.createQuery("select sum(vcl.monto+ vcl.interes),sum(vcl.totalPago+vcl.interesPagado),(sum(vcl.monto)-sum(vcl.totalPago)+sum(vcl.interes)-sum(vcl.interesPagado)) "
                     + "from VentaCreditoLetra vcl where substring(vcl.registro,1,1)=1 "
-                    + "and vcl.ventaCredito.ventas.persona.codPersona=:codPersona")
+                    + "and vcl.ventas.persona.codPersona=:codPersona")
                     .setParameter("codPersona", codPersona);
             resumen = (Object[]) q.list().iterator().next();
             sesion.flush();
@@ -193,6 +195,7 @@ public class cVentaCreditoLetra {
      * 4:fechaPago, 5:totalPago, 6:interesPagado, 7:interesUltimoCalculo]</b>
      */
     public List leer_cliente_interesSinActualizar(Date fechaVencimiento, Date fechaBase, boolean interesAsigando, int codCliente) {
+        //*corregir* el uso de datosCliente esta por demas
         List l = null;
         Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
@@ -203,7 +206,7 @@ public class cVentaCreditoLetra {
                     + "vcl.fechaPago, vcl.totalPago, vcl.interesPagado, "
                     + "vcl.interesUltimoCalculo "
                     + "from VentaCreditoLetra vcl, DatosCliente dc, EmpresaConvenio ec "
-                    + "where vcl.ventaCredito.ventas.persona = dc.persona "
+                    + "where vcl.ventas.persona = dc.persona "
                     + "and dc.empresaConvenio = ec "
                     + "and substring(vcl.registro,1,1) = 1 "
                     + "and vcl.monto- vcl.totalPago > 0 " //que tengan deuda de capital
@@ -302,16 +305,17 @@ public class cVentaCreditoLetra {
      * @return
      */
     public List leer_codCliente(int codCliente) {
+        //*corregir* el uso de datosCleinte esta por demas
         List l = null;
         Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
             trns = sesion.beginTransaction();
             Query q = sesion.createQuery("select vcl"
-                    + " from VentaCreditoLetra vcl join vcl.ventaCredito.ventas.persona.datosClientes dc"
+                    + " from VentaCreditoLetra vcl join vcl.ventas.persona.datosClientes dc"
                     + " where substring(vcl.registro, 1, 1)= 1"
                     + " and dc= :par1"
-                    + " order by vcl.codVentaCreditoLetra asc, vcl.ventaCredito.ventas asc")
+                    + " order by vcl.codVentaCreditoLetra asc, vcl.ventas asc")
                     .setInteger("par1", codCliente);
             l = q.list();
         } catch (Exception e) {
@@ -329,6 +333,7 @@ public class cVentaCreditoLetra {
      * @return
      */
     public List leer_resumenPagos(int codPersona) {
+        //*corregir* el uso de datosCleinte esta por demas
         List l = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
@@ -336,7 +341,7 @@ public class cVentaCreditoLetra {
                     + "sum(vcl.monto), sum(interes), sum(vcl.totalPago+vcl.interesPagado), sum(vcl.monto)-sum(vcl.totalPago)+sum(vcl.interes)-sum(vcl.interesPagado), vcl.fechaVencimiento "
                     + "from VentaCreditoLetra vcl "
                     + "where substring(vcl.registro,1,1)=1 "
-                    + "and vcl.ventaCredito.ventas.persona.codPersona=:codPersona "
+                    + "and vcl.ventas.persona.codPersona=:codPersona "
                     + "group by year(vcl.fechaVencimiento), month(vcl.fechaVencimiento) "
                     + "order by vcl.fechaVencimiento")
                     .setParameter("codPersona", codPersona);
@@ -358,6 +363,7 @@ public class cVentaCreditoLetra {
      * 3:totalPago(mensual), 4:interesPagado(mensual)
      */
     public List leer_deudaMes(int codCliente) {
+        //*corregir* el uso de datosCleinte esta por demas y el uso de intereses y lo demas
         List l = null;
         Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
@@ -368,7 +374,7 @@ public class cVentaCreditoLetra {
                     + ", sum(vcl.interes)"
                     + ", sum(vcl.totalPago)"
                     + ", sum(vcl.interesPagado)"
-                    + " from VentaCreditoLetra vcl join vcl.ventaCredito.ventas.persona.datosClientes dc"
+                    + " from VentaCreditoLetra vcl join vcl.ventas.persona.datosClientes dc"
                     + " where substring(vcl.registro,1,1) = 1 "
                     + " and dc = :par1"
                     + " group by year(vcl.fechaVencimiento), month(vcl.fechaVencimiento) "
@@ -393,6 +399,7 @@ public class cVentaCreditoLetra {
      * @return
      */
     public Double leer_deudaCliente_codCliente_codVentas_SC(int codPersona, int codVentas) {
+        //*corregir* el uso de datosCleinte esta por demas
         Double deuda = 0.0;
         Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
@@ -400,9 +407,9 @@ public class cVentaCreditoLetra {
             trns = sesion.beginTransaction();
             Query q = sesion.createQuery("select sum(v.monto- v.totalPago+ v.interes- v.interesPagado)"
                     + " from VentaCreditoLetra v "
-                    + "where v.ventaCredito.ventas.persona.codPersona=:codPersona "
+                    + "where v.ventas.persona.codPersona=:codPersona "
                     + "and v.monto-v.totalPago>0 "
-                    + "and v.ventaCredito.ventas.codVentas=:codVentas "
+                    + "and v.ventas.codVentas=:codVentas "
                     + "and substring(v.registro,1,1)=1 "
                     + "order by v.fechaVencimiento asc")
                     .setParameter("codPersona", codPersona)
@@ -427,13 +434,14 @@ public class cVentaCreditoLetra {
      * @return
      */
     public VentaCreditoLetra leer_letraVencidaAntigua(int codPersona) {
+        //*corregir* el uso de datosCleinte esta por demas
         VentaCreditoLetra objVCL = null;
         Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
             trns = sesion.beginTransaction();
             Query q = sesion.createQuery("from VentaCreditoLetra v "
-                    + "where v.ventaCredito.ventas.persona.codPersona=:codPersona "
+                    + "where v.ventas.persona.codPersona=:codPersona "
                     + "and (v.monto- v.totalPago> 0 or v.interes- v.interesPagado> 0 )"
                     + "and substring(v.registro,1,1)=1 "
                     + "order by v.fechaVencimiento asc")
@@ -456,13 +464,14 @@ public class cVentaCreditoLetra {
      * @return
      */
     public VentaCreditoLetra leer_letraVencidaAntigua_interesEvitar(int codPersona) {
+        //*corregir* el uso de datosCleinte esta por demas
         VentaCreditoLetra objVCL = null;
         Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
             trns = sesion.beginTransaction();
             Query q = sesion.createQuery("from VentaCreditoLetra v "
-                    + "where v.ventaCredito.ventas.persona.codPersona=:codPersona "
+                    + "where v.ventas.persona.codPersona=:codPersona "
                     + "and v.monto- v.totalPago> 0"
                     + "and substring(v.registro,1,1)=1 "
                     + "order by v.fechaVencimiento asc")
@@ -486,15 +495,16 @@ public class cVentaCreditoLetra {
      * @return
      */
     public VentaCreditoLetra leer_letraVencidaAntigua_codVenta(int codPersona, int codVentas) {
+        //*corregir* el uso de datosCleinte esta por demas
         VentaCreditoLetra obj = null;
         Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
             trns = sesion.beginTransaction();
             Query q = sesion.createQuery("from VentaCreditoLetra v "
-                    + "where v.ventaCredito.ventas.persona.codPersona=:codPersona "
+                    + "where v.ventas.persona.codPersona=:codPersona "
                     + "and (v.monto- v.totalPago> 0 or v.interes- v.interesPagado> 0 )"
-                    + "and v.ventaCredito.ventas.codVentas=:codVentas "
+                    + "and v.ventas.codVentas=:codVentas "
                     + "and substring(v.registro,1,1)=1 "
                     + "order by v.fechaVencimiento asc")
                     .setParameter("codPersona", codPersona)
@@ -518,15 +528,16 @@ public class cVentaCreditoLetra {
      * @return
      */
     public VentaCreditoLetra leer_letraVencidaAntigua_interesEvitar_codVenta(int codPersona, int codVentas) {
+        //*corregir* el uso de datosCleinte esta por demas
         VentaCreditoLetra obj = null;
         Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
             trns = sesion.beginTransaction();
             Query q = sesion.createQuery("from VentaCreditoLetra v "
-                    + "where v.ventaCredito.ventas.persona.codPersona=:codPersona "
+                    + "where v.ventas.persona.codPersona=:codPersona "
                     + "and v.monto- v.totalPago> 0"
-                    + "and v.ventaCredito.ventas.codVentas=:codVentas "
+                    + "and v.ventas.codVentas=:codVentas "
                     + "and substring(v.registro,1,1)=1 "
                     + "order by v.fechaVencimiento asc")
                     .setParameter("codPersona", codPersona)
@@ -549,13 +560,14 @@ public class cVentaCreditoLetra {
      * @return
      */
     public List leer_letras_deudaSoloInteres_SC(int codCliente) {
+        //*corregir* el uso de datosCleinte esta por demas
         List lista = null;
         Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
         try {
             trns = sesion.beginTransaction();
             Query q = sesion.createQuery("select vcl.codVentaCreditoLetra"
-                    + " from VentaCreditoLetra vcl join vcl.ventaCredito.ventas.persona.datosClientes dc"
+                    + " from VentaCreditoLetra vcl join vcl.ventas.persona.datosClientes dc"
                     + " where dc.codDatosCliente= :par1 and vcl.monto- vcl.totalPago= 0"
                     + " and vcl.interes- vcl.interesPagado> 0"
                     + " and substring(vcl.registro,1,1)=1")

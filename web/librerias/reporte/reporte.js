@@ -100,6 +100,9 @@ $(document).ready(function() {
         e.preventDefault();
     });
     //bloquenado fechas fuera de rango para ventaFechaInicio-Fin
+    //clientes
+
+    //ventas
     $('#ventaFechaInicio').change(function(e) {
         $('#ventaFechaFin').datepicker('option', 'minDate', fValidarFecha(this.value) ? fStringADate(this.value) : null);
     });
@@ -140,6 +143,8 @@ $(document).ready(function() {
                 return;
             }
         }
+        var $clienteFVLInicio = $('#clienteFVLInicio');
+        var $clienteFVLFin = $('#clienteFVLFin');
         var fechaFinalUsar = $('#clienteFVLFinalUsar').is(":checked");
         switch ($(this).attr('id')) {
             //============Reporte cartera de cliente.=======================
@@ -187,12 +192,17 @@ $(document).ready(function() {
                 break;
                 //===============Reporte letras vencidas========================
             case 'rClienteOrdenVCL':
-                var $clienteFVLOrden = $('#clienteFVLOrden');
-                if (!fValidarFecha($clienteFVLOrden.val())) {
+                if (!fValidarFecha($clienteFVLFin.val())) {
                     fAlerta('Ingrese fecha.');
                     return;
                 }
-                $(this).attr('target', '_blank').attr('href', 'cliente/letraVencida.jsp?reporte=' + clienteOrden + "_" + clienteCobrador + '&fechaVencimiento=' + $clienteFVLOrden.val() + '&codCobrador=' + codCobrador + '&fechaFinalUsar=' + fechaFinalUsar);
+                $(this)
+                        .attr('target', '_blank')
+                        .attr('href', 'cliente/letraVencida.jsp?reporte=' + clienteOrden + "_" + clienteCobrador +
+                                '&fechaVencimientoInicio=' + $clienteFVLInicio.val() +
+                                '&fechaVencimiento=' + $clienteFVLFin.val() +
+                                '&codCobrador=' + codCobrador +
+                                '&fechaFinalUsar=' + fechaFinalUsar);
                 break;
             case 'rClienteECOrdenVCL':
                 var $cEC = $('#tClienteCodEC');
@@ -200,12 +210,18 @@ $(document).ready(function() {
                     fAlerta('Seleccione Empresa/Convenio.');
                     return;
                 }
-                var $clienteFVLECOrden = $('#clienteFVLECOrden');
-                if (!fValidarFecha($clienteFVLECOrden.val())) {
+                if (!fValidarFecha($clienteFVLFin.val())) {
                     fAlerta('Ingrese fecha correspondiente.');
                     return;
                 }
-                $(this).attr('target', '_blank').attr('href', 'cliente/letraVencida.jsp?reporte=' + clienteOrden + '_EC_' + clienteCobrador + '&fechaVencimiento=' + $clienteFVLECOrden.val() + '&codEC=' + $cEC.val() + '&codCobrador=' + codCobrador + '&fechaFinalUsar=' + fechaFinalUsar);
+                $(this)
+                        .attr('target', '_blank')
+                        .attr('href', 'cliente/letraVencida.jsp?reporte=' + clienteOrden + '_EC_' + clienteCobrador +
+                                '&fechaVencimientoInicio=' + $clienteFVLInicio.val() +
+                                '&fechaVencimiento=' + $clienteFVLFin.val() +
+                                '&codEC=' + $cEC.val() +
+                                '&codCobrador=' + codCobrador +
+                                '&fechaFinalUsar=' + fechaFinalUsar);
                 break;
             case 'rClienteECTipoOrdenVCL':
                 var $cEC = $('#tClienteCodEC');
@@ -218,12 +234,19 @@ $(document).ready(function() {
                     fAlerta('Seleccione tipo.');
                     return;
                 }
-                var $clienteFVLECTipoOrden = $('#clienteFVLECTipoOrden');
-                if (!fValidarFecha($clienteFVLECTipoOrden.val())) {
+                if (!fValidarFecha($clienteFVLFin.val())) {
                     fAlerta('Ingrese fecha correspondiente.');
                     return;
                 }
-                $(this).attr('target', '_blank').attr('href', 'cliente/letraVencida.jsp?reporte=' + clienteOrden + '_EC_tipo_' + clienteCobrador + '&fechaVencimiento=' + $clienteFVLECTipoOrden.val() + '&codEC=' + $cEC.val() + '&tipo=' + $tipo.val() + '&codCobrador=' + codCobrador + '&fechaFinalUsar=' + fechaFinalUsar);
+                $(this)
+                        .attr('target', '_blank')
+                        .attr('href', 'cliente/letraVencida.jsp?reporte=' + clienteOrden + '_EC_tipo_' + clienteCobrador +
+                                '&fechaVencimientoInicio=' + $clienteFVLInicio.val() +
+                                '&fechaVencimiento=' + $clienteFVLFin.val() +
+                                '&codEC=' + $cEC.val() +
+                                '&tipo=' + $tipo.val() +
+                                '&codCobrador=' + codCobrador +
+                                '&fechaFinalUsar=' + fechaFinalUsar);
                 break;
             case 'rClienteECTipoCondicionOrdenVCL':
                 var $cEC = $('#tClienteCodEC');
@@ -241,21 +264,34 @@ $(document).ready(function() {
                     fAlerta('Seleccione condición.');
                     return;
                 }
-                var $clienteFVLECTipoCondicionOrden = $('#clienteFVLECTipoCondicionOrden');
-                if (!fValidarFecha($clienteFVLECTipoCondicionOrden.val())) {
+                if (!fValidarFecha($clienteFVLFin.val())) {
                     fAlerta('Ingrese fecha correspondiente.');
                     return;
                 }
-                $(this).attr('target', '_blank').attr('href', 'cliente/letraVencida.jsp?reporte=' + clienteOrden + '_EC_tipo_condicion_' + clienteCobrador + '&fechaVencimiento=' + $clienteFVLECTipoCondicionOrden.val() + '&codEC=' + $cEC.val() + '&tipo=' + $tipo.val() + '&condicion=' + $condicion.val() + '&codCobrador=' + codCobrador + '&fechaFinalUsar=' + fechaFinalUsar);
+                $(this)
+                        .attr('target', '_blank')
+                        .attr('href', 'cliente/letraVencida.jsp?reporte=' + clienteOrden + '_EC_tipo_condicion_' + clienteCobrador +
+                                '&fechaVencimientoInicio=' + $clienteFVLInicio.val() +
+                                '&fechaVencimiento=' + $clienteFVLFin.val() +
+                                '&codEC=' + $cEC.val() +
+                                '&tipo=' + $tipo.val() +
+                                '&condicion=' + $condicion.val() +
+                                '&codCobrador=' + codCobrador +
+                                '&fechaFinalUsar=' + fechaFinalUsar);
                 break;
                 //===============Reporte letras vencidas Excel==================
             case 'rClienteOrdenVCLExcel':
-                var $clienteFVLOrden = $('#clienteFVLOrden');
-                if (!fValidarFecha($clienteFVLOrden.val())) {
+                if (!fValidarFecha($clienteFVLFin.val())) {
                     fAlerta('Ingrese fecha.');
                     return;
                 }
-                $(this).attr('target', '_blank').attr('href', 'cliente/letraVencidaExcel.jsp?reporte=' + clienteOrden + "_" + clienteCobrador + '&fechaVencimiento=' + $clienteFVLOrden.val() + '&codCobrador=' + codCobrador + '&fechaFinalUsar=' + fechaFinalUsar);
+                $(this)
+                        .attr('target', '_blank')
+                        .attr('href', 'cliente/letraVencidaExcel.jsp?reporte=' + clienteOrden + "_" + clienteCobrador +
+                                '&fechaVencimientoInicio=' + $clienteFVLInicio.val() +
+                                '&fechaVencimiento=' + $clienteFVLFin.val() +
+                                '&codCobrador=' + codCobrador +
+                                '&fechaFinalUsar=' + fechaFinalUsar);
                 break;
             case 'rClienteECOrdenVCLExcel':
                 var $cEC = $('#tClienteCodEC');
@@ -263,12 +299,18 @@ $(document).ready(function() {
                     fAlerta('Seleccione Empresa/Convenio.');
                     return;
                 }
-                var $clienteFVLECOrden = $('#clienteFVLECOrden');
-                if (!fValidarFecha($clienteFVLECOrden.val())) {
+                if (!fValidarFecha($clienteFVLFin.val())) {
                     fAlerta('Ingrese fecha correspondiente.');
                     return;
                 }
-                $(this).attr('target', '_blank').attr('href', 'cliente/letraVencidaExcel.jsp?reporte=' + clienteOrden + '_EC_' + clienteCobrador + '&fechaVencimiento=' + $clienteFVLECOrden.val() + '&codEC=' + $cEC.val() + '&codCobrador=' + codCobrador + '&fechaFinalUsar=' + fechaFinalUsar);
+                $(this)
+                        .attr('target', '_blank')
+                        .attr('href', 'cliente/letraVencidaExcel.jsp?reporte=' + clienteOrden + '_EC_' + clienteCobrador +
+                                '&fechaVencimientoInicio=' + $clienteFVLInicio.val() +
+                                '&fechaVencimiento=' + $clienteFVLFin.val() +
+                                '&codEC=' + $cEC.val() +
+                                '&codCobrador=' + codCobrador +
+                                '&fechaFinalUsar=' + fechaFinalUsar);
                 break;
             case 'rClienteECTipoOrdenVCLExcel':
                 var $cEC = $('#tClienteCodEC');
@@ -281,12 +323,19 @@ $(document).ready(function() {
                     fAlerta('Seleccione tipo.');
                     return;
                 }
-                var $clienteFVLECTipoOrden = $('#clienteFVLECTipoOrden');
-                if (!fValidarFecha($clienteFVLECTipoOrden.val())) {
+                if (!fValidarFecha($clienteFVLFin.val())) {
                     fAlerta('Ingrese fecha correspondiente.');
                     return;
                 }
-                $(this).attr('target', '_blank').attr('href', 'cliente/letraVencidaExcel.jsp?reporte=' + clienteOrden + '_EC_tipo_' + clienteCobrador + '&fechaVencimiento=' + $clienteFVLECTipoOrden.val() + '&codEC=' + $cEC.val() + '&tipo=' + $tipo.val() + '&codCobrador=' + codCobrador + '&fechaFinalUsar=' + fechaFinalUsar);
+                $(this)
+                        .attr('target', '_blank')
+                        .attr('href', 'cliente/letraVencidaExcel.jsp?reporte=' + clienteOrden + '_EC_tipo_' + clienteCobrador +
+                                '&fechaVencimientoInicio=' + $clienteFVLInicio.val() +
+                                '&fechaVencimiento=' + $clienteFVLFin.val() +
+                                '&codEC=' + $cEC.val() +
+                                '&tipo=' + $tipo.val() +
+                                '&codCobrador=' + codCobrador +
+                                '&fechaFinalUsar=' + fechaFinalUsar);
                 break;
             case 'rClienteECTipoCondicionOrdenVCLExcel':
                 var $cEC = $('#tClienteCodEC');
@@ -304,21 +353,34 @@ $(document).ready(function() {
                     fAlerta('Seleccione condición.');
                     return;
                 }
-                var $clienteFVLECTipoCondicionOrden = $('#clienteFVLECTipoCondicionOrden');
-                if (!fValidarFecha($clienteFVLECTipoCondicionOrden.val())) {
+                if (!fValidarFecha($clienteFVLFin.val())) {
                     fAlerta('Ingrese fecha correspondiente.');
                     return;
                 }
-                $(this).attr('target', '_blank').attr('href', 'cliente/letraVencidaExcel.jsp?reporte=' + clienteOrden + '_EC_tipo_condicion_' + clienteCobrador + '&fechaVencimiento=' + $clienteFVLECTipoCondicionOrden.val() + '&codEC=' + $cEC.val() + '&tipo=' + $tipo.val() + '&condicion=' + $condicion.val() + '&codCobrador=' + codCobrador + '&fechaFinalUsar=' + fechaFinalUsar);
+                $(this)
+                        .attr('target', '_blank')
+                        .attr('href', 'cliente/letraVencidaExcel.jsp?reporte=' + clienteOrden + '_EC_tipo_condicion_' + clienteCobrador +
+                                '&fechaVencimientoInicio=' + $clienteFVLInicio.val() +
+                                '&fechaVencimiento=' + $clienteFVLFin.val() +
+                                '&codEC=' + $cEC.val() +
+                                '&tipo=' + $tipo.val() +
+                                '&condicion=' + $condicion.val() +
+                                '&codCobrador=' + codCobrador +
+                                '&fechaFinalUsar=' + fechaFinalUsar);
                 break;
                 //======================== Tramo Excel==========================
             case 'rClienteOrdenVCLTExcel':
-                var $clienteFVLOrden = $('#clienteFVLOrden');
-                if (!fValidarFecha($clienteFVLOrden.val())) {
+                if (!fValidarFecha($clienteFVLFin.val())) {
                     fAlerta('Ingrese fecha.');
                     return;
                 }
-                $(this).attr('target', '_blank').attr('href', 'cliente/tramoExcel.jsp?reporte=' + clienteOrden + "_" + clienteCobrador + '&fechaVencimiento=' + $clienteFVLOrden.val() + '&codCobrador=' + codCobrador + '&fechaFinalUsar=' + fechaFinalUsar);
+                $(this)
+                        .attr('target', '_blank')
+                        .attr('href', 'cliente/tramoExcel.jsp?reporte=' + clienteOrden + "_" + clienteCobrador +
+                                '&fechaVencimientoInicio=' + $clienteFVLInicio.val() +
+                                '&fechaVencimiento=' + $clienteFVLFin.val() +
+                                '&codCobrador=' + codCobrador +
+                                '&fechaFinalUsar=' + fechaFinalUsar);
                 break;
             case 'rClienteOrdenECVCLTExcel':
                 var $cEC = $('#tClienteCodEC');
@@ -326,12 +388,18 @@ $(document).ready(function() {
                     fAlerta('Seleccione Empresa/Convenio.');
                     return;
                 }
-                var $clienteFVLECOrden = $('#clienteFVLECOrden');
-                if (!fValidarFecha($clienteFVLECOrden.val())) {
+                if (!fValidarFecha($clienteFVLFin.val())) {
                     fAlerta('Ingrese fecha correspondiente.');
                     return;
                 }
-                $(this).attr('target', '_blank').attr('href', 'cliente/tramoExcel.jsp?reporte=' + clienteOrden + '_EC_' + clienteCobrador + '&fechaVencimiento=' + $clienteFVLECOrden.val() + '&codEC=' + $cEC.val() + '&codCobrador=' + codCobrador + '&fechaFinalUsar=' + fechaFinalUsar);
+                $(this)
+                        .attr('target', '_blank')
+                        .attr('href', 'cliente/tramoExcel.jsp?reporte=' + clienteOrden + '_EC_' + clienteCobrador +
+                                '&fechaVencimientoInicio=' + $clienteFVLInicio.val() +
+                                '&fechaVencimiento=' + $clienteFVLFin.val() +
+                                '&codEC=' + $cEC.val() +
+                                '&codCobrador=' + codCobrador +
+                                '&fechaFinalUsar=' + fechaFinalUsar);
                 break;
             default :
                 fAlerta('No implementado ID:' + $(this).attr('id'));
@@ -671,7 +739,26 @@ $(function() {
         changeYear: true,
         numberOfMonths: 2
     });
-
+    //cartera clientes
+    $('#clienteFVLInicio')
+            .val('')
+            .datepicker(
+                    'option',
+                    'onClose',
+                    function(selectedDate) {
+                        $('#clienteFVLFin').datepicker('option', 'minDate', selectedDate);
+                    })
+            .datepicker('option', 'maxDate', fStringADate($('#clienteFVLFin').val()));
+    ;
+    $('#clienteFVLFin')
+            .datepicker(
+                    'option',
+                    'onClose',
+                    function(selectedDate) {
+                        $('#clienteFVLInicio').datepicker('option', 'maxDate', selectedDate);
+                    });
+    ;
+    //ventas
     $('#ventaFechaInicio')
             .val(fDateAString(fSumarDia(fStringADate($('#ventaFechaFin').val()), -1)))
             .datepicker('option', 'maxDate', fStringADate($('#ventaFechaFin').val()));

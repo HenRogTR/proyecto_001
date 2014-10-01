@@ -23,6 +23,7 @@ public class EjbCliente {
 
     private DatosCliente cliente;
     private List<DatosCliente> clienteList;
+    private List<Object[]> clienteObject;
 
     private String error;
     private Session session;
@@ -88,6 +89,37 @@ public class EjbCliente {
         return this.cliente;
     }
 
+    public DatosCliente leerPorCodigoClienteActivo(int codCliente, boolean cerrarSession) {
+        this.cliente = null;
+        this.session = null;
+        this.transaction = null;
+        this.error = null;
+        try {
+            this.session = HibernateUtil.getSessionFactory().openSession();
+            this.transaction = session.beginTransaction();
+            DaoCliente DaoCliente = new DaoCliente();
+            //leemos todos los clientes existentes en la base de datos
+            this.cliente = DaoCliente.leerPorCodigo(this.session, codCliente);
+            //Verifiacr que el cliente sea válido
+            if (!"1".equals(this.cliente.getRegistro().substring(0, 1))) {
+                this.cliente = null;
+            }
+            this.transaction.commit();
+        } catch (Exception e) {
+            if (this.transaction != null) {
+                this.transaction.rollback();
+            }
+            this.error = "Contacte al administrador << " + e.getMessage() + " >>";
+            e.printStackTrace();
+        } finally {
+            //la sesión se cerrará si es true el valor
+            if (cerrarSession & this.session != null) {
+                this.session.close();
+            }
+        }
+        return this.cliente;
+    }
+
     public DatosCliente leerPorCodigoPersona(int codPersona, boolean cerrarSession) {
         this.cliente = null;
         this.session = null;
@@ -120,7 +152,7 @@ public class EjbCliente {
      *
      * @return
      */
-    public List leerClienteOrdenadoAlfabeticamente() {
+    public List<Object[]> leerClienteOrdenadoAlfabeticamente() {
         this.session = null;
         this.transaction = null;
         this.error = null;
@@ -129,7 +161,7 @@ public class EjbCliente {
             this.transaction = session.beginTransaction();
             DaoCliente DaoCliente = new DaoCliente();
             //leemos todos los clientes existentes en la base de datos
-            this.clienteList = DaoCliente.leerClienteOrdenadoAlfabeticamente(this.session);
+            this.clienteObject = DaoCliente.leerClienteOrdenadoAlfabeticamente(this.session);
             this.transaction.commit();
         } catch (Exception e) {
             if (this.transaction != null) {
@@ -142,7 +174,7 @@ public class EjbCliente {
                 this.session.close();
             }
         }
-        return this.clienteList;
+        return this.clienteObject;
     }
 
     public boolean actualizarInteresAsignar(int codCliente, Date interesEvitar, boolean interesEvitarPermanente) {
@@ -199,5 +231,13 @@ public class EjbCliente {
 
     public void setClienteList(List<DatosCliente> clienteList) {
         this.clienteList = clienteList;
+    }
+
+    public List<Object[]> getClienteObject() {
+        return clienteObject;
+    }
+
+    public void setClienteObject(List<Object[]> clienteObject) {
+        this.clienteObject = clienteObject;
     }
 }

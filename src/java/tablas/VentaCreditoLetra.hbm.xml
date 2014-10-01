@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 22/05/2014 10:20:57 AM by Hibernate Tools 3.6.0 -->
+<!-- Generated 22/07/2014 11:50:39 AM by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
     <class name="tablas.VentaCreditoLetra" table="venta_credito_letra" catalog="proyecto_001">
         <id name="codVentaCreditoLetra" type="java.lang.Integer">
             <column name="cod_venta_credito_letra" />
             <generator class="identity" />
         </id>
-        <many-to-one name="ventaCredito" class="tablas.VentaCredito" fetch="select">
-            <column name="venta_credito_cod_venta_credito" not-null="true" />
+        <many-to-one name="ventas" class="tablas.Ventas" fetch="select">
+            <column name="ventas_cod_ventas" not-null="true" />
         </many-to-one>
         <property name="moneda" type="java.lang.Integer">
             <column name="moneda" />

@@ -155,8 +155,8 @@ public class cVenta {
                     + "	v.neto,"
                     + " v.registro,"
                     + " (select sum( CASE WHEN vd.precioReal>vd.precioVenta THEN (vd.precioVenta*vd.cantidad) ELSE (vd.precioReal*vd.cantidad) END ) from VentasDetalle vd where vd.ventas = v and substring(vd.registro,1,1) = 1 and substring(vd.ventas.registro,1,1) = 1 ),"
-                    + "	(select sum(vc.montoInicial) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
-                    + "	(select sum(vc.cantidadLetras) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
+                    + "	v.montoInicial,"
+                    + "	v.cantidadLetras,"
                     + " (select sum(vd2.precioProforma * vd2.cantidad) from VentasDetalle vd2 where vd2.ventas = v and substring(vd2.registro,1,1) = 1 and substring(vd2.ventas.registro,1,1) = 1 )"
                     + ", (select sum(vd3.precioCash * vd3.cantidad) from VentasDetalle vd3 where vd3.ventas = v and substring(vd3.registro,1,1) = 1 and substring(vd3.ventas.registro,1,1) = 1 )"
                     + " from Ventas v, DatosCliente dc"
@@ -200,8 +200,8 @@ public class cVenta {
                     + "	v.neto,"
                     + " v.registro,"
                     + " (select sum( CASE WHEN vd.precioReal>vd.precioVenta THEN (vd.precioVenta*vd.cantidad) ELSE (vd.precioReal*vd.cantidad) END ) from VentasDetalle vd where vd.ventas = v and substring(vd.registro,1,1) = 1 and substring(vd.ventas.registro,1,1) = 1 ),"
-                    + "	(select sum(vc.montoInicial) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
-                    + "	(select sum(vc.cantidadLetras) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
+                   + "	v.montoInicial,"
+                    + "	v.cantidadLetras,"
                     + " (select sum(vd2.precioProforma * vd2.cantidad) from VentasDetalle vd2 where vd2.ventas = v and substring(vd2.registro,1,1) = 1 and substring(vd2.ventas.registro,1,1) = 1 )"
                     + ", (select sum(vd3.precioCash * vd3.cantidad) from VentasDetalle vd3 where vd3.ventas = v and substring(vd3.registro,1,1) = 1 and substring(vd3.ventas.registro,1,1) = 1 )"
                     + " from Ventas v, DatosCliente dc"
@@ -246,8 +246,8 @@ public class cVenta {
                     + "	v.neto,"
                     + " v.registro,"
                     + " (select sum( CASE WHEN vd.precioReal>vd.precioVenta THEN (vd.precioVenta*vd.cantidad) ELSE (vd.precioReal*vd.cantidad) END ) from VentasDetalle vd where vd.ventas = v and substring(vd.registro,1,1) = 1 and substring(vd.ventas.registro,1,1) = 1 ),"
-                    + "	(select sum(vc.montoInicial) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
-                    + "	(select sum(vc.cantidadLetras) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
+                    + "	v.montoInicial,"
+                    + "	v.cantidadLetras,"
                     + " (select sum(vd2.precioProforma * vd2.cantidad) from VentasDetalle vd2 where vd2.ventas = v and substring(vd2.registro,1,1) = 1 and substring(vd2.ventas.registro,1,1) = 1 )"
                     + ", (select sum(vd3.precioCash * vd3.cantidad) from VentasDetalle vd3 where vd3.ventas = v and substring(vd3.registro,1,1) = 1 and substring(vd3.ventas.registro,1,1) = 1 )"
                     + " from Ventas v, DatosCliente dc"
@@ -293,8 +293,8 @@ public class cVenta {
                     + "	v.neto,"
                     + " v.registro,"
                     + " (select sum( CASE WHEN vd.precioReal>vd.precioVenta THEN (vd.precioVenta*vd.cantidad) ELSE (vd.precioReal*vd.cantidad) END ) from VentasDetalle vd where vd.ventas = v and substring(vd.registro,1,1) = 1 and substring(vd.ventas.registro,1,1) = 1 ),"
-                    + "	(select sum(vc.montoInicial) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
-                    + "	(select sum(vc.cantidadLetras) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
+                    + "	v.montoInicial,"
+                    + "	v.cantidadLetras,"
                     + " (select sum(vd2.precioProforma * vd2.cantidad) from VentasDetalle vd2 where vd2.ventas = v and substring(vd2.registro,1,1) = 1 and substring(vd2.ventas.registro,1,1) = 1 )"
                     + ", (select sum(vd3.precioCash * vd3.cantidad) from VentasDetalle vd3 where vd3.ventas = v and substring(vd3.registro,1,1) = 1 and substring(vd3.ventas.registro,1,1) = 1 )"
                     + " from Ventas v, DatosCliente dc"
@@ -341,8 +341,8 @@ public class cVenta {
                     + "	v.neto,"
                     + " v.registro,"
                     + " (select sum( CASE WHEN vd.precioReal>vd.precioVenta THEN (vd.precioVenta*vd.cantidad) ELSE (vd.precioReal*vd.cantidad) END ) from VentasDetalle vd where vd.ventas = v and substring(vd.registro,1,1) = 1 and substring(vd.ventas.registro,1,1) = 1 ),"
-                    + "	(select sum(vc.montoInicial) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
-                    + "	(select sum(vc.cantidadLetras) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
+                    + "	v.montoInicial,"
+                    + "	v.cantidadLetras,"
                     + " (select sum(vd2.precioProforma * vd2.cantidad) from VentasDetalle vd2 where vd2.ventas = v and substring(vd2.registro,1,1) = 1 and substring(vd2.ventas.registro,1,1) = 1 )"
                     + ", (select sum(vd3.precioCash * vd3.cantidad) from VentasDetalle vd3 where vd3.ventas = v and substring(vd3.registro,1,1) = 1 and substring(vd3.ventas.registro,1,1) = 1 )"
                     + " from Ventas v, DatosCliente dc"
@@ -390,8 +390,8 @@ public class cVenta {
                     + "	v.neto,"
                     + " v.registro,"
                     + " (select sum( CASE WHEN vd.precioReal>vd.precioVenta THEN (vd.precioVenta*vd.cantidad) ELSE (vd.precioReal*vd.cantidad) END ) from VentasDetalle vd where vd.ventas = v and substring(vd.registro,1,1) = 1 and substring(vd.ventas.registro,1,1) = 1 ),"
-                    + "	(select sum(vc.montoInicial) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
-                    + "	(select sum(vc.cantidadLetras) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
+                    + "	v.montoInicial,"
+                    + "	v.cantidadLetras,"
                     + " (select sum(vd2.precioProforma * vd2.cantidad) from VentasDetalle vd2 where vd2.ventas = v and substring(vd2.registro,1,1) = 1 and substring(vd2.ventas.registro,1,1) = 1 )"
                     + ", (select sum(vd3.precioCash * vd3.cantidad) from VentasDetalle vd3 where vd3.ventas = v and substring(vd3.registro,1,1) = 1 and substring(vd3.ventas.registro,1,1) = 1 )"
                     + " from Ventas v, DatosCliente dc"
@@ -439,8 +439,8 @@ public class cVenta {
                     + "	v.neto,"
                     + " v.registro,"
                     + " (select sum( CASE WHEN vd.precioReal>vd.precioVenta THEN (vd.precioVenta*vd.cantidad) ELSE (vd.precioReal*vd.cantidad) END ) from VentasDetalle vd where vd.ventas = v and substring(vd.registro,1,1) = 1 and substring(vd.ventas.registro,1,1) = 1 ),"
-                    + "	(select sum(vc.montoInicial) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
-                    + "	(select sum(vc.cantidadLetras) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
+                    + "	v.montoInicial,"
+                    + "	v.cantidadLetras,"
                     + " (select sum(vd2.precioProforma * vd2.cantidad) from VentasDetalle vd2 where vd2.ventas = v and substring(vd2.registro,1,1) = 1 and substring(vd2.ventas.registro,1,1) = 1 )"
                     + ", (select sum(vd3.precioCash * vd3.cantidad) from VentasDetalle vd3 where vd3.ventas = v and substring(vd3.registro,1,1) = 1 and substring(vd3.ventas.registro,1,1) = 1 )"
                     + " from Ventas v, DatosCliente dc"
@@ -487,8 +487,8 @@ public class cVenta {
                     + "	v.neto,"
                     + " v.registro,"
                     + " (select sum( CASE WHEN vd.precioReal>vd.precioVenta THEN (vd.precioVenta*vd.cantidad) ELSE (vd.precioReal*vd.cantidad) END ) from VentasDetalle vd where vd.ventas = v and substring(vd.registro,1,1) = 1 and substring(vd.ventas.registro,1,1) = 1 ),"
-                    + "	(select sum(vc.montoInicial) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
-                    + "	(select sum(vc.cantidadLetras) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
+                    + "	v.montoInicial,"
+                    + "	v.cantidadLetras,"
                     + " (select sum(vd2.precioProforma * vd2.cantidad) from VentasDetalle vd2 where vd2.ventas = v and substring(vd2.registro,1,1) = 1 and substring(vd2.ventas.registro,1,1) = 1 )"
                     + ", (select sum(vd3.precioCash * vd3.cantidad) from VentasDetalle vd3 where vd3.ventas = v and substring(vd3.registro,1,1) = 1 and substring(vd3.ventas.registro,1,1) = 1 )"
                     + " from Ventas v, DatosCliente dc"
@@ -536,8 +536,8 @@ public class cVenta {
                     + "	v.neto,"
                     + " v.registro,"
                     + " (select sum( CASE WHEN vd.precioReal>vd.precioVenta THEN (vd.precioVenta*vd.cantidad) ELSE (vd.precioReal*vd.cantidad) END ) from VentasDetalle vd where vd.ventas = v and substring(vd.registro,1,1) = 1 and substring(vd.ventas.registro,1,1) = 1 ),"
-                    + "	(select sum(vc.montoInicial) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
-                    + "	(select sum(vc.cantidadLetras) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
+                    + "	v.montoInicial,"
+                    + "	v.cantidadLetras,"
                     + " (select sum(vd2.precioProforma * vd2.cantidad) from VentasDetalle vd2 where vd2.ventas = v and substring(vd2.registro,1,1) = 1 and substring(vd2.ventas.registro,1,1) = 1 )"
                     + ", (select sum(vd3.precioCash * vd3.cantidad) from VentasDetalle vd3 where vd3.ventas = v and substring(vd3.registro,1,1) = 1 and substring(vd3.ventas.registro,1,1) = 1 )"
                     + " from Ventas v, DatosCliente dc"
@@ -584,8 +584,8 @@ public class cVenta {
                     + "	v.neto,"
                     + " v.registro,"
                     + " (select sum( CASE WHEN vd.precioReal>vd.precioVenta THEN (vd.precioVenta*vd.cantidad) ELSE (vd.precioReal*vd.cantidad) END ) from VentasDetalle vd where vd.ventas = v and substring(vd.registro,1,1) = 1 and substring(vd.ventas.registro,1,1) = 1 ),"
-                    + "	(select sum(vc.montoInicial) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
-                    + "	(select sum(vc.cantidadLetras) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
+                    + "	v.montoInicial,"
+                    + "	v.cantidadLetras,"
                     + " (select sum(vd2.precioProforma * vd2.cantidad) from VentasDetalle vd2 where vd2.ventas = v and substring(vd2.registro,1,1) = 1 and substring(vd2.ventas.registro,1,1) = 1 )"
                     + ", (select sum(vd3.precioCash * vd3.cantidad) from VentasDetalle vd3 where vd3.ventas = v and substring(vd3.registro,1,1) = 1 and substring(vd3.ventas.registro,1,1) = 1 )"
                     + " from Ventas v, DatosCliente dc"
@@ -629,8 +629,8 @@ public class cVenta {
                     + "	v.neto,"
                     + " v.registro,"
                     + " (select sum( CASE WHEN vd.precioReal>vd.precioVenta THEN (vd.precioVenta*vd.cantidad) ELSE (vd.precioReal*vd.cantidad) END ) from VentasDetalle vd where vd.ventas = v and substring(vd.registro,1,1) = 1 and substring(vd.ventas.registro,1,1) = 1 ),"
-                    + "	(select sum(vc.montoInicial) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
-                    + "	(select sum(vc.cantidadLetras) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
+                    + "	v.montoInicial,"
+                    + "	v.cantidadLetras,"
                     + " (select sum(vd2.precioProforma * vd2.cantidad) from VentasDetalle vd2 where vd2.ventas = v and substring(vd2.registro,1,1) = 1 and substring(vd2.ventas.registro,1,1) = 1 )"
                     + ", (select sum(vd3.precioCash * vd3.cantidad) from VentasDetalle vd3 where vd3.ventas = v and substring(vd3.registro,1,1) = 1 and substring(vd3.ventas.registro,1,1) = 1 )"
                     + " from Ventas v, DatosCliente dc"
@@ -675,8 +675,8 @@ public class cVenta {
                     + "	v.neto,"
                     + " v.registro,"
                     + " (select sum( CASE WHEN vd.precioReal>vd.precioVenta THEN (vd.precioVenta*vd.cantidad) ELSE (vd.precioReal*vd.cantidad) END ) from VentasDetalle vd where vd.ventas = v and substring(vd.registro,1,1) = 1 and substring(vd.ventas.registro,1,1) = 1 ),"
-                    + "	(select sum(vc.montoInicial) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
-                    + "	(select sum(vc.cantidadLetras) from VentaCredito vc where vc.ventas = v and substring(vc.registro,1,1) = 1),"
+                    + "	v.montoInicial,"
+                    + "	v.cantidadLetras,"
                     + " (select sum(vd2.precioProforma * vd2.cantidad) from VentasDetalle vd2 where vd2.ventas = v and substring(vd2.registro,1,1) = 1 and substring(vd2.ventas.registro,1,1) = 1 )"
                     + ", (select sum(vd3.precioCash * vd3.cantidad) from VentasDetalle vd3 where vd3.ventas = v and substring(vd3.registro,1,1) = 1 and substring(vd3.ventas.registro,1,1) = 1 )"
                     + " from Ventas v, DatosCliente dc"
@@ -1047,6 +1047,7 @@ public class cVenta {
      * 5:totalPago, 6:interesPagado, 7:cantidadLetra, 8:tipo, 9:registro]
      */
     public List leer_codCliente_SC(int codCliente) {
+        // *corregir*
         List vList = null;
         Transaction trns = null;
         sesion = HibernateUtil.getSessionFactory().openSession();
@@ -1054,10 +1055,10 @@ public class cVenta {
             trns = sesion.beginTransaction();
             Query q = sesion.createQuery("select v.codVentas, v.docSerieNumero,"
                     + " v.fecha, v.neto,	"
-                    + " (select sum(vcl.interes) from VentaCreditoLetra vcl where vcl.ventaCredito.ventas= v and substring(vcl.registro,1,1)= 1) ,"
-                    + " (select sum(vcl.totalPago) from VentaCreditoLetra vcl where vcl.ventaCredito.ventas= v and substring(vcl.registro,1,1)= 1) ,"
-                    + " (select sum(vcl.interesPagado) from VentaCreditoLetra vcl where vcl.ventaCredito.ventas= v and substring(vcl.registro,1,1)= 1) ,"
-                    + " (select vc.cantidadLetras from VentaCredito vc where vc= (select max(vc1) from VentaCredito vc1 where vc1.ventas= v and substring(registro,1,1)= 1) ) ,"
+                    + " (select sum(vcl.interes) from VentaCreditoLetra vcl where vcl.ventas= v and substring(vcl.registro,1,1)= 1) ,"
+                    + " (select sum(vcl.totalPago) from VentaCreditoLetra vcl where vcl.ventas= v and substring(vcl.registro,1,1)= 1) ,"
+                    + " (select sum(vcl.interesPagado) from VentaCreditoLetra vcl where vcl.ventas= v and substring(vcl.registro,1,1)= 1) ,"
+                    + " v.cantidadLetras,"
                     + "	v.tipo, v.registro"
                     + " from Ventas v join v.persona.datosClientes dc"
                     + " where (substring(v.registro,1,1)= 1 or substring(v.registro,1,1)= 0 ) and dc= :par1"
@@ -1090,22 +1091,6 @@ public class cVenta {
             setError(e.getMessage());
         }
         return 0;
-    }
-
-    public Ventas leer_ultimaVentaCredito() {
-        setError(null);
-        sesion = HibernateUtil.getSessionFactory().openSession();
-        try {
-            sesion = HibernateUtil.getSessionFactory().openSession();
-            Query q = sesion.createQuery("from Ventas v "
-                    + "where v.tipo='CREDITO' "
-                    + "order by v.codVentas desc").
-                    setMaxResults(1);
-            return (Ventas) q.list().iterator().next();
-        } catch (Exception e) {
-            setError(e.getMessage());
-            return null;
-        }
     }
 
     /**
@@ -1248,5 +1233,34 @@ public class cVenta {
             e.printStackTrace();
         }
         return est;
+    }
+    
+    public Boolean actualizar(int codVenta, Date fechaInicial, Double montoLetra, String duracion, Date fechaVencimientoLetra, Double montoInicial, int cantidadLetras) {
+        Boolean estado = false;
+        Transaction trns = null;
+        sesion = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = sesion.beginTransaction();
+            Ventas objVenta = (Ventas) sesion.get(Ventas.class, codVenta);
+            objVenta.setFechaInicialVencimiento(fechaInicial);
+            objVenta.setMontoLetra(montoLetra);
+            objVenta.setDuracion(duracion);
+            objVenta.setFechaVencimientoLetraDeuda(fechaVencimientoLetra);
+            objVenta.setMontoInicial(montoInicial);
+            objVenta.setCantidadLetras(cantidadLetras);
+            sesion.update(objVenta);
+            sesion.getTransaction().commit();
+            estado = true;
+        } catch (Exception e) {
+            if (trns != null) {
+                trns.rollback();
+            }
+            e.printStackTrace();
+            setError(e.getMessage());
+        } finally {
+            sesion.flush();
+            sesion.close();
+        }
+        return estado;
     }
 }

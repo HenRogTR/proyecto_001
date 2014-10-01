@@ -11,8 +11,6 @@
 <%@page import="tablas.VentasDetalle"%>
 <%@page import="tablas.VentaCreditoLetra"%>
 <%@page import="utilitarios.cManejoFechas"%>
-<%@page import="ventaClases.cVentaCredito"%>
-<%@page import="tablas.VentaCredito"%>
 <%@page import="tablas.Ventas"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="utilitarios.cOtros"%>
@@ -50,10 +48,9 @@
             Double interesPagado = 0.00;
             String fondoAnulado = objVenta.getRegistro().substring(0, 1).equals("0") ? "#ff6666" : "";//estilo a las ventas anuladas
             if (objVenta.getTipo().equals("CREDITO")) {
-                VentaCredito objVentaCredito = new cVentaCredito().leer_codVenta_01(objVenta.getCodVentas());
-                numeroLetra = objVentaCredito.getCantidadLetras().toString();
+                numeroLetra = objVenta.getCantidadLetras() + "";
                 Double montoAmortizado = 0.00;
-                for (VentaCreditoLetra objVentaCreditoLetra : objVentaCredito.getVentaCreditoLetras()) {
+                for (VentaCreditoLetra objVentaCreditoLetra : objVenta.getVentaCreditoLetras()) {
                     montoAmortizado += objVentaCreditoLetra.getTotalPago();
                     interes += objVentaCreditoLetra.getInteres();
                     interesPagado += objVentaCreditoLetra.getInteresPagado();

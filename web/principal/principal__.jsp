@@ -4,8 +4,6 @@
     Author     : Henrri
 --%>
 
-<%@page import="java.util.Date"%>
-<%@page import="Clase.Fecha"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,7 +11,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <!--importando script-->
-        <%@include file="scriptImportar.jsp" %>
+        <%@include file="../principal/scriptImportar.jsp" %>
         <link rel="stylesheet" type="text/css" href="../librerias/css/cssImportar.css" media="all"/>
         <script>
             function fPaginaActual() {
@@ -22,28 +20,20 @@
         </script>
     </head>
     <body>
-        <input type="hidden" name="paginaActualPermiso" value="1" title="PÁGINA PRINCIPAL"/>        
+        <input type="hidden" name="paginaActualPermiso" value="1" title="PÁGINA PRINCIPAL"/>
         <div id="wrap">
             <div id="header">
-                <label class="horaCabecera"><%=new Fecha().fechaCabecera(new Date())%></label>
-                <label class="usuarioInfo" id="lUsuario">USUARIO: SESIÓN NO INICIADA</label>
+                <%@include file="../principal/cabecera.jsp" %>
             </div>
             <div id="dMenu">
-                <div class="titulo">
-                    <div style="float: left;">
-                        <div class="acceso">                            
-                            <button class="sexybutton" id="bAccesoAbrir"><span><span><img src="../librerias/botonesIconos/images/icons/silk/key_go.png">Ingresar</span></span></button>
-                        </div>
-                        <div id="menu" class="ocultar">
-                            <%@include file="menu_2.jsp" %>
-                        </div>
-                    </div>
-                        <div class="titulo2" style="padding-left: 130px;">
+                <div class="titulo">                    
+                    <%@include file="../principal/menu_2.jsp" %>
+                    <div id="tituloPagina" class="titulo2" style="padding-left: 130px;">
                         PRINCIPAL
                     </div>
                 </div>
             </div>
-            <div id="finMenu" class="lineaDivisoria"></div>
+            <div id="finMenu" class="linea"></div>
             <div id="contenido">
                 <div>
                     <div class="articles" style="font-size: 12px;padding: 10px;text-align: justify;">
@@ -74,9 +64,9 @@
                     </div>
                 </div>
             </div>
-            <div id="finContenido" class="lineaDivisoria"></div>
+            <div id="finContenido" class="linea"></div>
             <div id="piePagina">
-                <%@include file="piePagina.jsp" %>
+                <%@include file="../principal/piePagina.jsp" %>
             </div>
         </div>
     </body>

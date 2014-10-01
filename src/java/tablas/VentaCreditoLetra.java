@@ -1,5 +1,5 @@
 package tablas;
-// Generated 22/05/2014 10:20:56 AM by Hibernate Tools 3.6.0
+// Generated 22/07/2014 11:50:38 AM by Hibernate Tools 3.6.0
 
 
 import java.util.Date;
@@ -13,7 +13,7 @@ public class VentaCreditoLetra  implements java.io.Serializable {
 
 
      private Integer codVentaCreditoLetra;
-     private VentaCredito ventaCredito;
+     private Ventas ventas;
      private Integer moneda;
      private Integer numeroLetra;
      private String detalleLetra;
@@ -32,12 +32,12 @@ public class VentaCreditoLetra  implements java.io.Serializable {
     }
 
 	
-    public VentaCreditoLetra(VentaCredito ventaCredito, String registro) {
-        this.ventaCredito = ventaCredito;
+    public VentaCreditoLetra( Ventas ventas, String registro) {
+        this.ventas = ventas;
         this.registro = registro;
     }
-    public VentaCreditoLetra(VentaCredito ventaCredito, Integer moneda, Integer numeroLetra, String detalleLetra, Date fechaVencimiento, Double monto, Double interes, Date fechaPago, Double totalPago, Double interesPagado, Double interesPendiente, Date interesUltimoCalculo, String registro, Set<CobranzaDetalle> cobranzaDetalles) {
-       this.ventaCredito = ventaCredito;
+    public VentaCreditoLetra( Ventas ventas, Integer moneda, Integer numeroLetra, String detalleLetra, Date fechaVencimiento, Double monto, Double interes, Date fechaPago, Double totalPago, Double interesPagado, Double interesPendiente, Date interesUltimoCalculo, String registro, Set<CobranzaDetalle> cobranzaDetalles) {
+       this.ventas = ventas;
        this.moneda = moneda;
        this.numeroLetra = numeroLetra;
        this.detalleLetra = detalleLetra;
@@ -60,12 +60,12 @@ public class VentaCreditoLetra  implements java.io.Serializable {
     public void setCodVentaCreditoLetra(Integer codVentaCreditoLetra) {
         this.codVentaCreditoLetra = codVentaCreditoLetra;
     }
-    public VentaCredito getVentaCredito() {
-        return this.ventaCredito;
+    public Ventas getVentas() {
+        return this.ventas;
     }
     
-    public void setVentaCredito(VentaCredito ventaCredito) {
-        this.ventaCredito = ventaCredito;
+    public void setVentas(Ventas ventas) {
+        this.ventas = ventas;
     }
     public Integer getMoneda() {
         return this.moneda;

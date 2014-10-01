@@ -25,7 +25,7 @@
         <script type="text/javascript" src="../librerias/utilitarios/formatoDecimal.js"></script>
         <script type="text/javascript" src="../librerias/utilitarios/manejoFecha.js"></script>
         <script type="text/javascript" src="../librerias/plugin/mask/jquery.mask.min.js"></script>
-        <script type="text/javascript" src="../librerias/venta/ventaMantenimiento.js?v13.12.26"></script>
+        <script type="text/javascript" src="../librerias/venta/ventaMantenimiento.js?v14.07.23"></script>
         <script type="text/javascript" src="../librerias/jquery-ui/jquery-ui-1.10.3.custom/js/i18n/jquery.ui.datepicker-es-min.js"></script>
         <style>
             .ui-autocomplete {

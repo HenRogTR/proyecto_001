@@ -39,6 +39,22 @@ $(document).ready(function() {
             e.preventDefault();
         }
     });
+    //Imprimir VCL
+    $('#bVentaCreditoLetra').click(function(e) {
+        if (!$.isNumeric($('#codVentaAux').val())) {
+            $.growl.warning({title: 'Alerta', message: 'No se ha realizado ventas al cliente actual.', size: 'large'});
+            return;
+        }
+        $('#dVentaCreditoLetraSeleccionar').dialog('open');
+    });    
+    //Imprimir VCL
+    $('#bCobranza').click(function(e) {
+        if (!$.isNumeric($('#codVentaAux').val())) {
+            $.growl.warning({title: 'Alerta', message: 'El cliente no ha realizado ningún pago.', size: 'large'});
+            return;
+        }
+        $('#dCobranzaSeleccionar').dialog('open');
+    });
     //modificar el interes evitar
     $('#bInteresEvitarEditar').click(function(e) {
         $('#dInteresAsignadoEditar').dialog('open');
@@ -96,6 +112,52 @@ $(function() {
             },
             'Habilitar intereses': function() {
                 fInteresAsigandoHabilitar();
+            }
+        },
+        close: function() {
+            $(this).dialog('close');
+        }
+    });
+    //seleccion VCL
+    $('#dVentaCreditoLetraSeleccionar').dialog({
+        autoOpen: false,
+        modal: true,
+        resizable: false,
+        height: 200,
+        width: 400,
+        buttons: {
+            'Continuar': function() {
+                var dato = 'accionVentaCreditoLetra=imprimirVentaCreditoLetra&';
+                dato += 'codCliente=' + $('#codCliente').val() + '&';
+                dato += 'codVenta=' + $('#codVentaAux').val() + '&';
+                dato += 'tipo=' + $('input[name=ventaCreditoLetraImprimirOpcion]:checked').val();
+                window.open('../sVentaCreditoLetra?' + dato, '_blank');
+            },
+            'Cerrrar': function() {
+                $(this).dialog('close');
+            }
+        },
+        close: function() {
+            $(this).dialog('close');
+        }
+    });
+    //seleccion VCL
+    $('#dCobranzaSeleccionar').dialog({
+        autoOpen: false,
+        modal: true,
+        resizable: false,
+        height: 200,
+        width: 400,
+        buttons: {
+            'Continuar': function() {
+                var dato = 'accionCobranza=imprimirCobranzaReporte&';
+                dato += 'codCliente=' + $('#codCliente').val() + '&';
+                dato += 'codVenta=' + $('#codVentaAux').val() + '&';
+                dato += 'tipo=' + $('input[name=cobranzaImprimirOpcion]:checked').val();
+                window.open('../sCobranza?' + dato, '_blank');
+            },
+            'Cerrrar': function() {
+                $(this).dialog('close');
             }
         },
         close: function() {
@@ -181,6 +243,7 @@ function fClienteLeer(codCliente) {
                     $('.tfContenedor').addClass('ocultar');
                 } else {
                     var itemCliente = jsonCliente[0];
+                    $('#codVentaAux').val('');
                     $('#codCliente').val(itemCliente.codCliente);
                     $('#sCodCliente').text(itemCliente.codCliente).removeClass('ocultar')
                             .next('.esperando').addClass('ocultar');
@@ -399,7 +462,8 @@ function fVentaCreditoLetra(codVenta, docSerieNumero) {
     //parsear el codVenta ya que llega en formato 0000000
     codVenta = parseInt(codVenta, 10);
     var data = {codVenta: codVenta};
-    var url = '../ajax/ventaCreditoLetraPorCodVenta.jsp';
+//    var url = '../ajax/ventaCreditoLetraPorCodVenta.jsp';
+    var url = '../ajax/ventaCreditoLetraPorCodigoVenta.jsp';
     //obtenemos el tag
     var $tVentaCreditoLetraTbody = $('#tVentaCreditoLetra tbody');
     try {
@@ -430,7 +494,9 @@ function fVentaCreditoLetra(codVenta, docSerieNumero) {
                 var tam = ventaCreditoLetraJson.length;
                 //vaciar la tabla
                 $tVentaCreditoLetraTbody.empty();
-                //recoremos cada posicion
+                //asignamos el codVentaAux
+                $('#codVentaAux').val(codVenta);
+                //recorremos cada posicion
                 for (var i = 0; i < tam; i++) {
                     //obtenemos posicion [i]
                     var ventaCreditoLetraItem = ventaCreditoLetraJson[i];
@@ -687,7 +753,8 @@ function fVentaCreditoLetraResumen(codCliente) {
     //parsear
     codCliente = parseInt(codCliente, 10);
     var data = {codCliente: codCliente};
-    var url = '../ajax/ventaCreditoLetraResumenPorCodCliente.jsp';
+//    var url = '../ajax/ventaCreditoLetraResumenPorCodCliente.jsp';
+    var url = '../ajax/ventaCreditoLetraResumenMensualPorCodigoCliente.jsp';
     try {
         $.ajax({
             type: 'post',
@@ -722,11 +789,16 @@ function fVentaCreditoLetraResumen(codCliente) {
                     //tr contenedor, class trVenta para evento clic y doble clic
                     var $tr = $('<tr>').appendTo($tVentaCreditoLetraResumenTbody);
                     //td
+//                    var $td1 = $('<td>', {html: VCLResumenItem.mes + '-' + VCLResumenItem.anio, css: {'width': 70}}).appendTo($tr);
+//                    var $td2 = $('<td>', {html: VCLResumenItem.monto, 'class': 'derecha', css: {'width': 70}}).appendTo($tr);
+//                    var $td3 = $('<td>', {html: VCLResumenItem.interes, 'class': 'derecha', css: {'width': 70}}).appendTo($tr);
+//                    var $td4 = $('<td>', {html: VCLResumenItem.pagoCliente, 'class': 'derecha', css: {'width': 70}}).appendTo($tr);
+//                    var $td5 = $('<td>', {html: VCLResumenItem.saldoCliente, 'class': 'derecha'}).appendTo($tr);
                     var $td1 = $('<td>', {html: VCLResumenItem.mes + '-' + VCLResumenItem.anio, css: {'width': 70}}).appendTo($tr);
-                    var $td2 = $('<td>', {html: VCLResumenItem.monto, 'class': 'derecha', css: {'width': 70}}).appendTo($tr);
+                    var $td2 = $('<td>', {html: VCLResumenItem.capital, 'class': 'derecha', css: {'width': 70}}).appendTo($tr);
                     var $td3 = $('<td>', {html: VCLResumenItem.interes, 'class': 'derecha', css: {'width': 70}}).appendTo($tr);
-                    var $td4 = $('<td>', {html: VCLResumenItem.pagoCliente, 'class': 'derecha', css: {'width': 70}}).appendTo($tr);
-                    var $td5 = $('<td>', {html: VCLResumenItem.saldoCliente, 'class': 'derecha'}).appendTo($tr);
+                    var $td4 = $('<td>', {html: VCLResumenItem.pagoTotal, 'class': 'derecha', css: {'width': 70}}).appendTo($tr);
+                    var $td5 = $('<td>', {html: VCLResumenItem.saldoConInteres, 'class': 'derecha'}).appendTo($tr);
                 }
                 //quitar lo ocultado
                 $tVentaCreditoLetraResumenTbody.removeClass('ocultar').next().addClass('ocultar');

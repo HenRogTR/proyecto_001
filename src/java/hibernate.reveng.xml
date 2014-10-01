@@ -22,7 +22,6 @@
   <table-filter match-name="kardex_articulo_producto"/>
   <table-filter match-name="zona"/>
   <table-filter match-name="compra_serie_numero"/>
-  <table-filter match-name="venta_credito"/>
   <table-filter match-name="empresa_convenio"/>
   <table-filter match-name="proveedor"/>
   <table-filter match-name="cobranza_detalle"/>
