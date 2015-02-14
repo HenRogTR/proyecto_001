@@ -18,10 +18,10 @@
 <%
     //****corregir****
     //evitar el acceso directo por el URL
-    if (request.getMethod().equals("GET")) {
-        out.print("No tiene permisos para ver este enlace.");
-        return;
-    }
+//    if (request.getMethod().equals("GET")) {
+//        out.print("No tiene permisos para ver este enlace.");
+//        return;
+//    }
     //verficar inicio de sesión
     EjbUsuario ejbUsuario = new EjbUsuario();
     ejbUsuario.setUsuario((Usuario) session.getAttribute("usuario"));

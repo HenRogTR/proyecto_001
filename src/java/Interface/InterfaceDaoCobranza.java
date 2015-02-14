@@ -17,6 +17,8 @@ public interface InterfaceDaoCobranza {
 
     public int registrar(Session session, Cobranza objCobranza) throws Exception;
 
+    public Cobranza leerPorCodigo(Session session, int codCobranza) throws Exception;
+
     public List<Cobranza> leerPorCodigoCliente(Session session, int codCliente) throws Exception;
 
     public List<Cobranza> leerPorCodigoVenta(Session session, int codVenta) throws Exception;

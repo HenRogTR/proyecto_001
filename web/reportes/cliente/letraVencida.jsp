@@ -4,6 +4,7 @@
     Author     : Henrri
 --%>
 
+<%@page import="tablas.Zona"%>
 <%@page import="Clase.Utilitarios"%>
 <%@page import="Clase.Fecha"%>
 <%@page import="otrasTablasClases.cDatosExtras"%>
@@ -63,6 +64,17 @@
     //Fechas que vencen en fechaDate figurar en el reporte
     //si se usa se suma un día
     fechaDate = fechaFinalUsar ? new Fecha().sumarDias(fechaDate, 1) : fechaDate;
+    //Varificando con Zona
+
+    int codZona = 0;
+    String zona = "";
+    try {
+        codZona = Integer.parseInt(request.getParameter("codZona").toString());
+        zona = request.getParameter("zona").toString();
+    } catch (Exception e) {
+        out.print("codZona no definido.");
+        return;
+    }
     //========================== 1 nivel =======================================
     if (reporte.equals("nombresC_todos")) {
         LVList = new cVentaCreditoLetraReporte().letrasVencidas_todos_ordenNombresC_SC(fechaDate);
@@ -362,6 +374,8 @@
             return;
         }
     }
+    //Agregar cabecera zona
+    cabeceraString += "<tr><th colspan=\"2\">ZONA: " + zona + "</th></tr>";
     if (LVList == null) {
         out.print(reporte + " list -> null.");
         return;
@@ -426,6 +440,7 @@
                             Double totalPago = 0.00;
                             Double interesPagado = 0.00;
                             Date interesUltimoCalculo = null;
+                            Integer codZonaCliente = 0;
 
                             Integer diaRetraso = 0;
                             Double interesSumar = 0.00;
@@ -459,21 +474,25 @@
                                 totalPago = (Double) dato[20];
                                 interesPagado = (Double) dato[21];
                                 interesUltimoCalculo = (Date) dato[22];
+                                codZonaCliente = (Integer) dato[23];
 
-                                if (null == fechaDateInicio || !fechaVencimiento.before(fechaDateInicio)) {
-                                    if (interesUltimoCalculo == null) {//se tomara el ultimo pago o la fecha de vencimiento
-                                        //error al haber una fecha de pago anterior a la fecha de vencimiento
-                                        diaRetraso = new Fecha().diasDiferencia(fechaInteresBaseDate, fechaPago != null ? (fechaPago.before(fechaVencimiento) ? fechaVencimiento : fechaPago) : fechaVencimiento);
-                                    } else {
-                                        diaRetraso = new Fecha().diasDiferencia(fechaInteresBaseDate, interesUltimoCalculo);
-                                    }
-                                    diaRetraso = diaRetraso < 0 ? 0 : diaRetraso;
-                                    diaRetraso = diaRetraso <= diaEspera ? 0 : diaRetraso;      //todos aquellos dentro de los dias de espera no se generan intereses.
-                                    interesSumar = (monto - totalPago) * factorInteres * diaRetraso;    //solo se genera interes del capital
-                                    interes += interesSumar;
+                                //Si es diferente a 0 y si es igual a la zona
+                                if (codZona == 0 || codZonaCliente.equals(codZona)) {
 
-                                    if (!codClienteAux.equals(codCliente)) {
-                                        codClienteAux = codCliente;
+                                    if (null == fechaDateInicio || !fechaVencimiento.before(fechaDateInicio)) {
+                                        if (interesUltimoCalculo == null) {//se tomara el ultimo pago o la fecha de vencimiento
+                                            //error al haber una fecha de pago anterior a la fecha de vencimiento
+                                            diaRetraso = new Fecha().diasDiferencia(fechaInteresBaseDate, fechaPago != null ? (fechaPago.before(fechaVencimiento) ? fechaVencimiento : fechaPago) : fechaVencimiento);
+                                        } else {
+                                            diaRetraso = new Fecha().diasDiferencia(fechaInteresBaseDate, interesUltimoCalculo);
+                                        }
+                                        diaRetraso = diaRetraso < 0 ? 0 : diaRetraso;
+                                        diaRetraso = diaRetraso <= diaEspera ? 0 : diaRetraso;      //todos aquellos dentro de los dias de espera no se generan intereses.
+                                        interesSumar = (monto - totalPago) * factorInteres * diaRetraso;    //solo se genera interes del capital
+                                        interes += interesSumar;
+
+                                        if (!codClienteAux.equals(codCliente)) {
+                                            codClienteAux = codCliente;
                         %>
                         <tr class="bottom1">
                             <th colspan="8"></th>
@@ -530,7 +549,8 @@
                             <td><%=new Fecha().dateAString(fechaPago)%></td>
                         </tr>
                         <%
-                                    totalDeudaAux += monto - totalPago + interes - interesPagado;
+                                        totalDeudaAux += monto - totalPago + interes - interesPagado;
+                                    }
                                 }
                             }
                         %>

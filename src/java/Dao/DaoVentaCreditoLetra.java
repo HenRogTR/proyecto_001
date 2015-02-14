@@ -6,6 +6,7 @@
 package Dao;
 
 import Interface.InterfaceDaoVentaCreditoLetra;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -122,7 +123,7 @@ public class DaoVentaCreditoLetra implements InterfaceDaoVentaCreditoLetra {
         hql = hql.concat(" select vcl");
         hql = hql.concat(" from VentaCreditoLetra vcl join vcl.ventas v");
         hql = hql.concat(" where v.codCliente= :codCliente and vcl.monto-vcl.totalPago> 0");
-        hql = hql.concat(" and substring(vcl.registro,1,1)= 1");
+        hql = hql.concat("    and substring(vcl.registro,1,1)= 1");
         hql = hql.concat(" order by vcl.fechaVencimiento asc");
         Query q = session.createQuery(hql)
                 .setInteger("codCliente", codCliente);
@@ -140,6 +141,130 @@ public class DaoVentaCreditoLetra implements InterfaceDaoVentaCreditoLetra {
         Query q = session.createQuery(hql)
                 .setInteger("codVenta", codVenta);
         return (List<VentaCreditoLetra>) q.list();
+    }
+
+    @Override
+    public List<Object[]> leerLetrasVencidasOrdenNombresC(Session session, Date fechaInicio, Date fechaFin) throws Exception {
+        String hql
+                = " select dc.codDatosCliente " //[0]
+                + "    , dc.tipo"
+                + "    , dc.condicion"
+                + "    , dc.codCobrador"
+                + "    , (select p1.nombresC "
+                + "         from Persona p1 "
+                + "         where p1.codPersona = dc.codCobrador)" //[4]
+                + "    , dc.interesEvitar" //[5]
+                + "    , dc.interesEvitarPermanente"
+                + "    , dc.empresaConvenio.codEmpresaConvenio"
+                + "    , dc.empresaConvenio.nombre"
+                + "    , dc.persona.codPersona"
+                + "    , dc.persona.nombresC" //[10]
+                + "    , dc.persona.direccion"
+                + "    , dc.persona.dniPasaporte"
+                + "    , dc.persona.ruc"
+                + "    , dc.persona.telefono1"
+                + "    , dc.persona.telefono2" //[15]
+                + "    , dc.persona.zona.codZona"
+                + "    , dc.persona.zona.zona"
+                + "    , vcl.ventas.codVentas"
+                + "    , vcl.ventas.itemCantidad" //[19]
+                + "    , (select vd1.descripcion "
+                + "       from VentasDetalle vd1 "
+                + "       where substring(vd1.registro,1,1) = 1 "
+                + "           and vd1.ventas = vcl.ventas "
+                + "       group by vd1.ventas)"
+                + "    , vcl.ventas.docSerieNumero" //[21]
+                + "    , vcl.ventas.fecha"
+                + "    , vcl.ventas.neto"
+                + "    , vcl.ventas.personaCodVendedor"
+                + "    , (select p2.nombresC "
+                + "         from Persona p2 "
+                + "         where p2.codPersona = vcl.ventas.personaCodVendedor)" //[25]
+                + "    ,vcl.ventas.montoInicial"
+                + "    ,vcl.ventas.montoLetra"
+                + "    ,vcl.codVentaCreditoLetra"
+                + "    ,vcl.fechaVencimiento"
+                + "    ,vcl.monto"
+                + "    ,vcl.interes" //[31]
+                + "    ,vcl.fechaPago"
+                + "    ,vcl.totalPago"
+                + "    ,vcl.interesPagado"
+                + "    ,vcl.interesPendiente"
+                + "    ,vcl.interesUltimoCalculo" //[36]
+                + " from VentaCreditoLetra vcl "
+                + "    join vcl.ventas.persona.datosClientes dc"
+                + " where vcl.fechaVencimiento between :fechaInicio and :fechaFin"
+                + "    and substring(vcl.registro,1,1) = 1" //Solo obtener letras no anuladas
+                + "    and (vcl.monto- vcl.totalPago) > 0" //con deuda
+                + " order by dc.persona.nombresC, dc.codDatosCliente"
+                + "    , vcl.ventas.codVentas, vcl.numeroLetra";
+
+        Query q = session.createQuery(hql)
+                .setDate("fechaInicio", fechaInicio)
+                .setDate("fechaFin", fechaFin);
+        return (List<Object[]>) q.list();
+    }
+
+    @Override
+    public List<Object[]> leerLetrasVencidasOrdenDireccion(Session session, Date fechaInicio, Date fechaFin) throws Exception {
+        String hql
+                = " select dc.codDatosCliente " //[0]
+                + "    , dc.tipo"
+                + "    , dc.condicion"
+                + "    , dc.codCobrador"
+                + "    , (select p1.nombresC "
+                + "         from Persona p1 "
+                + "         where p1.codPersona = dc.codCobrador)" //[4]
+                + "    , dc.interesEvitar" //[5]
+                + "    , dc.interesEvitarPermanente"
+                + "    , dc.empresaConvenio.codEmpresaConvenio"
+                + "    , dc.empresaConvenio.nombre"
+                + "    , dc.persona.codPersona"
+                + "    , dc.persona.nombresC" //[10]
+                + "    , dc.persona.direccion"
+                + "    , dc.persona.dniPasaporte"
+                + "    , dc.persona.ruc"
+                + "    , dc.persona.telefono1"
+                + "    , dc.persona.telefono2" //[15]
+                + "    , dc.persona.zona.codZona"
+                + "    , dc.persona.zona.zona"
+                + "    , vcl.ventas.codVentas"
+                + "    , vcl.ventas.itemCantidad" //[19]
+                + "    , (select vd1.descripcion "
+                + "       from VentasDetalle vd1 "
+                + "       where substring(vd1.registro,1,1) = 1 "
+                + "           and vd1.ventas = vcl.ventas "
+                + "       group by vd1.ventas)"
+                + "    , vcl.ventas.docSerieNumero" //[21]
+                + "    , vcl.ventas.fecha"
+                + "    , vcl.ventas.neto"
+                + "    , vcl.ventas.personaCodVendedor"
+                + "    , (select p2.nombresC "
+                + "         from Persona p2 "
+                + "         where p2.codPersona = vcl.ventas.personaCodVendedor)" //[25]
+                + "    ,vcl.ventas.montoInicial"
+                + "    ,vcl.ventas.montoLetra"
+                + "    ,vcl.codVentaCreditoLetra"
+                + "    ,vcl.fechaVencimiento"
+                + "    ,vcl.monto"
+                + "    ,vcl.interes" //[31]
+                + "    ,vcl.fechaPago"
+                + "    ,vcl.totalPago"
+                + "    ,vcl.interesPagado"
+                + "    ,vcl.interesPendiente"
+                + "    ,vcl.interesUltimoCalculo" //[36]
+                + " from VentaCreditoLetra vcl "
+                + "    join vcl.ventas.persona.datosClientes dc"
+                + " where vcl.fechaVencimiento between :fechaInicio and :fechaFin"
+                + "    and substring(vcl.registro,1,1) = 1" //Solo obtener letras no anuladas
+                + "    and (vcl.monto- vcl.totalPago) > 0" //con deuda
+                + " order by dc.persona.direccion, dc.codDatosCliente"
+                + "    , vcl.ventas.codVentas, vcl.numeroLetra";
+
+        Query q = session.createQuery(hql)
+                .setDate("fechaInicio", fechaInicio)
+                .setDate("fechaFin", fechaFin);
+        return (List<Object[]>) q.list();
     }
 
 }

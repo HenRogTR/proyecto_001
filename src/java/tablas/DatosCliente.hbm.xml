@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 22/05/2014 10:20:57 AM by Hibernate Tools 3.6.0 -->
+<!-- Generated 01/10/2014 04:51:32 PM by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
     <class name="tablas.DatosCliente" table="datos_cliente" catalog="proyecto_001">
         <id name="codDatosCliente" type="java.lang.Integer">
@@ -38,8 +38,8 @@
         <property name="interesEvitar" type="date">
             <column name="interes_evitar" length="10" />
         </property>
-        <property name="interesEvitarPermanente" type="java.lang.Boolean">
-            <column name="interes_evitar_permanente" />
+        <property name="interesEvitarPermanente" type="boolean">
+            <column name="interes_evitar_permanente" not-null="true" />
         </property>
         <property name="observaciones" type="string">
             <column name="observaciones" length="65535" />

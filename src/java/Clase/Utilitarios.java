@@ -8,7 +8,6 @@ package Clase;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -44,7 +43,10 @@ public class Utilitarios {
         if (cadena == null) {
             return "";
         }
-        return cadena.replace("\\", "\\\\").replace("\"", "\\\"").replace("'", "\\\"").replace("\r", " ").replace("\n", "<br>");
+        return cadena
+                .replace("\\", "\\\\").replace("\"", "\\\"")
+                .replace("'", "\\\"").replace("\r", " ")
+                .replace("\n", "<br>");
     }
 
     /**
@@ -67,7 +69,8 @@ public class Utilitarios {
         String num = String.valueOf(bd);
 
         int posPuntoDecimal = num.indexOf(".");
-        int cerosFaltantes = decimales - num.substring(posPuntoDecimal + 1, num.length()).length();
+        int cerosFaltantes
+                = decimales - num.substring(posPuntoDecimal + 1, num.length()).length();
         for (int i = 0; i < cerosFaltantes; i++) {
             num += "0";
         }
@@ -86,7 +89,7 @@ public class Utilitarios {
         Date fecha = new Date();
         return est + formato.format(fecha) + user;
     }
-    
+
     public static double redondearDecimales(double numero, int decimales) {
         if (numero < 0.009) {
             return 0;
@@ -94,5 +97,17 @@ public class Utilitarios {
         BigDecimal bd = new BigDecimal(numero);
         bd = bd.setScale(decimales, BigDecimal.ROUND_HALF_UP);
         return bd.doubleValue();
+    }
+
+    public static String centrar(String texto, int anchoTotal) {
+        String tex = texto;
+        if (texto.length() >= anchoTotal - 2) {
+            tex = texto;
+        } else {
+            for (int i = 0; i < (anchoTotal - texto.length()) / 2; i++) {
+                tex = " ".concat(tex);
+            }
+        }
+        return tex;
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 22/07/2014 11:50:39 AM by Hibernate Tools 3.6.0 -->
+<!-- Generated 01/10/2014 04:51:32 PM by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
     <class name="tablas.VentaCreditoLetra" table="venta_credito_letra" catalog="proyecto_001">
         <id name="codVentaCreditoLetra" type="java.lang.Integer">

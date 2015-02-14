@@ -65,7 +65,7 @@ public class EjbDatosExtras {
         }
         return interes;
     }
-    
+
     public int diaEspera() {
         int diaEspera = 0;
         this.session = null;
@@ -93,6 +93,35 @@ public class EjbDatosExtras {
             }
         }
         return diaEspera;
+    }
+
+    public String direccionArchivoTemporal() {
+        String direccion = "";
+        this.session = null;
+        this.transaction = null;
+        this.error = null;
+        try {
+            this.session = HibernateUtil.getSessionFactory().openSession();
+            this.transaction = session.beginTransaction();
+            DaoDatosExtras daoDatosExtras = new DaoDatosExtras();
+            this.datosExtras = daoDatosExtras.direccionArchivoTemporalTicketera(this.session);
+            //Verificar que haya dato
+            if (this.datosExtras != null) {
+                direccion = this.datosExtras.getLetras();
+            }
+            this.transaction.commit();
+        } catch (Exception e) {
+            if (this.transaction != null) {
+                this.transaction.rollback();
+            }
+            this.error = "Contacte al administrador: << " + e.getMessage() + " >>";
+            e.printStackTrace();
+        } finally {
+            if (this.session != null) {
+                this.session.close();
+            }
+        }
+        return direccion;
     }
 
     public DatosExtras getDatosExtras() {

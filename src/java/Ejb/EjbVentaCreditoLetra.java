@@ -8,7 +8,7 @@ package Ejb;
 import Dao.DaoVentaCreditoLetra;
 import HiberanteUtil.HibernateUtil;
 import Clase.Fecha;
-import Dao.DaoDatosExtras;
+import Clase.Utilitarios;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -221,6 +221,56 @@ public class EjbVentaCreditoLetra {
         return this.ventaCreditoLetraObjects;
     }
 
+    public List<Object[]> leerLetrasVencidasOrdenNombresC(Date fechaInicio, Date FechaFin) {
+        this.session = null;
+        this.transaction = null;
+        this.error = null;
+        try {
+            this.session = HibernateUtil.getSessionFactory().openSession();
+            this.transaction = session.beginTransaction();
+            DaoVentaCreditoLetra daoVentaCreditoLetra = new DaoVentaCreditoLetra();
+            //obtener resumen
+            this.ventaCreditoLetraObjects = daoVentaCreditoLetra.leerLetrasVencidasOrdenNombresC(this.session, fechaInicio, FechaFin);
+            this.transaction.commit();
+        } catch (Exception e) {
+            if (this.transaction != null) {
+                this.transaction.rollback();
+            }
+            this.error = "Contacte al administrador << " + e.getMessage() + " >>";
+            e.printStackTrace();
+        } finally {
+            if (this.session != null) {
+                this.session.close();
+            }
+        }
+        return this.ventaCreditoLetraObjects;
+    }
+    
+    public List<Object[]> leerLetrasVencidasOrdenDireccion(Date fechaInicio, Date FechaFin) {
+        this.session = null;
+        this.transaction = null;
+        this.error = null;
+        try {
+            this.session = HibernateUtil.getSessionFactory().openSession();
+            this.transaction = session.beginTransaction();
+            DaoVentaCreditoLetra daoVentaCreditoLetra = new DaoVentaCreditoLetra();
+            //obtener resumen
+            this.ventaCreditoLetraObjects = daoVentaCreditoLetra.leerLetrasVencidasOrdenDireccion(this.session, fechaInicio, FechaFin);
+            this.transaction.commit();
+        } catch (Exception e) {
+            if (this.transaction != null) {
+                this.transaction.rollback();
+            }
+            this.error = "Contacte al administrador << " + e.getMessage() + " >>";
+            e.printStackTrace();
+        } finally {
+            if (this.session != null) {
+                this.session.close();
+            }
+        }
+        return this.ventaCreditoLetraObjects;
+    }
+
     public boolean actualizarInteresPorCodigoCliente(int codCliente) {
         boolean est = false;
         this.session = null;
@@ -280,7 +330,9 @@ public class EjbVentaCreditoLetra {
                             diasRetraso = diasRetraso < 0 ? 0 : diasRetraso;
                             //calculando lo que se sumará
                             interesSumar = (this.ventaCreditoLetra.getMonto() - this.ventaCreditoLetra.getTotalPago()) * factorInteres * diasRetraso;
-                            //procedemos a actualizar el interes                            
+                            //Redondeando interes
+                            interesSumar = Double.parseDouble(Utilitarios.decimalFormato(interesSumar, 2));
+                            //procedemos a actualizar el interes
                             this.ventaCreditoLetra.setInteres(interesSumar + this.ventaCreditoLetra.getInteres());
                             //setear fecha de interes
                             this.ventaCreditoLetra.setInteresUltimoCalculo(fechaBase);
@@ -358,6 +410,8 @@ public class EjbVentaCreditoLetra {
                         diasRetrasoCalculoInteres = diasRetrasoCalculoInteres < 0 ? 0 : diasRetrasoCalculoInteres;
                         //calculando lo que se sumará
                         interesSumar = (this.ventaCreditoLetra.getMonto() - this.ventaCreditoLetra.getTotalPago()) * factorInteres * diasRetrasoCalculoInteres;
+                        //Redondeando interes
+                        interesSumar = Double.parseDouble(Utilitarios.decimalFormato(interesSumar, 2));
                         //procedemos a actualizar el interes                            
                         this.ventaCreditoLetra.setInteres(interesSumar + this.ventaCreditoLetra.getInteres());
                         //setear fecha de interes

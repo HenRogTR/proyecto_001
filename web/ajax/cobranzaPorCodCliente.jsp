@@ -38,7 +38,8 @@
     //iniciando interface
     EjbCobranza ejbCobranza = new EjbCobranza();
     //obtener lista
-    List<Cobranza> cobranzaList = ejbCobranza.leerActivoPorCodigoCliente(codCliente, true);
+    List<Cobranza> cobranzaList = ejbCobranza.leerActivoPorCodigoCliente(1, true);
+    cobranzaList = ejbCobranza.leerActivoPorCodigoCliente(codCliente, true);
     //obtener tamaño
     int tam = cobranzaList.size();
     out.print("[");
@@ -46,9 +47,7 @@
     for (int i = 0; i < tam; i++) {
         Cobranza objCobranza = cobranzaList.get(i);
         //imprimri <,> separadora
-        if (i > 0) {
-            out.print(",");
-        }
+        out.print(i > 0 ? "," : "");
         out.print("{"
                 + "\"codCobranza\":\"" + new Utilitarios().agregarCerosIzquierda(objCobranza.getCodCobranza(), 8) + "\""
                 + ", \"fechaCobranza\":\"" + new Fecha().dateAString(objCobranza.getFechaCobranza()) + "\""

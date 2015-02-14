@@ -81,6 +81,13 @@ public class EjbVenta {
         return this.venta;
     }
 
+    /**
+     * Este debe actualizar los importes al crédito
+     *
+     * @param codCliente
+     * @param cerrarSession
+     * @return
+     */
     public List<Ventas> leerPorCodigoCliente(int codCliente, boolean cerrarSession) {
         this.session = null;
         this.transaction = null;
@@ -90,6 +97,7 @@ public class EjbVenta {
             DaoVenta daoVenta = new DaoVenta();
             //Ventas que tiene un cliente
             this.ventaList = daoVenta.leerPorCodigoCliente(this.session, codCliente);
+            //Llamar al método que calcula los interes
             this.transaction.commit();
         } catch (Exception e) {
             if (this.transaction != null) {
@@ -207,7 +215,6 @@ public class EjbVenta {
             this.session = HibernateUtil.getSessionFactory().openSession();
             this.transaction = session.beginTransaction();
             DaoVenta daoVenta = new DaoVenta();
-            DaoVentaCreditoLetra daoVentaCreditoLetra = new DaoVentaCreditoLetra();
             this.ventaList = daoVenta.leerPorCodigoCliente(this.session, codCliente);
             int tam = this.ventaList.size();
             for (int i = 0; i < tam; i++) {
@@ -235,7 +242,7 @@ public class EjbVenta {
                             fechaVencimientoConEspera = new Fecha().fechaHoraAFecha(fechaVencimientoConEspera);
                             //variables
                             int diasRetraso;
-                            Double interesSumar;
+                            Double interesSumar=0.00;
                             //si tiene deuda en el saldo capital
                             if (objVentaCreditoLetra.getMonto() - objVentaCreditoLetra.getTotalPago() > 0) {
                                 cont++;
@@ -265,16 +272,17 @@ public class EjbVenta {
                                         //calculando lo que se sumará
                                         interesSumar = (objVentaCreditoLetra.getMonto() - objVentaCreditoLetra.getTotalPago()) * factorInteres * diasRetraso;
                                         //procedemos a actualizar el interes                            
-                                        objVentaCreditoLetra.setInteres(interesSumar + objVentaCreditoLetra.getInteres());
+//                                        objVentaCreditoLetra.setInteres(interesSumar + objVentaCreditoLetra.getInteres());
                                         //setear fecha de interes
-                                        objVentaCreditoLetra.setInteresUltimoCalculo(fechaBase);
+//                                        objVentaCreditoLetra.setInteresUltimoCalculo(fechaBase);
                                         //llamar al método update
-                                        daoVentaCreditoLetra.persistir(this.session, objVentaCreditoLetra);
+                                        //No actualizar los VCL
+                                        //daoVentaCreditoLetra.persistir(this.session, objVentaCreditoLetra);
                                     }
                                 }
                             }//Fin Venta con deudas
                             //===============0Fin Actualizacion intertees=======
-                            interes += objVentaCreditoLetra.getInteres();
+                            interes += objVentaCreditoLetra.getInteres() + interesSumar;
                             amortizado += objVentaCreditoLetra.getTotalPago();
                             interesPagado += objVentaCreditoLetra.getInteresPagado();
                         }//Fin solo VCL <1>

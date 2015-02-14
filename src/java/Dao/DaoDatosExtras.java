@@ -25,13 +25,23 @@ public class DaoDatosExtras implements InterfaceDaoDatosExtras {
         Query q = session.createQuery(hql);
         return (DatosExtras) q.uniqueResult();
     }
-    
+
     @Override
     public DatosExtras diaEspera(Session session) throws Exception {
         String hql
                 = " from DatosExtras de"
                 + " where substring(de.registro,1,1) = 1"
                 + " and de.descripcionDato = 'diaEspera'";
+        Query q = session.createQuery(hql);
+        return (DatosExtras) q.uniqueResult();
+    }
+
+    @Override
+    public DatosExtras direccionArchivoTemporalTicketera(Session session) throws Exception {
+        String hql
+                = " from DatosExtras de"
+                + " where substring(de.registro,1,1) = 1"
+                + " and de.descripcionDato = 'destinoTemporalTicketerea'";
         Query q = session.createQuery(hql);
         return (DatosExtras) q.uniqueResult();
     }

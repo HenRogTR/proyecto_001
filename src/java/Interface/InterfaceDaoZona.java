@@ -7,15 +7,14 @@ package Interface;
 
 import java.util.List;
 import org.hibernate.Session;
-import tablas.CobranzaDetalle;
+import tablas.Zona;
 
 /**
  *
  * @author Henrri
  */
-public interface InterfaceDaoCobranzaDetalle {
+public interface InterfaceDaoZona {
 
-    public boolean pesistir(Session session, CobranzaDetalle objCobranzaDetalle) throws Exception;
+    public List<Zona> leer(Session session) throws Exception;
 
-    public List<CobranzaDetalle> leerPorCodigoCobranza(Session session, int codCobranza) throws Exception;
 }

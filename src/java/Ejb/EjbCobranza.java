@@ -12,6 +12,7 @@ import Dao.DaoCobranza;
 import Dao.DaoCobranzaDetalle;
 import Dao.DaoComprobantePago;
 import Dao.DaoComprobantePagoDetalle;
+import Dao.DaoDatosExtras;
 import Dao.DaoVentaCreditoLetra;
 import HiberanteUtil.HibernateUtil;
 import java.util.Date;
@@ -24,6 +25,7 @@ import tablas.CobranzaDetalle;
 import tablas.ComprobantePago;
 import tablas.ComprobantePagoDetalle;
 import tablas.DatosCliente;
+import tablas.DatosExtras;
 import tablas.VentaCreditoLetra;
 
 /**
@@ -158,6 +160,14 @@ public class EjbCobranza {
             } else {
                 //En caso de ser manual, ya se recibió desde el servlet
                 if ("manual".equals(tipoCobro)) {
+                    //Validar si existe el tipo y serie en la bd
+                    String[] a = docSerieNumero.split("-");
+                    this.comprobantePagoList
+                            = daoComprobantePago.verificarDisponible(this.session, a[0], a[1]);
+                    if (this.comprobantePagoList.isEmpty()) {
+                        this.error = "Tipo y/o serie no encontrada.";
+                        return false;
+                    }
                     //validar si no esta usado
                     if (daoCobranza.leerPorDocSerieNumero(this.session, docSerieNumero) != null) {
                         this.error = docSerieNumero + " ya se encuentra en uso";
@@ -173,7 +183,7 @@ public class EjbCobranza {
                             ? daoComprobantePago.verificarDisponible(this.session, tipoCaja, serieCaja)
                             : daoComprobantePago.verificarDisponible(this.session, tipoDescuento, serieDescuento);
                     if (this.comprobantePagoList.isEmpty()) {
-                        this.error = "Serie no encontrada.";
+                        this.error = "Tipo y/o serie no encontrada.";
                         return false;
                     }
                     objComprobantePago = this.comprobantePagoList.get(0);
@@ -187,6 +197,7 @@ public class EjbCobranza {
                     int tamCPDL = this.comprobantePagoDetalleList.size();
                     for (int i = 0; i < tamCPDL; i++) {
                         ComprobantePagoDetalle objComprobantePagoDetalleAux = this.comprobantePagoDetalleList.get(i);
+                        System.out.println(objComprobantePagoDetalleAux.getDocSerieNumero());
                         //Validar que aun estando habilitado ya se encuentre usado, se recomienda actualizarlo.
                         if (daoCobranza.leerPorDocSerieNumero(this.session, objComprobantePagoDetalleAux.getDocSerieNumero()) == null) {
                             docSerieNumero = objComprobantePagoDetalleAux.getDocSerieNumero();
@@ -262,7 +273,7 @@ public class EjbCobranza {
                 //Ver si se efectuará el pago de intereses
                 boolean cobrarInteres;
                 //si no paga interes permanente
-                if (objCliente.getInteresEvitarPermanente()) {
+                if (objCliente.isInteresEvitarPermanente()) {
                     cobrarInteres = false;
                 } else {
                     cobrarInteres
@@ -452,6 +463,57 @@ public class EjbCobranza {
             }
             this.transaction.commit();
             est = true;
+        } catch (Exception e) {
+            if (this.transaction != null) {
+                this.transaction.rollback();
+            }
+            this.error = "Contacte al administrador << " + e.getMessage() + " >>";
+            e.printStackTrace();
+        } finally {
+            if (this.session != null) {
+                this.session.close();
+            }
+        }
+        return est;
+    }
+
+    /**
+     * Imprimir tickets habilitados solamente
+     *
+     * @param codCobranza
+     * @return
+     */
+    public boolean imprimir(int codCobranza) {
+        boolean est = false;
+        this.session = null;
+        this.transaction = null;
+        this.error = null;
+        try {
+            this.session = HibernateUtil.getSessionFactory().openSession();
+            this.transaction = session.beginTransaction();
+            //Variables            
+            String rutaTemporalTicket = "";
+            List<CobranzaDetalle> cobranzaDetalleList;
+            //Definir daos
+            DaoDatosExtras daoDatosExtras = new DaoDatosExtras();
+            DaoCobranza daoCobranza = new DaoCobranza();
+            DaoCobranzaDetalle daoCobranzaDetalle = new DaoCobranzaDetalle();
+            //Verificar si hay ruta
+            DatosExtras objDatosExtras = daoDatosExtras.direccionArchivoTemporalTicketera(this.session);
+            //Verificar que haya dato
+            if (objDatosExtras == null) {
+                this.error = "Dirección de archivo temporal no especificado. Contacte con el administrador del sistema.";
+                return false;
+            }
+            rutaTemporalTicket = objDatosExtras.getLetras();
+            //Leer cobranza
+            this.cobranza = daoCobranza.leerPorCodigo(this.session, codCobranza);
+            if (this.cobranza == null) {
+                this.error = "El código de cobranza no se encuentra registrado.";
+                return false;
+            }
+            cobranzaDetalleList = daoCobranzaDetalle.leerPorCodigoCobranza(this.session, codCobranza);
+            this.transaction.commit();
         } catch (Exception e) {
             if (this.transaction != null) {
                 this.transaction.rollback();

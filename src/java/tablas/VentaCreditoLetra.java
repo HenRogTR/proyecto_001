@@ -1,5 +1,5 @@
 package tablas;
-// Generated 22/07/2014 11:50:38 AM by Hibernate Tools 3.6.0
+// Generated 01/10/2014 04:51:32 PM by Hibernate Tools 3.6.0
 
 
 import java.util.Date;
@@ -32,11 +32,11 @@ public class VentaCreditoLetra  implements java.io.Serializable {
     }
 
 	
-    public VentaCreditoLetra( Ventas ventas, String registro) {
+    public VentaCreditoLetra(Ventas ventas, String registro) {
         this.ventas = ventas;
         this.registro = registro;
     }
-    public VentaCreditoLetra( Ventas ventas, Integer moneda, Integer numeroLetra, String detalleLetra, Date fechaVencimiento, Double monto, Double interes, Date fechaPago, Double totalPago, Double interesPagado, Double interesPendiente, Date interesUltimoCalculo, String registro, Set<CobranzaDetalle> cobranzaDetalles) {
+    public VentaCreditoLetra(Ventas ventas, Integer moneda, Integer numeroLetra, String detalleLetra, Date fechaVencimiento, Double monto, Double interes, Date fechaPago, Double totalPago, Double interesPagado, Double interesPendiente, Date interesUltimoCalculo, String registro, Set<CobranzaDetalle> cobranzaDetalles) {
        this.ventas = ventas;
        this.moneda = moneda;
        this.numeroLetra = numeroLetra;

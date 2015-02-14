@@ -352,7 +352,7 @@ $(function() {
 //<editor-fold defaultstate="collapsed" desc="fClienteLeer(codCliente). Clic en  + para más detalles.">
 function fClienteLeer(codCliente) {
     var data = {codCliente: codCliente};
-    var url = 'ajax/cliente_codCliente.jsp';
+    var url = '../ajax/clientePorCodCliente.jsp';
     try {
         $.ajax({
             type: 'post',
@@ -384,7 +384,7 @@ function fClienteLeer(codCliente) {
                     $('#codCliente').val(clienteItem.codCliente);
                     $('#sCodCliente').text(clienteItem.codCliente);
                     $('#sNombresC').text(clienteItem.nombresC);
-                    $('#sInteresEvitarEstado').text(clienteItem.interesEvitar);
+                    $('#sInteresEvitarEstado').text(clienteItem.interesEvitarEstado ? 'Afectado a pago de intereses.' : 'No afectado a pago de intereses (' + (clienteItem.interesEvitarPermanente ? 'permanente' : 'solo hoy') + ').');
                     $('#sDireccion').text(clienteItem.direccion);
                     $('#sEmpresaConvenio').text(clienteItem.empresaConvenio);
                     $('#sCodCobranza').text(clienteItem.codCobranza);
@@ -521,7 +521,7 @@ function fCodCobranzaOtrosBuscar(codEmpresaConvenio) {
 //<editor-fold defaultstate="collapsed" desc="function fCobranzaResumen(codCliente). Clic en  + para más detalles.">
 function fCobranzaResumen(codCliente) {
     var data = {codCliente: codCliente};
-    var url = 'ajax/cobranzaResumen.jsp';
+    var url = '../ajax/cobranzaPorCodCliente.jsp';
     try {
         $.ajax({
             type: 'post',
@@ -561,7 +561,7 @@ function fCobranzaResumen(codCliente) {
             },
             statusCode: {
                 404: function() {
-                    $('#lServidorError').text('Página no encontrada(ajax/cobranzaResumen.jsp).');
+                    $('#lServidorError').text('Página no encontrada(' + url + ').');
                     $('#dServidorError').dialog('open');
                 }
             }
@@ -588,7 +588,7 @@ function fVentaCreditoLetraResumen(codCliente) {
 
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
-                $('#lServidorError').text(errorThrown + '(ajax/ventaCreditoLetraResumenLeer.jsp)');
+                $('#lServidorError').text(errorThrown + '(ajax/' + url + ')');
                 $('#dServidorError').dialog('open');
             },
             success: function(ajaxResponse, textStatus) {
@@ -692,7 +692,7 @@ function fDeudaMes(codCliente) {
             },
             statusCode: {
                 404: function() {
-                    $('#lServidorError').text('Página no encontrada(deudaMes_codCliente.jsp).');
+                    $('#lServidorError').text('Página no encontrada(' + url + ').');
                     $('#dServidorError').dialog('open');
                 }
             }
@@ -1206,11 +1206,70 @@ function fInteresAsigandoDeshabilitar() {
     }
 }
 ;
+//<editor-fold defaultstate="collapsed" desc="fVentaObtenerUltimo(). Clic en + para más detalles.">
+function fVentaObtenerUltimo() {
+    var url = '../ajax/ventaLeerUltimo.jsp';
+    try {
+        $.ajax({
+            type: 'post',
+            url: url,
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                $('#lServidorError').text(errorThrown + '()');
+                $('#dServidorError').dialog('open');
+            },
+            success: function(ajaxResponse, textStatus) {
+                //trasformar a datos Json
+                var ventaUltimoCreditoJson = procesarRespuesta(ajaxResponse);
+                /*
+                 *En caso la respuesta del servidor no tenga la forma para 
+                 *converitir a json.
+                 */
+                if (ventaUltimoCreditoJson == null) {
+                    $.growl.error({title: 'Error', message: ajaxResponse, size: 'large'});
+                    return;
+                }
+                //tomamos tamaño de datos
+                var tam = ventaUltimoCreditoJson.length;
+                //decimos que no hay venta al crédito ultima hecha
+                if (tam == 0) {
+                    $.growl.warning({title: 'Alerta', message: 'No hay ninguna venta al crédito.', size: 'large'});
+                    //quitar los gif de espera en las otras tablas y retornar los datos anteirores
+                    //quitamos para los span independientes
+                    $('.datoMostrar').removeClass('ocultar');
+                    //mostramos los span con gif junto al anterior descrito
+                    $('.esperando').addClass('ocultar');
+                    //ocultamos los datos con gif por lo general son tbody
+                    $('.tbDato').removeClass('ocultar');
+                    //quitamos toda el contenedor tfoot
+                    $('.tfContenedor').addClass('ocultar');
+                    fProcesandoPeticionCerrar();
+                    return;
+                } else {
+                    var venta = ventaUltimoCreditoJson[0];
+                    fClienteLeer(venta.codCliente);
+                }
+            },
+            statusCode: {
+                404: function() {
+                    $('#lServidorError').text('Página no encontrada().');
+                    $('#dServidorError').dialog('open');
+                }
+            }
+        });
+    }
+    catch (ex) {
+        $('#lServidorError').text(ex);
+        $('#dServidorError').dialog('open');
+    }
+}
+;
+//</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="function fPaginaActual(). Clic en el + para más detalles.">
 function fPaginaActual() {
     fProcesandoPeticion();
-    fClienteLeer($('#codCliente').val());
+//    fClienteLeer($('#codCliente').val());
+    fVentaObtenerUltimo();
     fLeerDocumentoCaja();
 }
 ;

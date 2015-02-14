@@ -1,8 +1,9 @@
 /*
- * To change this template, choose Tools | Templates
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cobranzaClases;
+package Clase;
 
 import java.io.PrintWriter;
 
@@ -10,14 +11,13 @@ import java.io.PrintWriter;
  *
  * @author Henrri
  */
-public class cImprimirTicket {    
+public class Ticketera {
 
     public void escribir(String texto, PrintWriter ps) {
         try {
             ps.println(texto);
-
         } catch (Exception e) {
-            System.out.print(e);
+            e.printStackTrace();
         }
     }
 
@@ -25,17 +25,16 @@ public class cImprimirTicket {
         try {
             ps.println("----------------------------------------");
         } catch (Exception e) {
-            System.out.print(e);
+            e.printStackTrace();
         }
     }
-//para cortar el papel de mi ticketera
 
     public void cortar(PrintWriter ps) {
         try {
             char[] ESC_CUT_PAPER = new char[]{0x1B, 'm'};
             ps.write(ESC_CUT_PAPER);
         } catch (Exception e) {
-            System.out.print(e);
+            e.printStackTrace();
         }
     }
 
@@ -46,7 +45,7 @@ public class cImprimirTicket {
                 pw.println("");
             }
         } catch (Exception e) {
-            System.out.print(e);
+            e.printStackTrace();
         }
     }
 
@@ -55,17 +54,16 @@ public class cImprimirTicket {
             char[] ESC_CUT_PAPER = new char[]{0x1B, '!', (char) formato};
             pw.write(ESC_CUT_PAPER);
         } catch (Exception e) {
-            System.out.print(e);
+            e.printStackTrace();
         }
     }
-// para el color de mi ticketera
 
     public void setRojo(PrintWriter pw) {
         try {
             char[] ESC_CUT_PAPER = new char[]{0x1B, 'r', 1};
             pw.write(ESC_CUT_PAPER);
         } catch (Exception e) {
-            System.out.print(e);
+            e.printStackTrace();
         }
     }
 
@@ -74,7 +72,7 @@ public class cImprimirTicket {
             char[] ESC_CUT_PAPER = new char[]{0x1B, 'r', 0};
             pw.write(ESC_CUT_PAPER);
         } catch (Exception e) {
-            System.out.print(e);
+            e.printStackTrace();
         }
     }
 }

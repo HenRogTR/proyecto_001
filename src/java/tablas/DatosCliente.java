@@ -1,5 +1,5 @@
 package tablas;
-// Generated 18/07/2014 10:11:54 AM by Hibernate Tools 3.6.0
+// Generated 01/10/2014 04:51:32 PM by Hibernate Tools 3.6.0
 
 
 import java.util.Date;
@@ -23,7 +23,7 @@ public class DatosCliente  implements java.io.Serializable {
      private double creditoMax;
      private double saldoFavor;
      private Date interesEvitar;
-     private Boolean interesEvitarPermanente;
+     private boolean interesEvitarPermanente;
      private String observaciones;
      private int codCobrador;
      private int personaCodGarante;
@@ -34,17 +34,18 @@ public class DatosCliente  implements java.io.Serializable {
     }
 
 	
-    public DatosCliente(EmpresaConvenio empresaConvenio, Persona persona, int tipo, double creditoMax, double saldoFavor, int codCobrador, int personaCodGarante, String registro) {
+    public DatosCliente(EmpresaConvenio empresaConvenio, Persona persona, int tipo, double creditoMax, double saldoFavor, boolean interesEvitarPermanente, int codCobrador, int personaCodGarante, String registro) {
         this.empresaConvenio = empresaConvenio;
         this.persona = persona;
         this.tipo = tipo;
         this.creditoMax = creditoMax;
         this.saldoFavor = saldoFavor;
+        this.interesEvitarPermanente = interesEvitarPermanente;
         this.codCobrador = codCobrador;
         this.personaCodGarante = personaCodGarante;
         this.registro = registro;
     }
-    public DatosCliente(EmpresaConvenio empresaConvenio, Persona persona, Integer tipoCliente, String centroTrabajo, String telefono, int tipo, Integer condicion, double creditoMax, double saldoFavor, Date interesEvitar, Boolean interesEvitarPermanente, String observaciones, int codCobrador, int personaCodGarante, String registro, Set<DocumentoNotificacion> documentoNotificacions) {
+    public DatosCliente(EmpresaConvenio empresaConvenio, Persona persona, Integer tipoCliente, String centroTrabajo, String telefono, int tipo, Integer condicion, double creditoMax, double saldoFavor, Date interesEvitar, boolean interesEvitarPermanente, String observaciones, int codCobrador, int personaCodGarante, String registro, Set<DocumentoNotificacion> documentoNotificacions) {
        this.empresaConvenio = empresaConvenio;
        this.persona = persona;
        this.tipoCliente = tipoCliente;
@@ -140,11 +141,11 @@ public class DatosCliente  implements java.io.Serializable {
     public void setInteresEvitar(Date interesEvitar) {
         this.interesEvitar = interesEvitar;
     }
-    public Boolean getInteresEvitarPermanente() {
+    public boolean isInteresEvitarPermanente() {
         return this.interesEvitarPermanente;
     }
     
-    public void setInteresEvitarPermanente(Boolean interesEvitarPermanente) {
+    public void setInteresEvitarPermanente(boolean interesEvitarPermanente) {
         this.interesEvitarPermanente = interesEvitarPermanente;
     }
     public String getObservaciones() {

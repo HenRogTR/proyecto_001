@@ -134,18 +134,43 @@ $(document).ready(function() {
     $('#ventaSerieDoc').mask('000');
 
     $('.aCliente').click(function(e) {
-        var clienteOrden = $('input[name=tCliente_orden]:checked').val();   //obteniendo orden
-        var clienteCobrador = $('input[name=tCliente_cobrador]:checked').val();
+        var clienteOrden = $('input[name=tCliente_orden]:checked').val();       //obteniendo orden
+        var clienteCobrador = $('input[name=tCliente_cobrador]:checked').val(); //si se filtrará por cobrador
         var codCobrador = $('#clienteCodCobrador').val();
-        if (clienteCobrador == 'cobrador') {
-            if (codCobrador == '') {
-                fAlerta('Seleccione cobrador.');
-                return;
-            }
+        var cobradorNombresC = $('#cobranza_cobradorNombresC').text();
+        if (clienteCobrador == 'cobrador' & codCobrador == '') {
+            fAlerta('Seleccione cobrador.');
+            e.preventDefault();
+            return;
         }
+        var codZona = $('#tClienteZona').val();
+        var zona = $('#tClienteZona option:selected').text();
+        var codEmpresaConvenio = $('#tClienteCodEC').val();
+        var empresaConvenio = $('#tClienteCodEC option:selected').text();
+        var codTipo = $('#tClienteTipo').val();
+        var tipo = $('#tClienteTipo option:selected').text();
+        var codCondicion = $('#tClienteCondicion').val();
+        var condicion = $('#tClienteCondicion option:selected').text();
+
         var $clienteFVLInicio = $('#clienteFVLInicio');
         var $clienteFVLFin = $('#clienteFVLFin');
         var fechaFinalUsar = $('#clienteFVLFinalUsar').is(":checked");
+
+        var hrefDetalle
+                = 'cliente/letraVencidaDetalleExcel.jsp'
+                + '?orden=' + clienteOrden
+                + '&clienteCobrador=' + clienteCobrador
+                + '&codCobrador=' + codCobrador
+                + '&cobradorNombresC=' + cobradorNombresC
+                + '&codZona=' + codZona
+                + '&zona=' + zona
+                + '&empresaConvenio=' + empresaConvenio
+                + '&tipo=' + tipo
+                + '&condicion=' + condicion
+                + '&fechaInicio=' + $clienteFVLInicio.val()
+                + '&fechaFin=' + $clienteFVLFin.val()
+                + '&fechaFinalUsar=' + fechaFinalUsar;
+
         switch ($(this).attr('id')) {
             //============Reporte cartera de cliente.=======================
             case 'rClienteOrden':
@@ -202,7 +227,9 @@ $(document).ready(function() {
                                 '&fechaVencimientoInicio=' + $clienteFVLInicio.val() +
                                 '&fechaVencimiento=' + $clienteFVLFin.val() +
                                 '&codCobrador=' + codCobrador +
-                                '&fechaFinalUsar=' + fechaFinalUsar);
+                                '&fechaFinalUsar=' + fechaFinalUsar +
+                                '&codZona=' + codZona +
+                                '&zona=' + zona);
                 break;
             case 'rClienteECOrdenVCL':
                 var $cEC = $('#tClienteCodEC');
@@ -221,7 +248,9 @@ $(document).ready(function() {
                                 '&fechaVencimiento=' + $clienteFVLFin.val() +
                                 '&codEC=' + $cEC.val() +
                                 '&codCobrador=' + codCobrador +
-                                '&fechaFinalUsar=' + fechaFinalUsar);
+                                '&fechaFinalUsar=' + fechaFinalUsar +
+                                '&codZona=' + codZona +
+                                '&zona=' + zona);
                 break;
             case 'rClienteECTipoOrdenVCL':
                 var $cEC = $('#tClienteCodEC');
@@ -246,7 +275,9 @@ $(document).ready(function() {
                                 '&codEC=' + $cEC.val() +
                                 '&tipo=' + $tipo.val() +
                                 '&codCobrador=' + codCobrador +
-                                '&fechaFinalUsar=' + fechaFinalUsar);
+                                '&fechaFinalUsar=' + fechaFinalUsar +
+                                '&codZona=' + codZona +
+                                '&zona=' + zona);
                 break;
             case 'rClienteECTipoCondicionOrdenVCL':
                 var $cEC = $('#tClienteCodEC');
@@ -277,7 +308,9 @@ $(document).ready(function() {
                                 '&tipo=' + $tipo.val() +
                                 '&condicion=' + $condicion.val() +
                                 '&codCobrador=' + codCobrador +
-                                '&fechaFinalUsar=' + fechaFinalUsar);
+                                '&fechaFinalUsar=' + fechaFinalUsar +
+                                '&codZona=' + codZona +
+                                '&zona=' + zona);
                 break;
                 //===============Reporte letras vencidas Excel==================
             case 'rClienteOrdenVCLExcel':
@@ -291,7 +324,9 @@ $(document).ready(function() {
                                 '&fechaVencimientoInicio=' + $clienteFVLInicio.val() +
                                 '&fechaVencimiento=' + $clienteFVLFin.val() +
                                 '&codCobrador=' + codCobrador +
-                                '&fechaFinalUsar=' + fechaFinalUsar);
+                                '&fechaFinalUsar=' + fechaFinalUsar +
+                                '&codZona=' + codZona +
+                                '&zona=' + zona);
                 break;
             case 'rClienteECOrdenVCLExcel':
                 var $cEC = $('#tClienteCodEC');
@@ -310,7 +345,9 @@ $(document).ready(function() {
                                 '&fechaVencimiento=' + $clienteFVLFin.val() +
                                 '&codEC=' + $cEC.val() +
                                 '&codCobrador=' + codCobrador +
-                                '&fechaFinalUsar=' + fechaFinalUsar);
+                                '&fechaFinalUsar=' + fechaFinalUsar +
+                                '&codZona=' + codZona +
+                                '&zona=' + zona);
                 break;
             case 'rClienteECTipoOrdenVCLExcel':
                 var $cEC = $('#tClienteCodEC');
@@ -335,7 +372,9 @@ $(document).ready(function() {
                                 '&codEC=' + $cEC.val() +
                                 '&tipo=' + $tipo.val() +
                                 '&codCobrador=' + codCobrador +
-                                '&fechaFinalUsar=' + fechaFinalUsar);
+                                '&fechaFinalUsar=' + fechaFinalUsar +
+                                '&codZona=' + codZona +
+                                '&zona=' + zona);
                 break;
             case 'rClienteECTipoCondicionOrdenVCLExcel':
                 var $cEC = $('#tClienteCodEC');
@@ -366,7 +405,102 @@ $(document).ready(function() {
                                 '&tipo=' + $tipo.val() +
                                 '&condicion=' + $condicion.val() +
                                 '&codCobrador=' + codCobrador +
-                                '&fechaFinalUsar=' + fechaFinalUsar);
+                                '&fechaFinalUsar=' + fechaFinalUsar +
+                                '&codZona=' + codZona +
+                                '&zona=' + zona);
+                break;
+                //===============Reporte letras vencidas Detalles Excel==================
+            case 'rClienteOrdenVCLDetalleExcel':
+                if (!fValidarFecha($clienteFVLFin.val())) {
+                    fAlerta('Ingrese fecha.');
+                    e.preventDefault();
+                    return;
+                }
+                hrefDetalle
+                        += '&codEmpresaConvenio='
+                        + '&codTipo='
+                        + '&codCondicion=';
+                $(this)
+                        .attr('target', '_blank')
+                        .attr('href', hrefDetalle);
+                break;
+            case 'rClienteECOrdenVCLDetalleExcel':
+                var $cEC = $('#tClienteCodEC');
+                if (!fValidarRequerido($cEC.val())) {
+                    fAlerta('Seleccione Empresa/Convenio.');
+                    e.preventDefault();
+                    return;
+                }
+                if (!fValidarFecha($clienteFVLFin.val())) {
+                    fAlerta('Ingrese fecha correspondiente.');
+                    e.preventDefault();
+                    return;
+                }
+                hrefDetalle
+                        += '&codEmpresaConvenio=' + codEmpresaConvenio
+                        + '&codTipo='
+                        + '&codCondicion=';
+                $(this)
+                        .attr('target', '_blank')
+                        .attr('href', hrefDetalle);
+                break;
+            case 'rClienteECTipoOrdenVCLDetalleExcel':
+                var $cEC = $('#tClienteCodEC');
+                if (!fValidarRequerido($cEC.val())) {
+                    fAlerta('Seleccione Empresa/Convenio.');
+                    e.preventDefault();
+                    return;
+                }
+                var $tipo = $('#tClienteTipo');
+                if (!fValidarRequerido($tipo.val())) {
+                    fAlerta('Seleccione tipo.');
+                    e.preventDefault();
+                    return;
+                }
+                if (!fValidarFecha($clienteFVLFin.val())) {
+                    fAlerta('Ingrese fecha correspondiente.');
+                    e.preventDefault();
+                    return;
+                }
+                hrefDetalle
+                        += '&codEmpresaConvenio=' + codEmpresaConvenio
+                        + '&codTipo=' + codTipo
+                        + '&codCondicion=';
+                $(this)
+                        .attr('target', '_blank')
+                        .attr('href', hrefDetalle);
+                break;
+            case 'rClienteECTipoCondicionOrdenVCLDetalleExcel':
+                var $cEC = $('#tClienteCodEC');
+                if (!fValidarRequerido($cEC.val())) {
+                    fAlerta('Seleccione Empresa/Convenio.');
+                    e.preventDefault();
+                    return;
+                }
+                var $tipo = $('#tClienteTipo');
+                if (!fValidarRequerido($tipo.val())) {
+                    fAlerta('Seleccione tipo.');
+                    e.preventDefault();
+                    return;
+                }
+                var $condicion = $('#tClienteCondicion');
+                if (!fValidarRequerido($condicion.val())) {
+                    fAlerta('Seleccione condición.');
+                    e.preventDefault();
+                    return;
+                }
+                if (!fValidarFecha($clienteFVLFin.val())) {
+                    fAlerta('Ingrese fecha correspondiente.');
+                    e.preventDefault();
+                    return;
+                }
+                hrefDetalle
+                        += '&codEmpresaConvenio=' + codEmpresaConvenio
+                        + '&codTipo=' + codTipo
+                        + '&codCondicion=' + codCondicion;
+                $(this)
+                        .attr('target', '_blank')
+                        .attr('href', hrefDetalle);
                 break;
                 //======================== Tramo Excel==========================
             case 'rClienteOrdenVCLTExcel':
@@ -380,7 +514,9 @@ $(document).ready(function() {
                                 '&fechaVencimientoInicio=' + $clienteFVLInicio.val() +
                                 '&fechaVencimiento=' + $clienteFVLFin.val() +
                                 '&codCobrador=' + codCobrador +
-                                '&fechaFinalUsar=' + fechaFinalUsar);
+                                '&fechaFinalUsar=' + fechaFinalUsar +
+                                '&codZona=' + codZona +
+                                '&zona=' + zona);
                 break;
             case 'rClienteOrdenECVCLTExcel':
                 var $cEC = $('#tClienteCodEC');
@@ -399,7 +535,9 @@ $(document).ready(function() {
                                 '&fechaVencimiento=' + $clienteFVLFin.val() +
                                 '&codEC=' + $cEC.val() +
                                 '&codCobrador=' + codCobrador +
-                                '&fechaFinalUsar=' + fechaFinalUsar);
+                                '&fechaFinalUsar=' + fechaFinalUsar +
+                                '&codZona=' + codZona +
+                                '&zona=' + zona);
                 break;
             default :
                 fAlerta('No implementado ID:' + $(this).attr('id'));
@@ -1240,7 +1378,53 @@ function fEmpresaConvenioCargar() {
 ;
 //</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="fZonaCargar(). Clic en + para más detalles.">
+function fZonaCargar($zona) {
+    var url = '../ajax/zona.jsp';
+    try {
+        $.ajax({
+            type: 'post',
+            url: url,
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                $('#lServidorError').text(errorThrown + '()');
+                $('#dServidorError').dialog('open');
+            },
+            success: function(ajaxResponse, textStatus) {
+                //trasformar a datos Json
+                var zonaJSon = procesarRespuesta(ajaxResponse);
+                /*
+                 *En caso la respuesta del servidor no tenga la forma para 
+                 *converitir a json.
+                 */
+                if (zonaJSon == null) {
+                    $.growl.error({title: 'Error', message: ajaxResponse, size: 'large'});
+                    return;
+                }
+                //tomamos tamaño de datos
+                var tam = zonaJSon.length;
+                //vaciar el contenedor
+                for (var i = 0; i < tam; i++) {
+                    var zona = zonaJSon[i];
+                    var $option = $('<option>', {value: zona.codZona, html: zona.zona}).appendTo($zona);
+                }
+            },
+            statusCode: {
+                404: function() {
+                    $('#lServidorError').text('Página no encontrada(' + url + ').');
+                    $('#dServidorError').dialog('open');
+                }
+            }
+        });
+    }
+    catch (ex) {
+        $('#lServidorError').text(ex);
+        $('#dServidorError').dialog('open');
+    }
+}
+//</editor-fold>
+
 function fPaginaActual() {
     fEmpresaConvenioCargar();
+    fZonaCargar($('#tClienteZona'));
 }
 ;

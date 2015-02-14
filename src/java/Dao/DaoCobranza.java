@@ -26,6 +26,14 @@ public class DaoCobranza implements InterfaceDaoCobranza {
     }
 
     @Override
+    public Cobranza leerPorCodigo(Session session, int codCobranza) throws Exception {
+        String hql = "from Cobranza c where c= :codCobranza";
+        Query q = session.createQuery(hql)
+                .setInteger("codCobranza", codCobranza);
+        return (Cobranza) q.uniqueResult();
+    }
+
+    @Override
     public List<Cobranza> leerPorCodigoCliente(Session session, int codCliente) throws Exception {
         String hql = "";
         hql = hql.concat(" select c");

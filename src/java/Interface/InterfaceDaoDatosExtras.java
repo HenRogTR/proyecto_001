@@ -15,7 +15,9 @@ import tablas.DatosExtras;
 public interface InterfaceDaoDatosExtras {
 
     public DatosExtras interesFactor(Session session) throws Exception;
-    
+
     public DatosExtras diaEspera(Session session) throws Exception;
+
+    public DatosExtras direccionArchivoTemporalTicketera(Session session) throws Exception;
 
 }

@@ -26,7 +26,7 @@
         <script type="text/javascript" src="../librerias/utilitarios/manejoFecha.js"></script>
         <script type="text/javascript" src="../librerias/plugin/jquery.growl/javascripts/jquery.growl.min.js"></script>
         <link rel="stylesheet" type="text/css" href="../librerias/plugin/jquery.growl/stylesheets/jquery.growl.min.css" media="all"/>
-        <script type="text/javascript" src="../librerias/reporte/reporte.js?v.14.08.05"></script>
+        <script type="text/javascript" src="../librerias/reporte/reporte.js?v.14.10.11"></script>
         <style>
             .ui-autocomplete {
                 width: 400px;
@@ -100,7 +100,16 @@
                                         <tr>
                                             <th colspan="5" class="centrado">CARTERA DE CLIENTES</th>
                                             <th>PENDIENTES DE PAGO</th>
+                                            <th>MÁS</th>
                                             <th>TRAMOS</th>
+                                        </tr>
+                                        <tr>
+                                            <th><span>ZONA</span></th>
+                                            <td colspan="4">
+                                                <select name="tClienteZona" id="tClienteZona" class="anchoTotal contenedorEntrada limpiar">
+                                                    <option value="0">TODOS</option>
+                                                </select>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th class="ancho80px"><span>ORDEN</span></th>
@@ -114,6 +123,9 @@
                                             <td class="centrado">
                                                 <a id="rClienteOrdenVCL" class="sexybutton sexyicononly aCliente" ><span><span><span class="print"></span></span></span></a>
                                                 <a id="rClienteOrdenVCLExcel" class="sexybutton sexyicononly aCliente" ><span><span><span class="excel"></span></span></span></a>
+                                            </td>
+                                            <td>
+                                                <a id="rClienteOrdenVCLDetalleExcel" class="sexybutton sexyicononly aCliente" ><span><span><span class="excel"></span></span></span></a>
                                             </td>
                                             <td class="centrado">
                                                 <a id="rClienteOrdenVCLTExcel" class="sexybutton sexyicononly aCliente" ><span><span><span class="excel"></span></span></span></a>
@@ -134,6 +146,9 @@
                                             <td class="centrado">
                                                 <a id="rClienteECOrdenVCL" class="sexybutton sexyicononly aCliente" ><span><span><span class="print"></span></span></span></a>
                                                 <a id="rClienteECOrdenVCLExcel" class="sexybutton sexyicononly aCliente" ><span><span><span class="excel"></span></span></span></a>
+                                            </td>
+                                            <td>
+                                                <a id="rClienteECOrdenVCLDetalleExcel" class="sexybutton sexyicononly aCliente" ><span><span><span class="excel"></span></span></span></a>
                                             </td>
                                             <td class="centrado">
                                                 <a id="rClienteOrdenECVCLTExcel" class="sexybutton sexyicononly aCliente" ><span><span><span class="excel"></span></span></span></a>
@@ -159,6 +174,9 @@
                                                 <a id="rClienteECTipoOrdenVCL" class="sexybutton sexyicononly aCliente" ><span><span><span class="print"></span></span></span></a>
                                                 <a id="rClienteECTipoOrdenVCLExcel" class="sexybutton sexyicononly aCliente" ><span><span><span class="excel"></span></span></span></a>
                                             </td>
+                                            <td>
+                                                <a id="rClienteECTipoOrdenVCLDetalleExcel" class="sexybutton sexyicononly aCliente" ><span><span><span class="excel"></span></span></span></a>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th><span>CONDICIÓN</span></th>
@@ -178,6 +196,9 @@
                                             <td class="centrado">
                                                 <a id="rClienteECTipoCondicionOrdenVCL" class="sexybutton sexyicononly aCliente" ><span><span><span class="print"></span></span></span></a>
                                                 <a id="rClienteECTipoCondicionOrdenVCLExcel" class="sexybutton sexyicononly aCliente" ><span><span><span class="excel"></span></span></span></a>
+                                            </td>
+                                            <td>
+                                                <a id="rClienteECTipoCondicionOrdenVCLDetalleExcel" class="sexybutton sexyicononly aCliente" ><span><span><span class="excel"></span></span></span></a>
                                             </td>
                                         </tr>                                        
                                         <tr>

@@ -16,10 +16,10 @@
 <%@page import="Ejb.EjbCliente"%>
 <%
     //evitar el acceso directo por el URL
-    if (request.getMethod().equals("GET")) {
-        out.print("No tiene permisos para ver este enlace.");
-        return;
-    }
+//    if (request.getMethod().equals("GET")) {
+//        out.print("No tiene permisos para ver este enlace.");
+//        return;
+//    }
     // ============================ sesión =====================================
     //verficar inicio de sesión        
     Usuario objUsuario = (Usuario) session.getAttribute("usuario");
@@ -63,24 +63,30 @@
     Date interesEvitar = objCliente.getInteresEvitar();
     boolean cobrarInteres = true;
     //si en caso esta con evitar interes permanente
-    if (objCliente.getInteresEvitarPermanente()) {
+    if (objCliente.isInteresEvitarPermanente()) {
         cobrarInteres = false;
     } else {
         cobrarInteres = interesEvitar == null ? true : interesEvitar.compareTo(new Fecha().fechaHoraAFecha(new Date())) != 0;
     }
     out.print("[{"
-            + "\"codCliente\":\"" + new Utilitarios().agregarCerosIzquierda(objCliente.getCodDatosCliente(), 8) + "\""
-            + ", \"nombresC\":\"" + new Utilitarios().reemplazarCaracteresEspeciales(objCliente.getPersona().getNombresC()) + "\""
+            + "\"codCliente\":\"" + Utilitarios.agregarCerosIzquierda(objCliente.getCodDatosCliente(), 8) + "\""
+            + ", \"nombresC\":\"" + Utilitarios.reemplazarCaracteresEspeciales(objCliente.getPersona().getNombresC()) + "\""
             + ", \"dniPasaporte\":\"" + objCliente.getPersona().getDniPasaporte() + "\""
             + ", \"ruc\":\"" + objCliente.getPersona().getRuc() + "\""
+            + ", \"direccion\":\"" + Utilitarios.reemplazarCaracteresEspeciales(objCliente.getPersona().getDireccion()) + "\""
+            + ", \"telefono1\":\"" + Utilitarios.reemplazarCaracteresEspeciales(objCliente.getPersona().getTelefono1()) + "\""
+            + ", \"telefono2\":\"" + Utilitarios.reemplazarCaracteresEspeciales(objCliente.getPersona().getTelefono2()) + "\""
+            + ", \"centroTrabajo\":\"" + Utilitarios.reemplazarCaracteresEspeciales(objCliente.getCentroTrabajo()) + "\""
+            + ", \"telefonoTrabajo\":\"" + Utilitarios.reemplazarCaracteresEspeciales(objCliente.getTelefono()) + "\""
+            + ", \"creditoMaximo\":\"" + Utilitarios.decimalFormato(objCliente.getCreditoMax(), 2) + "\""
             + ", \"codEmpresaConvenio\":\"" + objCliente.getEmpresaConvenio().getCodEmpresaConvenio() + "\""
-            + ", \"empresaConvenio\":\"" + new Utilitarios().reemplazarCaracteresEspeciales(objCliente.getEmpresaConvenio().getNombre()) + "\""
+            + ", \"empresaConvenio\":\"" + Utilitarios.reemplazarCaracteresEspeciales(objCliente.getEmpresaConvenio().getNombre()) + "\""
             + ", \"codCobranza\":\"" + objCliente.getEmpresaConvenio().getCodCobranza() + "\""
             + ", \"tipo\":\"" + cDatosCliente.tipoCliente(objCliente.getTipo()).toUpperCase() + "\""
             + ", \"condicion\":\"" + cDatosCliente.condicionCliente(objCliente.getCondicion()).toUpperCase() + "\""
-            + ", \"saldoFavor\":\"" + new Utilitarios().decimalFormato(objCliente.getSaldoFavor(), 2) + "\""
+            + ", \"saldoFavor\":\"" + Utilitarios.decimalFormato(objCliente.getSaldoFavor(), 2) + "\""
             + ", \"interesEvitar\":\"" + new Fecha().dateAString(interesEvitar) + "\""
-            + ", \"interesEvitarPermanente\":" + objCliente.getInteresEvitarPermanente()
+            + ", \"interesEvitarPermanente\":" + objCliente.isInteresEvitarPermanente()
             + ", \"interesEvitarEstado\":" + cobrarInteres
             + "}]");
 %>

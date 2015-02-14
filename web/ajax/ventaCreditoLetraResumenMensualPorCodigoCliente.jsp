@@ -130,15 +130,18 @@
                 += (objVentaCreditoLetra.getMonto() + objVentaCreditoLetra.getInteresPagado())
                 - (objVentaCreditoLetra.getTotalPago() + objVentaCreditoLetra.getInteresPagado());
     }
-    out.print(""
-            + ", \"capital\":\"" + Utilitarios.decimalFormato(capital, 2) + "\""
-            + ", \"interes\":\"" + Utilitarios.decimalFormato(interes, 2) + "\""
-            + ", \"capitalPagado\":\"" + Utilitarios.decimalFormato(capitalPagado, 2) + "\""
-            + ", \"interesPagado\":\"" + Utilitarios.decimalFormato(interesPagado, 2) + "\""
-            + ", \"deudaAcumulada\":\"" + Utilitarios.decimalFormato(deudaAcumulada, 2) + "\""
-            + ", \"pagoTotal\":\"" + Utilitarios.decimalFormato(pagoTotal, 2) + "\""
-            + ", \"saldoConInteres\":\"" + Utilitarios.decimalFormato(saldoConInteres, 2) + "\""
-            + ", \"saldoSinInteres\":\"" + Utilitarios.decimalFormato(saldoSinInteres, 2) + "\""
-            + "}");
+    //Imprimir sólo si existe un elemento en la lista
+    if (!ventaCreditoLetraList.isEmpty()) {
+        out.print(""
+                + ", \"capital\":\"" + Utilitarios.decimalFormato(capital, 2) + "\""
+                + ", \"interes\":\"" + Utilitarios.decimalFormato(interes, 2) + "\""
+                + ", \"capitalPagado\":\"" + Utilitarios.decimalFormato(capitalPagado, 2) + "\""
+                + ", \"interesPagado\":\"" + Utilitarios.decimalFormato(interesPagado, 2) + "\""
+                + ", \"deudaAcumulada\":\"" + Utilitarios.decimalFormato(deudaAcumulada, 2) + "\""
+                + ", \"pagoTotal\":\"" + Utilitarios.decimalFormato(pagoTotal, 2) + "\""
+                + ", \"saldoConInteres\":\"" + Utilitarios.decimalFormato(saldoConInteres, 2) + "\""
+                + ", \"saldoSinInteres\":\"" + Utilitarios.decimalFormato(saldoSinInteres, 2) + "\""
+                + "}");
+    }
     out.print("]");
 %>

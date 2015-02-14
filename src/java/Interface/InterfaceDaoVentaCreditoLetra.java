@@ -38,4 +38,8 @@ public interface InterfaceDaoVentaCreditoLetra {
 
     public List<VentaCreditoLetra> leerConDeudaPorCodigoVenta(Session session, int codCliente) throws Exception;
 
+    public List<Object[]> leerLetrasVencidasOrdenNombresC(Session session, Date fechaInicio, Date fechaFin) throws Exception;
+
+    public List<Object[]> leerLetrasVencidasOrdenDireccion(Session session, Date fechaInicio, Date fechaFin) throws Exception;
+
 }
